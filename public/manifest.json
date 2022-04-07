@@ -1,0 +1,83 @@
+{
+  "short_name": "Lokalizacja zbiorkomu",
+  "name": "Lokalizacja pojazdów komunikacji miejskiej",
+  "description": "Jedna z najlepszych stron do lokalizowania pojazdów komunikacji miejskiej w Warszawie i Gdańsku!",
+  "categories": [
+    "navigation",
+    "travel",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "/pwa/logo192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa/logo512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/pwa/ss1.png",
+      "sizes": "390x844",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa/ss2.png",
+      "sizes": "390x844",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa/ss3.png",
+      "sizes": "390x844",
+      "type": "image/jpeg"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Wyświetl pojazdy",
+      "short_name": "Pojazdy",
+      "description": "Otwórz mapę pojazdów",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/pwa/logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Filtrowanie pojazdów",
+      "short_name": "Filtrowanie",
+      "description": "Filtruj pojazdy",
+      "url": "/filter",
+      "icons": [
+        {
+          "src": "/pwa/logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Ustawienia",
+      "short_name": "Ustawienia",
+      "description": "Otwórz ustawienia",
+      "url": "/settings",
+      "icons": [
+        {
+          "src": "/pwa/logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
+  "orientation": "portrait",
+  "gcm_sender_id": "477862441151"
+}

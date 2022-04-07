@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/logo.png" type="image/png" />
+  <meta property="og:title" content="zbiorkom.live">
+  <meta property="og:site_name" content="Lokalizacja pojazdów komunikacji miejskiej.">
+  <!--meta property="og:image" content=""-->
+  <meta property="og:description" content="Autobusy, tramwaje i pociągi na mapie na żywo!">
+  <!--meta name="theme-color" content="#"-->
+
+  <link rel="manifest" href="/manifest.json" />
+
+  <title>zbiorkom.live</title>
+</head>
+
+<body>
+  <noscript><center><h1>Włącz JavaScript.</h1></center></noscript>
+  <div id="root"></div>
+  <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js');</script>
+</body>
+
+</html>
