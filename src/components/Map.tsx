@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { GpsFixed, Settings, FilterList } from '@mui/icons-material';
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
-
-import "leaflet/dist/leaflet.css";
 import { useNavigate } from "react-router-dom";
 
 export default ({ city, children }: {
     children?: JSX.Element | JSX.Element[],
-    city?: "warsaw" | "gdansk"
+    city: "warsaw" | "gdansk"
 }) => {
     const navigate = useNavigate();
     const [map, setMap] = useState(null);
@@ -24,11 +22,11 @@ export default ({ city, children }: {
         <TileLayer url={"https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"} />
         <ZoomControl position="topright" />
         <div className="leaflet-control-zoom leaflet-bar leaflet-control" style={{ top: 80, right: 10, position: "absolute" }}>
-            <a href="/where_tf_i_am" onClick={e => { e.preventDefault(); }}><GpsFixed sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
+            <a href="/" onClick={e => { e.preventDefault(); }}><GpsFixed sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
         </div>
         <div className="leaflet-control-zoom leaflet-bar leaflet-control" style={{ top: 120, right: 10, position: "absolute" }}>
-            <a href="/jebac_konstale_daj_mnie_swingi" onClick={e => { navigate("/filter"); e.preventDefault(); }}><FilterList sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
-            <a href="/i_want_dark_mode_uwu" onClick={e => { navigate("/settings"); e.preventDefault(); }}><Settings sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
+            <a href="/" onClick={e => { navigate("/filter"); e.preventDefault(); }}><FilterList sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
+            <a href="/" onClick={e => { navigate("/settings"); e.preventDefault(); }}><Settings sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
         </div>
         {children}
     </MapContainer>;
