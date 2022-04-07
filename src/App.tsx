@@ -1,9 +1,8 @@
 import { Routes, Route } from "react-router-dom";
+import Map from "./components/Map";
 
 export default () => {
     return <>
-        <Routes>
-            
-        </Routes>
+        <Map city="gdansk"></Map>
     </>;
 };
