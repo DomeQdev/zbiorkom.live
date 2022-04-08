@@ -2,7 +2,7 @@ import { useState } from "react";
 import useWebSocket from 'react-use-websocket';
 import VehicleMarker from "../components/VehicleMarker";
 import { LatLngExpression } from 'leaflet';
-import { useMap, useMapEvents } from "react-leaflet";
+import { useMap } from "react-leaflet";
 
 interface IVehicle {
 	brigade: String,
@@ -30,15 +30,12 @@ export default () => {
 		retryOnError: true
 	});
 
-	return <>
-		<Events />
-		{vehicles.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={"warsaw"} />)}
-	</>;
+	let filteredVehicles = vehicles;
+    let inBounds = filteredVehicles.filter(vehicle => bounds?.contains(vehicle?.location));
 
-	function Events() {
-		useMapEvents({
-			moveend: () => setBounds(map.getBounds())
-		});
-		return null;
-	}
+	map.on("moveend", () => setBounds(map.getBounds()));
+
+	return <>
+		{inBounds.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={"warsaw"} />)}
+	</>;
 };
