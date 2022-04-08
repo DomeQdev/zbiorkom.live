@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Map } from "leaflet";
+import { City } from "../typings";
 import { GpsFixed, Settings, FilterList } from '@mui/icons-material';
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 
 export default ({ city, children }: {
     children?: JSX.Element | JSX.Element[],
-    city: "warsaw" | "gdansk"
+    city: City
 }) => {
     const navigate = useNavigate();
     const [map, setMap] = useState<Map>();

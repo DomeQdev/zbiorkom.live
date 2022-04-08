@@ -1,23 +1,14 @@
 import { useState } from "react";
-import useWebSocket from 'react-use-websocket';
-import VehicleMarker from "../components/VehicleMarker";
-import { LatLngExpression } from 'leaflet';
 import { useMap } from "react-leaflet";
-
-interface IVehicle {
-	brigade: String,
-	deg: Number | null,
-	lastPing: Date,
-	line: String,
-	location: LatLngExpression,
-	tab: String,
-	trip?: String,
-	type: "bus" | "tram" | "troley" | "skm" | "km" | "wkd" | "metro"
-}
+import { Vehicle } from "../typings";
+import { Route, Routes } from "react-router-dom";
+import useWebSocket from "react-use-websocket";
+import VehicleMarker from "../components/VehicleMarker";
+import Error from "../pages/Error";
 
 export default () => {
 	const map = useMap();
-	const [vehicles, setVehicles] = useState<IVehicle[]>([]);
+	const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 	const [bounds, setBounds] = useState(map.getBounds());
 
 	useWebSocket("wss://ws.domeqalt.repl.co/", {
@@ -31,11 +22,15 @@ export default () => {
 	});
 
 	let filteredVehicles = vehicles;
-    let inBounds = filteredVehicles.filter(vehicle => bounds?.contains(vehicle?.location));
+	let inBounds = filteredVehicles.filter(vehicle => bounds?.contains(vehicle?.location));
 
 	map.on("moveend", () => setBounds(map.getBounds()));
 
 	return <>
-		{inBounds.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={"warsaw"} />)}
+	<Routes>
+		<Route path="/" element={inBounds.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={"warsaw"} />)} />
+
+		<Route path="*" element={<Error type="error" message="Nie znaleziono strony." />} />
+	</Routes>
 	</>;
 };

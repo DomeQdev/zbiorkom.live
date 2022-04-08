@@ -8,10 +8,10 @@ import Gdansk from "./cities/Gdansk";
 export default () => {
     return <>
         <Routes>
-            <Route path="/" element={<Error type="warning" message="Strona nadal w budowie." />} />
+            <Route path="/" element={<>Witaj</>} />
             <Route path="/warsaw/*" element={<Map city="warsaw"><Warsaw /></Map>} />
             <Route path="/gdansk/*" element={<Map city="gdansk"><Gdansk /></Map>} />
-            <Route path="*" element={<Error type="error" message="Nie znaleziono takiej strony." />} />
+            <Route path="*" element={<Error type="error" message="Nie znaleziono strony." />} />
         </Routes>
         <ToastContainer
             position="top-left"
@@ -20,7 +20,7 @@ export default () => {
             theme="dark"
             pauseOnFocusLoss={false}
             limit={5}
-            pauseOnHover={true}
+            pauseOnHover
         />
     </>;
 };

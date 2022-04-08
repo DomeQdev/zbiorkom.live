@@ -2,6 +2,7 @@ import { divIcon, LatLngExpression } from 'leaflet';
 import { renderToStaticMarkup } from "react-dom/server";
 import { Marker } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
+import { Vehicle, City } from "../typings";
 import { ArrowUpward, DirectionsBus, Tram, DirectionsTransit, DirectionsRailway, Subway, Train } from '@mui/icons-material';
 
 const types = {
@@ -29,24 +30,15 @@ const types = {
         icon: <DirectionsTransit style={{ height: "20px", width: "20px" }} />,
         color: "#0A6F0A"
     },
-    troley: {
+    trolley: {
         icon: <DirectionsBus style={{ height: "20px", width: "20px" }} />,
         color: "#009955"
     }
 };
 
 export default ({ vehicle, city }: {
-    vehicle: {
-        brigade: String,
-        deg: Number | null,
-        lastPing: Date,
-        line: String,
-        location: LatLngExpression,
-        tab: String,
-        trip?: String,
-        type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "troley"
-    },
-    city: "warsaw" | "gdansk"
+    vehicle: Vehicle,
+    city: City
 }) => {
     const navigate = useNavigate();
 
