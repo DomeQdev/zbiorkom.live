@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Map } from "leaflet";
 import { GpsFixed, Settings, FilterList } from '@mui/icons-material';
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +9,7 @@ export default ({ city, children }: {
     city: "warsaw" | "gdansk"
 }) => {
     const navigate = useNavigate();
-    const [map, setMap] = useState(null);
+    const [map, setMap] = useState<Map>();
 
     return <MapContainer
         center={city === "warsaw" ? [52.22983095298667, 21.0117354814593] : [54.34610966679864, 18.644629872390432]}

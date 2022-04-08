@@ -10,3 +10,61 @@ body {
 .leaflet-control-attribution {
   display: none;
 }
+
+.line-number {
+  margin:0 auto;
+  display:block;
+  font-size:15px;
+  font-weight:700
+}
+
+.vehicle-marker {
+  background-color:#fff;
+  box-shadow:1px 4px 7px #8a8a8a;
+  position:relative;
+  border-radius:15px;
+  display:flex;
+  outline:none;
+  align-items:center;
+  padding:0 6px!important;
+}
+
+.vehicle-marker-active{
+  background-color: #fff;
+  box-shadow:1px 4px 7px #8a8a8a;
+  width: 5px;
+  border: 0;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: center;
+  outline: none;
+  border-radius: 18px;
+  height: 5px;
+}
+
+.stop_marker {
+  width: 5px;
+  height: 5px;
+  padding: 5px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: center;
+  outline: none;
+  border-radius: 18px;
+}
+
+.leaflet-marker-icon.vehicle {
+  -webkit-transition: transform 0.3s linear;
+  -moz-transition: transform 0.3s linear;
+  -o-transition: transform 0.3s linear;
+  -ms-transition: transform 0.3s linear;
+  transition: transform 0.3s linear;
+}
+
+path {
+  pointer-events: none!important;
+}
