@@ -1,0 +1,5 @@
+/*
+Cache-Control: public, max-age=259200
+
+/api/*
+Access-Control-Allow-Origin: http://localhost:8788/, http://localhost:3000/, https://zbiorkom.live, https://zbiorkom-live.pages.dev
