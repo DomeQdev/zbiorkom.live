@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import VehicleMarker from "../components/VehicleMarker";
 import Error from "../pages/Error";
+import Trip from "../pages/Trip";
 
 export default () => {
 	const map = useMap();
@@ -26,11 +27,9 @@ export default () => {
 
 	map.on("moveend", () => setBounds(map.getBounds()));
 
-	return <>
-	<Routes>
+	return <Routes>
 		<Route path="/" element={inBounds.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={"warsaw"} />)} />
-
+		<Route path="/:type/:tab" element={<Trip vehicles={vehicles} city={"warsaw"} />} />
 		<Route path="*" element={<Error type="error" message="Nie znaleziono strony." />} />
-	</Routes>
-	</>;
+	</Routes>;
 };
