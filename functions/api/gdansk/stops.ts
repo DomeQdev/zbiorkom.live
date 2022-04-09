@@ -1,26 +1,29 @@
-export async function onRequestPost() {
-    let stops = await fetch("https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/d3e96eb6-25ad-4d6c-8651-b1eb39155945/download/stopsingdansk.json", {
+export function onRequestGet() {
+    return fetch("https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json", {
         //@ts-ignore
         cf: {
             cacheTtl: 86400 * 3,
             cacheEverything: true
         },
         keepalive: true
-    }).then(res => res.json()).catch(() => null);
-    if (!stops) return new Response("Error", { status: 500 });
-    
-    return stops.stops.map((stop: {
-        stopCode?: string,
-        stopDesc?: string,
-        stopLat: number,
-        stopLon: number,
-        stopName?: string,
-        stopShortName: string,
-    }) => {
-        return {
-            id: stop.stopShortName,
-            name: `${stop.stopName || stop.stopDesc} ${stop.stopCode}`,
-            location: [stop.stopLat, stop.stopLon]
+    }).then(res => res.json()).then((res: {
+        [key: string]: {
+            stops: [{
+                stopCode?: string,
+                stopDesc?: string,
+                stopLat: number,
+                stopLon: number,
+                stopName?: string,
+                stopId: number,
+            }]
         }
-    })
+    }) => {
+        return Object.values(res)[0].stops.map(stop => {
+            return {
+                id: String(stop.stopId),
+                name: `${stop.stopName || stop.stopDesc}${stop.stopCode ? ` ${stop.stopCode}` : ""}`,
+                location: [stop.stopLat, stop.stopLon]
+            }
+        });
+    }).then(res => new Response(JSON.stringify(res))).catch(() => null);
 }
