@@ -2,7 +2,7 @@ export const onRequestGet = async ({ request }) => {
     let url = new URL(request.url);
     let tab = url.searchParams.get('tab');
     let type = url.searchParams.get('type');
-    if (!tab || !type) return new Response("{error:true}", { status: 400 });
+    if (!tab || !type) return new Response("No params", { status: 400 });
 
     let vehicles: [{
         AED: "tak" | "nie",
@@ -43,10 +43,10 @@ export const onRequestGet = async ({ request }) => {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36"
         }
     }).then(res => res.json()).then(res => res.results).catch(() => []);
-    if (!vehicles) return new Response("{error:true}", { status: 500 });
+    if (!vehicles) return new Response("Error", { status: 500 });
 
     let vehicleData = vehicles.find(v => v.nr_inwentarzowy === tab && v.rodzaj_pojazdu === (type === "bus" ? "Autobus" : "Tramwaj"));
-    if (!vehicleData) return new Response("{error:true}", { status: 404 });
+    if (!vehicleData) return new Response("Not Found", { status: 404 });
 
     let features = [];
     if (vehicleData.AED === "tak") features.push("AED");
@@ -65,6 +65,7 @@ export const onRequestGet = async ({ request }) => {
     return new Response(JSON.stringify({
         tab: vehicleData.nr_inwentarzowy,
         type: vehicleData.rodzaj_pojazdu === "Autobus" ? "bus" : "tram",
+        photo: vehicleData.foto !== "no-foto" ? `https://files.cloudgdansk.pl/f/otwarte-dane/ztm/baza-pojazdow/${vehicleData.foto}.jpg` : null,
         brand: vehicleData.marka,
         model: vehicleData.model,
         prodYear: vehicleData.rok_produkcji,
