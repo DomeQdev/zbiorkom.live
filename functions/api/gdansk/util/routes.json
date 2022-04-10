@@ -1,0 +1,1262 @@
+{
+    "2": {
+        "line": "2",
+        "id": "2",
+        "name": "Łostowice Świętokrzyska - Oliwa",
+        "type": "tram",
+        "color": "#D4151D"
+    },
+    "3": {
+        "line": "3",
+        "id": "3",
+        "name": "Chełm Witosa - Brzeźno",
+        "type": "tram",
+        "color": "#D4151D"
+    },
+    "4": {
+        "line": "4",
+        "id": "4",
+        "name": "Łostowice Świętokrzyska - Jelitkowo",
+        "type": "tram",
+        "color": "#D4151D"
+    },
+    "5": {
+        "line": "5",
+        "id": "5",
+        "name": "Nowy Port Oliwska - Zaspa",
+        "type": "tram",
+        "color": "#D4151D"
+    },
+    "6": {
+        "line": "6",
+        "id": "6",
+        "name": "Łostowice Świetokrzyska - Jelitkowo",
+        "type": "tram",
+        "color": "#D4151D"
+    },
+    "7": {
+        "line": "7",
+        "id": "7",
+        "name": "Łostowice Świętokrzyska - Nowy Port Oliwska",
+        "type": "tram",
+        "color": "#D4151D"
+    },
+    "8": {
+        "line": "8",
+        "id": "8",
+        "name": "Stogi - Jelitkowo",
+        "type": "tram",
+        "color": "#D4151D"
+    },
+    "9": {
+        "line": "9",
+        "id": "9",
+        "name": "Stogi Plaża - Strzyża PKM",
+        "type": "tram",
+        "color": "#D4151D"
+    },
+    "10": {
+        "line": "10",
+        "id": "10",
+        "name": "Brętowo PKM - Nowy Port Zajezdnia",
+        "type": "tram",
+        "color": "#D4151D"
+    },
+    "12": {
+        "line": "12",
+        "id": "12",
+        "name": "Oliwa - Lawendowe Wzgórze",
+        "type": "tram",
+        "color": "#D4151D"
+    },
+    "106": {
+        "line": "106",
+        "id": "106",
+        "name": "Wały Piastowskie - Westerplatte",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "107": {
+        "line": "107",
+        "id": "107",
+        "name": "Pruszcz Gd. Komarowo - Pruszcz Gd. Rondo Kaszubskie",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "108": {
+        "line": "108",
+        "id": "108",
+        "name": "Wały Piastowskie - Chełm Więckowskiego",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "110": {
+        "line": "110",
+        "id": "110",
+        "name": "Wrzeszcz PKP - Port Lotniczy",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "111": {
+        "line": "111",
+        "id": "111",
+        "name": "Wały Piastowskie - Górki Zachodnie",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "112": {
+        "line": "112",
+        "id": "112",
+        "name": "Wały Piastowskie - Przegalina",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "113": {
+        "line": "113",
+        "id": "113",
+        "name": "Orunia Gościnna - Olimpijska",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "115": {
+        "line": "115",
+        "id": "115",
+        "name": "Wrzeszcz PKP - Jaworzniaków",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "116": {
+        "line": "116",
+        "id": "116",
+        "name": "Wrzeszcz PKP - Matemblewo",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "117": {
+        "line": "117",
+        "id": "117",
+        "name": "Sopot Hestii - Sopot Przylesie",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "118": {
+        "line": "118",
+        "id": "118",
+        "name": "Wały Piastowskie - Jeleniogórska",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "120": {
+        "line": "120",
+        "id": "120",
+        "name": "Łostowice Świętokrzyska - Port Lotniczy",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "122": {
+        "line": "122",
+        "id": "122",
+        "name": "Port Lotniczy - Sopot Kamienny Potok SKM",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "123": {
+        "line": "123",
+        "id": "123",
+        "name": "Wały Piastowskie - Orunia Równa",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "124": {
+        "line": "124",
+        "id": "124",
+        "name": "Wrzeszcz PKP - Zaspa Szpital",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "126": {
+        "line": "126",
+        "id": "126",
+        "name": "Wrzeszcz PKP - Żukowo Urząd Gminy",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "127": {
+        "line": "127",
+        "id": "127",
+        "name": "Oliwa PKP - Jasień PKM",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "130": {
+        "line": "130",
+        "id": "130",
+        "name": "Muzeum II Wojny Światowej - Jasień PKM",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "131": {
+        "line": "131",
+        "id": "131",
+        "name": "Matemblewo - Olszynka Szkoła",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "132": {
+        "line": "132",
+        "id": "132",
+        "name": "Wały Piastowskie - Pruszcz Gd. Rondo Kociewskie",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "136": {
+        "line": "136",
+        "id": "136",
+        "name": "Wrzeszcz PKP - Niedźwiednik",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "138": {
+        "line": "138",
+        "id": "138",
+        "name": "Wały Piastowskie - Westerplatte",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "143": {
+        "line": "143",
+        "id": "143",
+        "name": "\"Oliwa PKP - Sopot Sanatorium \"\"Leśnik\"\"\"",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "148": {
+        "line": "148",
+        "id": "148",
+        "name": "Żabianka SKM - Nowy Port Szaniec Zachodni",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "149": {
+        "line": "149",
+        "id": "149",
+        "name": "Wrzeszcz PKP - Wrzeszcz PKP",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "154": {
+        "line": "154",
+        "id": "154",
+        "name": "Orunia Górna - Jana z Kolna",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "155": {
+        "line": "155",
+        "id": "155",
+        "name": "Łostowice Świętokrzyska - Jasień PKM",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "156": {
+        "line": "156",
+        "id": "156",
+        "name": "Siedlce - Kowale Szkoła Metropolitalna",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "157": {
+        "line": "157",
+        "id": "157",
+        "name": "Wrzeszcz PKP - Bysewo",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "158": {
+        "line": "158",
+        "id": "158",
+        "name": "Wrzeszcz PKP - Stogi",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "162": {
+        "line": "162",
+        "id": "162",
+        "name": "Wrzeszcz PKP - Orunia Górna",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "164": {
+        "line": "164",
+        "id": "164",
+        "name": "Ujeścisko - Jasień PKM",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "166": {
+        "line": "166",
+        "id": "166",
+        "name": "Muzeum II Wojny Światowej - Sztutowska",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "167": {
+        "line": "167",
+        "id": "167",
+        "name": "Wały Piastowskie - Bysewo",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "168": {
+        "line": "168",
+        "id": "168",
+        "name": "Wrzeszcz PKP - Kiełpino Górne",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "169": {
+        "line": "169",
+        "id": "169",
+        "name": "Oliwa Pętla Tramwajowa - Owczarnia",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "171": {
+        "line": "171",
+        "id": "171",
+        "name": "Oliwa Pętla Tramwajowa - Gdynia Karwiny Nowowiczlińska",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "174": {
+        "line": "174",
+        "id": "174",
+        "name": "Siedlce - Stara Piła",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "175": {
+        "line": "175",
+        "id": "175",
+        "name": "Siedlce - Maćkowy",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "178": {
+        "line": "178",
+        "id": "178",
+        "name": "Wały Piastowskie - Olszynka Szkoła",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "179": {
+        "line": "179",
+        "id": "179",
+        "name": "Oliwa Pętla Tramwajowa - Osowa PKP",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "184": {
+        "line": "184",
+        "id": "184",
+        "name": "Wały Piastowskie - Niedźwiednik",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "186": {
+        "line": "186",
+        "id": "186",
+        "name": "Wały Piastowskie - Górki Wschodnie",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "189": {
+        "line": "189",
+        "id": "189",
+        "name": "Wały Piastowskie - Maćkowy",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "195": {
+        "line": "195",
+        "id": "195",
+        "name": "Siedlce - Cedrowa",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "199": {
+        "line": "199",
+        "id": "199",
+        "name": "Wały Piastowskie - Oliwa PKP",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "200": {
+        "line": "200",
+        "id": "200",
+        "name": "Dworzec Główny - Pruszcz Gd. Osiedle Wschód",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "205": {
+        "line": "205",
+        "id": "205",
+        "name": "Dworzec Główny - Pruszcz Gd. Komarowo",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "207": {
+        "line": "207",
+        "id": "207",
+        "name": "Dworzec Główny - Pruszcz Gd. Komarowo",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "210": {
+        "line": "210",
+        "id": "210",
+        "name": "Dworzec Główny - Osowa PKP",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "213": {
+        "line": "213",
+        "id": "213",
+        "name": "Łostowice Świętokrzyska - Kowale Szkoła Metropolitalna",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "227": {
+        "line": "227",
+        "id": "227",
+        "name": "Jelitkowo - Chełm Cienista",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "232": {
+        "line": "232",
+        "id": "232",
+        "name": "Dworzec Główny - Będzieszyn Panattoni",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "249": {
+        "line": "249",
+        "id": "249",
+        "name": "Wrzeszcz PKP - Wrzeszcz PKP",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "255": {
+        "line": "255",
+        "id": "255",
+        "name": "Łostowice Świętokrzyska - Jankowo",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "256": {
+        "line": "256",
+        "id": "256",
+        "name": "Dworzec Główny - Jankowo",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "258": {
+        "line": "258",
+        "id": "258",
+        "name": "Wrzeszcz PKP - Stogi",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "262": {
+        "line": "262",
+        "id": "262",
+        "name": "Wrzeszcz PKP - Jaworzniaków",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "267": {
+        "line": "267",
+        "id": "267",
+        "name": "Wały Piastowskie - Bysewo",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "268": {
+        "line": "268",
+        "id": "268",
+        "name": "Kiełpinek PKM - Smęgorzyno",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "269": {
+        "line": "269",
+        "id": "269",
+        "name": "Osiedle Barniewice - Kukawka",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "283": {
+        "line": "283",
+        "id": "283",
+        "name": "Niedźwiednik - Nowy Port Szaniec Zachodni",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "295": {
+        "line": "295",
+        "id": "295",
+        "name": "Łostowice Świętokrzyska - Zakoniczyn",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "401": {
+        "line": "N1",
+        "id": "401",
+        "name": "Jaworzniaków - Osowa PKP",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "402": {
+        "line": "N2",
+        "id": "402",
+        "name": "Maćkowy - Grudziądzka",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "403": {
+        "line": "N3",
+        "id": "403",
+        "name": "Dworzec Główny - Wrzeszcz PKP",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "404": {
+        "line": "N4",
+        "id": "404",
+        "name": "Jaworzniaków - Jelitkowo",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "405": {
+        "line": "N5",
+        "id": "405",
+        "name": "Dworzec Główny - Pruszcz Gd. Matejki",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "408": {
+        "line": "N8",
+        "id": "408",
+        "name": "Dworzec Główny - Górki Zachodnie",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "409": {
+        "line": "N9",
+        "id": "409",
+        "name": "Dworzec Główny - Przegalina",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "411": {
+        "line": "N11",
+        "id": "411",
+        "name": "Dworzec Główny - Olszynka Niwki",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "412": {
+        "line": "N12",
+        "id": "412",
+        "name": "Żabianka SKM - Jasieńska",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "413": {
+        "line": "N13",
+        "id": "413",
+        "name": "Żabianka SKM - Olimpijska",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "512": {
+        "line": "512",
+        "id": "512",
+        "name": "Sobieszewo - Przegalina",
+        "type": "bus",
+        "color": "#FC7DAB"
+    },
+    "10020": {
+        "line": "20",
+        "id": "10020",
+        "name": "Gdynia Dworzec Gł. PKP - Cisowa SKM",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10021": {
+        "line": "21",
+        "id": "10021",
+        "name": "Sopot Reja - Gdynia Dworzec Gł. PKP",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10022": {
+        "line": "22",
+        "id": "10022",
+        "name": "Gdynia Dworzec Gł. PKP - Cisowa SKM",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10023": {
+        "line": "23",
+        "id": "10023",
+        "name": "Kacze Buki - Stocznia Gdynia",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10024": {
+        "line": "24",
+        "id": "10024",
+        "name": "Dąbrowa Miętowa - Stocznia Gdynia",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10025": {
+        "line": "25",
+        "id": "10025",
+        "name": "3 Maja - Hala - Cisowa SKM",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10026": {
+        "line": "26",
+        "id": "10026",
+        "name": "\"Orłowo SKM - \"\"Klif\"\" - Cisowa Sibeliusa\"",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10027": {
+        "line": "27",
+        "id": "10027",
+        "name": "Kacze Buki - Cisowa SKM",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10028": {
+        "line": "28",
+        "id": "10028",
+        "name": "3 Maja - Hala - Pustki Cisowskie",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10029": {
+        "line": "29",
+        "id": "10029",
+        "name": "Wielki Kack Fikakowo - Gdynia Dworzec Gł. PKP",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10030": {
+        "line": "30",
+        "id": "10030",
+        "name": "Gdynia Dworzec Gł. PKP - Cisowa Sibeliusa",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10031": {
+        "line": "31",
+        "id": "10031",
+        "name": "Ergo Arena - Dąbrowa Miętowa",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10032": {
+        "line": "32",
+        "id": "10032",
+        "name": "Węzeł Franciszki Cegielskiej - Pogórze Dolne Złota",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10033": {
+        "line": "33",
+        "id": "10033",
+        "name": "Karwiny Tuwima - Gdynia Dworzec Gł. PKP",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10034": {
+        "line": "34",
+        "id": "10034",
+        "name": "Węzeł Franciszki Cegielskiej - Demptowo",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10084": {
+        "line": "84",
+        "id": "10084",
+        "name": "Rumia Dworzec PKP - Reda Aquapark",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10085": {
+        "line": "85",
+        "id": "10085",
+        "name": "Rumia Szmelta - Rumia Partyzantów",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10086": {
+        "line": "86",
+        "id": "10086",
+        "name": "Rumia Dworzec PKP - Dębogórze-Wybudowanie - Leśna",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10087": {
+        "line": "87",
+        "id": "10087",
+        "name": "Reda Aquapark - Reda Aquapark",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10102": {
+        "line": "102",
+        "id": "10102",
+        "name": "Plac Kaszubski - Cisowa SKM",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10104": {
+        "line": "104",
+        "id": "10104",
+        "name": "Oksywie Dolne - Dom Marynarza",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10105": {
+        "line": "105",
+        "id": "10105",
+        "name": "Redłowo Szpital - Mechelinki Przystań",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10109": {
+        "line": "109",
+        "id": "10109",
+        "name": "Redłowo SKM - Babie Doły",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10114": {
+        "line": "114",
+        "id": "10114",
+        "name": "Cisowa SKM - Demptowo",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10119": {
+        "line": "119",
+        "id": "10119",
+        "name": "Dworzec Morski - Wzgórze Św. Maksymiliana Syrokomli",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10121": {
+        "line": "121",
+        "id": "10121",
+        "name": "Redłowo Szpital - Chwarzno Sokółka",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10125": {
+        "line": "125",
+        "id": "10125",
+        "name": "Redłowo Szpital - Pogórze Dolne",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10128": {
+        "line": "128",
+        "id": "10128",
+        "name": "Dom Marynarza - Oksywie Dolne",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10133": {
+        "line": "133",
+        "id": "10133",
+        "name": "Dworzec Morski - Płyta Redłowska",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10134": {
+        "line": "134",
+        "id": "10134",
+        "name": "\"Obłuże Maciejewicza - Orłowo SKM - \"\"Klif\"\"\"",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10137": {
+        "line": "137",
+        "id": "10137",
+        "name": "Kacze Buki Puszczyka - Kacze Buki",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10140": {
+        "line": "140",
+        "id": "10140",
+        "name": "Gdynia Dworzec Gł. PKP - Wiczlino Niemotowo",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10141": {
+        "line": "141",
+        "id": "10141",
+        "name": "Witomino Sosnowa - Pogórze Górne",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10144": {
+        "line": "144",
+        "id": "10144",
+        "name": "Osiedle Mickiewicza - Osiedle Mickiewicza",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10145": {
+        "line": "145",
+        "id": "10145",
+        "name": "Karwiny Tuwima - Mały Kack Strzelców",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10146": {
+        "line": "146",
+        "id": "10146",
+        "name": "Plac Kaszubski - Rewa - Bursztynowa",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10147": {
+        "line": "147",
+        "id": "10147",
+        "name": "Karwiny Nowowiczlińska - Gdynia Dworzec Gł. PKP",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10150": {
+        "line": "150",
+        "id": "10150",
+        "name": "Witomino Leśniczówka - Oksywie Godebskiego",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10152": {
+        "line": "152",
+        "id": "10152",
+        "name": "Oksywie Dickmana - Mały Kack Sandomierska",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10153": {
+        "line": "153",
+        "id": "10153",
+        "name": "Wielki Kack Fikakowo - Wielki Kack Starodworcowa",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10159": {
+        "line": "159",
+        "id": "10159",
+        "name": "Chylonia Dworzec PKP - Pustki Cisowskie",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10160": {
+        "line": "160",
+        "id": "10160",
+        "name": "Gdynia Dworzec Gł. PKP - Chwarzno Polanki",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10163": {
+        "line": "163",
+        "id": "10163",
+        "name": "Chylonia Krzywoustego - Pogórze Dolne",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10165": {
+        "line": "165",
+        "id": "10165",
+        "name": "Obłuże Maciejewicza - Kazimierz - Kazimierska",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10171": {
+        "line": "171",
+        "id": "10171",
+        "name": "Oliwa Pętla Tramwajowa - Gdynia Karwiny Nowowiczlińska",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10173": {
+        "line": "173",
+        "id": "10173",
+        "name": "Plac Kaszubski - Cisowa SKM",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10177": {
+        "line": "177",
+        "id": "10177",
+        "name": "Brodwino - Kamienny Potok SKM",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10180": {
+        "line": "180",
+        "id": "10180",
+        "name": "Redłowo Szpital - Karwiny Tuwima",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10181": {
+        "line": "181",
+        "id": "10181",
+        "name": "Sopot Reja - Kacze Buki",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10182": {
+        "line": "182",
+        "id": "10182",
+        "name": "Obłuże Maciejewicza - Węzeł Franciszki Cegielskiej",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10185": {
+        "line": "185",
+        "id": "10185",
+        "name": "Kamienny Potok - Kujawska - Kamienny Potok - Kujawska",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10187": {
+        "line": "187",
+        "id": "10187",
+        "name": "Kamienny Potok SKM - Kamienny Potok SKM",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10190": {
+        "line": "190",
+        "id": "10190",
+        "name": "Plac Kaszubski - Witomino Leśniczówka",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10191": {
+        "line": "191",
+        "id": "10191",
+        "name": "Karwiny Nowowiczlińska - Koleczkowo - Poczta",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10192": {
+        "line": "192",
+        "id": "10192",
+        "name": "Witomino Leśniczówka - Płyta Redłowska",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10193": {
+        "line": "193",
+        "id": "10193",
+        "name": "Karwiny Nowowiczlińska - Szemud - Remiza",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10194": {
+        "line": "194",
+        "id": "10194",
+        "name": "Plac Kaszubski - Pogórze Górne",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10196": {
+        "line": "196",
+        "id": "10196",
+        "name": "Dom Marynarza - Babie Doły",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10197": {
+        "line": "197",
+        "id": "10197",
+        "name": "Cisowa Sibeliusa - Obłuże Maciejewicza",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10198": {
+        "line": "198",
+        "id": "10198",
+        "name": "Chylonia Krzywoustego - Obłuże Centrum",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10203": {
+        "line": "203",
+        "id": "10203",
+        "name": "Mały Kack Sandomierska - Mały Kack Sandomierska",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10204": {
+        "line": "204",
+        "id": "10204",
+        "name": "Norwida - Norwida",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10209": {
+        "line": "209",
+        "id": "10209",
+        "name": "Plac Kaszubski - Babie Doły",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10244": {
+        "line": "244",
+        "id": "10244",
+        "name": "\"Brodwino -  Sanatorium \"\"Leśnik\"\"\"",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10252": {
+        "line": "252",
+        "id": "10252",
+        "name": "Norwida - Norwida",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10265": {
+        "line": "265",
+        "id": "10265",
+        "name": "Obłuże Maciejewicza - Kosakowo - Urząd Gminy",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10282": {
+        "line": "282",
+        "id": "10282",
+        "name": "Dom Marynarza - Pogórze Górne",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10287": {
+        "line": "287",
+        "id": "10287",
+        "name": "Osiedle Mickiewicza - Kamienny Potok - Kościół",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10288": {
+        "line": "288",
+        "id": "10288",
+        "name": "Cisowa SKM - Rumia Dworzec PKP",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10320": {
+        "line": "320",
+        "id": "10320",
+        "name": "Gdynia Dworzec Gł. PKP - Gdynia Dworzec Gł. PKP",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10410": {
+        "line": "N10",
+        "id": "10410",
+        "name": "Kacze Buki - Oksywie Dolne",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10420": {
+        "line": "N20",
+        "id": "10420",
+        "name": "Chwarzno Sokółka - Pustki Cisowskie",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10430": {
+        "line": "N30",
+        "id": "10430",
+        "name": "Kacze Buki - Rumia Dworzec PKP",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10440": {
+        "line": "N40",
+        "id": "10440",
+        "name": "Plac Kaszubski - Pogórze Górne",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10465": {
+        "line": "N65",
+        "id": "10465",
+        "name": "Pogórze Górne - Rewa - Bursztynowa",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10494": {
+        "line": "N94",
+        "id": "10494",
+        "name": "Witomino Leśniczówka - Suchy Dwór - Borchardta",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10602": {
+        "line": "J",
+        "id": "10602",
+        "name": "Rumia Partyzantów - Wejherowo Szpital",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10603": {
+        "line": "K",
+        "id": "10603",
+        "name": "Obłuże Maciejewicza - Kacze Buki",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10605": {
+        "line": "R",
+        "id": "10605",
+        "name": "Rumia Dworzec PKP - Kacze Buki",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10606": {
+        "line": "S",
+        "id": "10606",
+        "name": "Sopot Reja - Pustki Cisowskie",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10607": {
+        "line": "W",
+        "id": "10607",
+        "name": "Pustki Cisowskie - Redłowo Szpital",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10608": {
+        "line": "X",
+        "id": "10608",
+        "name": "Oksywie Dolne - Kacze Buki",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10609": {
+        "line": "Z",
+        "id": "10609",
+        "name": "Żukowo - Urząd Gminy - Gdynia Dworzec Gł. PKP",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10700": {
+        "line": "700",
+        "id": "10700",
+        "name": "... - Kacze Buki",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10704": {
+        "line": "700",
+        "id": "10704",
+        "name": "... - Kacze Buki",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10707": {
+        "line": "700",
+        "id": "10707",
+        "name": "... - Kacze Buki",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10710": {
+        "line": "710",
+        "id": "10710",
+        "name": "... - Grabówek SKM",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10723": {
+        "line": "723",
+        "id": "10723",
+        "name": "Morska - Estakada - Stocznia Gdynia",
+        "type": "trolley",
+        "color": "#91BE40"
+    },
+    "10740": {
+        "line": "740",
+        "id": "10740",
+        "name": "... - Gdynia Dworzec Gł. PKP",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10741": {
+        "line": "740",
+        "id": "10741",
+        "name": "... - Gdynia Dworzec Gł. PKP",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10742": {
+        "line": "740",
+        "id": "10742",
+        "name": "... - Gdynia Dworzec Gł. PKP",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10760": {
+        "line": "760",
+        "id": "10760",
+        "name": "... - Węzeł Franciszki Cegielskiej",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10762": {
+        "line": "760",
+        "id": "10762",
+        "name": "... - Węzeł Franciszki Cegielskiej",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10763": {
+        "line": "760",
+        "id": "10763",
+        "name": "... - Węzeł Franciszki Cegielskiej",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10770": {
+        "line": "770",
+        "id": "10770",
+        "name": "... - Baza na Pogórzu Dolnym",
+        "type": "bus",
+        "color": "#009CDA"
+    },
+    "10772": {
+        "line": "770",
+        "id": "10772",
+        "name": "... - Baza na Pogórzu Dolnym",
+        "type": "bus",
+        "color": "#009CDA"
+    }
+}
