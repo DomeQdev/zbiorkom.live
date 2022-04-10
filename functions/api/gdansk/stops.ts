@@ -18,5 +18,10 @@ export const onRequestGet = async ({ request }) => {
             name: `${stop.stopName || stop.stopDesc}${stop.stopCode ? ` ${stop.stopCode}` : ""}`,
             location: [stop.stopLat, stop.stopLon]
         }
-    })));
+    })), {
+        headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "public, max-age=259200"
+        }
+    });
 }
