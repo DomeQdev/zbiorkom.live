@@ -30,6 +30,7 @@ export const onRequestGet = async () => {
         line: vehicle.routeShortName,
         location: [vehicle.lat, vehicle.lon],
         tab: vehicle.vehicleCode,
+        //TODO: Jeśli gdańsk nie naprawi danych (jest -2 godziny), robić ręcznie
         trip: `${Object.values(routes).find(x => x.line === String(vehicle.routeShortName))?.id}_${vehicle.tripId}_${String(String(vehicle.scheduledTripStartTime).split("T")[1]).replace("Z", "")}_${vehicle.vehicleService}`,
         headsign: vehicle.headsign,
         type: Object.values(routes)?.find(x => x.line === String(vehicle.routeShortName))?.type || "bus",

@@ -20,7 +20,7 @@ export const onRequestGet = async ({ request }) => {
         },
         keepalive: true
     }).then(res => res.json()).catch(() => null);
-    if (!shape) return null;
+    if (!shape) return new Response(JSON.stringify({ error: "Shapes error" }), { status: 500 });
 
     let stopTimes: {
         stopTimes: [
@@ -43,13 +43,12 @@ export const onRequestGet = async ({ request }) => {
         },
         keepalive: true
     }).then(res => res.json()).catch(() => null);
-    if (!stopTimes) return null;
+    if (!stopTimes) return new Response(JSON.stringify({ error: "stopptimes error" }), { status: 500 });
 
     let order = stopTimes.stopTimes.findIndex(stopTime => stopTime.tripId === Number(trip) && stopTime.stopSequence === 0 && stopTime.departureTime.split("T")[1] === start && stopTime.busServiceName === service);
-    if (order === -1) return null;
+    if (order === -1) return new Response(JSON.stringify({ error: "no order" }), { status: 500 });
 
     let stopTime = stopTimes.stopTimes.slice(order).filter((x, i) => x.stopSequence === i);
-    if (!stopTime[0]) return null;
 
     let stops: {
         stops: [
@@ -72,7 +71,7 @@ export const onRequestGet = async ({ request }) => {
     }).then(res => res.json()).catch(() => null);
 
     let line = lineString(shape.coordinates.map(x => [x[1], x[0]]));
-    return {
+    return new Response(JSON.stringify({
         line: routes[route].line,
         headsign: null,
         color: routes[route].color,
@@ -91,7 +90,7 @@ export const onRequestGet = async ({ request }) => {
                 index: nearest.properties.index
             }
         })
-    };
+    }));
 };
 
 function czas(time: string) {
