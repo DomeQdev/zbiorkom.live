@@ -36,9 +36,10 @@ const types = {
     }
 };
 
-export default ({ vehicle, city }: {
+export default ({ vehicle, city, trip }: {
     vehicle: Vehicle,
     city: City
+    trip?: boolean
 }) => {
     const navigate = useNavigate();
 
@@ -50,6 +51,6 @@ export default ({ vehicle, city }: {
     })
 
     return <Marker position={vehicle.location} icon={icon} eventHandlers={{
-        click: () => navigate(`/${city}/${vehicle.type}/${vehicle.tab}`)
+        click: () => !trip ? navigate(`/${city}/${vehicle.type}/${vehicle.tab}`) : null
     }} />;
 };

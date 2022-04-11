@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import VehicleMarker from "../components/VehicleMarker";
-import { Vehicle, City } from "../typings";
+import { Vehicle, City, Trip } from "../typings";
 
 export default ({ vehicles, city }: {
     vehicles: Vehicle[],
@@ -11,9 +11,12 @@ export default ({ vehicles, city }: {
     const navigate = useNavigate();
     const { type, tab } = useParams<{ type: "bus" | "tram" | "km" | "skm" | "wkd" | "metro", tab: string }>();
     const [vehicle, setVehicle] = useState<Vehicle>();
+    const [trip, setTrip] = useState<Trip>();
 
     useEffect(() => {
-        if (vehicles.length && !vehicle) {
+        if (!vehicles.length) return;
+
+        if (!vehicle) {
             let veh = vehicles.find(v => v.type === type && v.tab === tab);
             if (!veh) {
                 toast.error("Nie znaleziono pojazdu.");
@@ -24,6 +27,6 @@ export default ({ vehicles, city }: {
     }, [vehicles]);
 
     return <>
-        {vehicle && <VehicleMarker vehicle={vehicle} city={city} />}
+        {vehicle && <VehicleMarker vehicle={vehicle} city={city} trip />}
     </>;
 };
