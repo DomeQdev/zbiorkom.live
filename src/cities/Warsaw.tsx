@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
 import { Vehicle } from "../typings";
 import { Route, Routes } from "react-router-dom";
@@ -22,13 +22,17 @@ export default () => {
 		retryOnError: true
 	});
 
+	useEffect(() => {
+		fetch("https://static.higenku.org/https://zbiorkom-live.pages.dev/api/warsaw/positions").then(res => res.json()).then(setVehicles).catch(() => null);
+	}, []);
+
 	let filteredVehicles = vehicles;
 	let inBounds = filteredVehicles.filter(vehicle => bounds?.contains(vehicle?.location));
 
 	map.on("moveend", () => setBounds(map.getBounds()));
 
 	return <Routes>
-		<Route path="/" element={inBounds.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={"warsaw"} />)} />
+		<Route path="/" element={inBounds.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab || vehicle.trip}`} city={"warsaw"} />)} />
 		<Route path="/:type/:tab" element={<Trip vehicles={vehicles} city={"warsaw"} />} />
 		<Route path="*" element={<Error type="error" message="Nie znaleziono strony." />} />
 	</Routes>;

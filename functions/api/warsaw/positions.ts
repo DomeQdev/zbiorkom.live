@@ -22,7 +22,7 @@ export const onRequestGet = async () => {
         deg: number
     }] = await fetch("https://wtp-location-backend.matfiu.repl.co/predict").then(res => res.json()).then(t => t.map(x => ({
         ...x,
-        type: x.line.includes("S") ? "skm" : (x.line.includes("R") ? "km" : (x.line.includes("M") ? "metro" : (x.line.includes("wkd") ? "wkd" : null)))
+        type: x.line.includes("S") ? "skm" : (x.line.includes("R") ? "km" : (x.line.includes("M") ? "metro" : (x.line.includes("A") ? "wkd" : null)))
     }))).catch(() => []);
 
     return new Response(JSON.stringify(data.positions.map(x => {
