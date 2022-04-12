@@ -27,7 +27,7 @@ export default ({ vehicles, city }: {
         if(veh && !vehicle) map.setView(veh.location, 17);
         setVehicle(veh);
 
-        if (veh?.trip && (!trip || trip.id !== veh.trip)) fetch(`https://static.higenku.org/https://zbiorkom-live.pages.dev/api/${city}/trip?trip=${veh.trip}`).then(res => res.json()).then(setTrip).catch(() => {
+        if (veh?.trip && (!trip || trip.id !== veh.trip)) fetch(`/api/${city}/trip?trip=${veh.trip}`).then(res => res.json()).then(setTrip).catch(() => {
             toast.error("Nie znaleziono trasy.");
             return navigate(`/${city}`);
         });
