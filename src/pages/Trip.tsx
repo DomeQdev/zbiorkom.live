@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Vehicle, City, Trip } from "../typings";
+import { Vehicle, City, Trip } from "../util/typings";
 import { Polyline, useMap } from "react-leaflet";
+import { BottomSheet } from "react-spring-bottom-sheet";
 import { toast } from "react-toastify";
+import icons from "../util/icons";
 import VehicleMarker from "../components/VehicleMarker";
 import StopMarker from "../components/StopMarker";
 
@@ -37,5 +39,19 @@ export default ({ vehicles, city }: {
         {vehicle && <VehicleMarker vehicle={vehicle} city={city} trip />}
         {trip?.shapes && <Polyline positions={trip.shapes} pathOptions={{ color: trip.color, weight: 8 }} />}
         {trip?.stops && trip.stops.map(stop => <StopMarker stop={stop} color={trip?.color} key={stop.id} />)}
+        <BottomSheet
+            open
+            onDismiss={() => navigate(`/${city}`)}
+            blocking={false}
+            style={{ zIndex: 30000, position: "absolute" }}
+            snapPoints={({ maxHeight }) => [maxHeight / 4, maxHeight * 0.6, maxHeight - 40]}
+            header={<>
+                <div style={{ display: "inline-flex", alignItems: "center" }}>
+                    <b style={{ color: "white", backgroundColor: trip?.color || "#880077", borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center" }}>{icons({ size: 18 })[vehicle?.type!]?.icon}&nbsp;{vehicle?.line}</b>{trip?.headsign ? <>&nbsp;{trip.headsign}</> : null}
+                </div>
+            </>}
+        >
+            s
+        </BottomSheet>
     </>;
 };

@@ -1,7 +1,7 @@
 import { Marker, Popup } from 'react-leaflet';
 import { divIcon } from 'leaflet';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { Stop } from "../typings";
+import { Stop } from "../util/typings";
 
 export default ({ stop, color }: { stop: Stop, color: string }) => {
     return (

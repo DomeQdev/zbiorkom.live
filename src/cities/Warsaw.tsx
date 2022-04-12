@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
-import { Vehicle } from "../typings";
+import { Vehicle } from "../util/typings";
 import { Route, Routes } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import VehicleMarker from "../components/VehicleMarker";

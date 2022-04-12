@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Map } from "leaflet";
-import { City } from "../typings";
+import { City } from "../util/typings";
 import { GpsFixed, Settings, FilterList } from '@mui/icons-material';
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
