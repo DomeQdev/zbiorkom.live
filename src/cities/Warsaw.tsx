@@ -12,7 +12,7 @@ export default () => {
 	const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 	const [bounds, setBounds] = useState(map.getBounds());
 
-	useWebSocket("wss://ws.domeqalt.repl.co/", {
+	useWebSocket("wss://ws.matfiu.repl.co/", {
 		onOpen: () => console.log('opened'),
 		onClose: () => console.log('closed'),
 		onMessage: ({ data }) => setVehicles(JSON.parse(data)),
