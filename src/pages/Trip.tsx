@@ -16,15 +16,20 @@ export default ({ vehicles, city }: {
     useEffect(() => {
         if (!vehicles.length) return;
 
-        if (!vehicle) {
-            let veh = vehicles.find(v => v.type === type && v.tab === tab);
-            if (!veh) {
-                toast.error("Nie znaleziono pojazdu.");
-                navigate(`/${city}`);
-            }
-            setVehicle(veh);
+        let veh = vehicles.find(v => v.type === type && v.tab === tab);
+        if (!veh) {
+            toast.error("Nie znaleziono pojazdu.");
+            return navigate(`/${city}`);
         }
+        setVehicle(veh);
+
+        if (veh?.trip && (!trip || trip.id !== veh.trip)) fetch(`/api/${city}/trip?trip=${veh.trip}`).then(res => res.json()).then(setTrip).catch(() => {
+            toast.error("Nie znaleziono trasy.");
+            return navigate(`/${city}`);
+        });
     }, [vehicles]);
+
+    console.log(trip)
 
     return <>
         {vehicle && <VehicleMarker vehicle={vehicle} city={city} trip />}

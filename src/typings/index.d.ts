@@ -12,6 +12,7 @@ interface Vehicle {
 }
 
 interface Trip {
+    id: string,
     line: string,
     headsign: string,
     color: string,

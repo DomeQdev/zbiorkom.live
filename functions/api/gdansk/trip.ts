@@ -72,6 +72,7 @@ export const onRequestGet = async ({ request }) => {
 
     let line = lineString(shape.coordinates.map(x => [x[1], x[0]]));
     return new Response(JSON.stringify({
+        id: tripId,
         line: routes[route].line,
         headsign: null,
         color: routes[route].color,
@@ -83,7 +84,7 @@ export const onRequestGet = async ({ request }) => {
                 name: `${stopData?.stopName} ${stopData?.stopCode}`,
                 id: stop.stopId,
                 on_request: stop.onDemand === 1,
-                location: [stopData?.stopLat, stopData?.stopLon],
+                location: nearest.properties.dist < 50 ? nearest.geometry.coordinates : [stopData?.stopLat, stopData?.stopLon],
                 arrival: czas(stop.arrivalTime.split("T")[1]),
                 departure: czas(stop.departureTime.split("T")[1]),
                 onLine: nearest.properties.location,

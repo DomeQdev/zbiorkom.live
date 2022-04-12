@@ -24,6 +24,7 @@ export const onRequestGet = async ({ request }) => {
 
     let line = lineString(data.shapes);
     return new Response(JSON.stringify({
+        id: tripId,
         color: data.color,
         headsign: data.headsign,
         line: data.line,
@@ -32,6 +33,7 @@ export const onRequestGet = async ({ request }) => {
             let nearest = nearestPointOnLine(line, point(stop.location), { units: 'meters' });
             return {
                 ...stop,
+                location: nearest.properties.dist < 50 ? nearest.geometry.coordinates : stop.location,
                 onLine: nearest.properties.location,
                 index: nearest.properties.index
             }
