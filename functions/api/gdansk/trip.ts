@@ -88,7 +88,8 @@ export const onRequestGet = async ({ request }) => {
                 arrival: czas(stop.arrivalTime.split("T")[1]),
                 departure: czas(stop.departureTime.split("T")[1]),
                 onLine: nearest.properties.location,
-                index: nearest.properties.index
+                index: nearest.properties.index,
+                time: (czas(stop.departureTime.split("T")[1]) - czas(stopTime[0].departureTime.split("T")[1])) / 1000 / 60
             }
         })
     }));

@@ -23,7 +23,7 @@ export default () => {
 	});
 
 	useEffect(() => {
-		fetch("/api/warsaw/positions").then(res => res.json()).then(setVehicles).catch(() => null);
+		fetch("https://static.higenku.org/https://zbiorkom-live.pages.dev//api/warsaw/positions").then(res => res.json()).then(setVehicles).catch(() => null);
 	}, []);
 
 	let filteredVehicles = vehicles;

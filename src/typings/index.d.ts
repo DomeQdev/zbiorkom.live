@@ -11,24 +11,28 @@ interface Vehicle {
     type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley"
 }
 
+interface Stop {
+    name: string,
+    id: string,
+    on_request: boolean,
+    location: LatLngExpression,
+    arrival: number,
+    departure: number,
+    onLine: number,
+    index: number,
+    minute: number
+}
+
+
 interface Trip {
     id: string,
     line: string,
     headsign: string,
     color: string,
     shapes: LatLngExpression[],
-    stops: [{
-        name: string,
-        id: string,
-        on_request: boolean,
-        location: LatLngExpression,
-        arrival: Date,
-        departure: Date,
-        onLine: number,
-        index: number
-    }]
+    stops: Stop[]
 }
 
 type City = "warsaw" | "gdansk";
 
-export { Vehicle, City, Trip };
+export { Vehicle, City, Trip, Stop };

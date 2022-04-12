@@ -35,7 +35,8 @@ export const onRequestGet = async ({ request }) => {
                 ...stop,
                 location: nearest.properties.dist < 50 ? nearest.geometry.coordinates : stop.location,
                 onLine: nearest.properties.location,
-                index: nearest.properties.index
+                index: nearest.properties.index,
+                time: (stop.departure - data.stops[0].departure) / 1000 / 60
             }
         })
     }));
