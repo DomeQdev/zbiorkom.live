@@ -20,7 +20,7 @@ export default ({ vehicle, city, trip }: {
         iconSize: ["auto", "auto"]
     });
 
-    return <Marker position={vehicle.location} icon={icon} eventHandlers={{
+    return <Marker position={vehicle.location} icon={icon} zIndexOffset={1000} eventHandlers={{
         click: () => !trip ? navigate(`/${city}/${vehicle.type}/${vehicle.tab}`) : null
     }}>
     </Marker>;
