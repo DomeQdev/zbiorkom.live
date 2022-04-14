@@ -1,6 +1,6 @@
+import { IconButton, List, ListItem, ListItemAvatar, ListItemText, Avatar, Divider } from "@mui/material";
 import { nearestPointOnLine, point, lineString, Position } from "@turf/turf";
 import { BottomSheet } from "react-spring-bottom-sheet";
-import { IconButton, List, ListItem, ListItemAvatar, ListItemText, Avatar, Divider } from "@mui/material";
 import { MoreVert, PanTool } from "@mui/icons-material";
 import { useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
@@ -15,9 +15,9 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
 
     useEffect(() => setScrolled(false), [trip]);
 
-    const lastStop = trip?.stops?.filter(stop => metersToStop(stop) < -45)?.pop();
+    const lastStop = trip?.stops?.filter(stop => metersToStop(stop) < -40)?.pop();
     const serving = trip?.stops?.find(stop => metersToStop(stop) < 40 && metersToStop(stop) > -40);
-    const nextStop = trip?.stops?.filter(stop => metersToStop(stop) > 45)?.shift();
+    const nextStop = trip?.stops?.filter(stop => metersToStop(stop) > 40)?.shift();
 
     return <BottomSheet
         open
@@ -32,9 +32,22 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
             <IconButton color="default" style={{ right: 15, position: "absolute" }} component="span" onClick={() => alert("nie")}><MoreVert /></IconButton>
         </>}
     >
-        Poprzedni przystanek: {lastStop?.name || "Pojazd znajduje się na pętli."}<br />
-        Aktualny przystanek: {serving?.name || ""}<br />
-        Następny przystanek: {nextStop?.name || "Koniec trasy"}
+        {trip?.stops?.map<React.ReactNode>((stop, i) => (
+            <ListItem button key={stop.name} onClick={() => map.setView(stop.location, 17)} ref={(ref) => {
+                if (!scrolled && trip.stops.filter(st => metersToStop(st) > -35)[0]?.id === stop.id) {
+                    ref?.scrollIntoView();
+                    setScrolled(true);
+                }
+            }}>
+                <ListItemAvatar>
+                    <Avatar sx={{ width: 15, height: 15, backgroundColor: 0 > -35 ? trip?.color : "#9ba1ab", color: "white", marginLeft: "5px" }}>&nbsp;</Avatar>
+                    {i + 1 !== trip.stops?.length ? <div style={{ borderLeft: `7px solid ${0 > -35 ? trip?.color : "#9ba1ab"}`, marginLeft: '9px', marginTop: '-1px', height: '100%', position: 'absolute', paddingRight: '16px' }} /> : null}
+                </ListItemAvatar>
+                <ListItemText>
+                    {stop.name}
+                </ListItemText>
+            </ListItem>
+        )).reduce((prev, curr) => [prev, <Divider variant="inset" key={Math.random()} sx={{ backgroundColor: "#DCCDCD", marginRight: "10px" }} />, curr])}
     </BottomSheet>;
 
     function metersToStop(stop: Stop) {
