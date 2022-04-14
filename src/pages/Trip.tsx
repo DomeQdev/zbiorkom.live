@@ -22,15 +22,15 @@ export default ({ vehicles, city }: {
 
         let veh = vehicles.find(v => v.type === type && v.tab === tab);
         if (!veh) {
-            toast.error("Nie znaleziono pojazdu.");
+            toast.error(vehicle ? "Utracono połączenie z pojazdem." : "Nie znaleziono pojazdu.");
             return navigate(`/${city}`);
         }
         if(veh && !vehicle) map.setView(veh.location, 17);
         setVehicle(veh);
 
-        if (!trip?.error && veh?.trip && (!trip || trip.id !== veh.trip)) fetch(`/api/${city}/trip?trip=0${veh.trip}`).then(res => res.json()).then(setTrip).catch(e => {
+        if (!trip?.error && veh?.trip && (!trip || trip.id !== veh.trip)) fetch(`/api/${city}/trip?trip=${veh.trip}`).then(res => res.json()).then(setTrip).catch(e => {
             toast.error("Fatalny błąd.");
-            console.log(e.message)
+            return navigate(`/${city}`);
         });
     }, [vehicles]);
 
