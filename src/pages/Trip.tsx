@@ -28,9 +28,9 @@ export default ({ vehicles, city }: {
         if(veh && !vehicle) map.setView(veh.location, 17);
         setVehicle(veh);
 
-        if (veh?.trip && (!trip || trip.id !== veh.trip)) fetch(`/api/${city}/trip?trip=${veh.trip}`).then(res => res.json()).then(setTrip).catch(() => {
-            toast.error("Nie znaleziono trasy.");
-            return navigate(`/${city}`);
+        if (!trip?.error && veh?.trip && (!trip || trip.id !== veh.trip)) fetch(`/api/${city}/trip?trip=0${veh.trip}`).then(res => res.json()).then(setTrip).catch(e => {
+            toast.error("Fatalny błąd.");
+            console.log(e.message)
         });
     }, [vehicles]);
 

@@ -30,7 +30,8 @@ interface Trip {
     headsign: string,
     color: string,
     shapes: LatLngExpression[],
-    stops: Stop[]
+    stops: Stop[],
+    error?: string
 }
 
 type City = "warsaw" | "gdansk";
