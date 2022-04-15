@@ -13,25 +13,27 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
     const lastStop = trip?.stops?.filter(stop => metersToStop(stop) < -50)?.pop();
     const serving = trip?.stops?.find(stop => metersToStop(stop) < 50 && metersToStop(stop) > -50);
     const nextStop = trip?.stops?.filter(stop => metersToStop(stop) > 50)?.shift();
+    const tripStart = lastStop || !trip ? 0 : minutesUntil(trip.stops[0].departure);
+    console.log(lastStop, nextStop)
 
     return <List>
         {trip?.stops?.map<React.ReactNode>((stop, i) => (
             <ListItem button key={stop.name} onClick={() => map.setView(stop.location, 17)} ref={(ref) => {
-                if (!scrolled && trip.stops.filter(st => metersToStop(st) > -35)[0]?.id === stop.id) {
+                if (!scrolled && trip.stops.filter(st => metersToStop(st) > -50)[0]?.id === stop.id) {
                     ref?.scrollIntoView();
                     setScrolled(true);
                 }
             }}>
                 <ListItemAvatar>
                     <Avatar sx={{ width: 15, height: 15, backgroundColor: metersToStop(stop) > -50 ? trip?.color : "#9ba1ab", color: "white", marginLeft: "5px", zIndex: 30000 }}>&nbsp;</Avatar>
-                    {i + 1 !== trip.stops?.length ? <div style={{ borderLeft: `7px solid ${metersToStop(stop) > -35 || (nextStop === trip.stops[i + 1] && !serving) ? trip?.color : "#9ba1ab"}`, marginLeft: '9px', marginTop: '-1px', height: '100%', position: 'absolute', paddingRight: '16px' }} /> : null}
+                    {i + 1 !== trip.stops?.length ? <div style={{ borderLeft: `7px solid ${metersToStop(stop) > -50 || (nextStop === trip.stops[i + 1] && !serving) ? trip?.color : "#9ba1ab"}`, marginLeft: '9px', marginTop: '-1px', height: '100%', position: 'absolute', paddingRight: '16px' }} /> : null}
                 </ListItemAvatar>
                 <ListItemText>
                     <div style={{ float: "left", textAlign: "left", color: metersToStop(stop) < -50 ? "#ADADAD" : "" }}>
                         {stop.on_request ? <PanTool style={{ width: "15px", height: "15px" }} /> : null} {stop.name}
                     </div>
                     <div style={{ float: "right", textAlign: "right" }}>
-                        {metersToStop(stop) > -50 ? new Date(convertToUTC(stop.departure)).toLocaleTimeString() : null}
+                        {metersToStop(stop) > -50 ? Math.floor(tripStart + stop.time - (lastStop?.time || 0)) + "'" : null}
                     </div>
                 </ListItemText>
             </ListItem>
@@ -46,4 +48,8 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
 function convertToUTC(timestamp: number) {
     let date = new Date(timestamp);
     return date.getTime() + (date.getTimezoneOffset() * 60000);
+}
+
+function minutesUntil(timestamp: number) {
+    return (convertToUTC(timestamp) - Date.now()) / 60000;
 }

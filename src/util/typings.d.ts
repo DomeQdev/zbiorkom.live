@@ -20,7 +20,7 @@ interface Stop {
     departure: number,
     onLine: number,
     index: number,
-    minute: number
+    time: number
 }
 
 
