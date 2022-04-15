@@ -27,7 +27,7 @@ export default () => {
 	}, []);
 
 	let filteredVehicles = vehicles;
-	let inBounds = filteredVehicles.filter(vehicle => bounds?.contains(vehicle?.location));
+	let inBounds = filteredVehicles.filter(vehicle => bounds.contains(vehicle?.location));
 
 	map.on("moveend", () => setBounds(map.getBounds()));
 

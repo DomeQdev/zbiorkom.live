@@ -45,5 +45,5 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
 
 function convertToUTC(timestamp: number) {
     let date = new Date(timestamp);
-    return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()).getTime();
+    return date.getTime() + (date.getTimezoneOffset() * 60000);
 }

@@ -1,7 +1,7 @@
 import { LatLngExpression } from "leaflet";
 
 interface Vehicle {
-    brigade: string,
+    brigade?: string,
     deg: number | null,
     lastPing: number,
     line: string,
