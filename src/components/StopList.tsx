@@ -13,8 +13,7 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
     const lastStop = trip?.stops?.filter(stop => metersToStop(stop) < -50)?.pop();
     const serving = trip?.stops?.find(stop => metersToStop(stop) < 50 && metersToStop(stop) > -50);
     const nextStop = trip?.stops?.filter(stop => metersToStop(stop) > 50)?.shift();
-    const tripStart = lastStop || !trip ? 0 : minutesUntil(trip.stops[0].departure);
-    console.log(lastStop, nextStop)
+    const tripStart = lastStop || !trip || trip.error ? 0 : minutesUntil(trip.stops[0].departure);
 
     return <List>
         {trip?.stops?.map<React.ReactNode>((stop, i) => (
