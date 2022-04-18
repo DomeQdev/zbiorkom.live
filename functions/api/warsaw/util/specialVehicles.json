@@ -1,0 +1,12 @@
+{
+    "Autobus wyposażony w obicia siedzeń z eko-skóry": ["bus778", "bus779", "bus5409", "bus5457"],
+    "Tramwaj wyposażony w obicia siedzeń z eko-skóry": ["tram3124", "tram3136", "tram3138", "tram3139", "tram3144", "tram1289+1290", "tram1309+1310", "tram1315+1316", "tram1361+1362", "tram1433+1434"],
+    "Tramwaj w żółto-czerwonym malowaniu": ["tram3001", "tram1166+1167", "tram1184+1185", "tram1388+1389"],
+    "Setny autobus elektryczny": ["bus5887"],
+    "Piewszy Swing": ["tram3116"],
+    "Warsolinio": ["tram4201", "tram4202", "tram4203", "tram4204", "tram4205", "tram4206", "tram4207", "tram4208", "tram4209", "tram4210"],
+    "Najstarszy 105Na": ["tram1122+1123"],
+    "\"Trzaskacz\"": ["tram1251+1252", "tram1227+1228"],
+    "Jelcz": ["bus733", "bus734", "bus4617"],
+    "Papieżowy": ["tram2137"]
+}

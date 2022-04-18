@@ -45,11 +45,6 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
     }
 };
 
-function convertToUTC(timestamp: number) {
-    let date = new Date(timestamp);
-    return date.getTime() + (date.getTimezoneOffset() * 60000);
-}
-
 function minutesUntil(timestamp: number) {
-    return (convertToUTC(timestamp) - Date.now()) / 60000;
+    return (timestamp - Date.now()) / 60000;
 }

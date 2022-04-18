@@ -6,6 +6,7 @@ import useWebSocket from "react-use-websocket";
 import VehicleMarker from "../components/VehicleMarker";
 import Error from "../pages/Error";
 import Trip from "../pages/Trip";
+import Filter from "../pages/Filter";
 
 export default () => {
 	const map = useMap();
@@ -33,6 +34,7 @@ export default () => {
 
 	return <Routes>
 		<Route path="/" element={inBounds.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab || vehicle.trip}`} city={"warsaw"} />)} />
+		<Route path="/filter" element={<Filter city={"warsaw"} />} />
 		<Route path="/:type/:tab" element={<Trip vehicles={vehicles} city={"warsaw"} />} />
 		<Route path="*" element={<Error type="error" message="Nie znaleziono strony." />} />
 	</Routes>;

@@ -13,7 +13,14 @@ export const onRequestGet = async ({ request }) => {
         carrier: string,
         depot: string,
         features: string[],
-    } = await fetch(`https://wtp-location-backend.matfiu.repl.co/vehicle?vehicle=${type}${tab}`).then(res => res.json()).catch(() => null);
+    } = await fetch(`https://wtp-location-backend.matfiu.repl.co/vehicle?vehicle=${type}${tab}`, {
+        //@ts-ignore
+        cf: {
+            cacheTtl: 86400 * 3,
+            cacheEverything: true
+        },
+        keepalive: true
+    }).then(res => res.json()).catch(() => null);
     if(!data) return new Response("Vehicle not found", { status: 404 });
 
     return new Response(JSON.stringify({
