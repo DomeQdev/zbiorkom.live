@@ -4,9 +4,10 @@
     "Tramwaj w żółto-czerwonym malowaniu": ["tram3001", "tram1166+1167", "tram1184+1185", "tram1388+1389"],
     "Setny autobus elektryczny": ["bus5887"],
     "Piewszy Swing": ["tram3116"],
+    "Autobus hybrydowy": ["bus8396", "bus8397", "bus8398", "bus8399"],
     "Warsolinio": ["tram4201", "tram4202", "tram4203", "tram4204", "tram4205", "tram4206", "tram4207", "tram4208", "tram4209", "tram4210"],
     "Najstarszy 105Na": ["tram1122+1123"],
-    "\"Trzaskacz\"": ["tram1251+1252", "tram1227+1228"],
+    "\"Trzaskacz\"": ["tram1227+1228", "tram1251+1252"],
     "Jelcz": ["bus733", "bus734", "bus4617"],
     "Papieżowy": ["tram2137"]
 }

@@ -1,5 +1,5 @@
-import { IconButton, List, ListItem, ListItemAvatar, ListItemText, Avatar, Divider } from "@mui/material";
-import { MoreVert, PanTool } from "@mui/icons-material";
+import { List, ListItem, ListItemAvatar, ListItemText, Avatar, Divider } from "@mui/material";
+import { PanTool } from "@mui/icons-material";
 import { nearestPointOnLine, point, lineString, Position } from "@turf/turf";
 import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
@@ -32,7 +32,7 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
                         {stop.on_request ? <PanTool style={{ width: "15px", height: "15px" }} /> : null} {stop.name}
                     </div>
                     <div style={{ float: "right", textAlign: "right" }}>
-                        {metersToStop(stop) > -50 ? Math.floor(tripStart + stop.time - (lastStop?.time || 0)) + "'" : null}
+                        {metersToStop(stop) > -50 ? `${(tripStart + stop.time - (lastStop?.time || 0)) * (lastStop && (nextStop === stop || serving === stop) ? percentTravelled(serving || lastStop, stop) : 1)}'` : null}
                     </div>
                 </ListItemText>
             </ListItem>
@@ -41,6 +41,11 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
 
     function metersToStop(stop: Stop) {
         return trip ? stop.onLine - (nearestPointOnLine(lineString(trip.shapes as Position[]), point(vehicle?.location as Position), { units: 'meters' }).properties.location || 0) : 0;
+    }
+
+    function percentTravelled(stop1: Stop, stop2: Stop) {
+        let res = metersToStop(stop1) / (metersToStop(stop1) - metersToStop(stop2))
+        return (res >= 1 || res === -Infinity) ? 0 : (1 - res);
     }
 };
 
