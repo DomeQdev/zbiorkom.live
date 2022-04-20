@@ -32,7 +32,7 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
                         {stop.on_request ? <PanTool style={{ width: "15px", height: "15px" }} /> : null} {stop.name}
                     </div>
                     <div style={{ float: "right", textAlign: "right" }}>
-                        {metersToStop(stop) > -50 ? `${(tripStart + stop.time - (lastStop?.time || 0)) * (lastStop && (nextStop === stop || serving === stop) ? percentTravelled(serving || lastStop, stop) : 1)}'` : null}
+                        {metersToStop(stop) > -50 ? `${Math.round((tripStart + stop.time - (lastStop?.time || 0)) * (lastStop && ((nextStop === stop && !serving) || serving === stop) ? percentTravelled(serving || lastStop, stop) : 1))}'` : null}
                     </div>
                 </ListItemText>
             </ListItem>
@@ -44,7 +44,7 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
     }
 
     function percentTravelled(stop1: Stop, stop2: Stop) {
-        let res = metersToStop(stop1) / (metersToStop(stop1) - metersToStop(stop2))
+        let res = metersToStop(stop1) / (metersToStop(stop1) - metersToStop(stop2));
         return (res >= 1 || res === -Infinity) ? 0 : (1 - res);
     }
 };

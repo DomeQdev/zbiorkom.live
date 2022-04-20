@@ -25,13 +25,18 @@ export default ({ vehicles, city }: {
             toast.error(vehicle ? "Utracono połączenie z pojazdem." : "Nie znaleziono pojazdu.");
             return navigate(`/${city}`);
         }
-        if(veh && !vehicle) map.setView(veh.location, 17);
+        if (veh && !vehicle) map.setView(veh.location, 17);
         setVehicle(veh);
 
-        if (!trip?.error && veh?.trip && (!trip || trip.id !== veh.trip)) fetch(`/api/${city}/trip?trip=${veh.trip}`).then(res => res.json()).then(setTrip).catch(e => {
-            toast.error("Fatalny błąd.");
-            return navigate(`/${city}`);
-        });
+        //@ts-ignore
+        if (!veh?.trip) return setTrip({ error: true });
+
+        if (!trip?.error && veh?.trip && (!trip || trip.id !== veh.trip)) fetch(`/api/${city}/trip?trip=${veh.trip}`).then(res => res.json())
+            .then(setTrip)
+            .catch(() => {
+                toast.error("Fatalny błąd.");
+                return navigate(`/${city}`);
+            });
     }, [vehicles]);
 
     return <>

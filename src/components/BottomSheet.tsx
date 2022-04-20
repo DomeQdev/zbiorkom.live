@@ -22,6 +22,6 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
             <IconButton color="default" style={{ right: 15, position: "absolute" }} component="span" onClick={() => alert("nie")}><MoreVert /></IconButton>
         </>}
     >
-        {trip?.error ? <h3 style={{ textAlign: "center" }}>Nie znaleziono trasy.</h3> : <StopList trip={trip} vehicle={vehicle} />}
+        {trip?.error ? <h3 style={{ textAlign: "center" }}>Nie znaleziono trasy.<br /><button onClick={() => window.location.reload()}>Odśwież</button></h3> : <StopList trip={trip} vehicle={vehicle} />}
     </BottomSheet>;
 };

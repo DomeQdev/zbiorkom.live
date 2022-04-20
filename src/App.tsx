@@ -8,7 +8,7 @@ import Gdansk from "./cities/Gdansk";
 export default () => {
     return <>
         <Routes>
-            <Route path="/" element={<>Witaj</>} />
+            <Route path="/" element={<a href="/warsaw">Warszawa</a>} />
             <Route path="/warsaw/*" element={<Map city="warsaw"><Warsaw /></Map>} />
             <Route path="/gdansk/*" element={<Map city="gdansk"><Gdansk /></Map>} />
             <Route path="*" element={<Error type="error" message="Nie znaleziono strony." />} />
