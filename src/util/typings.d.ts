@@ -49,7 +49,8 @@ interface FilterData {
     special: [{
         name: string,
         tab: string,
-        type: "bus" | "tram"
+        type: "bus" | "tram",
+        vehicle: Vehicle
     }]
 }
 

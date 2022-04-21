@@ -14,6 +14,7 @@ export default ({ city, vehicles }: {
     const location = useLocation();
 
     const [filterData, setFilterData] = useState<FilterData>();
+    const specialVehicles = filterData ? filterData.special.filter(x => vehicles.find(y => y.tab === x.tab && y.type === x.type)).map(x => ({ ...x, vehicle: vehicles.find(y => y.tab === x.tab && y.type === x.type) })) : [];
 
     useEffect(() => {
         fetch(`/api/${city}/filter`)
@@ -38,11 +39,12 @@ export default ({ city, vehicles }: {
         <DialogTitle><span style={{ display: "inline-flex", alignItems: "center" }}>{location.pathname !== `/${city}/filter` ? <IconButton onClick={() => navigate(`/${city}/filter`)}><ArrowBack /></IconButton> : null} Filtrowanie pojazdów</span> <IconButton style={{ right: 16, position: "absolute" }} onClick={() => navigate(`/${city}`)}><Close /></IconButton></DialogTitle>
         <DialogContent dividers>
             {filterData ? <Routes>
-                <Route path="special" element={filterData.special.length ? filterData.special.filter(x => vehicles.find(y => y.tab === x.tab && y.type === x.type)).map<React.ReactNode>(vehicle => (
+                <Route path="special" element={specialVehicles.length ? specialVehicles.map<React.ReactNode>(vehicle => (
                     <ListItemButton onClick={() => navigate(`/${city}/${vehicle.type}/${vehicle.tab}`)} key={Math.random()}>
                         <ListItemIcon>{getIcon({ size: 24 })[vehicle.type].icon}</ListItemIcon>
                         <ListItemText style={{ display: "inline-flex", alignItems: "center" }}>
-                            {vehicle.name} ({vehicle.tab})
+                            {vehicle.name} ({vehicle.tab})<br />
+                            <span style={{ color: "#757575", fontSize: 15 }}>Na trasie linii {vehicle.vehicle?.line} </span>
                         </ListItemText>
                     </ListItemButton>
                 ))?.reduce((prev, curr) => [prev, <Divider key={Math.random()} />, curr]) : null} />
