@@ -35,7 +35,7 @@ export const onRequestGet = async () => {
             location: [x.lat, x.lon],
             deg: Math.floor(x.bearing + 360),
             brigade: x.id.split("/")[2],
-            tab: x.side_number,
+            tab: x.side_number.split("+").sort().join("+"),
             lastPing: new Date(x.timestamp).getTime(),
             trip: trip.join("/")
         }
