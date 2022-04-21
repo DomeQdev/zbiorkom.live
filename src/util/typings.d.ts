@@ -34,6 +34,23 @@ interface Trip {
     error?: string
 }
 
+interface FilterData {
+    models: {
+        [key: string]: Array
+    },
+    routes: {
+        [key: string]: {
+            line: string,
+            name: string,
+            type: string,
+            color: string
+        }
+    },
+    special: {
+        [key: string]: Array
+    }
+}
+
 type City = "warsaw" | "gdansk";
 
-export { Vehicle, City, Trip, Stop };
+export { Vehicle, Stop, Trip, FilterData, City };
