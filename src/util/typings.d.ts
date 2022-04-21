@@ -46,9 +46,11 @@ interface FilterData {
             color: string
         }
     },
-    special: {
-        [key: string]: Array
-    }
+    special: [{
+        name: string,
+        tab: string,
+        type: "bus" | "tram"
+    }]
 }
 
 type City = "warsaw" | "gdansk";
