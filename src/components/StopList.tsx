@@ -8,31 +8,42 @@ import { Stop, Trip, Vehicle } from "../util/typings";
 export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
     const map = useMap();
     const [scrolled, setScrolled] = useState(false);
-    useEffect(() => setScrolled(false), [trip]);
+    const [stops, setStops] = useState<Stop[]>();
 
-    const lastStop = trip?.stops?.filter(stop => metersToStop(stop) < -50)?.pop();
-    const serving = trip?.stops?.find(stop => metersToStop(stop) < 50 && metersToStop(stop) > -50);
-    const nextStop = trip?.stops?.filter(stop => metersToStop(stop) > 50)?.shift();
-    const tripStart = lastStop || !trip || trip.error ? 0 : minutesUntil(trip.stops[0].departure);
+    useEffect(() => setScrolled(false), [trip]);
+    useEffect(() => {
+        if(!trip?.stops) return;
+        setStops(trip?.stops?.map(stop => {
+            return {
+                ...stop,
+                metersToStop: metersToStop(stop)
+            };
+        }));
+    }, [vehicle, trip]);
+
+    const lastStop = stops?.filter(stop => stop?.metersToStop < -50)?.pop();
+    const serving = stops?.find(stop => stop?.metersToStop < 50 && stop?.metersToStop > -50);
+    const nextStop = stops?.filter(stop => stop?.metersToStop > 50)?.shift();
+    const tripStart = lastStop || !trip || trip.error ? 0 : minutesUntil(trip?.stops[0].departure);
 
     return <List>
-        {trip?.stops?.map<React.ReactNode>((stop, i) => (
+        {stops?.map<React.ReactNode>((stop, i) => (
             <ListItem button key={stop.name} onClick={() => map.setView(stop.location, 17)} ref={(ref) => {
-                if (!scrolled && trip.stops.filter(st => metersToStop(st) > -50)[0]?.id === stop.id) {
+                if (!scrolled && (serving === stop || (nextStop === stop && !serving))) {
                     ref?.scrollIntoView();
                     setScrolled(true);
                 }
             }}>
                 <ListItemAvatar>
-                    <Avatar sx={{ width: 15, height: 15, backgroundColor: metersToStop(stop) > -50 ? trip?.color : "#9ba1ab", color: "white", marginLeft: "5px", zIndex: 30000 }}>&nbsp;</Avatar>
-                    {i + 1 !== trip.stops?.length ? <div style={{ borderLeft: `7px solid ${metersToStop(stop) > -50 || (nextStop === trip.stops[i + 1] && !serving) ? trip?.color : "#9ba1ab"}`, marginLeft: '9px', marginTop: '-1px', height: '100%', position: 'absolute', paddingRight: '16px' }} /> : null}
+                    <Avatar sx={{ width: 15, height: 15, backgroundColor: stop?.metersToStop > -50 ? trip?.color : "#9ba1ab", color: "white", marginLeft: "5px", zIndex: 30000 }}>&nbsp;</Avatar>
+                    {i + 1 !== stops?.length ? <div style={{ borderLeft: `7px solid ${stop?.metersToStop > -50 || (nextStop === stops[i + 1] && !serving) ? trip?.color : "#9ba1ab"}`, marginLeft: '9px', marginTop: '-1px', height: '100%', position: 'absolute', paddingRight: '16px' }} /> : null}
                 </ListItemAvatar>
                 <ListItemText>
-                    <div style={{ float: "left", textAlign: "left", color: metersToStop(stop) < -50 ? "#ADADAD" : "" }}>
+                    <div style={{ float: "left", textAlign: "left", color: stop?.metersToStop < -50 ? "#ADADAD" : "" }}>
                         {stop.on_request ? <PanTool style={{ width: "15px", height: "15px" }} /> : null} {stop.name}
                     </div>
                     <div style={{ float: "right", textAlign: "right" }}>
-                        {metersToStop(stop) > -50 ? `${Math.round((tripStart + stop.time - (lastStop?.time || 0)) * (lastStop && ((nextStop === stop && !serving) || serving === stop) ? percentTravelled(serving || lastStop, stop) : 1))}'` : null}
+                        {stop?.metersToStop > -50 ? `${Math.round((tripStart + stop.time - (lastStop?.time || 0)) * (lastStop && ((nextStop === stop && !serving) || serving === stop) ? percentTravelled(serving || lastStop, stop) : 1))}'` : null}
                     </div>
                 </ListItemText>
             </ListItem>
@@ -44,7 +55,7 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
     }
 
     function percentTravelled(stop1: Stop, stop2: Stop) {
-        let res = metersToStop(stop1) / (metersToStop(stop1) - metersToStop(stop2));
+        let res = stop1.metersToStop / (stop1.metersToStop - stop2.metersToStop);
         return (res >= 1 || res === -Infinity) ? 0 : (1 - res);
     }
 };
