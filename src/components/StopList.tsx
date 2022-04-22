@@ -26,6 +26,9 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
     const nextStop = stops?.filter(stop => stop?.metersToStop > 50)?.shift();
     const tripStart = lastStop || !trip || trip.error ? 0 : minutesUntil(trip?.stops[0].departure);
 
+    const next = serving || nextStop;
+    const toNextStop = next && lastStop ? (next.time - lastStop?.time) - ((tripStart + next.time - lastStop?.time) * (lastStop && ((nextStop === next && !serving) || serving === next) ? percentTravelled(serving || lastStop, next) : 1)) : 0;
+
     return <List>
         {stops?.map<React.ReactNode>((stop, i) => (
             <ListItem button key={stop.name} onClick={() => map.setView(stop.location, 17)} ref={(ref) => {
@@ -43,7 +46,7 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
                         {stop.on_request ? <PanTool style={{ width: "15px", height: "15px" }} /> : null} {stop.name}
                     </div>
                     <div style={{ float: "right", textAlign: "right" }}>
-                        {stop?.metersToStop > -50 ? `${Math.round((tripStart + stop.time - (lastStop?.time || 0)) * (lastStop && ((nextStop === stop && !serving) || serving === stop) ? percentTravelled(serving || lastStop, stop) : 1))}'` : null}
+                        {stop?.metersToStop > -50 ? `${Math.round((tripStart + stop.time - (lastStop?.time || 0)) * (lastStop && ((nextStop === stop && !serving) || serving === stop) ? percentTravelled(serving || lastStop, stop) : 1) - (next === stop ? 0 : toNextStop))}' (${minutesUntil(stop?.arrival).toFixed(1)} min wg rozkładu)` : null}
                     </div>
                 </ListItemText>
             </ListItem>
