@@ -29,11 +29,7 @@ export default ({ city, vehicles }: {
         open
         onClose={() => navigate(`/${city}`)}
         scroll="paper"
-        PaperProps={{
-            style: {
-                width: "100%"
-            }
-        }}
+        fullScreen
     >
         <DialogTitle>Filtrowanie pojazdów <IconButton style={{ right: 16, top: 14, position: "absolute" }} onClick={() => navigate(`/${city}`)}><Close /></IconButton></DialogTitle>
         <DialogContent dividers>
@@ -50,17 +46,17 @@ export default ({ city, vehicles }: {
                 <Route path="line" element={<></>} />
                 <Route path="model" element={<></>} />
                 <Route path="*" element={<List>
-                    <ListItemButton onClick={() => navigate(`/${city}/filter/special`)}>
+                    <ListItemButton onClick={() => navigate("special")}>
                         <ListItemText primary="Specjalne pojazdy" />
                         <NavigateNext />
                     </ListItemButton>
                     <Divider />
-                    <ListItemButton onClick={() => navigate(`/${city}/filter/line`)}>
+                    <ListItemButton onClick={() => navigate("line")}>
                         <ListItemText primary="Filtrowanie po linii" />
                         <NavigateNext />
                     </ListItemButton>
                     <Divider />
-                    <ListItemButton onClick={() => navigate(`/${city}/filter/model`)}>
+                    <ListItemButton onClick={() => navigate("model")}>
                         <ListItemText primary="Filtrowanie po modelu pojazdu" />
                         <NavigateNext />
                     </ListItemButton>

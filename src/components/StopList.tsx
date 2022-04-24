@@ -48,10 +48,13 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
                 <ListItemText>
                     <div style={{ float: "left", textAlign: "left", color: stop?.metersToStop < -50 ? "#ADADAD" : "" }}>
                         {stop.on_request ? <PanTool style={{ width: "15px", height: "15px" }} /> : null} {stop.name}
+                        {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{stop.delay ? <b style={{ color: "#d1312a" }}>{Math.abs(stop.delay)} min {stop.delay > 0 ? "opóźnienia" : "przed czasem"}</b> : <b style={{ color: "#187d3c" }}>Planowo</b>} <b>&#183;</b> {stop.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + stop.delay * 60000)}</span> : null}
                     </div>
-                    <div style={{ float: "right", textAlign: "right" }}>
-                        {stop?.metersToStop > -50 ? stop.delay ? <>za <b>{minutesUntil(stop?.arrival) + stop.delay} min (Opóźnienie: {stop.delay} min)</b></> : <>{minutesUntil(stop?.arrival)} min (na czas)</> : null}
-                    </div>
+                    {stop?.metersToStop > -50 ? <div style={{ float: "right", textAlign: "right" }}>
+                        <span style={{ fontSize: 22, lineHeight: 0.85 }}>{minutesUntil(stop.arrival + stop.delay * 60000) < 0.5 ? "<1" : minutesUntil(stop.arrival + stop.delay * 60000)}</span>
+                        <br />
+                        <span style={{ color: "#737478", fontSize: 13, lineHeight: 0 }}>min</span>
+                    </div> : null}
                 </ListItemText>
             </ListItem>
         )).reduce((prev, curr) => [prev, <Divider variant="inset" key={Math.random()} sx={{ backgroundColor: "#DCCDCD", marginRight: "10px" }} />, curr])}
@@ -69,4 +72,9 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
 
 function minutesUntil(timestamp: number) {
     return Math.round((timestamp - Date.now()) / 60000);
+}
+
+function timeString(timestamp: number) {
+    let date = new Date(timestamp);
+    return `${date.getHours()}:${date.getMinutes() < 10 ? "0" : ""}${date.getMinutes()}`;
 }

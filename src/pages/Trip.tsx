@@ -42,7 +42,7 @@ export default ({ vehicles, city }: {
     return <>
         {vehicle && <VehicleMarker vehicle={vehicle} city={city} trip />}
         {trip?.shapes && <Polyline positions={trip.shapes} pathOptions={{ color: trip.color, weight: 8 }} />}
-        {trip?.stops && trip.stops.map(stop => <StopMarker stop={stop} color={trip?.color} key={stop.id} />)}
+        {trip?.stops && trip.stops.map((stop, i) => <StopMarker stop={stop} color={trip?.color} key={i} />)}
         <BottomSheet trip={trip} vehicle={vehicle} city={city} />
     </>;
 };

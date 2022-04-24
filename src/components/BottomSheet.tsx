@@ -1,4 +1,5 @@
-import { IconButton } from "@mui/material";
+import { useState } from "react";
+import { IconButton, Menu, MenuItem } from "@mui/material";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import { MoreVert } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +9,7 @@ import StopList from "./StopList";
 
 export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city: City }) => {
     const navigate = useNavigate();
+    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
     return <BottomSheet
         open
@@ -19,9 +21,25 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
             <div style={{ display: "inline-flex", alignItems: "center" }}>
                 <b style={{ color: "white", backgroundColor: trip?.color || "#880077", borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center" }}>{icons({ size: 18 })[vehicle?.type!]?.icon}&nbsp;{vehicle?.line}</b>{trip?.headsign ? <>&nbsp;{trip.headsign}</> : null}
             </div>
-            <IconButton color="default" style={{ right: 15, position: "absolute" }} component="span" onClick={() => alert("nie")}><MoreVert /></IconButton>
+            <IconButton style={{ right: 15, position: "absolute" }} onClick={({ currentTarget }: { currentTarget: HTMLElement }) => setAnchorEl(anchorEl ? null : currentTarget)}><MoreVert /></IconButton>
+            <Menu
+                anchorEl={anchorEl}
+                open={!!anchorEl}
+                onClose={() => setAnchorEl(null)}
+                style={{ zIndex: 300000 }}
+                PaperProps={{
+                    style: {
+                        maxHeight: 40 * 4.5,
+                        width: 'auto',
+                    }
+                }}
+            >
+                <MenuItem>Pokaż trasę</MenuItem>
+                <MenuItem onClick={() => navigate("brigade")}>Kursy tej brygady</MenuItem>
+                <MenuItem onClick={() => navigate("vehicle")}>Informacje o pojeździe</MenuItem>
+            </Menu>
         </>}
     >
-        {trip?.error ? <h3 style={{ textAlign: "center" }}>Nie znaleziono trasy.<br /><button onClick={() => window.location.reload()}>Odśwież</button></h3> : <StopList trip={trip} vehicle={vehicle} />}
+        {trip?.error ? <h3 style={{ textAlign: "center" }}>Nie znaleziono trasy</h3> : <StopList trip={trip} vehicle={vehicle} />}
     </BottomSheet>;
 };
