@@ -24,16 +24,21 @@ export const onRequestGet = async () => {
     if (!response) return new Response("[]");
 
     return new Response(JSON.stringify(response.vehicles.map(vehicle => ({
-        brigade: vehicle.vehicleService.split("-")[1],
-        deg: vehicle.direction,
-        lastPing: new Date(vehicle.generated).getTime(),
-        line: vehicle.routeShortName,
-        location: [vehicle.lat, vehicle.lon],
-        tab: vehicle.vehicleCode,
-        //TODO: Jeśli gdańsk nie naprawi danych (jest -2 godziny), robić ręcznie
-        trip: `${Object.values(routes).find(x => x.line === String(vehicle.routeShortName))?.id}_${vehicle.tripId}_${String(String(vehicle.scheduledTripStartTime).split("T")[1]).replace("Z", "")}_${vehicle.vehicleService}`,
-        headsign: vehicle.headsign,
-        type: Object.values(routes)?.find(x => x.line === String(vehicle.routeShortName))?.type || "bus",
-        delay: vehicle.delay || 0
-    }))));
+            brigade: vehicle.vehicleService.split("-")[1],
+            deg: vehicle.direction,
+            lastPing: new Date(vehicle.generated).getTime(),
+            line: vehicle.routeShortName,
+            location: [vehicle.lat, vehicle.lon],
+            tab: vehicle.vehicleCode,
+            //TODO: Jeśli gdańsk nie naprawi danych (jest -2 godziny), robić ręcznie
+            trip: `${Object.values(routes).find(x => x.line === String(vehicle.routeShortName))?.id}_${vehicle.tripId}_${timeString(new Date(new Date(vehicle.scheduledTripStartTime).getTime() + 2 * 60 * 60 * 1000).getTime())}_${vehicle.vehicleService}`,
+            headsign: vehicle.headsign,
+            type: Object.values(routes)?.find(x => x.line === String(vehicle.routeShortName))?.type || "bus",
+            delay: vehicle.delay || 0
+        }))));
 };
+
+function timeString(timestamp: number) {
+    let date = new Date(timestamp);
+    return `${date.getHours()}:${date.getMinutes() < 10 ? "0" : ""}${date.getMinutes()}`;
+}
