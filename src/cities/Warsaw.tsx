@@ -24,7 +24,6 @@ export default () => {
 	});
 
 	useEffect(() => {
-		fetch("/api/warsaw/positions").then(res => res.json()).then(setVehicles).catch(() => null);
 	}, []);
 
 	let filteredVehicles = vehicles;
@@ -34,7 +33,7 @@ export default () => {
 
 	return <Routes>
 		<Route path="/" element={inBounds.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab || vehicle.trip}`} city={"warsaw"} />)} />
-		<Route path="/filter/*" element={<Filter vehicles={vehicles} city={"gdansk"} />} />
+		<Route path="/filter/*" element={<Filter vehicles={vehicles} city={"warsaw"} />} />
 		<Route path="/:type/:tab" element={<Trip vehicles={vehicles} city={"warsaw"} />} />
 		<Route path="*" element={<Error type="error" message="Nie znaleziono strony." />} />
 	</Routes>;
