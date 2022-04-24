@@ -13,7 +13,7 @@ export default () => {
 	const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 	const [bounds, setBounds] = useState(map.getBounds());
 
-	/*useWebSocket("wss://ws.matfiu.repl.co/", {
+	useWebSocket("wss://gdansk-ws.matfiu.repl.co/", {
 		onOpen: () => console.log('opened'),
 		onClose: () => console.log('closed'),
 		onMessage: ({ data }) => setVehicles(JSON.parse(data)),
@@ -21,10 +21,11 @@ export default () => {
 		reconnectInterval: 10000,
 		reconnectAttempts: 15,
 		retryOnError: true
-	});*/
+	});
 
 	useEffect(() => {
 		fetch("/api/gdansk/positions").then(res => res.json()).then(setVehicles).catch(() => null);
+		fetch("https://static.higenku.org/https://zbiorkom-live.pages.dev/api/gdansk/positions").then(res => res.json()).then(setVehicles).catch(() => null);
 	}, []);
 
 	let filteredVehicles = vehicles;
