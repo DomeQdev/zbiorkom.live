@@ -21,7 +21,8 @@ interface Stop {
     onLine: number,
     index: number,
     time: number,
-    metersToStop: number
+    metersToStop: number,
+    delay: number
 }
 
 
