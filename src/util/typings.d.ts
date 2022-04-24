@@ -8,7 +8,9 @@ interface Vehicle {
     location: LatLngExpression,
     tab: string,
     trip?: string,
-    type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley"
+    type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley",
+    headsign?: string,
+    delay?: number
 }
 
 interface Stop {

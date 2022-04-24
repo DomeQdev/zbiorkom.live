@@ -29,11 +29,10 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
     const next = serving || nextStop;
     const toNextStop = next && lastStop ? (next.time - lastStop?.time) - ((tripStart + next.time - lastStop?.time) * (lastStop && ((nextStop === next && !serving) || serving === next) ? percentTravelled(serving || lastStop, next) : 1)) : 0;
 
-
     return <List>
         {stops?.map(stop => ({
             ...stop,
-            delay: Math.round((tripStart + stop.time - (lastStop?.time || 0)) * (lastStop && ((nextStop === stop && !serving) || serving === stop) ? percentTravelled(serving || lastStop, stop) : 1) - (next === stop ? 0 : toNextStop)) - minutesUntil(stop.arrival)
+            delay: Math.round(vehicle?.delay !== null ? ((vehicle?.delay || 0) / 60) : (tripStart + stop.time - (lastStop?.time || 0)) * (lastStop && ((nextStop === stop && !serving) || serving === stop) ? percentTravelled(serving || lastStop, stop) : 1) - (next === stop ? 0 : toNextStop) - minutesUntil(stop.arrival))
         }))?.map<React.ReactNode>((stop, i) => (
             <ListItem button key={stop.name} onClick={() => map.setView(stop.location, 17)} ref={(ref) => {
                 if (!scrolled && (serving?.id === stop?.id || (nextStop?.id === stop?.id && !serving))) {

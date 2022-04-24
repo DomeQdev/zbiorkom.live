@@ -85,8 +85,8 @@ export const onRequestGet = async ({ request }) => {
                 id: stop.stopId,
                 on_request: stop.onDemand === 1,
                 location: nearest.properties.dist < 30 ? nearest.geometry.coordinates : [stopData?.stopLat, stopData?.stopLon],
-                arrival: czas(stop.arrivalTime.split("T")[1]),
-                departure: czas(stop.departureTime.split("T")[1]),
+                arrival: czas(stop.arrivalTime.split("T")[1]) - 2 * 60 * 60 * 1000,
+                departure: czas(stop.departureTime.split("T")[1]) - 2 * 60 * 60 * 1000,
                 onLine: nearest.properties.location,
                 index: nearest.properties.index,
                 time: (czas(stop.departureTime.split("T")[1]) - czas(stopTime[0].departureTime.split("T")[1])) / 1000 / 60
