@@ -36,7 +36,7 @@ export default () => {
 	map.on("moveend", () => setBounds(map.getBounds()));
 
 	return <Routes>
-		<Route path="/" element={inBounds.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab || vehicle.trip}`} city={"gdansk"} />)} />
+		<Route path="/" element={inBounds.length <= 125 && inBounds.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab || vehicle.trip}`} city={"gdansk"} />)} />
 		<Route path="/filter/*" element={<Filter vehicles={vehicles} city={"gdansk"} onClose={() => {
 			navigate("/gdansk");
 		}} />} />
