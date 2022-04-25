@@ -1,4 +1,4 @@
-import { DirectionsBus, Tram, DirectionsTransit, DirectionsRailway, Subway, Train } from '@mui/icons-material';
+import { DirectionsBus, Tram, DirectionsTransit, DirectionsRailway, Subway, Train, LtePlusMobiledata } from '@mui/icons-material';
 
 export default ({ size }: { size?: number }) => {
     const icons = {
@@ -22,12 +22,16 @@ export default ({ size }: { size?: number }) => {
             icon: <Train style={{ height: `${size}px`, width: `${size}px` }} />,
             color: "#009955"
         },
+        rail: {
+            icon: <Train style={{ height: `${size}px`, width: `${size}px` }} />,
+            color: "#009955"
+        },
         km: {
             icon: <DirectionsTransit style={{ height: `${size}px`, width: `${size}px` }} />,
             color: "#0A6F0A"
         },
         trolley: {
-            icon: <DirectionsBus style={{ height: `${size}px`, width: `${size}px` }} />,
+            icon: <LtePlusMobiledata style={{ height: `${size}px`, width: `${size}px` }} />,
             color: "#009955"
         }
     };

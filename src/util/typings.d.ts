@@ -46,14 +46,15 @@ interface FilterData {
         [key: string]: {
             line: string,
             name: string,
-            type: string,
-            color: string
+            type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley",
+            color: string,
+            showFilter?: boolean
         }
     },
     special: [{
         name: string,
         tab: string,
-        type: "bus" | "tram",
+        type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley",
         vehicle: Vehicle
     }]
 }
