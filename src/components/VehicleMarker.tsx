@@ -3,8 +3,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { Marker } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 import { Vehicle, City } from "../util/typings";
+import { ArrowUpward } from '@mui/icons-material';
 import icons from "../util/icons";
-import { ArrowUpward, DirectionsBus, Tram, DirectionsTransit, DirectionsRailway, Subway, Train } from '@mui/icons-material';
 
 export default ({ vehicle, city, trip }: {
     vehicle: Vehicle,

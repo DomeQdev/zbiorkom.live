@@ -45,15 +45,16 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
                     {i + 1 !== stops?.length ? <div style={{ borderLeft: `7px solid ${stop?.metersToStop > -50 || (nextStop === stops[i + 1] && !serving) ? trip?.color : "#9ba1ab"}`, marginLeft: '9px', marginTop: '-1px', height: '100%', position: 'absolute', paddingRight: '16px' }} /> : null}
                 </ListItemAvatar>
                 <ListItemText>
-                    <div style={{ float: "left", textAlign: "left", color: stop?.metersToStop < -50 ? "#ADADAD" : "" }}>
-                        {stop.on_request ? <PanTool style={{ width: "15px", height: "15px" }} /> : null} {stop.name}
-                        {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{stop.delay ? <b style={{ color: "#d1312a" }}>{Math.abs(stop.delay)} min {stop.delay > 0 ? "opóźnienia" : "przed czasem"}</b> : <b style={{ color: "#187d3c" }}>Planowo</b>} <b>&#183;</b> {stop.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + stop.delay * 60000)}</span> : null}
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <div style={{ color: stop?.metersToStop < -50 ? "#ADADAD" : "" }}>
+                            <span>{stop.name}</span>
+                            {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{stop.delay ? <b style={{ color: "#d1312a" }}>{Math.abs(stop.delay)} min {stop.delay > 0 ? "opóźnienia" : "przed czasem"}</b> : <b style={{ color: "#187d3c" }}>Planowo</b>} <b>&#183;</b> {stop.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + stop.delay * 60000)}</span> : null}
+                        </div>
+                        {stop?.metersToStop > -50 ? <div>
+                            <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "center" }}>{minutesUntil(stop.arrival + stop.delay * 60000) < 0.5 ? "<1" : minutesUntil(stop.arrival + stop.delay * 60000)}</p>
+                            <span style={{ color: "#737478", fontSize: 13, lineHeight: 0, margin: 0 }}>min</span>
+                        </div> : null}
                     </div>
-                    {stop?.metersToStop > -50 ? <div style={{ float: "right", textAlign: "right" }}>
-                        <span style={{ fontSize: 22, lineHeight: 0.85 }}>{minutesUntil(stop.arrival + stop.delay * 60000) < 0.5 ? "<1" : minutesUntil(stop.arrival + stop.delay * 60000)}</span>
-                        <br />
-                        <span style={{ color: "#737478", fontSize: 13, lineHeight: 0 }}>min</span>
-                    </div> : null}
                 </ListItemText>
             </ListItem>
         )).reduce((prev, curr) => [prev, <Divider variant="inset" key={Math.random()} sx={{ backgroundColor: "#DCCDCD", marginRight: "10px" }} />, curr])}
