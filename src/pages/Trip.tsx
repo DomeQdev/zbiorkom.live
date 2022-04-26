@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { Vehicle, City, Trip } from "../util/typings";
 import { Polyline, useMap } from "react-leaflet";
 import { toast } from "react-toastify";
 import VehicleMarker from "../components/VehicleMarker";
 import StopMarker from "../components/StopMarker";
 import BottomSheet from "../components/BottomSheet";
+import cities from "../util/cities.json";
 
 export default ({ vehicles, city }: {
     vehicles: Vehicle[],
@@ -31,7 +32,7 @@ export default ({ vehicles, city }: {
         //@ts-ignore
         if (!veh?.trip) return setTrip({ error: true });
 
-        if (!trip?.error && veh?.trip && (!trip || trip.id !== veh.trip)) fetch(`/api/${city}/trip?trip=${veh.trip}`).then(res => res.json())
+        if (!trip?.error && veh?.trip && (!trip || trip.id !== veh.trip)) fetch(cities[city].api.trip.replace("{{trip}}", veh.trip)).then(res => res.json())
             .then(setTrip)
             .catch(() => {
                 toast.error("Fatalny błąd.");

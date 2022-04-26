@@ -4,8 +4,9 @@ import { BottomSheet } from "react-spring-bottom-sheet";
 import { MoreVert } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { Vehicle, City, Trip } from "../util/typings";
-import icons from "../util/icons";
 import StopList from "./StopList";
+import icons from "../util/icons";
+import cities from "../util/cities.json";
 
 export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city: City }) => {
     const navigate = useNavigate();
@@ -35,8 +36,8 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
                 }}
             >
                 <MenuItem>Pokaż trasę</MenuItem>
-                <MenuItem onClick={() => navigate("brigade")}>Kursy tej brygady</MenuItem>
-                <MenuItem onClick={() => navigate("vehicle")}>Informacje o pojeździe</MenuItem>
+                {cities[city].functions.brigades && <MenuItem onClick={() => navigate("brigade")}>Kursy tej brygady</MenuItem>}
+                {cities[city].functions.vehicleInfo && <MenuItem onClick={() => navigate("vehicle")}>Informacje o pojeździe</MenuItem>}
             </Menu>
         </>}
     >

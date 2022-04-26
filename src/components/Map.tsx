@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Map } from "leaflet";
+import { LatLngExpression, Map } from "leaflet";
 import { City } from "../util/typings";
 import { GpsFixed, Settings, FilterList } from '@mui/icons-material';
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 import UserMarker from "./UserMarker";
+import cities from "../util/cities.json";
 
 export default ({ city, children }: {
     children?: JSX.Element | JSX.Element[],
@@ -18,7 +19,7 @@ export default ({ city, children }: {
     window.addEventListener("deviceorientation", ({ alpha }) => setUserAngle(alpha || 0));
 
     return <MapContainer
-        center={city === "warsaw" ? [52.22983095298667, 21.0117354814593] : [54.34610966679864, 18.644629872390432]}
+        center={cities[city].location as LatLngExpression}
         zoom={16}
         minZoom={6}
         maxZoom={18}
@@ -32,7 +33,7 @@ export default ({ city, children }: {
             <a href="/" onClick={e => { locate(); e.preventDefault(); }}><GpsFixed sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
         </div>
         <div className="leaflet-control-zoom leaflet-bar leaflet-control" style={{ top: 120, right: 10, position: "absolute" }}>
-            <a href="/" onClick={e => { navigate(`/${city}/filter`); e.preventDefault(); }}><FilterList sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
+            {cities[city].functions.filter && <a href="/" onClick={e => { navigate(`/${city}/filter`); e.preventDefault(); }}><FilterList sx={{ fontSize: 19, marginTop: 0.75 }} /></a>}
             <a href="/" onClick={e => { navigate("/settings"); e.preventDefault(); }}><Settings sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
         </div>
         {children}

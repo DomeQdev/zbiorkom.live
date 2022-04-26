@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
-import { Vehicle } from "../util/typings";
+import { City, Vehicle } from "../util/typings";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import VehicleMarker from "../components/VehicleMarker";
 import Error from "../pages/Error";
 import Trip from "../pages/Trip";
 import Filter from "../pages/Filter";
+import cities from "../util/cities.json";
 
-export default () => {
+export default ({ city }: {
+    city: City
+}) => {
 	const map = useMap();
 	const navigate = useNavigate();
 	const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 	const [bounds, setBounds] = useState(map.getBounds());
 
-	useWebSocket("wss://ws.matfiu.repl.co/", {
+	useWebSocket(cities[city].api.positions_websocket, {
 		onOpen: () => console.log('opened'),
 		onClose: () => console.log('closed'),
 		onMessage: ({ data }) => setVehicles(JSON.parse(data)),
@@ -25,10 +28,10 @@ export default () => {
 	});
 
 	useEffect(() => {
-		fetch("/api/warsaw/positions").then(res => res.json()).then(setVehicles).catch(() => null);
+		fetch(cities[city].api.positions).then(res => res.json()).then(setVehicles).catch(() => null);
 	}, []);
 
-	let linesFilter = JSON.parse(localStorage.getItem(`warsaw.filter.lines`) || "[]") as string[];
+	let linesFilter = JSON.parse(localStorage.getItem(`${city}.filter.lines`) || "[]") as string[];
 
 	let filteredVehicles = vehicles.filter(vehicle => linesFilter.length ? linesFilter.includes(vehicle.line) : true);
 	let inBounds = filteredVehicles.filter(vehicle => bounds.contains(vehicle?.location));
@@ -36,11 +39,9 @@ export default () => {
 	map.on("moveend", () => setBounds(map.getBounds()));
 
 	return <Routes>
-		<Route path="/" element={inBounds.length <= 125 && inBounds.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={"warsaw"} />)} />
-		<Route path="/filter/*" element={<Filter vehicles={vehicles} city={"warsaw"} onClose={() => {
-			navigate("/warsaw");
-		}} />} />
-		<Route path="/:type/:tab" element={<Trip vehicles={vehicles} city={"warsaw"} />} />
+		<Route path="/" element={inBounds.length <= 125 && inBounds.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={city} />)} />
+		<Route path="/filter/*" element={<Filter vehicles={vehicles} city={city} onClose={() => navigate(`/${city}`)} />} />
+		<Route path="/:type/:tab" element={<Trip vehicles={vehicles} city={city} />} />
 		<Route path="*" element={<Error type="error" message="Nie znaleziono strony." />} />
 	</Routes>;
 };

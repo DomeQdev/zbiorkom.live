@@ -1,16 +1,16 @@
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { City as CityT } from "./util/typings";
 import Map from "./components/Map";
 import Error from "./pages/Error";
-import Warsaw from "./cities/Warsaw";
-import Gdansk from "./cities/Gdansk";
+import City from "./pages/City";
+import cities from "./util/cities.json";
 
 export default () => {
     return <>
         <Routes>
             <Route path="/" element={<a href="/warsaw">Warszawa</a>} />
-            <Route path="/warsaw/*" element={<Map city="warsaw"><Warsaw /></Map>} />
-            <Route path="/gdansk/*" element={<Map city="gdansk"><Gdansk /></Map>} />
+            {Object.keys(cities).map((city) => <Route path={`/${city}/*`} key={city} element={<Map city={city as CityT}><City city={city as CityT} /></Map>} />)}
             <Route path="*" element={<Error type="error" message="Nie znaleziono strony." />} />
         </Routes>
         <ToastContainer
