@@ -50,7 +50,7 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
                             <span>{stop.name}</span>
                             {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{stop.delay ? <b style={{ color: "#d1312a" }}>{Math.abs(stop.delay)} min {stop.delay > 0 ? "opóźnienia" : "przed czasem"}</b> : <b style={{ color: "#187d3c" }}>Planowo</b>} <b>&#183;</b> {stop.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + stop.delay * 60000)}</span> : null}
                         </div>
-                        {stop?.metersToStop > -50 ? <div>
+                        {stop?.metersToStop > -50 ? <div className={serving?.id === stop.id && minutesUntil(stop.arrival + stop.delay * 60000) < 1 ? "odjezdza" : ""}>
                             <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "center" }}>{minutesUntil(stop.arrival + stop.delay * 60000) < 0.5 ? "<1" : minutesUntil(stop.arrival + stop.delay * 60000)}</p>
                             <span style={{ color: "#737478", fontSize: 13, lineHeight: 0, margin: 0 }}>min</span>
                         </div> : null}

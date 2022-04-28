@@ -1,4 +1,4 @@
-export const onRequestGet = async () => {
+export const onRequestGet = async ({ env }) => {
     let data: {
         positions: [
             {
@@ -20,10 +20,9 @@ export const onRequestGet = async () => {
         headsign: string,
         location: [number, number],
         deg: number
-    }] = await fetch("https://wtp-location-backend.matfiu.repl.co/predict").then(res => res.json()).then(t => t.map(x => ({
+    }] = await fetch(`${env.WARSAW_BACKEND}/predict`).then(res => res.json()).then(t => t.map(x => ({
         ...x,
-        tab: x.trip.replace(/\//g, "."),
-        type: x.line.includes("S") ? "skm" : (x.line.includes("R") ? "km" : (x.line.includes("M") ? "metro" : (x.line.includes("A") ? "wkd" : null)))
+        tab: x.trip.replace(/\//g, ".")
     }))).catch(() => []);
 
     return new Response(JSON.stringify(data.positions.map(x => {

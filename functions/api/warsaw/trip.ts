@@ -1,6 +1,6 @@
 import { point, nearestPointOnLine, lineString } from "@turf/turf";
 
-export const onRequestGet = async ({ request }) => {
+export const onRequestGet = async ({ request, env }) => {
     let tripId = new URL(request.url).searchParams.get("trip");
     if (!tripId) return new Response(JSON.stringify({ error: "No params provided." }), { status: 400 });
 
@@ -19,7 +19,7 @@ export const onRequestGet = async ({ request }) => {
                 departure: number
             }
         ]
-    } = await fetch(`https://wtp-location-backend.matfiu.repl.co/trip?trip=${tripId}`).then(res => res.json()).catch(() => null);
+    } = await fetch(`${env.WARSAW_BACKEND}/trip?trip=${tripId}`).then(res => res.json()).catch(() => null);
     if (!data) return new Response(JSON.stringify({ error: "Trip not found" }), { status: 404 });
 
     let line = lineString(data.shapes);

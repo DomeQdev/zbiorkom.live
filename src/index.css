@@ -73,6 +73,17 @@ body {
   to {opacity: 1}
 }
 
+.odjezdza {
+  animation: blinker 0.3s linear infinite;
+  font-weight: bold;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
 path.leaflet-interactive {
   pointer-events: none!important;
 }

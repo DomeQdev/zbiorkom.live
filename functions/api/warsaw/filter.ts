@@ -1,6 +1,6 @@
 import specialVehicles from './util/specialVehicles.json';
 
-export const onRequestGet = async () => {
+export const onRequestGet = async ({ env }) => {
     let apiResp: {
         models: {
             [key: string]: [number]
@@ -13,7 +13,7 @@ export const onRequestGet = async () => {
                 color: string
             }
         }
-    } = await fetch("https://wtp-location-backend.matfiu.repl.co/filter", {
+    } = await fetch(`${env.WARSAW_BACKEND}/filter`, {
         //@ts-ignore
         cf: {
             cacheTtl: 86400 * 3,

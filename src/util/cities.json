@@ -8,7 +8,9 @@
             "trip": "/api/warsaw/trip?trip={{trip}}",
             "filter": "/api/warsaw/filter",
             "vehicleInfo": "/api/warsaw/vehicle?tab={{tab}}&type={{type}}",
-            "brigade": "/api/warsaw/brigade?line={{line}}&brigade={{brigade}}"
+            "brigade": "/api/warsaw/brigade?line={{line}}&brigade={{brigade}}",
+            "stopList": null,
+            "stopDepartures": null
         },
         "functions": {
             "filter": true,
@@ -27,6 +29,7 @@
             "trip": "/api/gdansk/trip?trip={{trip}}",
             "filter": "/api/gdansk/filter",
             "vehicleInfo": "/api/gdansk/vehicle?tab={{tab}}&type={{type}}",
+            "brigade": null,
             "stopList": "/api/gdansk/stops",
             "stopDepartures": "/api/gdansk/stop?id={{stop}}"
         },

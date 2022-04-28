@@ -1,4 +1,4 @@
-export const onRequestGet = async ({ request }) => {
+export const onRequestGet = async ({ request, env }) => {
     let url = new URL(request.url);
     let tab = url.searchParams.get('tab');
     let type = url.searchParams.get('type');
@@ -13,7 +13,7 @@ export const onRequestGet = async ({ request }) => {
         carrier: string,
         depot: string,
         features: string[],
-    } = await fetch(`https://wtp-location-backend.matfiu.repl.co/vehicle?vehicle=${type}${tab}`, {
+    } = await fetch(`${env.WARSAW_BACKEND}/vehicle?vehicle=${type}${tab}`, {
         //@ts-ignore
         cf: {
             cacheTtl: 86400 * 3,
