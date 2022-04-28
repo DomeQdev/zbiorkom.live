@@ -16,7 +16,7 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
         open
         onDismiss={() => navigate(`/${city}`)}
         blocking={false}
-        style={{ zIndex: 30000, position: "absolute" }}
+        style={{ zIndex: 1000, position: "absolute" }}
         snapPoints={({ maxHeight }) => [maxHeight / 4, maxHeight * 0.6, maxHeight - 40]}
         header={<>
             <div style={{ display: "inline-flex", alignItems: "center" }}>
@@ -36,8 +36,8 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
                 }}
             >
                 <MenuItem>Pokaż trasę</MenuItem>
-                {cities[city].functions.brigades && <MenuItem onClick={() => navigate("brigade")}>Kursy tej brygady</MenuItem>}
-                {cities[city].functions.vehicleInfo && <MenuItem onClick={() => navigate("vehicle")}>Informacje o pojeździe</MenuItem>}
+                {cities[city].functions.brigades && vehicle?.brigade && <MenuItem onClick={() => { navigate("brigade"); setAnchorEl(null); }}>Kursy tego pojazdu</MenuItem>}
+                {cities[city].functions.vehicleInfo && <MenuItem onClick={() => { navigate("vehicle"); setAnchorEl(null); }}>Informacje o pojeździe</MenuItem>}
             </Menu>
         </>}
     >

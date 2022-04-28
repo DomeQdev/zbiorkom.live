@@ -7,6 +7,7 @@ import VehicleMarker from "../components/VehicleMarker";
 import StopMarker from "../components/StopMarker";
 import BottomSheet from "../components/BottomSheet";
 import cities from "../util/cities.json";
+import Brigade from "./Brigade";
 
 export default ({ vehicles, city }: {
     vehicles: Vehicle[],
@@ -45,5 +46,8 @@ export default ({ vehicles, city }: {
         {trip?.shapes && <Polyline positions={trip.shapes} pathOptions={{ color: trip.color, weight: 8 }} />}
         {trip?.stops && trip.stops.map((stop, i) => <StopMarker stop={stop} color={trip?.color} key={i} />)}
         <BottomSheet trip={trip} vehicle={vehicle} city={city} />
+        {vehicle && vehicle.brigade && <Routes>
+            <Route path="brigade" element={<Brigade city={city} line={vehicle.line} brigade={vehicle.brigade} />} />
+        </Routes>}
     </>;
 };
