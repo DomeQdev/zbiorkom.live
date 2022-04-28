@@ -26,7 +26,13 @@ export default ({ city, vehicles, onClose }: {
         }
         fetch(cities[city].api.filter)
             .then(res => res.json())
-            .then(setFilterData)
+            .then((filterData) => {
+                if(filterData.error) {
+                    toast.error("Fatalny błąd.");
+                    return navigate(`/${city}`);
+                }
+                setFilterData(filterData);
+            })
             .catch(() => {
                 toast.error("Fatalny błąd.");
                 navigate(`/${city}`);
