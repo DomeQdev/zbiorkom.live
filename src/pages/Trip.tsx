@@ -8,6 +8,7 @@ import StopMarker from "../components/StopMarker";
 import BottomSheet from "../components/BottomSheet";
 import cities from "../util/cities.json";
 import Brigade from "./Brigade";
+import VehicleInfo from "./VehicleInfo";
 
 export default ({ vehicles, city }: {
     vehicles: Vehicle[],
@@ -48,6 +49,7 @@ export default ({ vehicles, city }: {
         <BottomSheet trip={trip} vehicle={vehicle} city={city} />
         {vehicle && vehicle.brigade && <Routes>
             <Route path="brigade" element={<Brigade city={city} line={vehicle.line} brigade={vehicle.brigade} />} />
+            <Route path="vehicle" element={<VehicleInfo city={city} vehicle={vehicle} />} />
         </Routes>}
     </>;
 };

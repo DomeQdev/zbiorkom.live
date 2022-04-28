@@ -13,6 +13,7 @@ export const onRequestGet = async ({ request, env }) => {
         carrier: string,
         depot: string,
         features: string[],
+        description: string
     } = await fetch(`${env.WARSAW_BACKEND}/vehicle?vehicle=${type}${tab}`, {
         //@ts-ignore
         cf: {
@@ -26,18 +27,13 @@ export const onRequestGet = async ({ request, env }) => {
     return new Response(JSON.stringify({
         tab: data.tab,
         type: data.type,
-        photo: null,
         model: data.model,
         prodYear: data.prodYear,
         carrier: data.carrier,
         depot: data.depot,
         registration: data.registration,
-        doors: null,
-        seats: null,
-        length: null,
-        bikes: null,
-        patron: null,
-        features: data.features
+        features: data.features,
+        description: data.description
     }), {
         headers: {
             "Content-Type": "application/json",

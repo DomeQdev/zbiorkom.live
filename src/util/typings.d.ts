@@ -59,6 +59,22 @@ interface FilterData {
     }]
 }
 
+interface VehicleInfo {
+    tab: string,
+    type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley",
+    model: string,
+    prodYear: string,
+    carrier: string,
+    depot?: string,
+    registration?: string,
+    doors?: number,
+    seats?: number,
+    length?: string,
+    bikes?: number,
+    features: string[],
+    description?: string
+}
+
 type City = "warsaw" | "gdansk";
 
-export { Vehicle, Stop, Trip, FilterData, City };
+export { Vehicle, Stop, Trip, FilterData, City, VehicleInfo };

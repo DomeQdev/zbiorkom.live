@@ -15,7 +15,7 @@ export default ({ city, line, brigade }: {
     const [trips, setTrips] = useState<[{ trip: string, headsign: string, start: number, end: number }]>();
 
     useEffect(() => {
-        if (!cities[city].functions.brigades || !cities[city].api.brigade) {
+        if (!cities[city].functions.brigades) {
             toast.error(`Przepraszamy, funkcja nie dostępna dla tego miasta.`);
             return navigate("../");
         }
@@ -47,7 +47,7 @@ export default ({ city, line, brigade }: {
                         </div>
                     </div>
                 </ListItemText>
-            </ListItem>)).reduce((prev, curr) => [prev, <Divider key={Math.random()} />, curr])}
+            </ListItem>)).reduce((prev, curr, i) => [prev, <Divider key={i} textAlign="left" style={{ color: "#9ba1ab", fontSize: 14 }}>{(trips[i].start - trips[i - 1]!.end) / 60000 < 60 ? `Postój ${(trips[i].start - trips[i - 1]!.end) / 60000} min` : null}</Divider>, curr])}
         </DialogContent>
     </Dialog>;
 };

@@ -69,13 +69,10 @@ export const onRequestGet = async ({ request }) => {
         model: `${vehicleData.marka} ${vehicleData.model}`,
         prodYear: vehicleData.rok_produkcji,
         carrier: vehicleData.operator_przewoznik,
-        depot: null,
-        registration: null,
-        doors: vehicleData.drzwi_pasazerskie,
-        seats: vehicleData.liczba_miejsc_siedzacych,
+        doors: Number(vehicleData.drzwi_pasazerskie),
+        seats: Number(vehicleData.liczba_miejsc_siedzacych),
         length: `${vehicleData.dlugosc}m`,
-        bikes: vehicleData.mocowanie_rowerow,
-        patron: vehicleData.patron,
+        bikes: Number(vehicleData.mocowanie_rowerow),
         features
     }), {
         headers: {
