@@ -40,7 +40,7 @@ export const onRequestGet = async ({ env }) => {
             tab: x.side_number.split("+").sort().join("+"),
             lastPing: new Date(x.timestamp).getTime(),
             trip: trip.join("/"),
-            isSpecial: !!specialVehicles.find(special => special.tab === x.side_number.split("+").sort().join("+") && special.type === (x.id.split("/")[1].length === 3 ? "bus" : "tram")),
+            isSpecial: specialVehicles.find(special => special.tab === x.side_number.split("+").sort().join("+") && special.type === (x.id.split("/")[1].length === 3 ? "bus" : "tram"))?.name,
         }
     //@ts-ignore
     }).concat(trains)));

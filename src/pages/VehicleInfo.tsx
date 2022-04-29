@@ -35,8 +35,10 @@ export default ({ city, vehicle }: {
     >
         <DialogTitle style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><span>Informacje o pojeździe</span><IconButton onClick={() => navigate("../")}><Close /></IconButton></DialogTitle>
         <DialogContent dividers>
+            <b>Nr taborowy:</b> {vehicle.tab}
             {info?.model && <><b>Model:</b> {info.model}<br /></>}
             {info?.prodYear && <><b>Rok produkcji:</b> {info.prodYear}<br /></>}
+            {vehicle?.isSpecial && <><b style={{ color: "#F5CF4B" }}>{vehicle.isSpecial}</b><br /></>}
             {info?.description && <><b>Opis:</b> {info.description}<br /></>}
             {info?.registration && <><b>Rejestracja:</b> {info.registration}<br /></>}
             {info?.carrier && <><b>Operator:</b> {info.carrier}<br /></>}

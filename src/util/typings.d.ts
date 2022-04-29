@@ -11,7 +11,7 @@ interface Vehicle {
     type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley",
     headsign?: string,
     delay?: number,
-    isSpecial?: boolean,
+    isSpecial?: string,
     isPredicted?: boolean
 }
 
