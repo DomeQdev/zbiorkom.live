@@ -5,12 +5,14 @@ import Map from "./components/Map";
 import Error from "./pages/Error";
 import City from "./pages/City";
 import cities from "./util/cities.json";
+import Settings from "./pages/Settings";
 
 export default () => {
     return <>
         <Routes>
             <Route path="/" element={<a href="/warsaw">Warszawa</a>} />
             {Object.keys(cities).map((city) => <Route path={`/${city}/*`} key={city} element={<Map city={city as CityT}><City city={city as CityT} /></Map>} />)}
+            <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<Error type="error" message="Nie znaleziono strony." />} />
         </Routes>
         <ToastContainer
