@@ -10,7 +10,9 @@ interface Vehicle {
     trip?: string,
     type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley",
     headsign?: string,
-    delay?: number
+    delay?: number,
+    isSpecial?: boolean,
+    isPredicted?: boolean
 }
 
 interface Stop {

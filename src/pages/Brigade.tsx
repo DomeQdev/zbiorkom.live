@@ -3,23 +3,23 @@ import { Dialog, DialogTitle, DialogContent, Divider, ListItem, ListItemText, Ic
 import { Close } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { City } from "../util/typings";
+import { City, Vehicle } from "../util/typings";
 import cities from "../util/cities.json";
 
-export default ({ city, line, brigade }: {
+export default ({ city, vehicle }: {
     city: City,
-    line: string,
-    brigade: string
+    vehicle: Vehicle
 }) => {
     const navigate = useNavigate();
     const [trips, setTrips] = useState<[{ trip: string, headsign: string, start: number, end: number }]>();
+    const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
         if (!cities[city].functions.brigades) {
             toast.error(`Przepraszamy, funkcja nie dostępna dla tego miasta.`);
             return navigate("../");
         }
-        fetch(cities[city].api.brigade!.replace("{{line}}", line).replace("{{brigade}}", brigade)).then(res => res.json()).then(data => {
+        fetch(cities[city].api.brigade!.replace("{{line}}", vehicle.line).replace("{{brigade}}", vehicle.brigade!)).then(res => res.json()).then(data => {
             if (data.error) {
                 toast.error("Nie znaleziono rozkładu brygad.")
                 return navigate("../");
@@ -34,11 +34,16 @@ export default ({ city, line, brigade }: {
         scroll="paper"
         fullWidth
     >
-        <DialogTitle style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><span>Rozkład brygady <b>{line}</b>/<small>{brigade}</small></span><IconButton onClick={() => navigate("../")}><Close /></IconButton></DialogTitle>
+        <DialogTitle style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><span>Rozkład brygady <b>{vehicle.line}</b>/<small>{vehicle.brigade}</small></span><IconButton onClick={() => navigate("../")}><Close /></IconButton></DialogTitle>
         <DialogContent dividers>
-            {trips?.map<React.ReactNode>(trip => (<ListItem button key={trip.trip}>
+            {trips?.map<React.ReactNode>(trip => (<ListItem button key={trip.trip} ref={(ref) => {
+                if (!scrolled && trip.trip === vehicle.trip) {
+                    ref?.scrollIntoView({ behavior: "smooth" });
+                    setScrolled(true);
+                }
+            }}>
                 <ListItemText style={{ marginLeft: "-13px", marginRight: "1px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: trip.trip === vehicle.trip ? "bold" : "" }}>
                         <div>
                             {trip.headsign}
                         </div>

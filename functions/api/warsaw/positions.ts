@@ -1,3 +1,5 @@
+import specialVehicles from "./util/specialVehicles.json";
+
 export const onRequestGet = async ({ env }) => {
     let data: {
         positions: [
@@ -22,6 +24,7 @@ export const onRequestGet = async ({ env }) => {
         deg: number
     }] = await fetch(`${env.WARSAW_BACKEND}/predict`).then(res => res.json()).then(t => t.map(x => ({
         ...x,
+        isPredicted: true,
         tab: x.trip.replace(/\//g, ".")
     }))).catch(() => []);
 
@@ -36,7 +39,8 @@ export const onRequestGet = async ({ env }) => {
             brigade: x.id.split("/")[2],
             tab: x.side_number.split("+").sort().join("+"),
             lastPing: new Date(x.timestamp).getTime(),
-            trip: trip.join("/")
+            trip: trip.join("/"),
+            isSpecial: !!specialVehicles.find(special => special.tab === x.side_number.split("+").sort().join("+") && special.type === (x.id.split("/")[1].length === 3 ? "bus" : "tram")),
         }
     //@ts-ignore
     }).concat(trains)));

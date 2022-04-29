@@ -48,7 +48,7 @@ export default ({ vehicles, city }: {
         {trip?.stops && trip.stops.map((stop, i) => <StopMarker stop={stop} color={trip?.color} key={i} />)}
         <BottomSheet trip={trip} vehicle={vehicle} city={city} />
         {vehicle && vehicle.brigade && <Routes>
-            <Route path="brigade" element={<Brigade city={city} line={vehicle.line} brigade={vehicle.brigade} />} />
+            <Route path="brigade" element={<Brigade city={city} vehicle={vehicle} />} />
             <Route path="vehicle" element={<VehicleInfo city={city} vehicle={vehicle} />} />
         </Routes>}
     </>;
