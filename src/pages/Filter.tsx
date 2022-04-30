@@ -80,10 +80,10 @@ export default ({ city, vehicles, onClose }: {
                                 setSelectedLines(f);
                                 localStorage.setItem(`${city}.filter.lines`, JSON.stringify(f));
                             }}
-                            style={{ width: 85, height: 50, fontSize: 20, color: line.color, margin: 3, borderColor: selectedLines.includes(line.line) ? line.color : "#0000001f" }}
+                            style={{ width: 80, height: 50, fontSize: 20, color: line.color, margin: 3, borderColor: selectedLines.includes(line.line) ? line.color : "#0000001f" }}
                             title={`${line.line} - ${line.name}`}
                         >
-                            {getIcon({ size: 20 })[line.type].icon}&nbsp;{line.line}
+                            {getIcon({ size: 20 })[line.type].icon}&nbsp;{line.line.replace("-", "")}
                         </ToggleButton>
                     ))}
                 </div>} />

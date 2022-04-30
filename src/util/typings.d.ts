@@ -78,5 +78,6 @@ interface VehicleInfo {
 }
 
 type City = "warsaw" | "gdansk";
+type MapStyle = "osm" | "mapbox" | "mapstr" | "mapsat" | "mapnav" | "gmaps" | "gsat";
 
-export { Vehicle, Stop, Trip, FilterData, City, VehicleInfo };
+export { Vehicle, Stop, Trip, FilterData, City, VehicleInfo, MapStyle };

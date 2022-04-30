@@ -12,7 +12,7 @@ export default () => {
         <Routes>
             <Route path="/" element={<a href="/warsaw">Warszawa</a>} />
             {Object.keys(cities).map((city) => <Route path={`/${city}/*`} key={city} element={<Map city={city as CityT}><City city={city as CityT} /></Map>} />)}
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/settings/*" element={<Settings />} />
             <Route path="*" element={<Error type="error" message="Nie znaleziono strony." />} />
         </Routes>
         <ToastContainer

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { LatLngExpression, Map } from "leaflet";
-import { City } from "../util/typings";
+import { City, MapStyle } from "../util/typings";
 import { GpsFixed, Settings, FilterList } from '@mui/icons-material';
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +27,7 @@ export default ({ city, children }: {
         whenCreated={setMap}
         style={{ width: "100%", height: "100vh" }}
     >
-        <TileLayer url={"https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"} />
+        <TileLayer url={MapStyle()} />
         <ZoomControl position="topright" />
         <div className="leaflet-control-zoom leaflet-bar leaflet-control" style={{ top: 80, right: 10, position: "absolute" }}>
             <a href="/" onClick={e => { locate(); e.preventDefault(); }}><GpsFixed sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
@@ -46,5 +46,26 @@ export default ({ city, children }: {
         map.locate({ watch: true })
             .once("locationfound", ({ latlng }) => map.setView(latlng, 17))
             .on("locationfound", setUserLocation);
-    }
+    };
+
+    function MapStyle() {
+        switch (localStorage.getItem("mapstyle") as MapStyle) {
+            case "osm": 
+                return "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+            case "mapbox":
+                return "https://api.mapbox.com/styles/v1/domeq/ckzsbx3mn001s14pape9nn2qq/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZG9tZXEiLCJhIjoiY2t6c2JlOWZ3MGx3cjJubW9zNDc5eGpwdiJ9.nUlvFKfUzpxBxJVc4zmAMA";
+            case "mapstr":
+                return "https://api.mapbox.com/styles/v1/domeq/ckzsc7ufs000e15mrqldtaa15/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZG9tZXEiLCJhIjoiY2t6c2JlOWZ3MGx3cjJubW9zNDc5eGpwdiJ9.nUlvFKfUzpxBxJVc4zmAMA";
+            case "mapsat":
+                return "https://api.mapbox.com/styles/v1/domeq/ckzsc8506000215jqervcjkbk/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZG9tZXEiLCJhIjoiY2t6c2JlOWZ3MGx3cjJubW9zNDc5eGpwdiJ9.nUlvFKfUzpxBxJVc4zmAMA";
+            case "mapnav":
+                return "https://api.mapbox.com/styles/v1/domeq/ckzsc8ra900qs14l84la2zfpk/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZG9tZXEiLCJhIjoiY2t6c2JlOWZ3MGx3cjJubW9zNDc5eGpwdiJ9.nUlvFKfUzpxBxJVc4zmAMA";
+            case "gmaps":
+                return "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}";
+            case "gsat":
+                return "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}";
+            default:
+                return "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}";
+        };
+    };
 };
