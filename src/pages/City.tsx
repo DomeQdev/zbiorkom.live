@@ -9,6 +9,7 @@ import Error from "../pages/Error";
 import Trip from "../pages/Trip";
 import Filter from "../pages/Filter";
 import cities from "../util/cities.json";
+import { toast } from "react-toastify";
 
 export default ({ city }: {
     city: City
@@ -22,10 +23,11 @@ export default ({ city }: {
 	useWebSocket(cities[city].api.positions_websocket, {
 		onOpen: () => console.log('opened'),
 		onClose: () => console.log('closed'),
+		onReconnectStop: () => toast.error("Utracono połączenie z serwerem.", { autoClose: false }),
 		onMessage: ({ data }) => setVehicles(JSON.parse(data)),
 		shouldReconnect: () => true,
 		reconnectInterval: 10000,
-		reconnectAttempts: 15,
+		reconnectAttempts: 10,
 		retryOnError: true
 	});
 

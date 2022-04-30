@@ -17,7 +17,7 @@ export default ({ city, vehicles, onClose }: {
 
     const [filterData, setFilterData] = useState<FilterData>();
     const [selectedLines, setSelectedLines] = useState<string[]>(JSON.parse(localStorage.getItem(`${city}.filter.lines`) || "[]") as string[]);
-    const specialVehicles = filterData ? filterData.special.filter(x => vehicles.find(y => y.tab === x.tab && y.type === x.type)).map(x => ({ ...x, vehicle: vehicles.find(y => y.tab === x.tab && y.type === x.type) })) : [];
+    const specialVehicles = vehicles ? vehicles.filter(x => x.isSpecial) : [];
 
     useEffect(() => {
         if(!cities[city].functions.filter) {
@@ -48,12 +48,12 @@ export default ({ city, vehicles, onClose }: {
         <DialogTitle style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><span>Filtrowanie pojazdów</span><IconButton onClick={() => location.pathname === `/${city}/filter` ? onClose() : navigate(`/${city}/filter`)}><Close /></IconButton></DialogTitle>
         <DialogContent dividers>
             {filterData ? <Routes>
-                <Route path="special" element={specialVehicles.length ? specialVehicles.map<React.ReactNode>(vehicle => (
+                <Route path="special" element={specialVehicles.length ? specialVehicles.sort((one, two) => (one.isSpecial! + one.tab > two.isSpecial! + two.tab ? 1 : -1)).map<React.ReactNode>(vehicle => (
                     <ListItemButton onClick={() => navigate(`/${city}/${vehicle.type}/${vehicle.tab}`)} key={vehicle.tab}>
                         <ListItemIcon sx={{ minWidth: 40 }}>{getIcon({ size: 24 })[vehicle.type].icon}</ListItemIcon>
                         <ListItemText style={{ display: "inline-flex", alignItems: "center" }}>
-                            {vehicle.name} ({vehicle.tab})<br />
-                            <span style={{ color: "#757575", fontSize: 15 }}>Na trasie linii {vehicle.vehicle?.line} </span>
+                            {vehicle.isSpecial} ({vehicle.tab})<br />
+                            <span style={{ color: "#757575", fontSize: 15 }}>Na trasie linii {vehicle.line}</span>
                         </ListItemText>
                     </ListItemButton>
                 ))?.reduce((prev, curr) => [prev, <Divider key={Math.random()} />, curr]) : <h3 style={{ textAlign: "center" }}>Nic tu nie ma...</h3>} />

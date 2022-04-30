@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Dialog, DialogTitle, DialogContent, Divider, ListItem, ListItemText, IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { City, Vehicle } from "../util/typings";
 import cities from "../util/cities.json";
@@ -11,6 +11,7 @@ export default ({ city, vehicle }: {
     vehicle: Vehicle
 }) => {
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [trips, setTrips] = useState<[{ trip: string, headsign: string, start: number, end: number }]>();
     const [scrolled, setScrolled] = useState(false);
 
@@ -28,6 +29,11 @@ export default ({ city, vehicle }: {
         });
     }, []);
 
+    useEffect(() => {
+        let tripId = searchParams.get("trip");
+        if (!tripId) return;
+    }, [searchParams.get("trip")]);
+
     return <Dialog
         open
         onClose={() => navigate("../")}
@@ -38,9 +44,12 @@ export default ({ city, vehicle }: {
         <DialogContent dividers>
             {trips?.map<React.ReactNode>(trip => (<ListItem button key={trip.trip} ref={(ref) => {
                 if (!scrolled && trip.trip === vehicle.trip) {
-                    ref?.scrollIntoView({ behavior: "smooth" });
+                    ref?.scrollIntoView();
                     setScrolled(true);
                 }
+            }} onClick={() => {
+                if(trip.trip === vehicle.trip) return;
+                setSearchParams(`trip=${trip.trip}`);
             }}>
                 <ListItemText style={{ marginLeft: "-13px", marginRight: "1px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: trip.trip === vehicle.trip ? "bold" : "" }}>
