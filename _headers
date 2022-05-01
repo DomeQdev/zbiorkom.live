@@ -1,4 +1,0 @@
-/api/*
-  content-type: application/json
-  cache-control: public, max-age=300
-  x-php-version: 5.4

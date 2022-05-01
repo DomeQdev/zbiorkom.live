@@ -42,7 +42,7 @@ export default ({ city, vehicle }: {
     >
         <DialogTitle style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><span>Rozkład brygady <b>{vehicle.line}</b>/<small>{vehicle.brigade}</small></span><IconButton onClick={() => navigate("../")}><Close /></IconButton></DialogTitle>
         <DialogContent dividers>
-            {trips?.map<React.ReactNode>(trip => (<ListItem button key={trip.trip} ref={(ref) => {
+            {trips?.length ? trips?.map<React.ReactNode>(trip => (<ListItem button key={trip.trip} ref={(ref) => {
                 if (!scrolled && trip.trip === vehicle.trip) {
                     ref?.scrollIntoView();
                     setScrolled(true);
@@ -61,7 +61,7 @@ export default ({ city, vehicle }: {
                         </div>
                     </div>
                 </ListItemText>
-            </ListItem>)).reduce((prev, curr, i) => [prev, <Divider key={i} textAlign="left" style={{ color: "#9ba1ab", fontSize: 14 }}>{(trips[i].start - trips[i - 1]!.end) / 60000 < 60 ? `Postój ${(trips[i].start - trips[i - 1]!.end) / 60000} min` : null}</Divider>, curr])}
+            </ListItem>)).reduce((prev, curr, i) => [prev, <Divider key={i} textAlign="left" style={{ color: "#9ba1ab", fontSize: 14 }}>{(trips[i].start - trips[i - 1]!.end) / 60000 < 60 ? `Postój ${(trips[i].start - trips[i - 1]!.end) / 60000} min` : null}</Divider>, curr]) : "Nic tu nie ma..."}
         </DialogContent>
     </Dialog>;
 };
