@@ -32,14 +32,15 @@ export const onRequestGet = async ({ request, env }) => {
         headsign: data.headsign,
         line: data.line,
         shapes: data.shapes,
-        stops: data.stops.map(stop => {
+        stops: data.stops.map((stop, i) => {
             let nearest = nearestPointOnLine(line, point(stop.location), { units: 'meters' });
             return {
                 ...stop,
                 location: nearest.properties.dist < 30 ? nearest.geometry.coordinates : stop.location,
                 onLine: nearest.properties.location,
                 index: nearest.properties.index,
-                time: (stop.departure - data.stops[0].departure) / 1000 / 60
+                time: (stop.departure - data.stops[0].departure) / 1000 / 60,
+                i
             }
         })
     }));
