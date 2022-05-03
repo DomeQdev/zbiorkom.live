@@ -21,7 +21,7 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
         }));
     }, [vehicle, trip]);
 
-    const lastStop = stops?.filter(stop => stop?.metersToStop < -50)?.pop();
+    const lastStop = stops?.filter(stop => stop?.metersToStop < -50)?.pop() || (trip?.stops[0] && minutesUntil(trip?.stops[0].departure) < 0 ? trip?.stops[0] : null);
     const serving = stops?.find(stop => stop?.metersToStop < 50 && stop?.metersToStop > -50);
     const nextStop = stops?.filter(stop => stop?.metersToStop > 50)?.shift();
     const tripStart = lastStop || !trip || trip.error ? 0 : minutesUntil(trip?.stops[0].departure);
