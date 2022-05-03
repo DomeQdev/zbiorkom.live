@@ -18,9 +18,12 @@ export const onRequestGet = async ({ request, env }) => {
                 arrival: number,
                 departure: number
             }
-        ]
+        ],
+        error?: string
     } = await fetch(`${env.WARSAW_BACKEND}/trip?trip=${tripId}`).then(res => res.json()).catch(() => null);
     if (!data) return new Response(JSON.stringify({ error: "Trip not found" }), { status: 404 });
+
+    if(data.error) return new Response(JSON.stringify({ error: data.error }), { status: 400 });
 
     let line = lineString(data.shapes);
     return new Response(JSON.stringify({
