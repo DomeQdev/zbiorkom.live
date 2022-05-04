@@ -24,8 +24,7 @@ export const onRequestGet = async ({ env }) => {
         deg: number
     }] = await fetch(`${env.WARSAW_BACKEND}/predict`).then(res => res.json()).then(t => t.map(x => ({
         ...x,
-        isPredicted: true,
-        tab: x.trip.replace(/\//g, ".")
+        isPredicted: true
     }))).catch(() => []);
 
     return new Response(JSON.stringify(data.positions.map(x => {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
 import { City, Stop, Vehicle } from "../util/typings";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import useWebSocket from "react-use-websocket";
 import VehicleMarker from "../components/VehicleMarker";
 import StopMarker from "../components/StopMarker";
@@ -9,7 +10,6 @@ import Error from "../pages/Error";
 import Trip from "../pages/Trip";
 import Filter from "../pages/Filter";
 import cities from "../util/cities.json";
-import { toast } from "react-toastify";
 
 export default ({ city }: {
     city: City
