@@ -62,7 +62,7 @@ export const onRequestGet = async ({ request }) => {
                 stopLon: number
             }
         ]
-    } = await fetch("https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/d3e96eb6-25ad-4d6c-8651-b1eb39155945/download/stopsingdansk.json", {
+    } = await fetch("https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/d3e96eb6-25ad-4d6c-8651-b1eb39155945/download/stopsingdansk.json?", {
         //@ts-ignore
         cf: {
             cacheTtl: 86400 / 2,
@@ -81,7 +81,7 @@ export const onRequestGet = async ({ request }) => {
         stops: stopTime.map(stop => {
             let stopData = stops?.stops?.find(s => s.stopId === stop.stopId);
             if(!stopData) return {
-                name: "Przystanek nieznany",
+                name: "Brak danych",
                 id: stop.stopId,
                 on_request: stop.onDemand === 1,
                 location: [0, 0],
