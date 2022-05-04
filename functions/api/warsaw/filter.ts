@@ -1,5 +1,3 @@
-import specialVehicles from './util/specialVehicles.json';
-
 export const onRequestGet = async ({ env }) => {
     let apiResp: {
         models: {
@@ -23,7 +21,5 @@ export const onRequestGet = async ({ env }) => {
     }).then(res => res.json()).catch(() => null);
     if (!apiResp) return new Response(JSON.stringify({ error: "No data received" }), { status: 500 });
 
-    return new Response(JSON.stringify(Object.assign(apiResp, {
-        special: specialVehicles
-    })));
+    return new Response(JSON.stringify(apiResp));
 };

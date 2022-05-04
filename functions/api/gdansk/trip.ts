@@ -16,7 +16,7 @@ export const onRequestGet = async ({ request }) => {
     } = await fetch(`https://ckan2.multimediagdansk.pl/shapes?date=${date}&routeId=${route}&tripId=${trip}`, {
         //@ts-ignore
         cf: {
-            cacheTtl: 86400 * 3,
+            cacheTtl: 86400 / 2,
             cacheEverything: true
         },
         keepalive: true
@@ -39,7 +39,7 @@ export const onRequestGet = async ({ request }) => {
     } = await fetch(`https://ckan2.multimediagdansk.pl/stopTimes?date=${date}&routeId=${route}`, {
         //@ts-ignore
         cf: {
-            cacheTtl: 86400 * 3,
+            cacheTtl: 86400 / 2,
             cacheEverything: true
         },
         keepalive: true
@@ -65,7 +65,7 @@ export const onRequestGet = async ({ request }) => {
     } = await fetch("https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/d3e96eb6-25ad-4d6c-8651-b1eb39155945/download/stopsingdansk.json", {
         //@ts-ignore
         cf: {
-            cacheTtl: 86400 * 3,
+            cacheTtl: 86400 / 2,
             cacheEverything: true
         },
         keepalive: true
