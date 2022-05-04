@@ -71,8 +71,8 @@ export const onRequestGet = async ({ request }) => {
         keepalive: true
     }).then(res => res.json()).catch(() => null);
 
-    return new Response(JSON.stringify(shape.coordinates.map(x => [x[1], x[0]])))
     let line = lineString(shape.coordinates.map(x => [x[1], x[0]]));
+    return new Response(JSON.stringify(line));
     return new Response(JSON.stringify({
         id: tripId,
         line: routes[route].line,
