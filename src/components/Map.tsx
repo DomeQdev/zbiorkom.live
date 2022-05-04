@@ -33,7 +33,7 @@ export default ({ city, children }: {
             <a href="/" onClick={e => { locate(); e.preventDefault(); }}><GpsFixed sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
         </div>
         <div className="leaflet-control-zoom leaflet-bar leaflet-control" style={{ top: 120, right: 10, position: "absolute" }}>
-            {cities[city].functions.filter && <a href="/" onClick={e => { navigate(`/${city}/filter`); e.preventDefault(); }}><FilterList sx={{ fontSize: 19, marginTop: 0.75 }} /></a>}
+            {cities[city].functions.filter && <a href="/" onClick={e => { navigate(`/${city}/filter`); e.preventDefault(); }} style={{ backgroundColor: JSON.parse(localStorage.getItem(`${city}.filter.lines`) as string || "[]").length ? "#5FDA5D" : "" }}><FilterList sx={{ fontSize: 19, marginTop: 0.75 }} /></a>}
             <a href="/" onClick={e => { navigate("/settings"); e.preventDefault(); }}><Settings sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
         </div>
         {children}

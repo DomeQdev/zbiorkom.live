@@ -1,8 +1,10 @@
-import { Close, NavigateNext } from "@mui/icons-material";
 import { Dialog, DialogContent, DialogTitle, Divider, IconButton, List, ListItemButton, ListItemIcon, ListItemText, ToggleButton, Chip, DialogActions, Button } from "@mui/material";
-import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { City, FilterData, Vehicle } from "../util/typings";
+import { Close, NavigateNext } from "@mui/icons-material";
+import { LatLngBoundsExpression } from "leaflet";
+import { useEffect, useState } from "react";
+import { useMap } from "react-leaflet";
 import { toast } from "react-toastify";
 import getIcon from "../util/icons";
 import cities from "../util/cities.json";
@@ -14,6 +16,7 @@ export default ({ city, vehicles, onClose }: {
 }) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const map = useMap();
 
     const [filterData, setFilterData] = useState<FilterData>();
     const [selectedLines, setSelectedLines] = useState<string[]>(JSON.parse(localStorage.getItem(`${city}.filter.lines`) || "[]") as string[]);
@@ -102,11 +105,23 @@ export default ({ city, vehicles, onClose }: {
             <Button onClick={() => {
                 localStorage.setItem(`${city}.filter.lines`, JSON.stringify([]));
                 navigate(`/${city}`);
-            }} variant="outlined" style={{ marginLeft: 5 }}>Zrestuj</Button>
+            }} variant="outlined" style={{ marginLeft: 5 }}>Zresetuj</Button>
             <Button onClick={() => {
                 localStorage.setItem(`${city}.filter.lines`, JSON.stringify(selectedLines));
+                let found = vehicles.filter(x => selectedLines.includes(x.line));
+                toast[found.length ? "success" : "warn"](`Znaleziono ${found.length} pojazdów.`);
+                found.length && map.fitBounds(getMinAndMaxBoundsBasedOnVehicles(found));
                 navigate(`/${city}`);
             }} variant="contained" color="success" style={{ marginRight: 5 }}>Zapisz</Button>
         </DialogActions> : null}
     </Dialog>;
 };
+
+function getMinAndMaxBoundsBasedOnVehicles(vehicles: Vehicle[]) {
+    // vehicle.location is LatLngExpression
+    const minLat = Math.min(...vehicles.map(x => x.location[0]));
+    const maxLat = Math.max(...vehicles.map(x => x.location[0]));
+    const minLng = Math.min(...vehicles.map(x => x.location[1]));
+    const maxLng = Math.max(...vehicles.map(x => x.location[1]));
+    return [[minLat, minLng], [maxLat, maxLng]] as LatLngBoundsExpression;
+}

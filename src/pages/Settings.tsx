@@ -1,6 +1,6 @@
 import { Close, NavigateNext } from "@mui/icons-material";
-import { Dialog, DialogContent, DialogTitle, Divider, IconButton, List, ListItemButton, ListItemIcon, ListItemText, ToggleButton, Chip, DialogActions, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Dialog, DialogContent, DialogTitle, Divider, IconButton, List, ListItemButton, ListItemText, DialogActions, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import React, { useState } from "react";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { City, MapStyle } from "../util/typings";
