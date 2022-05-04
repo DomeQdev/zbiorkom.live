@@ -2,6 +2,7 @@ import { point, nearestPointOnLine, lineString } from "@turf/turf";
 import routes from "./util/routes.json";
 
 export const onRequestGet = async ({ request }) => {
+    try {
     let tripId = new URL(request.url).searchParams.get("trip");
     if (!tripId) return new Response(JSON.stringify({ error: "No params provided." }), { status: 400 });
 
@@ -20,7 +21,7 @@ export const onRequestGet = async ({ request }) => {
         },
         keepalive: true
     }).then(res => res.json()).catch(() => null);
-    if (!shape) return new Response(JSON.stringify({ error: "Shapes error" }), { status: 500 });
+    if (!shape) return new Response(JSON.stringify({ error: "Shapes error" }), { status: 400 });
 
     let stopTimes: {
         stopTimes: [
@@ -43,10 +44,10 @@ export const onRequestGet = async ({ request }) => {
         },
         keepalive: true
     }).then(res => res.json()).catch(() => null);
-    if (!stopTimes) return new Response(JSON.stringify({ error: "stopptimes error" }), { status: 500 });
+    if (!stopTimes) return new Response(JSON.stringify({ error: "stopptimes error" }), { status: 400 });
 
     let order = stopTimes.stopTimes.findIndex(stopTime => stopTime.tripId === Number(trip) && stopTime.stopSequence === 0 && stopTime.departureTime.split("T")[1] === start && stopTime.busServiceName === service);
-    if (order === -1) return new Response(JSON.stringify({ error: "no order" }), { status: 500 });
+    if (order === -1) return new Response(JSON.stringify({ error: "no order" }), { status: 400 });
 
     let stopTime = stopTimes.stopTimes.slice(order).filter((x, i) => x.stopSequence === i);
 
@@ -93,6 +94,10 @@ export const onRequestGet = async ({ request }) => {
             }
         })
     }));
+} catch (e) {
+    console.log(e)
+    return new Response(JSON.stringify({ error: e.message }), { status: 400 });
+}
 };
 
 function czas(time: string) {
