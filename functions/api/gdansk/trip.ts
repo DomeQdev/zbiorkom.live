@@ -80,7 +80,17 @@ export const onRequestGet = async ({ request }) => {
         shapes: shape.coordinates.map(x => [x[1], x[0]]),
         stops: stopTime.map(stop => {
             let stopData = stops?.stops?.find(s => s.stopId === stop.stopId);
-            if(!stopData) return null;
+            if(!stopData) return {
+                name: "Przystanek nieznany",
+                id: stop.stopId,
+                on_request: stop.onDemand === 1,
+                location: [0, 0],
+                arrival: czas(stop.arrivalTime.split("T")[1]) - 2 * 60 * 60 * 1000,
+                departure: czas(stop.departureTime.split("T")[1]) - 2 * 60 * 60 * 1000,
+                onLine: 0,
+                index: 0,
+                time: (czas(stop.departureTime.split("T")[1]) - czas(stopTime[0].departureTime.split("T")[1])) / 1000 / 60
+            };
             let nearest = nearestPointOnLine(line, point([stopData?.stopLat, stopData?.stopLon]), { units: 'meters' });
             return {
                 name: `${stopData?.stopName} ${stopData?.stopCode}`,
@@ -93,7 +103,7 @@ export const onRequestGet = async ({ request }) => {
                 index: nearest.properties.index,
                 time: (czas(stop.departureTime.split("T")[1]) - czas(stopTime[0].departureTime.split("T")[1])) / 1000 / 60
             }
-        }).filter(x => x)
+        })
     }));
 } catch (e) {
     console.log(e)
