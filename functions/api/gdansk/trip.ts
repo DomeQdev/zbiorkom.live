@@ -72,7 +72,6 @@ export const onRequestGet = async ({ request }) => {
     }).then(res => res.json()).catch(() => null);
 
     let line = lineString(shape.coordinates.map(x => [x[1], x[0]]));
-    return new Response(JSON.stringify(line));
     return new Response(JSON.stringify({
         id: tripId,
         line: routes[route].line,
@@ -81,6 +80,7 @@ export const onRequestGet = async ({ request }) => {
         shapes: shape.coordinates.map(x => [x[1], x[0]]),
         stops: stopTime.map(stop => {
             let stopData = stops?.stops?.find(s => s.stopId === stop.stopId);
+            return stopData
             let nearest = nearestPointOnLine(line, point([stopData?.stopLat, stopData?.stopLon]), { units: 'meters' });
             return {
                 name: `${stopData?.stopName} ${stopData?.stopCode}`,
