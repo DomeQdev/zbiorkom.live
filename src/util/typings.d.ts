@@ -52,13 +52,7 @@ interface FilterData {
             color: string,
             showFilter?: boolean
         }
-    },
-    special: [{
-        name: string,
-        tab: string,
-        type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley",
-        vehicle: Vehicle
-    }]
+    }
 }
 
 interface VehicleInfo {

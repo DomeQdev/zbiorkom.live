@@ -35,7 +35,7 @@ export const onRequestGet = async ({ request }) => {
     }] = await fetch("https://files.cloudgdansk.pl/d/otwarte-dane/ztm/baza-pojazdow.json", {
         //@ts-ignore
         cf: {
-            cacheTtl: 86400 * 3,
+            cacheTtl: 86400 / 2,
             cacheEverything: true
         },
         keepalive: true,

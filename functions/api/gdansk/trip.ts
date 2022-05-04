@@ -2,6 +2,7 @@ import { point, nearestPointOnLine, lineString } from "@turf/turf";
 import routes from "./util/routes.json";
 
 export const onRequestGet = async ({ request }) => {
+    try {
     let tripId = new URL(request.url).searchParams.get("trip");
     if (!tripId) return new Response(JSON.stringify({ error: "No params provided." }), { status: 400 });
 
@@ -15,12 +16,12 @@ export const onRequestGet = async ({ request }) => {
     } = await fetch(`https://ckan2.multimediagdansk.pl/shapes?date=${date}&routeId=${route}&tripId=${trip}`, {
         //@ts-ignore
         cf: {
-            cacheTtl: 86400 * 3,
+            cacheTtl: 86400 / 2,
             cacheEverything: true
         },
         keepalive: true
     }).then(res => res.json()).catch(() => null);
-    if (!shape) return new Response(JSON.stringify({ error: "Shapes error" }), { status: 500 });
+    if (!shape) return new Response(JSON.stringify({ error: "Shapes error" }), { status: 400 });
 
     let stopTimes: {
         stopTimes: [
@@ -38,15 +39,15 @@ export const onRequestGet = async ({ request }) => {
     } = await fetch(`https://ckan2.multimediagdansk.pl/stopTimes?date=${date}&routeId=${route}`, {
         //@ts-ignore
         cf: {
-            cacheTtl: 86400 * 3,
+            cacheTtl: 86400 / 2,
             cacheEverything: true
         },
         keepalive: true
     }).then(res => res.json()).catch(() => null);
-    if (!stopTimes) return new Response(JSON.stringify({ error: "stopptimes error" }), { status: 500 });
+    if (!stopTimes) return new Response(JSON.stringify({ error: "stopptimes error" }), { status: 400 });
 
     let order = stopTimes.stopTimes.findIndex(stopTime => stopTime.tripId === Number(trip) && stopTime.stopSequence === 0 && stopTime.departureTime.split("T")[1] === start && stopTime.busServiceName === service);
-    if (order === -1) return new Response(JSON.stringify({ error: "no order" }), { status: 500 });
+    if (order === -1) return new Response(JSON.stringify({ error: "no order" }), { status: 400 });
 
     let stopTime = stopTimes.stopTimes.slice(order).filter((x, i) => x.stopSequence === i);
 
@@ -64,7 +65,7 @@ export const onRequestGet = async ({ request }) => {
     } = await fetch("https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/d3e96eb6-25ad-4d6c-8651-b1eb39155945/download/stopsingdansk.json", {
         //@ts-ignore
         cf: {
-            cacheTtl: 86400 * 3,
+            cacheTtl: 86400 / 2,
             cacheEverything: true
         },
         keepalive: true
@@ -79,6 +80,7 @@ export const onRequestGet = async ({ request }) => {
         shapes: shape.coordinates.map(x => [x[1], x[0]]),
         stops: stopTime.map(stop => {
             let stopData = stops?.stops?.find(s => s.stopId === stop.stopId);
+            if(!stopData) return null;
             let nearest = nearestPointOnLine(line, point([stopData?.stopLat, stopData?.stopLon]), { units: 'meters' });
             return {
                 name: `${stopData?.stopName} ${stopData?.stopCode}`,
@@ -91,8 +93,12 @@ export const onRequestGet = async ({ request }) => {
                 index: nearest.properties.index,
                 time: (czas(stop.departureTime.split("T")[1]) - czas(stopTime[0].departureTime.split("T")[1])) / 1000 / 60
             }
-        })
+        }).filter(x => x)
     }));
+} catch (e) {
+    console.log(e)
+    return new Response(JSON.stringify({ error: e.message }), { status: 400 });
+}
 };
 
 function czas(time: string) {
