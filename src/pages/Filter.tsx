@@ -23,14 +23,14 @@ export default ({ city, vehicles, onClose }: {
     const specialVehicles = vehicles ? vehicles.filter(x => x.isSpecial) : [];
 
     useEffect(() => {
-        if(!cities[city].functions.filter) {
+        if (!cities[city].functions.filter) {
             toast.error("Przepraszamy, filtrowanie nie jest dostępne w tym mieście.");
             navigate(`/${city}`);
         }
         fetch(cities[city].api.filter)
             .then(res => res.json())
             .then((filterData) => {
-                if(filterData.error) {
+                if (filterData.error) {
                     toast.error("Fatalny błąd.");
                     return navigate(`/${city}`);
                 }
@@ -62,7 +62,7 @@ export default ({ city, vehicles, onClose }: {
                 ))?.reduce((prev, curr) => [prev, <Divider key={Math.random()} />, curr]) : <h3 style={{ textAlign: "center" }}>Nic tu nie ma...</h3>} />
                 <Route path="line" element={<div style={{ textAlign: "center" }}>
                     {Object.values(filterData.routes).filter(x => selectedLines.includes(x.line)).map(line => (
-                        <Chip 
+                        <Chip
                             key={line.line}
                             label={line.line}
                             style={{ margin: 3 }}
@@ -110,15 +110,14 @@ export default ({ city, vehicles, onClose }: {
                 localStorage.setItem(`${city}.filter.lines`, JSON.stringify(selectedLines));
                 let found = vehicles.filter(x => selectedLines.includes(x.line));
                 toast[found.length ? "success" : "warn"](`Znaleziono ${found.length} pojazdów.`);
-                found.length && map.fitBounds(getMinAndMaxBoundsBasedOnVehicles(found));
+                (found.length && found.length <= 125) && map.fitBounds(bounds(found));
                 navigate(`/${city}`);
             }} variant="contained" color="success" style={{ marginRight: 5 }}>Zapisz</Button>
         </DialogActions> : null}
     </Dialog>;
 };
 
-function getMinAndMaxBoundsBasedOnVehicles(vehicles: Vehicle[]) {
-    // vehicle.location is LatLngExpression
+function bounds(vehicles: Vehicle[]) {
     const minLat = Math.min(...vehicles.map(x => x.location[0]));
     const maxLat = Math.max(...vehicles.map(x => x.location[0]));
     const minLng = Math.min(...vehicles.map(x => x.location[1]));

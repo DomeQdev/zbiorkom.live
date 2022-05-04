@@ -8,7 +8,7 @@ export default ({ stop, color }: { stop: Stop, color: string }) => {
         <Marker
             position={stop.location}
             eventHandlers={{
-                click: () => {}
+                click: () => { }
             }}
             icon={divIcon({
                 className: '',

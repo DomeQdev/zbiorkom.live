@@ -11,7 +11,7 @@ import Welcome from "./pages/Welcome";
 
 export default () => {
     useEffect(() => {
-        if(!localStorage.getItem("lang")) return localStorage.setItem("lang", ((navigator.languages && navigator.languages[0]) || navigator.language).split("-")[0]);
+        if (!localStorage.getItem("lang")) return localStorage.setItem("lang", ((navigator.languages && navigator.languages[0]) || navigator.language).split("-")[0]);
     }, []);
 
     return <>

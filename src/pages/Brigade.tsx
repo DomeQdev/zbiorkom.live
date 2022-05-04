@@ -48,7 +48,7 @@ export default ({ city, vehicle }: {
                     setScrolled(true);
                 }
             }} onClick={() => {
-                if(trip.trip === vehicle.trip) return;
+                if (trip.trip === vehicle.trip) return;
                 setSearchParams(`trip=${trip.trip}`);
             }}>
                 <ListItemText style={{ marginLeft: "-13px", marginRight: "1px" }}>

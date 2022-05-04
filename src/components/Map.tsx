@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { LatLngExpression, Map } from "leaflet";
 import { City, MapStyle } from "../util/typings";
-import { GpsFixed, Settings, FilterList } from '@mui/icons-material';
+import { GpsFixed, Settings, FilterList, BarChart } from '@mui/icons-material';
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 import UserMarker from "./UserMarker";
@@ -34,6 +34,7 @@ export default ({ city, children }: {
         </div>
         <div className="leaflet-control-zoom leaflet-bar leaflet-control" style={{ top: 120, right: 10, position: "absolute" }}>
             {cities[city].functions.filter && <a href="/" onClick={e => { navigate(`/${city}/filter`); e.preventDefault(); }} style={{ backgroundColor: JSON.parse(localStorage.getItem(`${city}.filter.lines`) as string || "[]").length ? "#5FDA5D" : "" }}><FilterList sx={{ fontSize: 19, marginTop: 0.75 }} /></a>}
+            <a href="/" onClick={e => { navigate(`/${city}/stats`); e.preventDefault(); }}><BarChart sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
             <a href="/" onClick={e => { navigate("/settings"); e.preventDefault(); }}><Settings sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
         </div>
         {children}
