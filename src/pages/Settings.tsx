@@ -31,7 +31,7 @@ export default () => {
                         <ListItemText primary="Styl mapy" />
                         <NavigateNext />
                     </ListItemButton>
-                    <Divider />
+                    {/*<Divider />
                     <ListItemButton onClick={() => navigate("vehicles")}>
                         <ListItemText primary="Wyświetlanie pojazdów" />
                         <NavigateNext />
@@ -40,7 +40,7 @@ export default () => {
                     <ListItemButton onClick={() => navigate("language")}>
                         <ListItemText primary="Język (Language)" />
                         <NavigateNext />
-                    </ListItemButton>
+                    </ListItemButton>*/}
                 </List>} />
                 <Route path="city" element={<List>
                     {Object.keys(cities).map<React.ReactNode>((city) => (<ListItemButton onClick={() => {
@@ -68,7 +68,7 @@ export default () => {
                     </RadioGroup>
                 </FormControl>} />
                 <Route path="vehicles" element={<></>} />
-                <Route path="language" element={<>jak dodam włochy to dodam wloski i angielski</>} />
+                <Route path="language" element={<></>} />
             </Routes>
         </DialogContent>
         <DialogActions>
