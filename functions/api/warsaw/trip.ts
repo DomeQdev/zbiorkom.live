@@ -42,5 +42,10 @@ export const onRequestGet = async ({ request, env }) => {
                 time: (stop.departure - data.stops[0].departure) / 1000 / 60
             }
         })
-    }));
+    }), {
+        headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "public, max-age=42300"
+        }
+    });
 };

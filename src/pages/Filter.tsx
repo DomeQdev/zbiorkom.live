@@ -1,5 +1,5 @@
 import { Close, NavigateNext } from "@mui/icons-material";
-import { Dialog, DialogContent, DialogTitle, Divider, IconButton, List, ListItemButton, ListItemIcon, ListItemText, ToggleButton, Chip } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Divider, IconButton, List, ListItemButton, ListItemIcon, ListItemText, ToggleButton, Chip, DialogActions, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { City, FilterData, Vehicle } from "../util/typings";
@@ -63,11 +63,7 @@ export default ({ city, vehicles, onClose }: {
                             key={line.line}
                             label={line.line}
                             style={{ margin: 3 }}
-                            onDelete={() => {
-                                let f = selectedLines.filter(x => x !== line.line);
-                                setSelectedLines(f);
-                                localStorage.setItem(`${city}.filter.lines`, JSON.stringify(f));
-                            }}
+                            onDelete={() => setSelectedLines(selectedLines.filter(x => x !== line.line))}
                         />
                     ))}<br />
                     {Object.values(filterData.routes).filter(x => x.showFilter !== false).sort().map<React.ReactNode>((line) => (
@@ -75,15 +71,11 @@ export default ({ city, vehicles, onClose }: {
                             value={line.line}
                             key={line.line}
                             selected={selectedLines.includes(line.line)}
-                            onClick={() => {
-                                let f = selectedLines.includes(line.line) ? selectedLines.filter(x => x !== line.line) : [...selectedLines, line.line];
-                                setSelectedLines(f);
-                                localStorage.setItem(`${city}.filter.lines`, JSON.stringify(f));
-                            }}
-                            style={{ width: 80, height: 50, fontSize: 20, color: line.color, margin: 3, borderColor: selectedLines.includes(line.line) ? line.color : "#0000001f" }}
+                            onClick={() => setSelectedLines(selectedLines.includes(line.line) ? selectedLines.filter(x => x !== line.line) : [...selectedLines, line.line])}
+                            style={{ width: 75, height: 50, fontSize: 20, color: line.color, margin: 3, borderColor: selectedLines.includes(line.line) ? line.color : "#0000001f" }}
                             title={`${line.line} - ${line.name}`}
                         >
-                            {getIcon({ size: 20 })[line.type].icon}&nbsp;{line.line.replace("-", "")}
+                            {getIcon({ size: 20 })[line.type].icon}<span style={{ width: 3 }} />{line.line.replace("-", "")}
                         </ToggleButton>
                     ))}
                 </div>} />
@@ -98,13 +90,23 @@ export default ({ city, vehicles, onClose }: {
                         <ListItemText primary="Filtrowanie po linii" />
                         <NavigateNext />
                     </ListItemButton>
-                    <Divider />
+                    {/*<Divider />
                     <ListItemButton onClick={() => navigate("model")}>
                         <ListItemText primary="Filtrowanie po modelu pojazdu" />
                         <NavigateNext />
-                    </ListItemButton>
+                    </ListItemButton>*/}
                 </List>} />
             </Routes> : "Ładowanie..."}
         </DialogContent>
+        {location.pathname === `/${city}/filter/line` || location.pathname === `/${city}/filter/model` ? <DialogActions style={{ justifyContent: "space-between" }}>
+            <Button onClick={() => {
+                localStorage.setItem(`${city}.filter.lines`, JSON.stringify([]));
+                navigate(`/${city}`);
+            }} variant="outlined" style={{ marginLeft: 5 }}>Zrestuj</Button>
+            <Button onClick={() => {
+                localStorage.setItem(`${city}.filter.lines`, JSON.stringify(selectedLines));
+                navigate(`/${city}`);
+            }} variant="contained" color="success" style={{ marginRight: 5 }}>Zapisz</Button>
+        </DialogActions> : null}
     </Dialog>;
 };

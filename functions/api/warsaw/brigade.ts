@@ -13,5 +13,10 @@ export const onRequestGet = async ({ request, env }) => {
     }] = await fetch(`${env.WARSAW_BACKEND}/brigade?line=${line}&brigade=${brigade}`).then(res => res.json()).catch(() => null);
     if (!data) return new Response(JSON.stringify({ error: "Brigade not found" }), { status: 404 });
 
-    return new Response(JSON.stringify(data));
+    return new Response(JSON.stringify(data), {
+        headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "public, max-age=42300"
+        }
+    });
 };

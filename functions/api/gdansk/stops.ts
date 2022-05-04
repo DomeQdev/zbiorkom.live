@@ -21,7 +21,7 @@ export const onRequestGet = async () => {
     })), {
         headers: {
             "Content-Type": "application/json",
-            "Cache-Control": "public, max-age=259200"
+            "Cache-Control": "public, max-age=42300"
         }
     });
 }

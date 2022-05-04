@@ -104,7 +104,12 @@ export const onRequestGet = async ({ request }) => {
                 time: (czas(stop.departureTime.split("T")[1]) - czas(stopTime[0].departureTime.split("T")[1])) / 1000 / 60
             }
         })
-    }));
+    }), {
+        headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "public, max-age=42300"
+        }
+    });
 } catch (e) {
     console.log(e)
     return new Response(JSON.stringify({ error: e.message }), { status: 400 });

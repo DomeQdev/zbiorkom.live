@@ -72,12 +72,12 @@ export default () => {
             </Routes>
         </DialogContent>
         <DialogActions>
-            <Button onClick={() => navigate("/")}>Anuluj</Button>
+            <Button onClick={() => navigate("/")} variant="outlined">Anuluj</Button>
             <Button onClick={() => {
                 localStorage.setItem("mapstyle", mapStyle);
                 toast.success("Zapisano ustawienia");
                 navigate("/");
-            }}>Zapisz</Button>
+            }} variant="contained" color="success">Zapisz</Button>
         </DialogActions>
     </Dialog>;
 };
