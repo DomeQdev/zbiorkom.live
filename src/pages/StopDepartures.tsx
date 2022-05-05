@@ -53,7 +53,7 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
             snapPoints={({ maxHeight }) => [maxHeight / 4, maxHeight * 0.6, maxHeight - 40]}
             header={<b style={{ alignItems: "center" }}>{stop?.name}</b>}
         >
-            {dep.filter(x => Date.now() < x.realTime).length ? <List>{dep.filter(x => Date.now() < x.realTime).sort((a, b) => a.realTime - b.realTime).map<React.ReactNode>((departure, i) => (
+            {dep.filter(x => Date.now() - 70000 < x.realTime).length ? <List>{dep.filter(x => Date.now() < x.realTime).sort((a, b) => a.realTime - b.realTime).map<React.ReactNode>((departure, i) => (
                 <ListItemButton key={`1_${i}`} onClick={() => departure?.vehicle ? map.setView(departure.vehicle.location, 17) : null}>
                     {console.log(departure)}
                     <ListItemText>
@@ -62,9 +62,9 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
                                 <span style={{ display: "inline-flex" }}><b style={{ color: "white", backgroundColor: departure?.color, borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center", height: 15 }}>{icons({ size: 17 })[departure?.type].icon}&nbsp;{departure?.line}</b>&nbsp;{departure?.headsign}</span>
                                 <span style={{ fontSize: 15 }}><br />{departure.delay ? <b style={{ color: "#d1312a" }}>{Math.abs(departure.delay)} min {departure.delay > 0 ? "opóźnienia" : "przed czasem"}</b> : <b style={{ color: "#187d3c" }}>Planowo</b>} <b>&#183;</b> {departure.delay ? <s>{timeString(departure.scheduledTime)}</s> : null} {timeString(departure.realTime)}</span>
                             </div>
-                            <div>
+                            <div className={minutesUntil(departure.realTime) < 0.3 ? "odjezdza" : ""}>
                                 <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "right" }}>{minutesUntil(departure.realTime) < 0.5 ? "<1" : minutesUntil(departure.realTime)}</p>
-                                <span style={{ color: "#737478", fontSize: 13, lineHeight: 0, margin: 0 }}>min</span>
+                                <span style={{ color: "#737478", fontSize: 13, lineHeight: 0, margin: 0, textAlign: "right" }}>min</span>
                             </div>
                         </div>
                     </ListItemText>

@@ -52,7 +52,7 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
                         </div>
                         {stop?.metersToStop > -50 ? <div className={serving?.id === stop.id && minutesUntil(stop.arrival + stop.delay * 60000) < 1 ? "odjezdza" : ""}>
                             <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "right" }}>{minutesUntil(stop.arrival + stop.delay * 60000) < 0.5 ? "<1" : minutesUntil(stop.arrival + stop.delay * 60000)}</p>
-                            <span style={{ color: "#737478", fontSize: 13, lineHeight: 0, margin: 0 }}>min</span>
+                            <span style={{ color: "#737478", fontSize: 13, lineHeight: 0, margin: 0, textAlign: "right" }}>min</span>
                         </div> : null}
                     </div>
                 </ListItemText>
