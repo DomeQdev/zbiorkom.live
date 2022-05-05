@@ -69,7 +69,20 @@ interface VehicleInfo {
     description?: string
 }
 
+interface Departure {
+    line: string,
+    route: string,
+    type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley",
+    color: string,
+    brigade: string,
+    headsign: string,
+    delay: number,
+    status: "REALTIME" | "SCHEDULED",
+    realTime: number,
+    scheduledTime: number
+}
+
 type City = "warsaw" | "gdansk";
 type MapStyle = "osm" | "mapbox" | "mapstr" | "mapsat" | "mapnav" | "gmaps" | "gsat";
 
-export { Vehicle, Stop, Trip, FilterData, City, VehicleInfo, MapStyle };
+export { Vehicle, Stop, Trip, FilterData, City, VehicleInfo, MapStyle, Departure };

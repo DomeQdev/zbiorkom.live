@@ -6,35 +6,37 @@ import { toast } from "react-toastify";
 import useWebSocket from "react-use-websocket";
 import VehicleMarker from "../components/VehicleMarker";
 import StopMarker from "../components/StopMarker";
-import Error from "../pages/Error";
-import Trip from "../pages/Trip";
-import Filter from "../pages/Filter";
 import cities from "../util/cities.json";
+import Error from "./Error";
+import Trip from "./Trip";
+import Filter from "./Filter";
 import Stats from "./Stats";
+import StopDepartures from "./StopDepartures";
 
 export default ({ city }: {
 	city: City
 }) => {
 	const map = useMap();
 	const navigate = useNavigate();
-	const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 	const [stops, setStops] = useState<Stop[]>([]);
+	const [veh, setVehicles] = useState<Vehicle[]>([]);
 	const [bounds, setBounds] = useState(map.getBounds());
 
-	useWebSocket(cities[city].api.positions_websocket, {
+	const { lastJsonMessage }: { lastJsonMessage: Vehicle[] } = useWebSocket(cities[city].api.positions_websocket, {
 		onOpen: () => console.log('opened'),
 		onClose: () => console.log('closed'),
 		onReconnectStop: () => toast.error("Utracono połączenie z serwerem.", { autoClose: false }),
-		onMessage: ({ data }) => setVehicles(JSON.parse(data)),
 		shouldReconnect: () => true,
 		reconnectInterval: 10000,
 		reconnectAttempts: 10,
 		retryOnError: true
 	});
 
+	const vehicles = lastJsonMessage || veh || [];
+
 	useEffect(() => {
-		fetch(cities[city].api.positions).then(res => res.json()).then(setVehicles).catch(() => null);
-		if (cities[city].functions.stopDepartures && cities[city].api.stopList) fetch(cities[city].api.stopList || "").then(res => res.json()).then(setStops).catch(() => null);
+		fetch(cities[city].api.positions).then(res => res.json()).then(setVehicles).catch(() => null)
+		if (cities[city].functions.stopDepartures) fetch(cities[city].api.stopList || "").then(res => res.json()).then(setStops).catch(() => null);
 	}, []);
 
 	let linesFilter = JSON.parse(localStorage.getItem(`${city}.filter.lines`) || "[]") as string[];
@@ -46,11 +48,13 @@ export default ({ city }: {
 
 	return <Routes>
 		<Route path="/" element={<>
-			{inBounds.length <= 125 && inBounds.map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={city} />)}
-			{map.getZoom() >= 16 && stops?.filter(stop => bounds.contains(stop.location)).map(stop => <StopMarker stop={stop} key={stop.id} color="red" />)}
+			{(map.getZoom() >= 15 || (linesFilter.length && inBounds.length <= 150)) ? inBounds.filter(x => x.trip).map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={city} />) : null}
+			{map.getZoom() >= 16 ? stops?.filter(stop => bounds.contains(stop.location)).map(stop => <StopMarker stop={stop} key={stop.id} color="red" departures />) : null}
+			{map.getZoom() >= 17 || (linesFilter.length && inBounds.length <= 150) ? inBounds.filter(x => !x.trip).map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={city} />) : null}
 		</>} />
 		<Route path="/wlt" element={vehicles.filter(veh => veh.line === "100" || veh.line === "36" || veh.line === "T").map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={city} />)} />
 		<Route path="/filter/*" element={<Filter vehicles={vehicles} city={city} onClose={() => navigate(`/${city}`)} />} />
+		{cities[city].functions.stopDepartures && <Route path="/stop/:id" element={<StopDepartures city={city} stops={stops} vehicles={vehicles} />} />}
 		<Route path="/:type/:tab/*" element={<Trip vehicles={vehicles} city={city} />} />
 		<Route path="/stats" element={<Stats city={city} vehicles={vehicles} />} />
 		<Route path="*" element={<Error type="error" message="Nie znaleziono strony." />} />

@@ -37,6 +37,19 @@ body {
   border-radius: 18px;
 }
 
+.stop_marker_active {
+  width: 3px;
+  height: 3px;
+  padding: 3px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: center;
+  outline: none;
+  border-radius: 18px;
+}
+
 .leaflet-marker-icon.vehicle {
   -webkit-transition: transform .3s linear;
   -moz-transition: transform .3s linear;

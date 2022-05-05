@@ -675,7 +675,7 @@
         "line": "20",
         "id": "10020",
         "name": "Gdynia Dworzec Gł. PKP - Cisowa SKM",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -683,7 +683,7 @@
         "line": "21",
         "id": "10021",
         "name": "Sopot Reja - Gdynia Dworzec Gł. PKP",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -691,7 +691,7 @@
         "line": "22",
         "id": "10022",
         "name": "Gdynia Dworzec Gł. PKP - Cisowa SKM",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -699,7 +699,7 @@
         "line": "23",
         "id": "10023",
         "name": "Kacze Buki - Stocznia Gdynia",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -707,7 +707,7 @@
         "line": "24",
         "id": "10024",
         "name": "Dąbrowa Miętowa - Stocznia Gdynia",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -715,7 +715,7 @@
         "line": "25",
         "id": "10025",
         "name": "3 Maja - Hala - Cisowa SKM",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -723,7 +723,7 @@
         "line": "26",
         "id": "10026",
         "name": "\"Orłowo SKM - \"\"Klif\"\" - Cisowa Sibeliusa\"",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -731,7 +731,7 @@
         "line": "27",
         "id": "10027",
         "name": "Kacze Buki - Cisowa SKM",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -739,7 +739,7 @@
         "line": "28",
         "id": "10028",
         "name": "3 Maja - Hala - Pustki Cisowskie",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -747,7 +747,7 @@
         "line": "29",
         "id": "10029",
         "name": "Wielki Kack Fikakowo - Gdynia Dworzec Gł. PKP",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -755,7 +755,7 @@
         "line": "30",
         "id": "10030",
         "name": "Gdynia Dworzec Gł. PKP - Cisowa Sibeliusa",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -763,7 +763,7 @@
         "line": "31",
         "id": "10031",
         "name": "Ergo Arena - Dąbrowa Miętowa",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -779,7 +779,7 @@
         "line": "33",
         "id": "10033",
         "name": "Karwiny Tuwima - Gdynia Dworzec Gł. PKP",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -1227,7 +1227,7 @@
         "line": "320",
         "id": "10320",
         "name": "Gdynia Dworzec Gł. PKP - Gdynia Dworzec Gł. PKP",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -1363,7 +1363,7 @@
         "line": "710",
         "id": "10710",
         "name": "... - Grabówek SKM",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
@@ -1371,7 +1371,7 @@
         "line": "723",
         "id": "10723",
         "name": "Morska - Estakada - Stocznia Gdynia",
-        "type": "unknown",
+        "type": "trolley",
         "color": "#91BE40",
         "showFilter": false
     },
