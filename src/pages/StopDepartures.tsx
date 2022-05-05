@@ -55,7 +55,6 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
         >
             {dep.filter(x => Date.now() - 70000 < x.realTime).length ? <List>{dep.filter(x => Date.now() < x.realTime).sort((a, b) => a.realTime - b.realTime).map<React.ReactNode>((departure, i) => (
                 <ListItemButton key={`1_${i}`} onClick={() => departure?.vehicle ? map.setView(departure.vehicle.location, 17) : null}>
-                    {console.log(departure)}
                     <ListItemText>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <div>
