@@ -57,7 +57,7 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
                     </div>
                 </ListItemText>
             </ListItem>
-        )).reduce((prev, curr) => [prev, <Divider variant="inset" key={Math.random()} sx={{ backgroundColor: "#DCCDCD", marginRight: "10px", marginLeft: "57px" }} />, curr])}
+        )).reduce((prev, curr, i) => [prev, <Divider variant="inset" key={i} sx={{ backgroundColor: "#DCCDCD", marginRight: "10px", marginLeft: "57px" }} />, curr])}
     </List>;
 
     function metersToStop(stop: Stop) {

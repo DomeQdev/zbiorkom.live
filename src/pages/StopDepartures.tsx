@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { List, Divider, ListItemButton, ListItemText, ListItemAvatar } from "@mui/material";
+import { City, Departure, Stop, Vehicle } from "../util/typings";
 import { useNavigate, useParams } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import { toast } from "react-toastify";
-import { City, Departure, Stop, Vehicle } from "../util/typings";
-import StopMarker from "../components/StopMarker";
 import { useMap } from "react-leaflet";
+import StopMarker from "../components/StopMarker";
+import cities from "../util/cities.json";
+import icons from "../util/icons";
+import VehicleMarker from "../components/VehicleMarker";
 
 export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles: Vehicle[] }) => {
     const navigate = useNavigate();
@@ -12,10 +16,10 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
     const { id } = useParams();
 
     const [stop, setStop] = useState<Stop>();
-    const [departures, setDepartures] = useState<Departure[]>();
+    const [departures, setDepartures] = useState<Departure[]>([]);
 
     useEffect(() => {
-        if(!stops.length || stop) return;
+        if (!stops.length || stop) return;
         let st = stops.find(s => s.id === id);
         if (!st) {
             toast.error("Nie znaleziono przystanku.");
@@ -23,10 +27,24 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
         }
         setStop(st);
         map.setView(st.location, 17);
+        const loadDepartures = () => fetch(cities[city].api.stopDepartures!.replace("{{stop}}", st!.id)).then(res => res.json()).then(setDepartures);
+        loadDepartures();
+        setInterval(() => document.visibilityState === "visible" ? loadDepartures() : null, 60000 * 2);
     }, [stops]);
+
+    const dep = useMemo(() => departures.map(departure => {
+        let vehicle = vehicles.find(v => v.line === departure.line && v.brigade === departure.brigade);
+        return {
+            ...departure,
+            vehicle,
+            realTime: vehicle ? departure.scheduledTime + (vehicle.delay || 0) * 1000 : departure.realTime,
+            delay: Math.round((vehicle?.delay || departure.delay) / 60)
+        };
+    }), [departures, vehicles]);
 
     return <>
         {stop ? <StopMarker stop={stop} color="#ff0000" /> : null}
+        {dep.filter(veh => veh.vehicle).map((veh, i) => <VehicleMarker vehicle={veh.vehicle!} city={city} key={`0_${i}`} />)}
         <BottomSheet
             open
             onDismiss={() => navigate(`/${city}`)}
@@ -35,7 +53,32 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
             snapPoints={({ maxHeight }) => [maxHeight / 4, maxHeight * 0.6, maxHeight - 40]}
             header={<b style={{ alignItems: "center" }}>{stop?.name}</b>}
         >
-            poczekaj, nasze chomiki są w trakcie przygotowywania listy przyjazdów...
+            {dep.filter(x => Date.now() < x.realTime).length ? <List>{dep.filter(x => Date.now() < x.realTime).sort((a, b) => a.realTime - b.realTime).map<React.ReactNode>((departure, i) => (
+                <ListItemButton key={`1_${i}`} onClick={() => departure?.vehicle ? map.setView(departure.vehicle.location, 17) : null}>
+                    {console.log(departure)}
+                    <ListItemText>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <div>
+                                <span style={{ display: "inline-flex" }}><b style={{ color: "white", backgroundColor: departure?.color, borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center", height: 15 }}>{icons({ size: 17 })[departure?.type].icon}&nbsp;{departure?.line}</b>&nbsp;{departure?.headsign}</span>
+                                <span style={{ fontSize: 15 }}><br />{departure.delay ? <b style={{ color: "#d1312a" }}>{Math.abs(departure.delay)} min {departure.delay > 0 ? "opóźnienia" : "przed czasem"}</b> : <b style={{ color: "#187d3c" }}>Planowo</b>} <b>&#183;</b> {departure.delay ? <s>{timeString(departure.scheduledTime)}</s> : null} {timeString(departure.realTime)}</span>
+                            </div>
+                            <div>
+                                <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "right" }}>{minutesUntil(departure.realTime) < 0.5 ? "<1" : minutesUntil(departure.realTime)}</p>
+                                <span style={{ color: "#737478", fontSize: 13, lineHeight: 0, margin: 0 }}>min</span>
+                            </div>
+                        </div>
+                    </ListItemText>
+                </ListItemButton>
+            )).reduce((prev, curr, i) => [prev, <Divider key={`2_${i}`} sx={{ backgroundColor: "#DCCDCD", marginLeft: "10px", marginRight: "10px" }} />, curr])}</List> : <h2 style={{ textAlign: "center" }}>Już dzisiaj nic tu nie przyjedzie :(</h2>}
         </BottomSheet>
     </>;
 };
+
+function minutesUntil(timestamp: number) {
+    return Math.round((timestamp - Date.now()) / 60000);
+}
+
+function timeString(timestamp: number) {
+    let date = new Date(timestamp);
+    return `${date.getHours()}:${date.getMinutes() < 10 ? "0" : ""}${date.getMinutes()}`;
+}
