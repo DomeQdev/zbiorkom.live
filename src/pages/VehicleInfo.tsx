@@ -43,9 +43,6 @@ export default ({ city, vehicle }: {
             {info?.registration && <><b>Rejestracja:</b> {info.registration}<br /></>}
             {info?.carrier && <><b>Operator:</b> {info.carrier}<br /></>}
             {info?.depot && <><b>Zajezdnia:</b> {info.depot}<br /></>}
-            {info?.doors && <><b>Ilość drzwi:</b> {info.doors}<br /></>}
-            {info?.seats && <><b>Ilość siedzeń:</b> {info.seats}<br /></>}
-            {info?.bikes && <><b>Stojaki na rowery:</b> {info.bikes}<br /></>}
             {info?.features && <p style={{ lineHeight: 1 }}>{info.features.join(", ")}</p>}
         </DialogContent>
     </Dialog>;

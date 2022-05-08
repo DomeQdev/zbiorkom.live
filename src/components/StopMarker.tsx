@@ -13,7 +13,7 @@ export default ({ stop, color, departures = false}: { stop: Stop, color?: string
             }}
             icon={divIcon({
                 className: '',
-                html: renderToStaticMarkup(<button className={`stop_marker${departures ? "_active" : ""}`} style={{ border: `3px solid ${color}` }} title={`${stop.name} ${stop.on_request ? "(Ż)" : ""}`} />),
+                html: renderToStaticMarkup(<button className={`stop_marker${departures ? "_active" : ""}`} style={{ border: `3px solid ${color}` }} title={stop.name} />),
                 iconSize: [30, 30],
                 iconAnchor: [8, 7],
                 popupAnchor: departures ? [-1, -5] : [1, -5]

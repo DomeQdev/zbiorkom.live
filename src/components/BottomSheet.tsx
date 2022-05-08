@@ -41,6 +41,7 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
                 <MenuItem onClick={() => { if(trip?.shapes) map.fitBounds(bounds(trip.shapes)); setAnchorEl(null); }}>Pokaż trasę</MenuItem>
                 {cities[city].functions.brigades && vehicle?.brigade && <MenuItem onClick={() => { navigate("brigade"); setAnchorEl(null); }}>Kursy tego pojazdu</MenuItem>}
                 {cities[city].functions.vehicleInfo && <MenuItem onClick={() => { navigate("vehicle"); setAnchorEl(null); }}>Informacje o pojeździe</MenuItem>}
+                <MenuItem onClick={() => navigate(`/${city}`)}>Zamknij</MenuItem>
             </Menu>
         </>}
     >

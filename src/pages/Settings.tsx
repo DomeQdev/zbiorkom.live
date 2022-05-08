@@ -59,12 +59,12 @@ export default () => {
                         onChange={({ target }) => setMapStyle(target.value as MapStyle)}
                     >
                         <FormControlLabel value="gmaps" control={<Radio />} label="Google Maps" />
-                        <FormControlLabel value="gsat" control={<Radio />} label="Google Satelita" />
-                        <FormControlLabel value="osm" control={<Radio />} label="OpenStreetMap" />
+                        <FormControlLabel value="gsat" control={<Radio />} label="Google Satelitte" />
+                        <FormControlLabel value="osm" control={<Radio />} label="Open Street Map" />
                         <FormControlLabel value="mapbox" control={<Radio />} label="Mapbox" />
                         <FormControlLabel value="mapstr" control={<Radio />} label="Mapbox Streets" />
                         <FormControlLabel value="mapnav" control={<Radio />} label="Mapbox Navigation" />
-                        <FormControlLabel value="mapsat" control={<Radio />} label="Mapbox Satelita" />
+                        <FormControlLabel value="mapsat" control={<Radio />} label="Mapbox Satelitte" />
                     </RadioGroup>
                 </FormControl>} />
                 <Route path="vehicles" element={<></>} />
