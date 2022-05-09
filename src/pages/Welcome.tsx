@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { List, ListItemButton, ListItemText, Divider, Dialog, DialogTitle, DialogContent } from "@mui/material";
 import { NavigateNext } from "@mui/icons-material";
 import { City } from "../util/typings";
+import { Translate } from "../util/Translations";
 import cities from "../util/cities.json";
 
 export default () => {
@@ -18,7 +19,7 @@ export default () => {
         scroll="paper"
         fullScreen
     >
-        <DialogTitle><span>Wybierz miasto</span></DialogTitle>
+        <DialogTitle><Translate name="select_city" /></DialogTitle>
         <DialogContent dividers>
             <List>
                 {Object.keys(cities).map<React.ReactNode>((city) => (<ListItemButton onClick={() => {

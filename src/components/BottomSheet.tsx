@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { LatLngBoundsExpression } from "leaflet";
 import { useMap } from "react-leaflet";
 import { Vehicle, City, Trip } from "../util/typings";
+import { Translate } from "../util/Translations";
 import StopList from "./StopList";
 import icons from "../util/icons";
 import cities from "../util/cities.json";
@@ -38,14 +39,14 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
                     }
                 }}
             >
-                <MenuItem onClick={() => { if(trip?.shapes) map.fitBounds(bounds(trip.shapes)); setAnchorEl(null); }}>Pokaż trasę</MenuItem>
-                {cities[city].functions.brigades && vehicle?.brigade && <MenuItem onClick={() => { navigate("brigade"); setAnchorEl(null); }}>Kursy tego pojazdu</MenuItem>}
-                {cities[city].functions.vehicleInfo && <MenuItem onClick={() => { navigate("vehicle"); setAnchorEl(null); }}>Informacje o pojeździe</MenuItem>}
-                <MenuItem onClick={() => navigate(`/${city}`)}>Zamknij</MenuItem>
+                <MenuItem onClick={() => { if(trip?.shapes) map.fitBounds(bounds(trip.shapes)); setAnchorEl(null); }}><Translate name="show_route" /></MenuItem>
+                {cities[city].functions.brigades && vehicle?.brigade && <MenuItem onClick={() => { navigate("brigade"); setAnchorEl(null); }}><Translate name="next_trips" /></MenuItem>}
+                {cities[city].functions.vehicleInfo && <MenuItem onClick={() => { navigate("vehicle"); setAnchorEl(null); }}><Translate name="vehicle_info" /></MenuItem>}
+                <MenuItem onClick={() => navigate(`/${city}`)}><Translate name="close" /></MenuItem>
             </Menu>
         </>}
     >
-        {trip?.error ? <h3 style={{ textAlign: "center" }}>Nie znaleziono trasy</h3> : <StopList trip={trip} vehicle={vehicle} />}
+        {trip?.error ? <h3 style={{ textAlign: "center" }}><Translate name="trip_not_found" /></h3> : <StopList trip={trip} vehicle={vehicle} />}
     </BottomSheet>;
 };
 

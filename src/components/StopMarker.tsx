@@ -3,6 +3,7 @@ import { divIcon } from 'leaflet';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Stop } from "../util/typings";
 import { Link } from 'react-router-dom';
+import { Translate } from "../util/Translations";
 
 export default ({ stop, color, departures = false}: { stop: Stop, color?: string, departures?: boolean }) => {
     return (
@@ -20,7 +21,7 @@ export default ({ stop, color, departures = false}: { stop: Stop, color?: string
             })}
             zIndexOffset={100}
       >
-            <Popup autoPan={false}><b>{stop.name}</b>{departures && <><br /><Link to={`stop/${stop.id}`}>Odjazdy z przystanku</Link></>}</Popup>
+            <Popup autoPan={false}><b>{stop.name}</b>{departures && <><br /><Link to={`stop/${stop.id}`}><Translate name="stop_departures" /></Link></>}</Popup>
         </Marker>
     );
 };

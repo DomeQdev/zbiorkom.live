@@ -4,6 +4,7 @@ import { Close } from "@mui/icons-material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { City, Vehicle } from "../util/typings";
+import { Translate, translate } from "../util/Translations";
 import cities from "../util/cities.json";
 
 export default ({ city, vehicle }: {
@@ -17,12 +18,12 @@ export default ({ city, vehicle }: {
 
     useEffect(() => {
         if (!cities[city].functions.brigades) {
-            toast.error(`Przepraszamy, funkcja nie dostępna dla tego miasta.`);
+            toast.error(translate("not_available_for_city"));
             return navigate("../");
         }
         fetch(cities[city].api.brigade!.replace("{{line}}", vehicle.line).replace("{{brigade}}", vehicle.brigade!)).then(res => res.json()).then(data => {
             if (data.error) {
-                toast.error("Nie znaleziono rozkładu brygad.")
+                toast.error(translate("no_brigades_found"));
                 return navigate("../");
             }
             setTrips(data);
@@ -40,7 +41,7 @@ export default ({ city, vehicle }: {
         scroll="paper"
         fullWidth
     >
-        <DialogTitle style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><span>Rozkład brygady <b>{vehicle.line}</b>/<small>{vehicle.brigade}</small></span><IconButton onClick={() => navigate("../")}><Close /></IconButton></DialogTitle>
+        <DialogTitle style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><span><Translate name="brigade_schedule" /> <b>{vehicle.line}</b>/<small>{vehicle.brigade}</small></span><IconButton onClick={() => navigate("../")}><Close /></IconButton></DialogTitle>
         <DialogContent dividers>
             {trips?.length ? trips?.map<React.ReactNode>(trip => (<ListItem button key={trip.trip} ref={(ref) => {
                 if (!scrolled && trip.trip === vehicle.trip) {
@@ -61,7 +62,7 @@ export default ({ city, vehicle }: {
                         </div>
                     </div>
                 </ListItemText>
-            </ListItem>)).reduce((prev, curr, i) => [prev, <Divider key={i} textAlign="left" style={{ color: "#9ba1ab", fontSize: 14 }}>{(trips[i].start - trips[i - 1]!.end) / 60000 < 60 ? `Postój ${(trips[i].start - trips[i - 1]!.end) / 60000} min` : null}</Divider>, curr]) : "Nic tu nie ma..."}
+            </ListItem>)).reduce((prev, curr, i) => [prev, <Divider key={i} textAlign="left" style={{ color: "#9ba1ab", fontSize: 14 }}>{(trips[i].start - trips[i - 1]!.end) / 60000 < 60 ? translate("break", `${(trips[i].start - trips[i - 1]!.end) / 60000} min`) : null}</Divider>, curr]) : "Nic tu nie ma..."}
         </DialogContent>
     </Dialog>;
 };

@@ -3,12 +3,13 @@ import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { Vehicle, City, Trip } from "../util/typings";
 import { Polyline, useMap } from "react-leaflet";
 import { toast } from "react-toastify";
+import { translate, Translate } from "../util/Translations";
 import VehicleMarker from "../components/VehicleMarker";
 import StopMarker from "../components/StopMarker";
 import BottomSheet from "../components/BottomSheet";
-import cities from "../util/cities.json";
 import Brigade from "./Brigade";
 import VehicleInfo from "./VehicleInfo";
+import cities from "../util/cities.json";
 
 export default ({ vehicles, city }: {
     vehicles: Vehicle[],
@@ -25,7 +26,7 @@ export default ({ vehicles, city }: {
 
         let veh = vehicles.find(v => v.type === type && v.tab === tab);
         if (!veh) {
-            toast.error(vehicle ? "Utracono połączenie z pojazdem." : "Nie znaleziono pojazdu.");
+            toast.error(translate(vehicle ? "vehicle_lost" : "vehicle_not_found"));
             return navigate(`/${city}`);
         }
         if (veh && !vehicle) map.setView(veh.location, 17);
@@ -37,7 +38,7 @@ export default ({ vehicles, city }: {
         if (!trip?.error && veh?.trip && (!trip || trip.id !== veh.trip)) fetch(cities[city].api.trip.replace("{{trip}}", veh.trip)).then(res => res.json())
             .then(setTrip)
             .catch(() => {
-                toast.error("Fatalny błąd.");
+                toast.error(translate("fatal_error"));
                 return navigate(`/${city}`);
             });
     }, [vehicles]);

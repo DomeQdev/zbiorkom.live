@@ -6,6 +6,7 @@ import { LatLngBoundsExpression } from "leaflet";
 import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
 import { toast } from "react-toastify";
+import { translate, Translate } from "../util/Translations";
 import getIcon from "../util/icons";
 import cities from "../util/cities.json";
 
@@ -24,20 +25,20 @@ export default ({ city, vehicles, onClose }: {
 
     useEffect(() => {
         if (!cities[city].functions.filter) {
-            toast.error("Przepraszamy, filtrowanie nie jest dostępne w tym mieście.");
+            toast.error(translate("not_available_for_city"));
             navigate(`/${city}`);
         }
         fetch(cities[city].api.filter)
             .then(res => res.json())
             .then((filterData) => {
                 if (filterData.error) {
-                    toast.error("Fatalny błąd.");
+                    toast.error(translate("fatal_error"));
                     return navigate(`/${city}`);
                 }
                 setFilterData(filterData);
             })
             .catch(() => {
-                toast.error("Fatalny błąd.");
+                toast.error(translate("fatal_error"));
                 navigate(`/${city}`);
             });
     }, []);
@@ -48,7 +49,7 @@ export default ({ city, vehicles, onClose }: {
         scroll="paper"
         fullWidth
     >
-        <DialogTitle style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><span>Filtrowanie pojazdów</span><IconButton onClick={() => location.pathname === `/${city}/filter` ? onClose() : navigate(`/${city}/filter`)}><Close /></IconButton></DialogTitle>
+        <DialogTitle style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><span><Translate name="vehicles_filtering" /></span><IconButton onClick={() => location.pathname === `/${city}/filter` ? onClose() : navigate(`/${city}/filter`)}><Close /></IconButton></DialogTitle>
         <DialogContent dividers>
             {filterData ? <Routes>
                 <Route path="special" element={specialVehicles.length ? specialVehicles.sort((one, two) => (one.isSpecial! + one.tab > two.isSpecial! + two.tab ? 1 : -1)).map<React.ReactNode>(vehicle => (
@@ -56,10 +57,10 @@ export default ({ city, vehicles, onClose }: {
                         <ListItemIcon sx={{ minWidth: 40 }}>{getIcon({ size: 24 })[vehicle.type].icon}</ListItemIcon>
                         <ListItemText style={{ display: "inline-flex", alignItems: "center" }}>
                             {vehicle.isSpecial} ({vehicle.tab})<br />
-                            <span style={{ color: "#757575", fontSize: 15 }}>Na trasie linii {vehicle.line}</span>
+                            <span style={{ color: "#757575", fontSize: 15 }}><Translate name="on_route" replace={vehicle.line} /></span>
                         </ListItemText>
                     </ListItemButton>
-                ))?.reduce((prev, curr) => [prev, <Divider key={Math.random()} />, curr]) : <h3 style={{ textAlign: "center" }}>Nic tu nie ma...</h3>} />
+                ))?.reduce((prev, curr) => [prev, <Divider key={Math.random()} />, curr]) : <h3 style={{ textAlign: "center" }}><Translate name="nothing_there" /></h3>} />
                 <Route path="line" element={<div style={{ textAlign: "center" }}>
                     {Object.values(filterData.routes).filter(x => selectedLines.includes(x.line)).map(line => (
                         <Chip
@@ -85,34 +86,34 @@ export default ({ city, vehicles, onClose }: {
                 <Route path="model" element={<></>} />
                 <Route path="*" element={<List>
                     <ListItemButton onClick={() => navigate("special")}>
-                        <ListItemText primary="Specjalne pojazdy" />
+                        <ListItemText primary={translate("special_vehicles")} />
                         <NavigateNext />
                     </ListItemButton>
                     <Divider />
                     <ListItemButton onClick={() => navigate("line")}>
-                        <ListItemText primary="Filtrowanie po linii" />
+                        <ListItemText primary={translate("line_filtering")} />
                         <NavigateNext />
                     </ListItemButton>
                     {/*<Divider />
                     <ListItemButton onClick={() => navigate("model")}>
-                        <ListItemText primary="Filtrowanie po modelu pojazdu" />
+                        <ListItemText primary={translate("model_filtering")} />
                         <NavigateNext />
                     </ListItemButton>*/}
-                </List>} />
-            </Routes> : "Ładowanie..."}
+                    </List>} />
+            </Routes> : translate("loading")}
         </DialogContent>
         {location.pathname === `/${city}/filter/line` || location.pathname === `/${city}/filter/model` ? <DialogActions style={{ justifyContent: "space-between" }}>
             <Button onClick={() => {
                 localStorage.setItem(`${city}.filter.lines`, JSON.stringify([]));
                 navigate(`/${city}`);
-            }} variant="outlined" style={{ marginLeft: 5 }}>Zresetuj</Button>
+            }} variant="outlined" style={{ marginLeft: 5 }}><Translate name="reset" /></Button>
             <Button onClick={() => {
                 localStorage.setItem(`${city}.filter.lines`, JSON.stringify(selectedLines));
                 let found = vehicles.filter(x => selectedLines.includes(x.line));
-                toast[found.length ? "success" : "warn"](`Znaleziono ${found.length} pojazdów.`);
+                toast[found.length ? "success" : "warn"](translate("found_vehicles", String(found.length)));
                 (found.length && found.length <= 125) && map.fitBounds(bounds(found));
                 navigate(`/${city}`);
-            }} variant="contained" color="success" style={{ marginRight: 5 }}>Zapisz</Button>
+            }} variant="contained" color="success" style={{ marginRight: 5 }}><Translate name="save" /></Button>
         </DialogActions> : null}
     </Dialog>;
 };

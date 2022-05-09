@@ -1,9 +1,9 @@
 import { List, ListItem, ListItemAvatar, ListItemText, Avatar, Divider } from "@mui/material";
-import { PanTool } from "@mui/icons-material";
 import { nearestPointOnLine, point, lineString, Position } from "@turf/turf";
 import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
 import { Stop, Trip, Vehicle } from "../util/typings";
+import { Translate } from "../util/Translations";
 
 export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
     const map = useMap();
@@ -48,7 +48,7 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <div style={{ color: stop?.metersToStop < -50 ? "#ADADAD" : "" }}>
                             <span>{stop.name}</span>
-                            {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{stop.delay ? <b style={{ color: "#d1312a" }}>{Math.abs(stop.delay)} min {stop.delay > 0 ? "opóźnienia" : "przed czasem"}</b> : <b style={{ color: "#187d3c" }}>Planowo</b>} <b>&#183;</b> {stop.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + stop.delay * 60000)}</span> : null}
+                            {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{stop.delay ? <b style={{ color: "#d1312a" }}><Translate name={stop.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(stop.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>} <b>&#183;</b> {stop.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + stop.delay * 60000)}</span> : null}
                         </div>
                         {stop?.metersToStop > -50 ? <div className={serving?.id === stop.id && minutesUntil(stop.arrival + stop.delay * 60000) < 1 ? "odjezdza" : ""}>
                             <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "right" }}>{minutesUntil(stop.arrival + stop.delay * 60000) < 0.5 ? "<1" : minutesUntil(stop.arrival + stop.delay * 60000)}</p>
