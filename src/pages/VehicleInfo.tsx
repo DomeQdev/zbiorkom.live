@@ -36,7 +36,7 @@ export default ({ city, vehicle }: {
     >
         <DialogTitle style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><span><Translate name="vehicle_info" /></span><IconButton onClick={() => navigate("../")}><Close /></IconButton></DialogTitle>
         <DialogContent dividers>
-            <b><Translate name="vehicle_number" /></b> {vehicle.tab}<br />
+            <b><Translate name="vehicle_number" />:</b> {vehicle.tab}<br />
             {vehicle?.isSpecial && <><b style={{ color: "#F5CF4B" }}>{vehicle.isSpecial}</b><br /></>}
             {(info?.description && !vehicle?.isSpecial) && <>{info.description}<br /></>}
             {info?.model && <><b><Translate name="vehicle_model" />:</b> {info.model}<br /></>}
