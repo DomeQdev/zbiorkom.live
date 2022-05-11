@@ -4,6 +4,7 @@ import { City, MapStyle } from "../util/typings";
 import { GpsFixed, Settings, FilterList, BarChart } from '@mui/icons-material';
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import UserMarker from "./UserMarker";
 import cities from "../util/cities.json";
 
@@ -13,10 +14,10 @@ export default ({ city, children }: {
 }) => {
     const navigate = useNavigate();
     const [map, setMap] = useState<Map>();
-    const [userLocation, setUserLocation] = useState<any>();
+    const [userLocation, setUserLocation] = useState<[number, number]>();
     const [userAngle, setUserAngle] = useState<any>();
 
-    window.addEventListener("deviceorientation", ({ alpha }) => setUserAngle(alpha || 0));
+    window.addEventListener("deviceorientation", ({ alpha }) => setUserAngle(alpha ? 0 : (360 - alpha)));
 
     return <MapContainer
         center={cities[city].location as LatLngExpression}
@@ -38,20 +39,23 @@ export default ({ city, children }: {
             <a href="/" onClick={e => { navigate("/settings"); e.preventDefault(); }}><Settings sx={{ fontSize: 19, marginTop: 0.75 }} /></a>
         </div>
         {children}
-        {userLocation && <UserMarker location={userLocation.latlng} angle={userAngle} />}
+        {userLocation && <UserMarker location={userLocation} angle={userAngle} />}
     </MapContainer>;
 
     function locate() {
         if (!map) return;
         if (userLocation) return map.setView(userLocation.latlng, 17);
-        map.locate({ watch: true })
-            .once("locationfound", ({ latlng }) => map.setView(latlng, 17))
-            .on("locationfound", setUserLocation);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(({ coords }) => map.setView([coords.latitude, coords.longitude], 17));
+            navigator.geolocation.watchPosition(({ cords }) => setUserLocation([coords.latitude, coords.longitude]));
+        } else {
+            toast.error("location_error");
+        }
     };
 
     function MapStyle() {
         switch (localStorage.getItem("mapstyle") as MapStyle) {
-            case "osm": 
+            case "osm":
                 return "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
             case "mapbox":
                 return "https://api.mapbox.com/styles/v1/domeq/ckzsbx3mn001s14pape9nn2qq/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZG9tZXEiLCJhIjoiY2t6c2JlOWZ3MGx3cjJubW9zNDc5eGpwdiJ9.nUlvFKfUzpxBxJVc4zmAMA";

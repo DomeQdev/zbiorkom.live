@@ -9,7 +9,7 @@ export default ({ location, angle }: {
 }) => {
     const icon = divIcon({
         className: 'vehicle',
-        html: renderToStaticMarkup(angle ? <ArrowUpward style={{ transform: `rotate(${angle - 90}deg)`, height: "20px", width: "20px" }} /> : <AccountCircle style={{ height: "20px", width: "20px" }} />),
+        html: renderToStaticMarkup(angle ? <ArrowUpward style={{ transform: `rotate(${angle}deg)`, height: "20px", width: "20px" }} /> : <AccountCircle style={{ height: "20px", width: "20px" }} />),
         iconSize: [20, 20]
     });
 
