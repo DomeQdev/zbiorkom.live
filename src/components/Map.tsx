@@ -17,7 +17,7 @@ export default ({ city, children }: {
     const [userLocation, setUserLocation] = useState<[number, number]>();
     const [userAngle, setUserAngle] = useState<any>();
 
-    window.addEventListener("deviceorientation", ({ alpha }) => setUserAngle(alpha ? 0 : (360 - alpha)));
+    window.addEventListener("deviceorientation", ({ alpha }) => setUserAngle(360 - (alpha || 360)));
 
     return <MapContainer
         center={cities[city].location as LatLngExpression}
@@ -44,10 +44,10 @@ export default ({ city, children }: {
 
     function locate() {
         if (!map) return;
-        if (userLocation) return map.setView(userLocation.latlng, 17);
+        if (userLocation) return map.setView(userLocation, 17);
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(({ coords }) => map.setView([coords.latitude, coords.longitude], 17));
-            navigator.geolocation.watchPosition(({ cords }) => setUserLocation([coords.latitude, coords.longitude]));
+            navigator.geolocation.getCurrentPosition(({ coords }) => map.setView([coords.latitude, coords.longitude], 17), ({ message }) => toast.error(message));
+            navigator.geolocation.watchPosition(({ coords }) => setUserLocation([coords.latitude, coords.longitude]));
         } else {
             toast.error("location_error");
         }

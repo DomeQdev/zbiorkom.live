@@ -4,7 +4,7 @@ import { Marker } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 import { Vehicle, City } from "../util/typings";
 import { ArrowUpward } from "@mui/icons-material";
-import translate from "../util/Translations";
+import { translate } from "../util/Translations";
 import icons from "../util/icons";
 
 export default ({ vehicle, city, trip }: {
