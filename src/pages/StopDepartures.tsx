@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { List, Divider, ListItemButton, ListItemText, ListItemAvatar } from "@mui/material";
+import { List, Divider, ListItemButton, ListItemText } from "@mui/material";
 import { City, Departure, Stop, Vehicle } from "../util/typings";
 import { useNavigate, useParams } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";

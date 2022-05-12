@@ -1,17 +1,5 @@
 export const onRequestGet = async ({ env }) => {
-    let apiResp: {
-        models: {
-            [key: string]: [number]
-        },
-        routes: {
-            [key: string]: {
-                line: string,
-                name: string,
-                type: string,
-                color: string
-            }
-        }
-    } = await fetch(`${env.WARSAW_BACKEND}/filter`, {
+    let apiResp = await fetch(`${env.WARSAW_BACKEND}/filter`, {
         //@ts-ignore
         cf: {
             cacheTtl: 86400 * 3,

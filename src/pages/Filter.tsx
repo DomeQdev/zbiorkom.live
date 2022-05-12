@@ -21,6 +21,9 @@ export default ({ city, vehicles, onClose }: {
 
     const [filterData, setFilterData] = useState<FilterData>();
     const [selectedLines, setSelectedLines] = useState<string[]>(JSON.parse(localStorage.getItem(`${city}.filter.lines`) || "[]") as string[]);
+    const [depots, setDepots] = useState<string[]>(JSON.parse(localStorage.getItem(`${city}.filter.depot`) || "[]") as string[]);
+    const [models, setModels] = useState<string[]>(JSON.parse(localStorage.getItem(`${city}.filter.model`) || "[]") as string[]);
+
     const specialVehicles = vehicles ? vehicles.filter(x => x.isSpecial) : [];
 
     useEffect(() => {
@@ -84,42 +87,27 @@ export default ({ city, vehicles, onClose }: {
                     ))}
                 </div>} />
                 <Route path="model" element={<>
-                nie działa
                     <Autocomplete
-                        options={[
-                            {
-                                name: "Ostrobramska",
-                                carrier: "MZA"
-                            },
-                            {
-                                name: "Stalowa",
-                                carrier: "MZA"
-                            },
-                            {
-                                name: "Zadupie",
-                                carrier: "Arriva"
-                            },
-                            {
-                                name: "WIEś || MARKI TO NIE WIEŚ!!1!!!!!!",
-                                carrier: "PKS"
-                            }
-                        ]}
+                        options={Object.values(filterData.depots)}
                         groupBy={(option) => option.carrier}
                         getOptionLabel={(option) => option.name}
                         autoHighlight
                         multiple
                         fullWidth
                         disableCloseOnSelect
+                        value={depots.map(x => filterData.depots[x])}
+                        onChange={(_, value) => setDepots(value.map(x => x.name))}
                         renderInput={(params) => <TextField {...params} label={translate("vehicle_depot")} />}
                     /><br />
                     <Autocomplete
-                        options={["Solaris Urbino 18", "Solbus 36", "Hiundaj 140 albo 104N", "jazz duo (nie działa sip)", "jazz duo (działa sip) [brak]"]}
-                        getOptionLabel={(option) => option}
+                        options={Object.keys(filterData.models)}
                         autoHighlight
                         multiple
                         fullWidth
                         disableCloseOnSelect
-                        renderInput={(params) => <TextField {...params} label={translate("vehicle_model")} />}
+                        value={models}
+                        onChange={(_, value) => setModels(value)}
+                        renderInput={(params) => <TextField {...params} label={translate("vehicle_depot")} />}
                     />
                 </>} />
                 <Route path="*" element={<List>
@@ -132,11 +120,11 @@ export default ({ city, vehicles, onClose }: {
                         <ListItemText primary={translate("line_filtering")} />
                         <NavigateNext />
                     </ListItemButton>
-                    <Divider />
+                    {/*<Divider />
                     <ListItemButton onClick={() => navigate("model")}>
                         <ListItemText primary={translate("model_filtering")} />
                         <NavigateNext />
-                    </ListItemButton>
+                    </ListItemButton>*/}
                 </List>} />
             </Routes> : translate("loading")}
         </DialogContent>
@@ -145,11 +133,16 @@ export default ({ city, vehicles, onClose }: {
                 localStorage.setItem(`${city}.filter.lines`, JSON.stringify([]));
                 navigate(`/${city}`);
             }} variant="outlined" style={{ marginLeft: 5 }}><Translate name="reset" /></Button>
+
             <Button onClick={() => {
                 localStorage.setItem(`${city}.filter.lines`, JSON.stringify(selectedLines));
+                localStorage.setItem(`${city}.filter.depots`, JSON.stringify(depots));
+                localStorage.setItem(`${city}.filter.models`, JSON.stringify(models));
+
                 let found = vehicles.filter(x => selectedLines.includes(x.line));
                 toast[found.length ? "success" : "warn"](translate("found_vehicles", String(found.length)));
                 (found.length && found.length <= 125) && map.fitBounds(bounds(found));
+
                 navigate(`/${city}`);
             }} variant="contained" color="success" style={{ marginRight: 5 }}><Translate name="save" /></Button>
         </DialogActions> : null}

@@ -40,7 +40,7 @@ interface Trip {
 
 interface FilterData {
     models: {
-        [key: string]: Array
+        [key: string]: string[]
     },
     routes: {
         [key: string]: {
@@ -49,6 +49,12 @@ interface FilterData {
             type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley",
             color: string,
             showFilter?: boolean
+        }
+    },
+    depots: {
+        [key: string]: {
+            name: string,
+            carrier: string
         }
     }
 }
