@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTitle, Divider, IconButton, List, ListItemButton, ListItemIcon, ListItemText, ToggleButton, Chip, DialogActions, Button } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Divider, IconButton, List, ListItemButton, ListItemIcon, ListItemText, ToggleButton, Chip, DialogActions, Button, TextField, Autocomplete } from "@mui/material";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { City, FilterData, Vehicle } from "../util/typings";
 import { Close, NavigateNext } from "@mui/icons-material";
@@ -83,7 +83,45 @@ export default ({ city, vehicles, onClose }: {
                         </ToggleButton>
                     ))}
                 </div>} />
-                <Route path="model" element={<></>} />
+                <Route path="model" element={<>
+                nie działa
+                    <Autocomplete
+                        options={[
+                            {
+                                name: "Ostrobramska",
+                                carrier: "MZA"
+                            },
+                            {
+                                name: "Stalowa",
+                                carrier: "MZA"
+                            },
+                            {
+                                name: "Zadupie",
+                                carrier: "Arriva"
+                            },
+                            {
+                                name: "WIEś || MARKI TO NIE WIEŚ!!1!!!!!!",
+                                carrier: "PKS"
+                            }
+                        ]}
+                        groupBy={(option) => option.carrier}
+                        getOptionLabel={(option) => option.name}
+                        autoHighlight
+                        multiple
+                        fullWidth
+                        disableCloseOnSelect
+                        renderInput={(params) => <TextField {...params} label={translate("vehicle_depot")} />}
+                    /><br />
+                    <Autocomplete
+                        options={["Solaris Urbino 18", "Solbus 36", "Hiundaj 140 albo 104N", "jazz duo (nie działa sip)", "jazz duo (działa sip) [brak]"]}
+                        getOptionLabel={(option) => option}
+                        autoHighlight
+                        multiple
+                        fullWidth
+                        disableCloseOnSelect
+                        renderInput={(params) => <TextField {...params} label={translate("vehicle_model")} />}
+                    />
+                </>} />
                 <Route path="*" element={<List>
                     <ListItemButton onClick={() => navigate("special")}>
                         <ListItemText primary={translate("special_vehicles")} />
@@ -94,12 +132,12 @@ export default ({ city, vehicles, onClose }: {
                         <ListItemText primary={translate("line_filtering")} />
                         <NavigateNext />
                     </ListItemButton>
-                    {/*<Divider />
+                    <Divider />
                     <ListItemButton onClick={() => navigate("model")}>
                         <ListItemText primary={translate("model_filtering")} />
                         <NavigateNext />
-                    </ListItemButton>*/}
-                    </List>} />
+                    </ListItemButton>
+                </List>} />
             </Routes> : translate("loading")}
         </DialogContent>
         {location.pathname === `/${city}/filter/line` || location.pathname === `/${city}/filter/model` ? <DialogActions style={{ justifyContent: "space-between" }}>

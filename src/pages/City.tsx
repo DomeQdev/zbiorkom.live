@@ -10,7 +10,6 @@ import cities from "../util/cities.json";
 import Error from "./Error";
 import Trip from "./Trip";
 import Filter from "./Filter";
-import Stats from "./Stats";
 import StopDepartures from "./StopDepartures";
 
 export default ({ city }: {
@@ -56,7 +55,6 @@ export default ({ city }: {
 		<Route path="/filter/*" element={<Filter vehicles={vehicles} city={city} onClose={() => navigate(`/${city}`)} />} />
 		{cities[city].functions.stopDepartures && <Route path="/stop/:id" element={<StopDepartures city={city} stops={stops} vehicles={vehicles} />} />}
 		<Route path="/:type/:tab/*" element={<Trip vehicles={vehicles} city={city} />} />
-		<Route path="/stats" element={<Stats city={city} vehicles={vehicles} />} />
 		<Route path="*" element={<Error type="error" message="Nie znaleziono strony." />} />
 	</Routes>;
 };

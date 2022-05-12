@@ -35,7 +35,7 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
                 PaperProps={{
                     style: {
                         maxHeight: 40 * 4.5,
-                        width: 'auto',
+                        minWidth: 30 * 4.5,
                     }
                 }}
             >

@@ -55,7 +55,7 @@ export default ({ city, vehicle }: {
                 <ListItemText style={{ marginLeft: "-13px", marginRight: "1px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: trip.trip === vehicle.trip ? "bold" : "" }}>
                         <div>
-                            {trip.headsign}
+                            {"> " + trip.headsign}
                         </div>
                         <div>
                             {timeString(trip.start)}

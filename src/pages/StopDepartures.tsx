@@ -39,7 +39,7 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
             ...departure,
             vehicle,
             realTime: vehicle ? departure.scheduledTime + (vehicle.delay || 0) * 1000 : departure.realTime,
-            delay: Math.round((vehicle?.delay || departure.delay) / 60)
+            delay: Math.floor((vehicle?.delay || departure.delay) / 60)
         };
     }), [departures, vehicles]);
 
