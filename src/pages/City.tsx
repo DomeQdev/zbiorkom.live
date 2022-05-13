@@ -62,9 +62,9 @@ export default ({ city }: {
 
 	return <Routes>
 		<Route path="/" element={<>
-			{(map.getZoom() >= 15 || (linesFilter.length && inBounds.length <= 150)) ? inBounds.filter(x => x.trip).map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={city} />) : null}
+			{map.getZoom() >= 15 || (filteredVehicles.length !== vehicles.length && inBounds.length <= 150) ? inBounds.filter(x => x.trip).map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={city} />) : null}
 			{map.getZoom() >= 16 ? stops?.filter(stop => bounds.contains(stop.location)).map(stop => <StopMarker stop={stop} key={stop.id} color="red" departures />) : null}
-			{map.getZoom() >= 17 || (linesFilter.length && inBounds.length <= 150) ? inBounds.filter(x => !x.trip).map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={city} />) : null}
+			{map.getZoom() >= 17 || (filteredVehicles.length !== vehicles.length && inBounds.length <= 150) ? inBounds.filter(x => !x.trip).map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={city} />) : null}
 		</>} />
 		<Route path="/wlt" element={vehicles.filter(veh => veh.line === "100" || veh.line === "36" || veh.line === "T").map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={city} />)} />
 		<Route path="/filter/*" element={<Filter vehicles={vehicles} city={city} onClose={() => navigate(`/${city}`)} />} />
