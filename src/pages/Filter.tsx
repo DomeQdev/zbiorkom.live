@@ -88,7 +88,7 @@ export default ({ city, vehicles, onClose }: {
                     ))}
                 </div>} />
                 <Route path="model" element={<>
-                    <Autocomplete
+                    {filterData.depots && <><Autocomplete
                         options={Object.keys(filterData.depots).sort()}
                         autoHighlight
                         multiple
@@ -97,8 +97,8 @@ export default ({ city, vehicles, onClose }: {
                         value={depots}
                         onChange={(_, value) => setDepots(value)}
                         renderInput={(params) => <TextField {...params} label={translate("vehicle_depot")} />}
-                    /><br />
-                    <Autocomplete
+                    /><br /></>}
+                    {filterData.models && <Autocomplete
                         options={Object.keys(filterData.models).sort()}
                         autoHighlight
                         multiple
@@ -107,7 +107,7 @@ export default ({ city, vehicles, onClose }: {
                         value={models}
                         onChange={(_, value) => setModels(value)}
                         renderInput={(params) => <TextField {...params} label={translate("vehicle_model")} />}
-                    />
+                    />}
                 </>} />
                 <Route path="*" element={<List>
                     <ListItemButton onClick={() => navigate("special")}>
@@ -138,9 +138,16 @@ export default ({ city, vehicles, onClose }: {
                 localStorage.setItem(`${city}.filter.depots`, JSON.stringify(depots));
                 localStorage.setItem(`${city}.filter.models`, JSON.stringify(models));
 
-                let found = vehicles.filter(x => selectedLines.includes(x.line));
+                let _models = models.map(x => filterData.models[x]).flat();
+                let _depots = depots.map(x => filterData.depots[x]).flat();
+
+                let found = vehicles
+                    .filter(x => selectedLines.length ? selectedLines.includes(x.line) : true)
+                    .filter(x => _models.length ? _models.includes(`${x.type}${x.tab}`) : true)
+                    .filter(x => _depots.length ? _depots.includes(`${x.type}${x.tab}`) : true);
+
                 toast[found.length ? "success" : "warn"](translate("found_vehicles", String(found.length)));
-                (found.length && found.length <= 125) && map.fitBounds(bounds(found));
+                (found.length && found.length <= 150) && map.fitBounds(bounds(found));
 
                 navigate(`/${city}`);
             }} variant="contained" color="success" style={{ marginRight: 5 }}><Translate name="save" /></Button>

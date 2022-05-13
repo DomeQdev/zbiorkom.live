@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useMap } from "react-leaflet";
-import { City, Stop, Vehicle } from "../util/typings";
+import { City, Stop, Vehicle, FilterData } from "../util/typings";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useWebSocket from "react-use-websocket";
@@ -38,9 +38,24 @@ export default ({ city }: {
 		if (cities[city].functions.stopDepartures) fetch(cities[city].api.stopList || "").then(res => res.json()).then(setStops).catch(() => null);
 	}, []);
 
-	let linesFilter = JSON.parse(localStorage.getItem(`${city}.filter.lines`) || "[]") as string[];
+	let filteredVehicles = useMemo(() => {
+		let filterData = JSON.parse(localStorage.getItem(`${city}.filter.data`) || "{}") as FilterData;
+		if (!filterData) return vehicles;
 
-	let filteredVehicles = vehicles.filter(vehicle => linesFilter.length ? linesFilter.includes(vehicle.line) : true);
+		let lines = JSON.parse(localStorage.getItem(`${city}.filter.lines`) || "[]") as string[];
+		let models = JSON.parse(localStorage.getItem(`${city}.filter.models`) || "[]") as string[];
+		let depots = JSON.parse(localStorage.getItem(`${city}.filter.depots`) || "[]") as string[];
+
+		let _models = models.map(x => filterData.models[x]).flat();
+		let _depots = depots.map(x => filterData.depots[x]).flat();
+
+		return vehicles
+			.filter(x => lines.length ? lines.includes(x.line) : true)
+			.filter(x => _models.length ? _models.includes(`${x.type}${x.tab}`) : true)
+			.filter(x => _depots.length ? _depots.includes(`${x.type}${x.tab}`) : true);
+	}, [vehicles]);
+
+
 	let inBounds = filteredVehicles.filter(vehicle => bounds.contains(vehicle?.location));
 
 	map.on("moveend", () => setBounds(map.getBounds()));
