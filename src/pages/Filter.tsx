@@ -39,6 +39,7 @@ export default ({ city, vehicles, onClose }: {
                     return navigate(`/${city}`);
                 }
                 setFilterData(filterData);
+                localStorage.setItem(`${city}.filter.data`, JSON.stringify(filterData));
             })
             .catch(() => {
                 toast.error(translate("fatal_error"));
@@ -88,26 +89,24 @@ export default ({ city, vehicles, onClose }: {
                 </div>} />
                 <Route path="model" element={<>
                     <Autocomplete
-                        options={Object.values(filterData.depots)}
-                        groupBy={(option) => option.carrier}
-                        getOptionLabel={(option) => option.name}
+                        options={Object.keys(filterData.depots).sort()}
                         autoHighlight
                         multiple
                         fullWidth
                         disableCloseOnSelect
-                        value={depots.map(x => filterData.depots[x])}
-                        onChange={(_, value) => setDepots(value.map(x => x.name))}
+                        value={depots}
+                        onChange={(_, value) => setDepots(value)}
                         renderInput={(params) => <TextField {...params} label={translate("vehicle_depot")} />}
                     /><br />
                     <Autocomplete
-                        options={Object.keys(filterData.models)}
+                        options={Object.keys(filterData.models).sort()}
                         autoHighlight
                         multiple
                         fullWidth
                         disableCloseOnSelect
                         value={models}
                         onChange={(_, value) => setModels(value)}
-                        renderInput={(params) => <TextField {...params} label={translate("vehicle_depot")} />}
+                        renderInput={(params) => <TextField {...params} label={translate("vehicle_model")} />}
                     />
                 </>} />
                 <Route path="*" element={<List>

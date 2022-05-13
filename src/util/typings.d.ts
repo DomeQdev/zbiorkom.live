@@ -52,10 +52,7 @@ interface FilterData {
         }
     },
     depots: {
-        [key: string]: {
-            name: string,
-            carrier: string
-        }
+        [key: string]: string[]
     }
 }
 
