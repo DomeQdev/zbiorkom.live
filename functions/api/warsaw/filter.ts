@@ -1,8 +1,8 @@
 export const onRequestGet = async ({ env }) => {
-    let apiResp = await fetch(`${env.WARSAW_BACKEND}/filter`, {
+    let apiResp = await fetch(`${env.WARSAW_BACKEND}/filter?`, {
         //@ts-ignore
         cf: {
-            cacheTtl: 86400 * 3,
+            cacheTtl: 42300,
             cacheEverything: true
         },
         keepalive: true
