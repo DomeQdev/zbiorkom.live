@@ -1,0 +1,44 @@
+{
+    "warsaw": {
+        "name": "Warszawa",
+        "location": [52.22983095298667, 21.0117354814593],
+        "api": {
+            "positions": "/api/warsaw/positions",
+            "positions_websocket": "wss://ws.matfiu.repl.co/",
+            "trip": "/api/warsaw/trip?trip={{trip}}",
+            "filter": "/api/warsaw/filter",
+            "vehicleInfo": "/api/warsaw/vehicle?tab={{tab}}&type={{type}}",
+            "brigade": "/api/warsaw/brigade?line={{line}}&brigade={{brigade}}",
+            "stopList": null,
+            "stopDepartures": null
+        },
+        "functions": {
+            "filter": true,
+            "vehicleInfo": true,
+            "brigades": true,
+            "alerts": true,
+            "stopDepartures": false
+        }
+    },
+    "gdansk": {
+        "name": "Gdańsk",
+        "location": [54.34610966679864, 18.644629872390432],
+        "api": {
+            "positions": "/api/gdansk/positions",
+            "positions_websocket": "wss://gdansk-ws.matfiu.repl.co/",
+            "trip": "/api/gdansk/trip?trip={{trip}}",
+            "filter": "/api/gdansk/filter",
+            "vehicleInfo": "/api/gdansk/vehicle?tab={{tab}}&type={{type}}",
+            "brigade": null,
+            "stopList": "/api/gdansk/stops",
+            "stopDepartures": "/api/gdansk/stop?id={{stop}}"
+        },
+        "functions": {
+            "filter": true,
+            "vehicleInfo": true,
+            "brigades": false,
+            "alerts": true,
+            "stopDepartures": true
+        }
+    }
+}

@@ -61,7 +61,7 @@ export default ({ city, vehicles, onClose }: {
                         <ListItemIcon sx={{ minWidth: 40 }}>{getIcon({ size: 24 })[vehicle.type].icon}</ListItemIcon>
                         <ListItemText style={{ display: "inline-flex", alignItems: "center" }}>
                             {vehicle.isSpecial} ({vehicle.tab})<br />
-                            <span style={{ color: "#757575", fontSize: 15 }}><Translate name="on_route" replace={vehicle.line} /></span>
+                            <span style={{ color: "#757575", fontSize: 15 }}><Translate name="on_route" replace={`${vehicle.line} ${vehicle.headsign}`} /></span>
                         </ListItemText>
                     </ListItemButton>
                 ))?.reduce((prev, curr) => [prev, <Divider key={Math.random()} />, curr]) : <h3 style={{ textAlign: "center" }}><Translate name="nothing_there" /></h3>} />
