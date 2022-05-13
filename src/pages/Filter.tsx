@@ -127,7 +127,7 @@ export default ({ city, vehicles, onClose }: {
                 </List>} />
             </Routes> : translate("loading")}
         </DialogContent>
-        {location.pathname === `/${city}/filter/line` || location.pathname === `/${city}/filter/model` ? <DialogActions style={{ justifyContent: "space-between" }}>
+        <DialogActions style={{ justifyContent: "space-between" }}>
             <Button onClick={() => {
                 localStorage.setItem(`${city}.filter.lines`, JSON.stringify([]));
                 localStorage.setItem(`${city}.filter.depots`, JSON.stringify([]));
@@ -155,7 +155,7 @@ export default ({ city, vehicles, onClose }: {
 
                 navigate(`/${city}`);
             }} variant="contained" color="success" style={{ marginRight: 5 }}><Translate name="save" /></Button>
-        </DialogActions> : null}
+        </DialogActions>
     </Dialog>;
 };
 
