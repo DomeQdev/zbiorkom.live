@@ -6,7 +6,7 @@
             "positions": "/api/warsaw/positions",
             "positions_websocket": "wss://ws.matfiu.repl.co/",
             "trip": "/api/warsaw/trip?trip={{trip}}",
-            "filter": "/api/warsaw/filter",
+            "filter": "/api/warsaw/filter?",
             "vehicleInfo": "/api/warsaw/vehicle?tab={{tab}}&type={{type}}",
             "brigade": "/api/warsaw/brigade?line={{line}}&brigade={{brigade}}",
             "stopList": null,
