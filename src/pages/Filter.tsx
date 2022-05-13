@@ -130,11 +130,14 @@ export default ({ city, vehicles, onClose }: {
         {location.pathname === `/${city}/filter/line` || location.pathname === `/${city}/filter/model` ? <DialogActions style={{ justifyContent: "space-between" }}>
             <Button onClick={() => {
                 localStorage.setItem(`${city}.filter.lines`, JSON.stringify([]));
+                localStorage.setItem(`${city}.filter.depots`, JSON.stringify([]));
+                localStorage.setItem(`${city}.filter.models`, JSON.stringify([]));
+
                 navigate(`/${city}`);
             }} variant="outlined" style={{ marginLeft: 5 }}><Translate name="reset" /></Button>
 
             <Button onClick={() => {
-                if(!filterData) return;
+                if (!filterData) return;
                 localStorage.setItem(`${city}.filter.lines`, JSON.stringify(selectedLines));
                 localStorage.setItem(`${city}.filter.depots`, JSON.stringify(depots));
                 localStorage.setItem(`${city}.filter.models`, JSON.stringify(models));
