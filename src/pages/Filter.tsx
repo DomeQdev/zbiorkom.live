@@ -134,6 +134,7 @@ export default ({ city, vehicles, onClose }: {
             }} variant="outlined" style={{ marginLeft: 5 }}><Translate name="reset" /></Button>
 
             <Button onClick={() => {
+                if(!filterData) return;
                 localStorage.setItem(`${city}.filter.lines`, JSON.stringify(selectedLines));
                 localStorage.setItem(`${city}.filter.depots`, JSON.stringify(depots));
                 localStorage.setItem(`${city}.filter.models`, JSON.stringify(models));
