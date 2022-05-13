@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useMap } from "react-leaflet";
 import { City, Stop, Vehicle, FilterData } from "../util/typings";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useWebSocket from "react-use-websocket";
 import VehicleMarker from "../components/VehicleMarker";
@@ -53,7 +53,7 @@ export default ({ city }: {
 			.filter(x => lines.length ? lines.includes(x.line) : true)
 			.filter(x => _models.length ? _models.includes(`${x.type}${x.tab}`) : true)
 			.filter(x => _depots.length ? _depots.includes(`${x.type}${x.tab}`) : true);
-	}, [vehicles]);
+	}, [vehicles, useLocation()]);
 
 
 	let inBounds = filteredVehicles.filter(vehicle => bounds.contains(vehicle?.location));

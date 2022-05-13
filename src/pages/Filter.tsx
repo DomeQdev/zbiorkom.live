@@ -21,8 +21,8 @@ export default ({ city, vehicles, onClose }: {
 
     const [filterData, setFilterData] = useState<FilterData>();
     const [selectedLines, setSelectedLines] = useState<string[]>(JSON.parse(localStorage.getItem(`${city}.filter.lines`) || "[]") as string[]);
-    const [depots, setDepots] = useState<string[]>(JSON.parse(localStorage.getItem(`${city}.filter.depot`) || "[]") as string[]);
-    const [models, setModels] = useState<string[]>(JSON.parse(localStorage.getItem(`${city}.filter.model`) || "[]") as string[]);
+    const [depots, setDepots] = useState<string[]>(JSON.parse(localStorage.getItem(`${city}.filter.depots`) || "[]") as string[]);
+    const [models, setModels] = useState<string[]>(JSON.parse(localStorage.getItem(`${city}.filter.models`) || "[]") as string[]);
 
     const specialVehicles = vehicles ? vehicles.filter(x => x.isSpecial) : [];
 
@@ -119,11 +119,11 @@ export default ({ city, vehicles, onClose }: {
                         <ListItemText primary={translate("line_filtering")} />
                         <NavigateNext />
                     </ListItemButton>
-                    {/*<Divider />
+                    <Divider />
                     <ListItemButton onClick={() => navigate("model")}>
                         <ListItemText primary={translate("model_filtering")} />
                         <NavigateNext />
-                    </ListItemButton>*/}
+                    </ListItemButton>
                 </List>} />
             </Routes> : translate("loading")}
         </DialogContent>
