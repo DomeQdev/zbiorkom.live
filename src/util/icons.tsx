@@ -12,27 +12,27 @@ export default ({ size }: { size?: number }) => {
         },
         metro: {
             icon: <Subway style={{ height: `${size}px`, width: `${size}px` }} />,
-            color: "#ccc"
+            color: "#CF51D4"
         },
         wkd: {
             icon: <DirectionsRailway style={{ height: `${size}px`, width: `${size}px` }} />,
-            color: "#ccc"
+            color: "#D4B451"
         },
         skm: {
             icon: <Train style={{ height: `${size}px`, width: `${size}px` }} />,
-            color: "#009955"
+            color: "#69C345"
         },
         rail: {
             icon: <Train style={{ height: `${size}px`, width: `${size}px` }} />,
-            color: "#009955"
+            color: "#3606A3"
         },
         km: {
             icon: <DirectionsTransit style={{ height: `${size}px`, width: `${size}px` }} />,
-            color: "#0A6F0A"
+            color: "#432DC8"
         },
         trolley: {
             icon: <LtePlusMobiledata style={{ height: `${size}px`, width: `${size}px` }} />,
-            color: "#009955"
+            color: "#4586C3"
         }
     };
 
