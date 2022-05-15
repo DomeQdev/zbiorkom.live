@@ -3,7 +3,7 @@ import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { Vehicle, City, Trip } from "../util/typings";
 import { Polyline, useMap } from "react-leaflet";
 import { toast } from "react-toastify";
-import { translate, Translate } from "../util/Translations";
+import { translate } from "../util/Translations";
 import VehicleMarker from "../components/VehicleMarker";
 import StopMarker from "../components/StopMarker";
 import BottomSheet from "../components/BottomSheet";
@@ -33,7 +33,7 @@ export default ({ vehicles, city }: {
         setVehicle(veh);
 
         //@ts-ignore
-        if (!veh?.trip) return setTrip({ error: true });
+        if (!veh?.trip && !vehicle?.trip) return setTrip({ error: true });
 
         if (!trip?.error && veh?.trip && (!trip || trip.id !== veh.trip)) fetch(cities[city].api.trip.replace("{{trip}}", veh.trip)).then(res => res.json())
             .then(setTrip)
@@ -48,7 +48,7 @@ export default ({ vehicles, city }: {
         {trip?.shapes && <Polyline positions={trip.shapes} pathOptions={{ color: trip.color, weight: 8 }} />}
         {trip?.stops && trip.stops.map((stop, i) => <StopMarker stop={stop} color={trip?.color} key={i} />)}
         <BottomSheet trip={trip} vehicle={vehicle} city={city} />
-        {vehicle && vehicle.brigade && <Routes>
+        {vehicle?.brigade && <Routes>
             <Route path="brigade" element={<Brigade city={city} vehicle={vehicle} />} />
             <Route path="vehicle" element={<VehicleInfo city={city} vehicle={vehicle} />} />
         </Routes>}

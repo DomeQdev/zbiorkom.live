@@ -1,6 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz@8..144&display=swap');
+
 body {
   margin: 0;
-  font-family: 'Roboto', sans-serif!important;
+}
+
+* {
+  font-family: 'Roboto Flex', sans-serif!important;
 }
 
 .leaflet-control-attribution {
@@ -51,23 +56,20 @@ body {
 }
 
 .leaflet-marker-icon.vehicle {
-  -webkit-transition: transform .3s linear;
-  -moz-transition: transform .3s linear;
-  -o-transition: transform .3s linear;
-  -ms-transition: transform .3s linear;
   transition: transform .3s linear;
 }
 
 .leaflet-marker-icon, path.leaflet-interactive {
   animation: fadein .4s;
-  -moz-animation: fadein .4s;
-  -webkit-animation: fadein .4s;
-  -o-animation: fadein .4s;
 }
 
 @keyframes fadein {
-  from {opacity: 0}
-  to {opacity: 1}
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 path.leaflet-interactive {
