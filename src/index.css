@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Roboto', sans-serif!important;
 }
 
 .leaflet-control-attribution {
@@ -68,17 +68,6 @@ body {
 @keyframes fadein {
   from {opacity: 0}
   to {opacity: 1}
-}
-
-.odjezdza {
-  animation: blinker 0.3s linear infinite;
-  font-weight: bold;
-}
-
-@keyframes blinker {
-  50% {
-    opacity: 0;
-  }
 }
 
 path.leaflet-interactive {
