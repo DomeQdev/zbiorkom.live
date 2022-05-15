@@ -45,7 +45,7 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
 
     return <>
         {stop ? <StopMarker stop={stop} color="#ff0000" /> : null}
-        {dep.filter(veh => veh.vehicle).map((veh, i) => <VehicleMarker vehicle={veh.vehicle!} city={city} key={`0_${i}`} />)}
+        {dep.filter(veh => veh.vehicle && veh.status === "REALTIME").map((veh, i) => <VehicleMarker vehicle={veh.vehicle!} city={city} key={`0_${i}`} />)}
         <BottomSheet
             open
             onDismiss={() => navigate(`/${city}`)}
@@ -54,7 +54,7 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
             snapPoints={({ maxHeight }) => [maxHeight / 4, maxHeight * 0.6, maxHeight - 40]}
             header={<b style={{ alignItems: "center" }}>{stop?.name}</b>}
         >
-            {dep.filter(x => Date.now() - 70000 < x.realTime).length ? <List>{dep.filter(x => Date.now() - 70000 < x.realTime).sort((a, b) => a.realTime - b.realTime).map<React.ReactNode>((departure, i) => (
+            {dep.filter(x => Date.now() - 50000 < x.realTime).length ? <List>{dep.filter(x => Date.now() - 50000 < x.realTime).sort((a, b) => a.realTime - b.realTime).map<React.ReactNode>((departure, i) => (
                 <ListItemButton key={`1_${i}`} onClick={() => departure?.vehicle ? map.setView(departure.vehicle.location, 17) : null}>
                     <ListItemText>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>

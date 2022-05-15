@@ -119,11 +119,11 @@ export default ({ city, vehicles, onClose }: {
                         <ListItemText primary={translate("line_filtering")} />
                         <NavigateNext />
                     </ListItemButton>
-                    <Divider />
+                    {filterData.depots || filterData.models ? <><Divider />
                     <ListItemButton onClick={() => navigate("model")}>
                         <ListItemText primary={translate("model_filtering")} />
                         <NavigateNext />
-                    </ListItemButton>
+                    </ListItemButton></> : null}
                 </List>} />
             </Routes> : translate("loading")}
         </DialogContent>
