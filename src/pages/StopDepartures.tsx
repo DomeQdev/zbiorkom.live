@@ -59,8 +59,8 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
                     <ListItemText>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <div>
-                                <span style={{ display: "inline-flex" }}><b style={{ color: "white", backgroundColor: departure?.color, borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center", height: 15 }}>{icons({ size: 17 })[departure.type].icon}&nbsp;{departure.line}<small style={{ fontSize: 11 }}>/{departure.brigade}</small></b>&nbsp;{departure.headsign}</span>
-                                <span style={{ fontSize: 15 }}><br />{departure.delay ? <b style={{ color: "#d1312a" }}><Translate name={departure.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(departure.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>} <b>&#183;</b> {departure.delay ? <s>{timeString(departure.scheduledTime)}</s> : null} {timeString(departure.realTime)}</span>
+                                <span style={{ display: "inline-flex" }}><b style={{ color: "white", backgroundColor: departure?.color, borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center", height: 15 }}>{icons({ size: 17 })[departure.type].icon}&nbsp;{departure.line}{departure.brigade && <small style={{ fontSize: 11 }}>/{departure.brigade}</small>}</b>&nbsp;{departure.headsign}</span>
+                                <span style={{ fontSize: 15 }}><br />{departure.status === "REALTIME" ? (departure.delay ? <b style={{ color: "#d1312a" }}><Translate name={departure.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(departure.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>) : <b><Translate name="scheduled" /></b>} <b>&#183;</b> {departure.delay ? <s>{timeString(departure.scheduledTime)}</s> : null} {timeString(departure.realTime)}</span>
                             </div>
                             <div>
                                 <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "right" }}>{minutesUntil(departure.realTime) < 0.5 ? "<1" : minutesUntil(departure.realTime)}</p>
@@ -69,7 +69,7 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
                         </div>
                     </ListItemText>
                 </ListItemButton>
-            )).reduce((prev, curr, i) => [prev, <Divider key={`2_${i}`} sx={{ backgroundColor: "#DCCDCD", marginLeft: "10px", marginRight: "10px" }} />, curr])}</List> : <h2 style={{ textAlign: "center" }}>Już dzisiaj nic tu nie przyjedzie :(</h2>}
+            )).reduce((prev, curr, i) => [prev, <Divider key={`2_${i}`} sx={{ backgroundColor: "#DCCDCD", marginLeft: "10px", marginRight: "10px" }} />, curr])}</List> : <h2 style={{ textAlign: "center" }}>🦗🦗🦗🦗🦗🦗</h2>}
         </BottomSheet>
     </>;
 };

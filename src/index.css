@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz@8..144&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 body {
   margin: 0;
 }
 
 * {
-  font-family: 'Roboto Flex', sans-serif!important;
+  font-family: 'Roboto', sans-serif!important;
 }
 
 .leaflet-control-attribution {
