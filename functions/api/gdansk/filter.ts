@@ -2,7 +2,7 @@ import routes from "./util/routes.json";
 
 export const onRequestGet = async () => {
     return new Response(JSON.stringify({
-        routes
+        routes: [Object.values(routes)]
     }), {
         headers: {
             "Content-Type": "application/json",

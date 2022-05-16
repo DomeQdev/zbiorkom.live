@@ -42,15 +42,13 @@ interface FilterData {
     models: {
         [key: string]: string[]
     },
-    routes: {
-        [key: string]: {
-            line: string,
-            name: string,
-            type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley",
-            color: string,
-            showFilter?: boolean
-        }
-    },
+    routes: [[{
+        line: string,
+        name: string,
+        type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley",
+        color: string,
+        showFilter?: boolean
+    }]],
     depots: {
         [key: string]: string[]
     }

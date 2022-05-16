@@ -64,17 +64,17 @@ export default ({ city, vehicles, onClose }: {
                             <span style={{ color: "#757575", fontSize: 15 }}><Translate name="on_route" replace={`${vehicle.line} ${vehicle.headsign}`} /></span>
                         </ListItemText>
                     </ListItemButton>
-                ))?.reduce((prev, curr) => [prev, <Divider key={Math.random()} />, curr]) : <h3 style={{ textAlign: "center" }}><Translate name="nothing_there" /></h3>} />
+                ))?.reduce((prev, curr, i) => [prev, <Divider key={`0_${i}`} />, curr]) : <h3 style={{ textAlign: "center" }}><Translate name="nothing_there" /></h3>} />
                 <Route path="line" element={<div style={{ textAlign: "center" }}>
-                    {Object.values(filterData.routes).filter(x => selectedLines.includes(x.line)).map(line => (
+                    {/*Object.values(filterData.routes).filter(x => selectedLines.includes(x.line)).map(line => (
                         <Chip
                             key={line.line}
                             label={line.line}
                             style={{ margin: 3 }}
                             onDelete={() => setSelectedLines(selectedLines.filter(x => x !== line.line))}
                         />
-                    ))}<br />
-                    {Object.values(filterData.routes).filter(x => x.showFilter !== false).sort().map<React.ReactNode>((line) => (
+                    ))*/}
+                    {filterData.routes.map<React.ReactNode>((lines) => lines.map<React.ReactNode>((line) => (
                         <ToggleButton
                             value={line.line}
                             key={line.line}
@@ -85,7 +85,7 @@ export default ({ city, vehicles, onClose }: {
                         >
                             {getIcon({ size: 20 })[line.type].icon}<span style={{ width: 3 }} />{line.line.replace("-", "")}
                         </ToggleButton>
-                    ))}
+                    ))).reduce((prev, curr, i) => [prev, <Divider key={`1_${i}`} />, curr])}
                 </div>} />
                 <Route path="model" element={<>
                     {filterData.depots && <><Autocomplete
