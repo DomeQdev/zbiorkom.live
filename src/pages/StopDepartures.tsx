@@ -28,9 +28,12 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
         }
         setStop(st);
         map.setView(st.location, 17);
+        
         const loadDepartures = () => fetch(cities[city].api.stopDepartures!.replace("{{stop}}", st!.id)).then(res => res.json()).then(setDepartures);
         loadDepartures();
-        setInterval(() => document.visibilityState === "visible" ? loadDepartures() : null, 60000 * 2);
+
+        const int = setInterval(() => document.visibilityState === "visible" ? loadDepartures() : null, 60000);
+        return () => clearInterval(int);
     }, [stops]);
 
     const dep = useMemo(() => departures.map(departure => {
