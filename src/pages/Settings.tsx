@@ -70,7 +70,7 @@ export default () => {
                     </RadioGroup>
                 </FormControl>} />
                 <Route path="vehicles" element={<>
-                <input type="checkbox" checked onChange={() => window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank")} /> Wyświetlać pojazdy?
+                    <input type="checkbox" checked onChange={() => window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank")} /> Wyświetlać pojazdy?
                 </>} />
                 <Route path="language" element={<List>
                     {Object.values(languages).map<React.ReactNode>((lang) => (<ListItemButton onClick={() => {

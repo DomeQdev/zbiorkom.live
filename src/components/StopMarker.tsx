@@ -5,7 +5,7 @@ import { Stop } from "../util/typings";
 import { Link } from 'react-router-dom';
 import { Translate } from "../util/Translations";
 
-export default ({ stop, color, departures = false}: { stop: Stop, color?: string, departures?: boolean }) => {
+export default ({ stop, color, departures = false }: { stop: Stop, color?: string, departures?: boolean }) => {
     return (
         <Marker
             position={stop.location}
@@ -20,7 +20,7 @@ export default ({ stop, color, departures = false}: { stop: Stop, color?: string
                 popupAnchor: departures ? [-1, -5] : [1, -5]
             })}
             zIndexOffset={100}
-      >
+        >
             <Popup autoPan={false}><b>{stop.name}</b>{departures && <><br /><Link to={`stop/${stop.id}`}><Translate name="stop_departures" /></Link></>}</Popup>
         </Marker>
     );

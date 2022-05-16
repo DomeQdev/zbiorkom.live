@@ -120,10 +120,10 @@ export default ({ city, vehicles, onClose }: {
                         <NavigateNext />
                     </ListItemButton>
                     {filterData.depots || filterData.models ? <><Divider />
-                    <ListItemButton onClick={() => navigate("model")}>
-                        <ListItemText primary={translate("model_filtering")} />
-                        <NavigateNext />
-                    </ListItemButton></> : null}
+                        <ListItemButton onClick={() => navigate("model")}>
+                            <ListItemText primary={translate("model_filtering")} />
+                            <NavigateNext />
+                        </ListItemButton></> : null}
                 </List>} />
             </Routes> : translate("loading")}
         </DialogContent>
