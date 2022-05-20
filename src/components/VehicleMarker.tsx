@@ -16,13 +16,13 @@ export default ({ vehicle, city, trip }: {
 
     const icon = divIcon({
         className: 'vehicle',
-        html: renderToStaticMarkup(<span className={`vehicle-marker`} style={{ color: icons({})[vehicle.type]?.color, border: `2px solid ${icons({})[vehicle.type]?.color}`, fill: icons({})[vehicle.type]?.color, backgroundColor: vehicle.isSpecial ? "#F5CF4B" : "#fff" }} title={translate(vehicle.isSpecial ? "special_line_vehicle" : "line_vehicle", vehicle.line)}> {vehicle.deg ? <ArrowUpward style={{ transform: `rotate(${vehicle.deg}deg)`, height: "16px", width: "16px" }} /> : null}{icons({ size: 20 })[vehicle.type]?.icon}&nbsp;<b className={"line-number"}>{vehicle.line.replace("-", "")}</b>{vehicle?.brigade ? <small>/{vehicle.brigade}</small> : null}</span>),
+        html: renderToStaticMarkup(<span className={`vehicle-marker`} style={{ color: icons({})[vehicle.type]?.color, border: `2px solid ${icons({})[vehicle.type]?.color}`, fill: icons({})[vehicle.type]?.color, backgroundColor: vehicle.isSpecial ? "#F5CF4B" : (vehicle.isEco ? "#83F493" : "#fff"), opacity: vehicle.isPredicted ? 0.9 : 1 }} title={translate(vehicle.isSpecial ? "special_line_vehicle" : "line_vehicle", vehicle.line)}> {vehicle.deg ? <ArrowUpward style={{ transform: `rotate(${vehicle.deg}deg)`, height: "16px", width: "16px" }} /> : null}{icons({ size: 20 })[vehicle.type]?.icon}&nbsp;<b className={"line-number"}>{vehicle.line.replace("-", "")}</b>{vehicle?.brigade ? <small>/{vehicle.brigade}</small> : null}</span>),
         //@ts-ignore
         iconSize: ["auto", "auto"]
     });
 
     return <Marker position={vehicle.location} icon={icon} zIndexOffset={1000} eventHandlers={{
-        click: () => !trip ? navigate(`/${city}/${vehicle.type}/${vehicle.tab}`) : null
+        click: () => !trip && navigate(`/${city}/${vehicle.type}/${vehicle.tab}`)
     }}>
     </Marker>;
 };

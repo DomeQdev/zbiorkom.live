@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { List, Divider, ListItemButton, ListItemText } from "@mui/material";
 import { City, Departure, Stop, Vehicle } from "../util/typings";
 import { useNavigate, useParams } from "react-router-dom";

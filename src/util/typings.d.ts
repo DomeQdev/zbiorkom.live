@@ -9,6 +9,7 @@ interface Vehicle {
     type: "bus" | "tram" | "metro" | "wkd" | "skm" | "km" | "trolley",
     headsign?: string,
     delay?: number,
+    isEco?: boolean,
     isSpecial?: string,
     isPredicted?: boolean
 }

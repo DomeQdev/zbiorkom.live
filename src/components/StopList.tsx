@@ -1,73 +1,52 @@
-import { List, ListItem, ListItemAvatar, ListItemText, Avatar, Divider } from "@mui/material";
-import { nearestPointOnLine, point, lineString, Position } from "@turf/turf";
+import { List, ListItemButton, ListItemAvatar, ListItemText, Avatar, Divider } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
-import { Stop, Trip, Vehicle } from "../util/typings";
+import { Trip, Vehicle } from "../util/typings";
 import { Translate } from "../util/Translations";
+import { Result, TripInfo } from "../util/Realtime";
 
 export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
     const map = useMap();
     const [scrolled, setScrolled] = useState(false);
-    const [stops, setStops] = useState<Stop[]>();
+    const [tripInfo, setTripInfo] = useState<Result>();
 
     useEffect(() => setScrolled(false), [trip]);
     useEffect(() => {
         if (!trip?.stops) return;
-        setStops(trip?.stops?.map(stop => {
-            return {
-                ...stop,
-                metersToStop: metersToStop(stop)
-            };
-        }));
+        setTripInfo(TripInfo({
+            shapes: trip.shapes,
+            stops: trip.stops,
+            location: vehicle?.location
+        }))
     }, [vehicle, trip]);
 
-    const lastStop = stops?.filter(stop => stop?.metersToStop < -50)?.pop() || (trip?.stops[0] && minutesUntil(trip?.stops[0].departure) < 0 ? trip?.stops[0] : null);
-    const serving = stops?.find(stop => stop?.metersToStop < 50 && stop?.metersToStop > -50);
-    const nextStop = stops?.filter(stop => stop?.metersToStop > 50)?.shift();
-    const tripStart = lastStop || !trip || trip.error ? 0 : minutesUntil(trip?.stops[0].departure);
-
-    const next = serving || nextStop;
-    const toNextStop = next && lastStop ? (next.time - lastStop?.time) - ((tripStart + next.time - lastStop?.time) * (lastStop && ((nextStop === next && !serving) || serving === next) ? percentTravelled(serving || lastStop, next) : 1)) : 0;
-
     return <List>
-        {stops?.map(stop => ({
-            ...stop,
-            delay: vehicle?.isPredicted ? 0 : Math.floor(vehicle?.delay !== undefined ? ((vehicle?.delay || 0) / 60) : (tripStart + stop.time - (lastStop?.time || 0)) * (lastStop && ((nextStop === stop && !serving) || serving === stop) ? percentTravelled(serving || lastStop, stop) : 1) - (next === stop ? 0 : toNextStop) - minutesUntil(stop.arrival)) || 0
-        }))?.map<React.ReactNode>((stop, i) => (
-            <ListItem button key={stop.name} onClick={() => map.setView(stop.location, 17)} ref={(ref) => {
-                if (!scrolled && (serving?.id === stop?.id || (nextStop?.id === stop?.id && !serving))) {
+        {tripInfo?.stops?.map<React.ReactNode>((stop, i) => (
+            <ListItemButton key={stop.name} onClick={() => map.setView(stop.location, 17)} ref={(ref) => {
+                if (!scrolled && (tripInfo?.serving?.id === stop?.id || (tripInfo?.nextStop.id === stop?.id && !tripInfo?.serving))) {
                     ref?.scrollIntoView();
                     setScrolled(true);
                 }
             }}>
                 <ListItemAvatar>
                     <Avatar sx={{ width: 15, height: 15, backgroundColor: stop?.metersToStop > -50 ? trip?.color : "#9ba1ab", color: "white", marginLeft: "5px", zIndex: 30000 }}>&nbsp;</Avatar>
-                    {i + 1 !== stops?.length ? <div style={{ borderLeft: `7px solid ${stop?.metersToStop > -50 || (nextStop === stops[i + 1] && !serving) ? trip?.color : "#9ba1ab"}`, marginLeft: '9px', marginTop: '-1px', height: '100%', position: 'absolute', paddingRight: '16px' }} /> : null}
+                    {i + 1 !== tripInfo?.stops?.length ? <div style={{ borderLeft: `7px solid ${stop?.metersToStop > -50 || (tripInfo?.nextStop?.id === tripInfo?.stops[i + 1]?.id) ? trip?.color : "#9ba1ab"}`, marginLeft: '9px', marginTop: '-1px', height: '100%', position: 'absolute', paddingRight: '16px' }} /> : null}
                 </ListItemAvatar>
                 <ListItemText style={{ marginLeft: "-13px", marginRight: "1px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <div style={{ color: stop?.metersToStop < -50 ? "#ADADAD" : "" }}>
                             <span>{stop.name}</span>
-                            {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{stop.delay ? <b style={{ color: "#d1312a" }}><Translate name={stop.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(stop.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>} <b>&#183;</b> {stop.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + stop.delay * 60000)}</span> : null}
+                            {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{tripInfo?.delay ? <b style={{ color: "#d1312a" }}><Translate name={tripInfo?.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(tripInfo?.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>} <b>&#183;</b> {tripInfo?.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + (tripInfo?.delay || 0) * 60000)}</span> : null}
                         </div>
                         {stop?.metersToStop > -50 ? <div>
-                            <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "right" }}>{minutesUntil(stop.arrival + stop.delay * 60000) < 0.5 ? "<1" : minutesUntil(stop.arrival + stop.delay * 60000)}</p>
+                            <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "right" }}>{minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000) < 0.5 ? "<1" : minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000)}</p>
                             <span style={{ color: "#737478", fontSize: 13, lineHeight: 0, margin: 0, textAlign: "right" }}>min</span>
                         </div> : null}
                     </div>
                 </ListItemText>
-            </ListItem>
+            </ListItemButton>
         )).reduce((prev, curr, i) => [prev, <Divider variant="inset" key={i} sx={{ backgroundColor: "#DCCDCD", marginRight: "10px", marginLeft: "57px" }} />, curr])}
     </List>;
-
-    function metersToStop(stop: Stop) {
-        return trip ? stop.onLine - (nearestPointOnLine(lineString(trip.shapes as Position[]), point(vehicle?.location as Position), { units: 'meters' }).properties.location || 0) : 0;
-    }
-
-    function percentTravelled(stop1: Stop, stop2: Stop) {
-        let res = stop1.metersToStop / (stop1.metersToStop - stop2.metersToStop);
-        return (res >= 1 || res === -Infinity) ? 0 : (1 - res);
-    }
 };
 
 function minutesUntil(timestamp: number) {
