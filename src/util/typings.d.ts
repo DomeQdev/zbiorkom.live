@@ -82,7 +82,8 @@ interface Departure {
     status: "REALTIME" | "SCHEDULED",
     realTime: number,
     scheduledTime: number,
-    vehicle?: Vehicle
+    vehicle?: Vehicle,
+    trip?: string
 }
 
 type City = "warsaw" | "gdansk";

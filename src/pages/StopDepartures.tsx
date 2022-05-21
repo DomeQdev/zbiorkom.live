@@ -37,7 +37,7 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
     }, [stops]);
 
     const dep = useMemo(() => departures.map(departure => {
-        let vehicle = vehicles.find(v => v.line === departure.line && v.brigade === departure.brigade);
+        let vehicle = vehicles.find(v => v.trip === departure.trip || (v.line === departure.line && departure.brigade && v.brigade === departure.brigade));
         return {
             ...departure,
             vehicle,
