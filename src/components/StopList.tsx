@@ -36,9 +36,9 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <div style={{ color: stop?.metersToStop < -50 ? "#ADADAD" : "" }}>
                             <span>{stop.name}</span>
-                            {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{tripInfo?.delay ? <b style={{ color: "#d1312a" }}><Translate name={tripInfo?.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(tripInfo?.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>} <b>&#183;</b> {tripInfo?.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + (tripInfo?.delay || 0) * 60000)}</span> : null}
+                            {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{tripInfo?.delay ? <b style={{ color: "#d1312a" }}><Translate name={tripInfo?.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(tripInfo?.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>} <b>&#183;</b> {tripInfo?.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + (tripInfo?.delay || 0) * 60000)}</span> : null} {stop.platform ? <><b>&#183;</b> <Translate name="platform" /> <b>{stop.platform}</b></> : null}
                         </div>
-                        {stop?.metersToStop > -50 ? <div>
+                        {stop?.metersToStop > -50 && minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000) < 60 ? <div>
                             <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "right" }}>{minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000) < 0.5 ? "<1" : minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000)}</p>
                             <span style={{ color: "#737478", fontSize: 13, lineHeight: 0, margin: 0, textAlign: "right" }}>min</span>
                         </div> : null}

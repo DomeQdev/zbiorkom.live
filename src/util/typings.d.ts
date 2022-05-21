@@ -25,7 +25,8 @@ interface Stop {
     index: number,
     time: number,
     metersToStop: number,
-    delay: number
+    delay: number,
+    platform?: string
 }
 
 
@@ -83,7 +84,8 @@ interface Departure {
     realTime: number,
     scheduledTime: number,
     vehicle?: Vehicle,
-    trip?: string
+    trip?: string,
+    platform?: string
 }
 
 type City = "warsaw" | "gdansk";
