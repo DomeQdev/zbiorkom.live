@@ -48,7 +48,7 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
 
     return <>
         {stop ? <StopMarker stop={stop} color="#ff0000" /> : null}
-        {dep.filter(veh => veh.vehicle).filter((value, index, self) => index === self.findIndex((t) => t.trip === value.trip || (t.line === value.line && t.brigade === value.brigade))).map((veh, i) => <VehicleMarker vehicle={veh.vehicle!} city={city} key={`0_${i}`} />)}
+        {dep.filter(veh => veh.vehicle).filter((value, index, self) => index === self.findIndex((t) => t.trip === value.trip || (t.line === value.line && t.brigade && t.brigade === value.brigade))).map((veh, i) => <VehicleMarker vehicle={veh.vehicle!} city={city} key={`0_${i}`} />)}
         <BottomSheet
             open
             onDismiss={() => navigate(`/${city}`)}
