@@ -59,7 +59,7 @@ const TripInfo = ({
     let nextStop = stopList.find(stop => stop?.metersToStop > 50) || stopList[stopList.length - 1];
 
     let realTime = (nextStop?.time! - (serving?.time || lastStop?.time)) * percentTravelled(serving || lastStop, nextStop!);
-    let delay = tripStart + Math.floor(realTime - minutesUntil(nextStop?.arrival));
+    let delay = tripStart + Math.round(realTime - minutesUntil(nextStop?.arrival));
 
     return {
         stops: stopList,

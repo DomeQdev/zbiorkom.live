@@ -25,13 +25,22 @@ export const onRequestGet = async ({ request, env }) => {
         bikes.countries[0].cities.map(city => city.places.map(place => ({
             location: [place.lat, place.lng],
             name: place.name,
-            id: place.number,
+            id: String(place.number),
             bike_racks: place.bike_racks,
             free_racks: place.free_racks,
             bikes: place.bike_list.map(bike => ({
                 number: bike.number,
-                type: bike.bike_type
+                name: bikeType(bike.bike_type)
             }))
         }))).flat()
     ));
 };
+
+function bikeType(number: number) {
+    switch(number) {
+        case 34: return "Rower dziecięcy 4+";
+        case 35: return "Rower dziecięcy 6+";
+        case 37: return "Rower elektryczny";
+        default: return "Rower standardowy";
+    }
+}

@@ -88,7 +88,19 @@ interface Departure {
     platform?: string
 }
 
+interface Bikes {
+    bike_racks: number,
+    bikes: {
+        number: number,
+        name: string
+    }[],
+    free_racks: number,
+    id: string,
+    location: [number, number],
+    name: string
+}
+
 type City = "warsaw" | "gdansk";
 type MapStyle = "osm" | "mapbox" | "mapstr" | "mapsat" | "mapnav" | "gmaps" | "gsat";
 
-export { Vehicle, Stop, Trip, FilterData, City, VehicleInfo, MapStyle, Departure };
+export { Vehicle, Stop, Trip, FilterData, City, VehicleInfo, MapStyle, Departure, Bikes };
