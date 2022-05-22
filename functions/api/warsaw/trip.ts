@@ -36,7 +36,7 @@ export const onRequestGet = async ({ request, env }) => {
             let nearest = nearestPointOnLine(line, point(stop.location), { units: 'meters' });
             return {
                 ...stop,
-                location: nearest.properties.dist < 30 ? nearest.geometry.coordinates : stop.location,
+                location: nearest.properties.dist! < 30 ? nearest.geometry.coordinates : stop.location,
                 onLine: i === 0 ? 0 : nearest.properties.location,
                 index: i === 0 ? 0 : nearest.properties.index,
                 time: (stop.departure - data.stops[0].departure) / 1000 / 60

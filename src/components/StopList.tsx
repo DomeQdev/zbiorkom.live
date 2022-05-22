@@ -1,4 +1,5 @@
 import { List, ListItemButton, ListItemAvatar, ListItemText, Avatar, Divider } from "@mui/material";
+import { PanTool } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
 import { Trip, Vehicle } from "../util/typings";
@@ -17,7 +18,7 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
             shapes: trip.shapes,
             stops: trip.stops,
             location: vehicle?.location
-        }))
+        }));
     }, [vehicle, trip]);
 
     return <List>
@@ -35,7 +36,7 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
                 <ListItemText style={{ marginLeft: "-13px", marginRight: "1px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <div style={{ color: stop?.metersToStop < -50 ? "#ADADAD" : "" }}>
-                            <span>{stop.name}</span>
+                            <span>{stop.on_request && <PanTool style={{ width: 15, height: 15 }} />} {stop.name}</span>
                             {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{tripInfo?.delay ? <b style={{ color: "#d1312a" }}><Translate name={tripInfo?.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(tripInfo?.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>} <b>&#183;</b> {tripInfo?.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + (tripInfo?.delay || 0) * 60000)} {stop.platform ? <><b>&#183;</b> <Translate name="platform" /> <b>{stop.platform}</b></> : null}</span> : null}
                         </div>
                         {stop?.metersToStop > -50 && minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000) < 60 ? <div>
