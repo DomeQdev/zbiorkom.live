@@ -17,7 +17,7 @@ export default ({ bikes, city }: { bikes: Bikes[], city: City }) => {
 
     useEffect(() => {
         if (!bikes.length) return;
-        let _bike = bikes.find(x => String(x.id) === id);
+        let _bike = bikes.find(x => x.id === id);
         if (!_bike) {
             toast.error(translate("bike_station_not_found"));
             return navigate(`/${city}`);
@@ -44,7 +44,7 @@ export default ({ bikes, city }: { bikes: Bikes[], city: City }) => {
                 </div>
             </>}
         >
-            {bike?.bikes.sort((a, b) => a.number - b.number).map<React.ReactNode>((bik, i) => <ListItem key={`0_${i}`}>
+            {bike?.bikes.length ? bike.bikes.sort((a, b) => a.number - b.number).map<React.ReactNode>((bik, i) => <ListItem key={`0_${i}`}>
                 <ListItemText>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <div>
@@ -52,7 +52,7 @@ export default ({ bikes, city }: { bikes: Bikes[], city: City }) => {
                         </div>
                     </div>
                 </ListItemText>
-            </ListItem>).reduce((prev, curr, i) => [prev, <Divider key={`1_${i}`} sx={{ backgroundColor: "#DCCDCD", marginLeft: "10px", marginRight: "10px" }} />, curr])}
+            </ListItem>).reduce((prev, curr, i) => [prev, <Divider key={`1_${i}`} sx={{ backgroundColor: "#DCCDCD", marginLeft: "10px", marginRight: "10px" }} />, curr]) : "😨❌🚲❌"}
         </BottomSheet>
     </>;
 };
