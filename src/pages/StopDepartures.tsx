@@ -32,7 +32,7 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
         const loadDepartures = () => fetch(cities[city].api.stopDepartures!.replace("{{stop}}", st!.id)).then(res => res.json()).then(setDepartures);
         loadDepartures();
 
-        const int = setInterval(() => document.visibilityState === "visible" ? loadDepartures() : null, 30000);
+        const int = setInterval(() => document.visibilityState === "visible" ? loadDepartures() : null, 20000);
         return () => clearInterval(int);
     }, [stops]);
 
@@ -47,8 +47,8 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
     }), [departures, vehicles]);
 
     return <>
-        {stop ? <StopMarker stop={stop} color="#ff0000" /> : null}
-        {dep.filter(veh => veh.vehicle).filter((value, index, self) => index === self.findIndex((t) => t.trip === value.trip || (t.line === value.line && t.brigade && t.brigade === value.brigade))).map((veh, i) => <VehicleMarker vehicle={veh.vehicle!} city={city} key={`0_${i}`} />)}
+        {stop ? <StopMarker stop={stop} color="#ff0000" key={stop.id} /> : null}
+        {dep.filter(veh => veh.vehicle).filter((value, index, self) => index === self.findIndex((t) => t.trip === value.trip || (t.line === value.line && t.brigade && t.brigade === value.brigade))).map((veh) => <VehicleMarker vehicle={veh.vehicle!} city={city} key={`${veh.type}${veh.vehicle?.tab}`} />)}
         <BottomSheet
             open
             onDismiss={() => navigate(`/${city}`)}

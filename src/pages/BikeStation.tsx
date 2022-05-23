@@ -27,7 +27,7 @@ export default ({ bikes, city }: { bikes: Bikes[], city: City }) => {
     }, [bikes]);
 
     return <>
-        {bike && <BikeMarker bike={bike} />}
+        {bike && <BikeMarker bike={bike} key={bike.id} />}
         <BottomSheet
             open
             onDismiss={() => navigate(`/${city}`)}
