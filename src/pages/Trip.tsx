@@ -52,7 +52,7 @@ export default ({ vehicles, city }: {
         {vehicle?.brigade && <Routes>
             <Route path="brigade" element={<Brigade city={city} vehicle={vehicle} />} />
             <Route path="vehicle" element={<VehicleInfo city={city} vehicle={vehicle} />} />
-            {trip?.alerts.length && <Route path="alerts" element={<Alerts alerts={trip.alerts} />} />}
+            {trip?.alerts?.length && <Route path="alerts" element={<Alerts alerts={trip.alerts} />} />}
         </Routes>}
     </>;
 };
