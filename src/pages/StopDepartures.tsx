@@ -58,7 +58,7 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
             header={<b style={{ alignItems: "center" }}>{stop?.name}</b>}
         >
             {dep.length ? <List>{dep.sort((a, b) => a.realTime - b.realTime).map<React.ReactNode>((departure, i) => (
-                <ListItemButton onClick={() => departure.vehicle ? map.setView(departure.vehicle.location, 17) : null} sx={{ opacity: Date.now() - 30000 < departure.realTime ? 1 : 0.5 }}>
+                <ListItemButton key={i} onClick={() => departure.vehicle ? map.setView(departure.vehicle.location, 17) : null} sx={{ opacity: Date.now() - 30000 < departure.realTime ? 1 : 0.5 }}>
                     <ListItemText>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <div>

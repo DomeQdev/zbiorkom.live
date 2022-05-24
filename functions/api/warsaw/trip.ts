@@ -25,6 +25,12 @@ export const onRequestGet = async ({ request, env }) => {
 
     if(data.error) return new Response(JSON.stringify({ error: data.error }), { status: 400 });
 
+    let alerts: {
+        link: string,
+        routes: string[],
+        title: string
+    }[] = await fetch("https://mkuran.pl/gtfs/warsaw/alerts.json").then(res => res.json()).then(x => x.alerts).catch(() => []);
+
     let line = lineString(data.shapes);
     return new Response(JSON.stringify({
         id: tripId,
@@ -41,7 +47,11 @@ export const onRequestGet = async ({ request, env }) => {
                 index: i === 0 ? 0 : nearest.properties.index,
                 time: (stop.departure - data.stops[0].departure) / 1000 / 60
             }
-        })
+        }),
+        alerts: alerts.filter(alert => alert.routes.includes(data.line)).map(alert => ({
+            title: alert.title,
+            link: alert.link
+        }))
     }), {
         headers: {
             "Content-Type": "application/json",

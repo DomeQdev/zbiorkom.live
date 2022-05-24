@@ -11,7 +11,8 @@
             "brigade": "/api/warsaw/brigade?line={{line}}&brigade={{brigade}}",
             "stopList": "/api/warsaw/stops",
             "stopDepartures": "/api/warsaw/stop?id={{stop}}",
-            "bikes": "/api/warsaw/bikes"
+            "bikes": "/api/warsaw/bikes",
+            "parkings": null
         },
         "functions": {
             "filter": true,
@@ -19,7 +20,8 @@
             "brigades": true,
             "alerts": true,
             "stopDepartures": true,
-            "bikes": true
+            "bikes": true,
+            "parkings": false
         }
     },
     "gdansk": {
@@ -34,7 +36,8 @@
             "brigade": null,
             "stopList": "/api/gdansk/stops",
             "stopDepartures": "/api/gdansk/stop?id={{stop}}",
-            "bikes": null
+            "bikes": null,
+            "parkings": "/api/gdansk/parkings"
         },
         "functions": {
             "filter": true,
@@ -42,7 +45,8 @@
             "brigades": false,
             "alerts": true,
             "stopDepartures": true,
-            "bikes": false
+            "bikes": false,
+            "parkings": true
         }
     }
 }

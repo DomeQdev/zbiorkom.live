@@ -33,7 +33,12 @@ export const onRequestGet = async ({ request, env }) => {
                 name: bikeType(bike.bike_type)
             }))
         }))).flat()
-    ));
+    ), {
+        headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "public, max-age=10575"
+        }
+    });
 };
 
 function bikeType(number: number) {

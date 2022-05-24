@@ -48,7 +48,7 @@ export const onRequestGet = async ({ request }) => {
     let vehicleData = vehicles.find(v => v.nr_inwentarzowy === tab && v.rodzaj_pojazdu === (type === "bus" ? "Autobus" : "Tramwaj"));
     if (!vehicleData) return new Response("Not Found", { status: 404 });
 
-    let features = [];
+    let features: string[] = [];
     if (vehicleData.AED === "tak") features.push("AED");
     if (vehicleData.USB === "tak") features.push("USB");
     if (vehicleData.biletomat === "tak") features.push("automat biletowy");
