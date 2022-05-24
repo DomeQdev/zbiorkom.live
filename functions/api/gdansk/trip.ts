@@ -78,6 +78,7 @@ export const onRequestGet = async ({ request }) => {
         headsign: null,
         color: routes[route].color,
         shapes: shape.coordinates.map(x => [x[1], x[0]]),
+        alerts: [],
         stops: stopTime.map(stop => {
             let stopData = stops?.stops?.find(s => s.stopId === stop.stopId);
             if(!stopData) return {

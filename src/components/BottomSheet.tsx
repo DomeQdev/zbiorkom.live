@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem, Badge } from "@mui/material";
+import { MoreVert, Route, Commit, DirectionsBus, BusAlert, Close } from "@mui/icons-material";
 import { BottomSheet } from "react-spring-bottom-sheet";
-import { MoreVert } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { LatLngBoundsExpression } from "leaflet";
 import { useMap } from "react-leaflet";
@@ -27,7 +27,7 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
             <div style={{ display: "inline-flex", alignItems: "center" }}>
                 <b style={{ color: "white", backgroundColor: trip?.color || "#880077", borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center" }}>{icons({ size: 18 })[vehicle?.type!]?.icon}&nbsp;{vehicle?.line}</b>{vehicle?.headsign || trip?.headsign ? <>&nbsp;{vehicle?.headsign || trip?.headsign}</> : null}
             </div>
-            <div><IconButton onClick={({ currentTarget }: { currentTarget: HTMLElement }) => setAnchorEl(anchorEl ? null : currentTarget)}><MoreVert /></IconButton>
+            <div><IconButton onClick={({ currentTarget }: { currentTarget: HTMLElement }) => setAnchorEl(anchorEl ? null : currentTarget)}><Badge color="secondary" variant="dot"><MoreVert /></Badge></IconButton>
                 <Menu
                     anchorEl={anchorEl}
                     open={!!anchorEl}
@@ -40,10 +40,11 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
                         }
                     }}
                 >
-                    {trip?.shapes && <MenuItem onClick={() => { if (trip?.shapes) map.fitBounds(bounds(trip.shapes)); setAnchorEl(null); }}><Translate name="show_route" /></MenuItem>}
-                    {cities[city].functions.brigades && vehicle?.brigade && <MenuItem onClick={() => { navigate("brigade"); setAnchorEl(null); }}><Translate name="next_trips" /></MenuItem>}
-                    {cities[city].functions.vehicleInfo && vehicle?.brigade && <MenuItem onClick={() => { navigate("vehicle"); setAnchorEl(null); }}><Translate name="vehicle_info" /></MenuItem>}
-                    <MenuItem onClick={() => navigate(`/${city}`)}><Translate name="close" /></MenuItem>
+                    {trip?.shapes && <MenuItem onClick={() => { if (trip?.shapes) map.fitBounds(bounds(trip.shapes)); setAnchorEl(null); }}><Route style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="show_route" /></MenuItem>}
+                    {cities[city].functions.brigades && vehicle?.brigade && <MenuItem onClick={() => { navigate("brigade"); setAnchorEl(null); }}><Commit style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="next_trips" /></MenuItem>}
+                    {cities[city].functions.vehicleInfo && vehicle?.brigade && <MenuItem onClick={() => { navigate("vehicle"); setAnchorEl(null); }}><DirectionsBus style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="vehicle_info" /></MenuItem>}
+                    {trip?.alerts.length && <MenuItem onClick={() => { navigate("alerts"); setAnchorEl(null); }}><Badge color="secondary" variant="dot" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><BusAlert style={{ width: 20, height: 20 }} color="primary" /></Badge>&nbsp;<Translate name="alerts" /></MenuItem>}
+                    <MenuItem onClick={() => navigate(`/${city}`)}><Close style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="close" /></MenuItem>
                 </Menu>
             </div>
         </div>}

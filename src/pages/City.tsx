@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useMap } from "react-leaflet";
-import { City, Stop, Vehicle, FilterData, Bikes } from "../util/typings";
+import { City, Stop, Vehicle, FilterData, Bikes, Parking } from "../util/typings";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useWebSocket from "react-use-websocket";
@@ -13,6 +13,7 @@ import Trip from "./Trip";
 import Filter from "./Filter";
 import StopDepartures from "./StopDepartures";
 import BikeStation from "./BikeStation";
+import ParkingMarker from "../components/ParkingMarker";
 
 export default ({ city }: {
 	city: City
@@ -21,6 +22,7 @@ export default ({ city }: {
 	const navigate = useNavigate();
 	const [stops, setStops] = useState<Stop[]>([]);
 	const [bikes, setBikes] = useState<Bikes[]>([]);
+	const [parkings, setParkings] = useState<Parking[]>([]);
 	const [veh, setVehicles] = useState<Vehicle[]>([]);
 	const [bounds, setBounds] = useState(map.getBounds());
 
@@ -40,6 +42,7 @@ export default ({ city }: {
 		fetch(cities[city].api.positions).then(res => res.json()).then(setVehicles).catch(() => null)
 		if (cities[city].functions.stopDepartures) fetch(cities[city].api.stopList || "").then(res => res.json()).then(setStops).catch(() => null);
 		if (cities[city].functions.bikes) fetch(cities[city].api.bikes || "").then(res => res.json()).then(setBikes).catch(() => null);
+		if (cities[city].functions.parkings) fetch(cities[city].api.parkings || "").then(res => res.json()).then(setParkings).catch(() => null);
 	}, []);
 
 	let filteredVehicles = useMemo(() => {
@@ -66,6 +69,7 @@ export default ({ city }: {
 
 	return <Routes>
 		<Route path="/" element={<>
+			{map.getZoom() >= 14 ? parkings?.filter(parking => bounds.contains(parking.location)).map(parking => <ParkingMarker parking={parking} key={parking.id} />) : null}
 			{map.getZoom() >= 15 || (filteredVehicles.length !== vehicles.length && inBounds.length <= 150) ? inBounds.filter(x => x.trip).map(vehicle => <VehicleMarker vehicle={vehicle} key={`${vehicle.type}${vehicle.tab}`} city={city} />) : null}
 			{map.getZoom() >= 16 ? stops?.filter(stop => bounds.contains(stop.location)).map(stop => <StopMarker stop={stop} key={stop.id} color="red" link />) : null}
 			{map.getZoom() >= 16 ? bikes?.filter(bike => bounds.contains(bike.location)).map(bike => <BikeMarker bike={bike} key={bike.id} link />) : null}

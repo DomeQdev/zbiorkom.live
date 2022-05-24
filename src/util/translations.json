@@ -7,6 +7,7 @@
         "show_route": "Pokaż trasę",
         "next_trips": "Kursy tego pojazdu",
         "vehicle_info": "Informacje o pojeździe",
+        "alerts": "Utrudnienia",
         "close": "Zamknij",
         "trip_not_found": "Nie znaleziono trasy",
         "delayed": "{{}} opóźnienia",
@@ -54,7 +55,8 @@
         "vehicle_production_year": "Rok produkcji",
         "vehicle_registration": "Numer rejestracyjny",
         "vehicle_carrier": "Operator",
-        "vehicle_depot": "Zajezdnia"
+        "vehicle_depot": "Zajezdnia",
+        "free_parking_spaces": "{{}} wolnych miejsc"
     },
     "en": {
         "meta_name": "English",
@@ -64,6 +66,7 @@
         "show_route": "Show route",
         "next_trips": "Next trips",
         "vehicle_info": "Vehicle info",
+        "alerts": "Alerts",
         "close": "Close",
         "trip_not_found": "Trip not found",
         "delayed": "{{}} late",
@@ -111,6 +114,7 @@
         "vehicle_production_year": "Production year",
         "vehicle_registration": "Registration number",
         "vehicle_carrier": "Carrier",
-        "vehicle_depot": "Depot"
+        "vehicle_depot": "Depot",
+        "free_parking_spaces": "{{}} free parking spaces"
     }
 }

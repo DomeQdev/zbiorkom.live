@@ -3,12 +3,12 @@ import { Stop } from "./typings";
 
 type Options = {
     stops: Stop[],
-    shapes: [number,number][],
-    location?: [number,number],
-    moveStopsToLine?: boolean
+    shapes: [number, number][],
+    location?: [number, number],
+    delay?: number
 }
 
-type Result =  {
+type Result = {
     stops: Stop[],
     delay?: number,
     lastStop: Stop,
@@ -20,7 +20,7 @@ const TripInfo = ({
     stops,
     shapes,
     location,
-    moveStopsToLine,
+    delay
 }: Options): Result => {
     let line = lineString(shapes);
 
@@ -31,20 +31,10 @@ const TripInfo = ({
         let departure = stop.departure;
         let arrival = stop.arrival || departure;
 
-        let nearest = (() => {
-            if (stop.onLine) {
-                return {
-                    distance: stop.onLine,
-                    location: stop.location
-                };
-            } else {
-                let nearestPoint = nearestPointOnLine(line, point(stop.location), { units: 'meters' });
-                return {
-                    distance: nearestPoint.properties.location,
-                    location: moveStopsToLine && nearestPoint.properties.dist! < 30 ? nearestPoint.geometry.coordinates : stop.location
-                };
-            }
-        })();
+        let nearest = {
+            distance: stop.onLine,
+            location: stop.location
+        };
 
         return {
             ...stop,
@@ -59,11 +49,11 @@ const TripInfo = ({
     let nextStop = stopList.find(stop => stop?.metersToStop > 50) || stopList[stopList.length - 1];
 
     let realTime = (nextStop?.time! - (serving?.time || lastStop?.time)) * percentTravelled(serving || lastStop, nextStop!);
-    let delay = tripStart + Math.round(realTime - minutesUntil(nextStop?.arrival));
+    let _delay = delay !== undefined ? delay : tripStart + Math.round(realTime - minutesUntil(nextStop?.arrival));
 
     return {
         stops: stopList,
-        delay,
+        delay: _delay,
         lastStop,
         serving,
         nextStop

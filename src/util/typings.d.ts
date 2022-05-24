@@ -37,7 +37,13 @@ interface Trip {
     color: string,
     shapes: [number, number][],
     stops: Stop[],
+    alerts: Alert[],
     error?: string
+}
+
+interface Alert {
+    title: string,
+    link: string
 }
 
 interface FilterData {
@@ -100,7 +106,14 @@ interface Bikes {
     name: string
 }
 
+interface Parking {
+    id: string,
+    name: string,
+    location: [number, number],
+    availableSpots: number,
+}
+
 type City = "warsaw" | "gdansk";
 type MapStyle = "osm" | "mapbox" | "mapstr" | "mapsat" | "mapnav" | "gmaps" | "gsat";
 
-export { Vehicle, Stop, Trip, FilterData, City, VehicleInfo, MapStyle, Departure, Bikes };
+export { Vehicle, Stop, Trip, Alert, FilterData, City, VehicleInfo, MapStyle, Departure, Bikes, Parking };

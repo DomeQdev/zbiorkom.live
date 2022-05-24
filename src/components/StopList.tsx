@@ -17,7 +17,8 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
         setTripInfo(TripInfo({
             shapes: trip.shapes,
             stops: trip.stops,
-            location: vehicle?.location
+            location: vehicle?.location,
+            delay: vehicle?.delay
         }));
     }, [vehicle, trip]);
 
