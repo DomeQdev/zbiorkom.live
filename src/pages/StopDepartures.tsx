@@ -58,22 +58,20 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
             header={<b style={{ alignItems: "center" }}>{stop?.name}</b>}
         >
             {dep.length ? <List>{dep.sort((a, b) => a.realTime - b.realTime).map<React.ReactNode>((departure, i) => (
-                <Collapse key={i}>
-                    <ListItemButton onClick={() => departure.vehicle ? map.setView(departure.vehicle.location, 17) : null} sx={{ opacity: Date.now() - 30000 < departure.realTime ? 1 : 0.5 }}>
-                        <ListItemText>
-                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                <div>
-                                    <span style={{ display: "inline-flex" }}><b style={{ color: "white", backgroundColor: departure?.color, borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center", height: 15 }}>{icons({ size: 17 })[departure.type].icon}&nbsp;{departure.line}{departure.brigade && <small style={{ fontSize: 11 }}>/{departure.brigade}</small>}</b>&nbsp;{departure.headsign}</span>
-                                    <span style={{ fontSize: 15 }}><br />{departure.status === "REALTIME" ? (departure.delay ? <b style={{ color: "#d1312a" }}><Translate name={departure.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(departure.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>) : <b><Translate name="scheduled" /></b>} <b>&#183;</b> {departure.delay ? <s>{timeString(departure.scheduledTime)}</s> : null} {timeString(departure.realTime)}</span> {departure.platform ? <><b>&#183;</b> <Translate name="platform" /> <b>{departure.platform}</b></> : null}
-                                </div>
-                                {minutesUntil(departure.realTime) < 60 && Date.now() - 30000 < departure.realTime ? <div>
-                                    <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "right" }}>{minutesUntil(departure.realTime) < 0.5 ? "<1" : minutesUntil(departure.realTime)}</p>
-                                    <span style={{ color: "#737478", fontSize: 13, lineHeight: 0, margin: 0, textAlign: "right" }}>min</span>
-                                </div> : null}
+                <ListItemButton onClick={() => departure.vehicle ? map.setView(departure.vehicle.location, 17) : null} sx={{ opacity: Date.now() - 30000 < departure.realTime ? 1 : 0.5 }}>
+                    <ListItemText>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <div>
+                                <span style={{ display: "inline-flex" }}><b style={{ color: "white", backgroundColor: departure?.color, borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center", height: 15 }}>{icons({ size: 17 })[departure.type].icon}&nbsp;{departure.line}{departure.brigade && <small style={{ fontSize: 11 }}>/{departure.brigade}</small>}</b>&nbsp;{departure.headsign}</span>
+                                <span style={{ fontSize: 15 }}><br />{departure.status === "REALTIME" ? (departure.delay ? <b style={{ color: "#d1312a" }}><Translate name={departure.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(departure.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>) : <b><Translate name="scheduled" /></b>} <b>&#183;</b> {departure.delay ? <s>{timeString(departure.scheduledTime)}</s> : null} {timeString(departure.realTime)}</span> {departure.platform ? <><b>&#183;</b> <Translate name="platform" /> <b>{departure.platform}</b></> : null}
                             </div>
-                        </ListItemText>
-                    </ListItemButton>
-                </Collapse>
+                            {minutesUntil(departure.realTime) < 60 && Date.now() - 30000 < departure.realTime ? <div>
+                                <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "right" }}>{minutesUntil(departure.realTime) < 0.5 ? "<1" : minutesUntil(departure.realTime)}</p>
+                                <span style={{ color: "#737478", fontSize: 13, lineHeight: 0, margin: 0, textAlign: "right" }}>min</span>
+                            </div> : null}
+                        </div>
+                    </ListItemText>
+                </ListItemButton>
             )).reduce((prev, curr, i) => [prev, <Divider key={`2_${i}`} sx={{ backgroundColor: "#DCCDCD", marginLeft: "10px", marginRight: "10px" }} />, curr])}</List> : <h2 style={{ textAlign: "center" }}>🦗🦗🦗🦗🦗🦗</h2>}
         </BottomSheet>
     </>;
