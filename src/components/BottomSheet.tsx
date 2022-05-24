@@ -27,7 +27,7 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
             <div style={{ display: "inline-flex", alignItems: "center" }}>
                 <b style={{ color: "white", backgroundColor: trip?.color || "#880077", borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center" }}>{icons({ size: 18 })[vehicle?.type!]?.icon}&nbsp;{vehicle?.line}</b>{vehicle?.headsign || trip?.headsign ? <>&nbsp;{vehicle?.headsign || trip?.headsign}</> : null}
             </div>
-            <div><IconButton onClick={({ currentTarget }: { currentTarget: HTMLElement }) => setAnchorEl(anchorEl ? null : currentTarget)}><Badge color="secondary" variant="dot"><MoreVert /></Badge></IconButton>
+            <div><IconButton onClick={({ currentTarget }: { currentTarget: HTMLElement }) => setAnchorEl(anchorEl ? null : currentTarget)}>{trip?.alerts.length ? <Badge color="secondary" variant="dot"><MoreVert /></Badge> : <MoreVert />}</IconButton>
                 <Menu
                     anchorEl={anchorEl}
                     open={!!anchorEl}
@@ -43,7 +43,7 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
                     {trip?.shapes && <MenuItem onClick={() => { if (trip?.shapes) map.fitBounds(bounds(trip.shapes)); setAnchorEl(null); }}><Route style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="show_route" /></MenuItem>}
                     {cities[city].functions.brigades && vehicle?.brigade && <MenuItem onClick={() => { navigate("brigade"); setAnchorEl(null); }}><Commit style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="next_trips" /></MenuItem>}
                     {cities[city].functions.vehicleInfo && vehicle?.brigade && <MenuItem onClick={() => { navigate("vehicle"); setAnchorEl(null); }}><DirectionsBus style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="vehicle_info" /></MenuItem>}
-                    {trip?.alerts.length && <MenuItem onClick={() => { navigate("alerts"); setAnchorEl(null); }}><Badge color="secondary" variant="dot" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><BusAlert style={{ width: 20, height: 20 }} color="primary" /></Badge>&nbsp;<Translate name="alerts" /></MenuItem>}
+                    {trip?.alerts.length ? <MenuItem onClick={() => { navigate("alerts"); setAnchorEl(null); }}><Badge color="secondary" variant="dot" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><BusAlert style={{ width: 20, height: 20 }} color="primary" /></Badge>&nbsp;<Translate name="alerts" /></MenuItem> : null}
                     <MenuItem onClick={() => navigate(`/${city}`)}><Close style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="close" /></MenuItem>
                 </Menu>
             </div>
