@@ -10,8 +10,9 @@ import { Translate } from "../util/Translations";
 import StopList from "./StopList";
 import icons from "../util/icons";
 import cities from "../util/cities.json";
+import { Result } from "../util/Realtime";
 
-export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city: City }) => {
+export default ({ trip, vehicle, city, tripInfo }: { trip?: Trip, vehicle?: Vehicle, city: City, tripInfo?: Result }) => {
     const navigate = useNavigate();
     const map = useMap();
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -21,11 +22,14 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
         onDismiss={() => navigate(`/${city}`)}
         blocking={false}
         style={{ zIndex: 1000, position: "absolute" }}
-        snapPoints={({ maxHeight }) => [maxHeight / 4, maxHeight * 0.6, maxHeight - 40]}
+        snapPoints={({ maxHeight }) => [maxHeight / 3.7, maxHeight * 0.6, maxHeight - 40]}
         header={<div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div />
-            <div style={{ display: "inline-flex", alignItems: "center" }}>
-                <b style={{ color: "white", backgroundColor: trip?.color || "#880077", borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center" }}>{icons({ size: 18 })[vehicle?.type!]?.icon}&nbsp;{vehicle?.line}</b>{vehicle?.headsign || trip?.headsign ? <>&nbsp;{vehicle?.headsign || trip?.headsign}</> : null}
+            <IconButton onClick={() => navigate(`/${city}`)}><Close /></IconButton>
+            <div>
+                <div style={{ display: "inline-flex", alignItems: "center" }}>
+                    <b style={{ color: "white", backgroundColor: trip?.color || "#880077", borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center" }}>{icons({ size: 18 })[vehicle?.type!]?.icon}&nbsp;{vehicle?.line}</b>{vehicle?.headsign || trip?.headsign ? <>&nbsp;{vehicle?.headsign || trip?.headsign}</> : null}
+                </div>
+                {tripInfo && <span style={{ lineHeight: 1.4 }}><br />{tripInfo?.delay ? <b style={{ color: "#d1312a" }}><Translate name={tripInfo?.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(tripInfo?.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>}</span>}
             </div>
             <div><IconButton onClick={({ currentTarget }: { currentTarget: HTMLElement }) => setAnchorEl(anchorEl ? null : currentTarget)}>{trip?.alerts?.length ? <Badge color="secondary" variant="dot"><MoreVert /></Badge> : <MoreVert />}</IconButton>
                 <Menu
@@ -41,15 +45,14 @@ export default ({ trip, vehicle, city }: { trip?: Trip, vehicle?: Vehicle, city:
                     }}
                 >
                     {trip?.shapes && <MenuItem onClick={() => { if (trip?.shapes) map.fitBounds(bounds(trip.shapes)); setAnchorEl(null); }}><Route style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="show_route" /></MenuItem>}
+                    {trip?.alerts?.length ? <MenuItem onClick={() => { navigate("alerts"); setAnchorEl(null); }}><Badge color="secondary" variant="dot" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><BusAlert style={{ width: 20, height: 20 }} color="primary" /></Badge>&nbsp;<Translate name="alerts" /></MenuItem> : null}
                     {cities[city].functions.brigades && vehicle?.brigade && <MenuItem onClick={() => { navigate("brigade"); setAnchorEl(null); }}><Commit style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="next_trips" /></MenuItem>}
                     {cities[city].functions.vehicleInfo && vehicle?.brigade && <MenuItem onClick={() => { navigate("vehicle"); setAnchorEl(null); }}><DirectionsBus style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="vehicle_info" /></MenuItem>}
-                    {trip?.alerts?.length ? <MenuItem onClick={() => { navigate("alerts"); setAnchorEl(null); }}><Badge color="secondary" variant="dot" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><BusAlert style={{ width: 20, height: 20 }} color="primary" /></Badge>&nbsp;<Translate name="alerts" /></MenuItem> : null}
-                    <MenuItem onClick={() => navigate(`/${city}`)}><Close style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="close" /></MenuItem>
                 </Menu>
             </div>
         </div>}
     >
-        {trip?.error ? <h3 style={{ textAlign: "center" }}><Translate name="trip_not_found" /></h3> : <StopList trip={trip} vehicle={vehicle} />}
+        {trip?.error ? <h3 style={{ textAlign: "center" }}><Translate name="trip_not_found" /></h3> : <StopList trip={trip} tripInfo={tripInfo} />}
     </BottomSheet>;
 };
 

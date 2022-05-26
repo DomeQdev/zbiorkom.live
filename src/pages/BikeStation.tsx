@@ -33,7 +33,7 @@ export default ({ bikes, city }: { bikes: Bikes[], city: City }) => {
             onDismiss={() => navigate(`/${city}`)}
             blocking={false}
             style={{ zIndex: 1000, position: "absolute" }}
-            snapPoints={({ maxHeight }) => [maxHeight / 4, maxHeight * 0.6, maxHeight - 40]}
+            snapPoints={({ maxHeight }) => [maxHeight / 3.7, maxHeight * 0.6, maxHeight - 40]}
             header={bike && <>
                 <div style={{ display: "inline-flex", alignItems: "center" }}>
                     <span style={{ color: "white", backgroundColor: "#104a9e", borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center" }}><DirectionsBike style={{ width: 18, height: 18 }} />&nbsp;{bike?.id}</span>&nbsp;{bike?.name}

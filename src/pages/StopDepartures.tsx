@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { List, Divider, ListItemButton, ListItemText, Collapse } from "@mui/material";
+import { List, Divider, ListItemButton, ListItemText, IconButton, Badge, Menu, MenuItem } from "@mui/material";
+import { Close, MoreVert } from "@mui/icons-material";
 import { City, Departure, Stop, Vehicle } from "../util/typings";
 import { useNavigate, useParams } from "react-router-dom";
 import { BottomSheet } from "react-spring-bottom-sheet";
@@ -16,6 +17,7 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
     const map = useMap();
     const { id } = useParams();
 
+    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const [stop, setStop] = useState<Stop>();
     const [departures, setDepartures] = useState<Departure[]>([]);
 
@@ -54,8 +56,29 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
             onDismiss={() => navigate(`/${city}`)}
             blocking={false}
             style={{ zIndex: 1000, position: "absolute" }}
-            snapPoints={({ maxHeight }) => [maxHeight / 4, maxHeight * 0.6, maxHeight - 40]}
-            header={<b style={{ alignItems: "center" }}>{stop?.name}</b>}
+            snapPoints={({ maxHeight }) => [maxHeight / 3.7, maxHeight * 0.6, maxHeight - 40]}
+            header={<div style={{ display: "flex", justifyContent: "space-between" }}>
+                <IconButton onClick={() => navigate(`/${city}`)}><Close /></IconButton>
+                <div style={{ display: "inline-flex", alignItems: "center" }}>
+                    <b style={{ alignItems: "center" }}>{stop?.name}</b>
+                </div>
+                <div><IconButton onClick={({ currentTarget }: { currentTarget: HTMLElement }) => setAnchorEl(anchorEl ? null : currentTarget)}><MoreVert /></IconButton>
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={!!anchorEl}
+                        onClose={() => setAnchorEl(null)}
+                        style={{ zIndex: 300000 }}
+                        PaperProps={{
+                            style: {
+                                maxHeight: 40 * 4.5,
+                                minWidth: 30 * 4.5,
+                            }
+                        }}
+                    >
+                        <MenuItem><Close style={{ width: 20, height: 20 }} color="primary" />&nbsp;Ghost</MenuItem>
+                    </Menu>
+                </div>
+            </div>}
         >
             {dep.length ? <List>{dep.sort((a, b) => a.realTime - b.realTime).map<React.ReactNode>((departure, i) => (
                 <ListItemButton key={i} onClick={() => departure.vehicle ? map.setView(departure.vehicle.location, 17) : null} sx={{ opacity: Date.now() - 30000 < departure.realTime ? 1 : 0.5 }}>
@@ -63,12 +86,12 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <div>
                                 <span style={{ display: "inline-flex" }}><b style={{ color: "white", backgroundColor: departure?.color, borderRadius: "25px", padding: "5px", paddingLeft: "10px", paddingRight: "10px", display: "inline-flex", alignItems: "center", height: 15 }}>{icons({ size: 17 })[departure.type].icon}&nbsp;{departure.line}{departure.brigade && <small style={{ fontSize: 11 }}>/{departure.brigade}</small>}</b>&nbsp;{departure.headsign}</span>
-                                <span style={{ fontSize: 15 }}><br />{departure.status === "REALTIME" ? (departure.delay ? <b style={{ color: "#d1312a" }}><Translate name={departure.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(departure.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>) : <b><Translate name="scheduled" /></b>} <b>&#183;</b> {departure.delay ? <s>{timeString(departure.scheduledTime)}</s> : null} {timeString(departure.realTime)}</span> {departure.platform ? <><b>&#183;</b> <Translate name="platform" /> <b>{departure.platform}</b></> : null}
+                                <span style={{ fontSize: 15 }}><br />{departure.vehicle ? (departure.trip === departure.vehicle.trip ? <>{departure.delay ? <b style={{ color: "#d1312a" }}><Translate name={departure.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(departure.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>} {departure.platform ? <><b>&#183;</b> <Translate name="platform" /> <b>{departure.platform}</b></> : null}</> : <b><Translate name="early_trip" replace={departure.vehicle.headsign} /></b>) : <b><Translate name="scheduled" /></b>}</span>
                             </div>
-                            {minutesUntil(departure.realTime) < 60 && Date.now() - 30000 < departure.realTime ? <div>
-                                <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "right" }}>{minutesUntil(departure.realTime) < 0.5 ? "<1" : minutesUntil(departure.realTime)}</p>
-                                <span style={{ color: "#737478", fontSize: 13, lineHeight: 0, margin: 0, textAlign: "right" }}>min</span>
-                            </div> : null}
+                            <div>
+                                {minutesUntil(departure.realTime) < 60 && Date.now() - 30000 < departure.realTime && <p style={{ margin: 0, lineHeight: 1.4, textAlign: "right" }}><span style={{ fontSize: 20, fontWeight: "bold" }}>{minutesUntil(departure.realTime) < 0.5 ? "<1" : minutesUntil(departure.realTime)}</span> min</p>}
+                                <p style={{ color: "#737478", fontSize: 14, margin: 0, lineHeight: 1.4, textAlign: "right" }}>{departure.delay ? <s>{timeString(departure.scheduledTime)}</s> : null} {timeString(departure.realTime)}</p>
+                            </div>
                         </div>
                     </ListItemText>
                 </ListItemButton>

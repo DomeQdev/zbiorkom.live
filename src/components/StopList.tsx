@@ -2,25 +2,15 @@ import { List, ListItemButton, ListItemAvatar, ListItemText, Avatar, Divider } f
 import { PanTool } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
-import { Trip, Vehicle } from "../util/typings";
+import { Trip } from "../util/typings";
 import { Translate } from "../util/Translations";
-import { Result, TripInfo } from "../util/Realtime";
+import { Result } from "../util/Realtime";
 
-export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
+export default ({ trip, tripInfo }: { trip?: Trip, tripInfo?: Result }) => {
     const map = useMap();
     const [scrolled, setScrolled] = useState(false);
-    const [tripInfo, setTripInfo] = useState<Result>();
 
     useEffect(() => setScrolled(false), [trip]);
-    useEffect(() => {
-        if (!trip?.stops) return;
-        setTripInfo(TripInfo({
-            shapes: trip.shapes,
-            stops: trip.stops,
-            location: vehicle?.location,
-            delay: vehicle?.delay
-        }));
-    }, [vehicle, trip]);
 
     return <List>
         {tripInfo?.stops?.map<React.ReactNode>((stop, i) => (
@@ -37,12 +27,12 @@ export default ({ trip, vehicle }: { trip?: Trip, vehicle?: Vehicle }) => {
                 <ListItemText style={{ marginLeft: "-13px", marginRight: "1px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <div style={{ color: stop?.metersToStop < -50 ? "#ADADAD" : "" }}>
-                            <span>{stop.on_request && <PanTool style={{ width: 15, height: 15 }} />} {stop.name}</span>
-                            {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{tripInfo?.delay ? <b style={{ color: "#d1312a" }}><Translate name={tripInfo?.delay > 0 ? "delayed" : "before_time"} replace={`${Math.abs(tripInfo?.delay)} min`} /></b> : <b style={{ color: "#187d3c" }}><Translate name="on_time" /></b>} <b>&#183;</b> {tripInfo?.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + (tripInfo?.delay || 0) * 60000)} {stop.platform ? <><b>&#183;</b> <Translate name="platform" /> <b>{stop.platform}</b></> : null}</span> : null}
+                            <span style={{ fontWeight: tripInfo?.serving === stop || (tripInfo?.nextStop === stop && !tripInfo?.serving) ? "bold" : "" }}>{stop.on_request && <PanTool style={{ width: 15, height: 15 }} />} {stop.name}</span>
+                            {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{stop.platform ? <><Translate name="platform" /> <b>{stop.platform}</b></> : null}</span> : null}
                         </div>
                         {stop?.metersToStop > -50 && minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000) < 60 ? <div>
-                            <p style={{ fontSize: 20, margin: 0, lineHeight: 1.2, textAlign: "right" }}>{minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000) < 0.5 ? "<1" : minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000)}</p>
-                            <span style={{ color: "#737478", fontSize: 13, lineHeight: 0, margin: 0, textAlign: "right" }}>min</span>
+                            <p style={{ margin: 0, lineHeight: 1.4, textAlign: "right" }}><span style={{ fontSize: 20, fontWeight: "bold" }}>{minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000) < 0.5 ? "<1" : minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000)}</span> min</p> 
+                            <p style={{ color: "#737478", fontSize: 14, lineHeight: 1.4, margin: 0, textAlign: "right" }}>{tripInfo?.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + (tripInfo?.delay || 0) * 60000)}</p>
                         </div> : null}
                     </div>
                 </ListItemText>

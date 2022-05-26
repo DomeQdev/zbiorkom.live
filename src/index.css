@@ -75,3 +75,9 @@ body {
 path.leaflet-interactive {
   pointer-events: none!important;
 }
+
+:root {
+  --rsbs-max-w: 640px;
+  --rsbs-mr: auto;
+  --rsbs-ml: auto;
+}

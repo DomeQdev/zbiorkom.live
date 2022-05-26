@@ -36,6 +36,12 @@ export const onRequestGet = async ({ request }) => {
         delay: departure.delayInSeconds || 0,
         status: departure.status,
         realTime: new Date(departure.estimatedTime).getTime(),
-        scheduledTime: new Date(departure.theoreticalTime).getTime()
+        scheduledTime: new Date(departure.theoreticalTime).getTime(),
+        trip: `${departure.routeId}_${departure.tripId}_${timeString(new Date(new Date(departure.scheduledTripStartTime).getTime() + 2 * 60 * 60 * 1000).getTime())}_${departure.vehicleService}`,
     }))));
 };
+
+function timeString(timestamp: number) {
+    let date = new Date(timestamp);
+    return `${date.getHours() < 10 ? "0" : ""}${date.getHours()}:${date.getMinutes() < 10 ? "0" : ""}${date.getMinutes()}:${date.getSeconds() < 10 ? "0" : ""}${date.getSeconds()}`;
+}
