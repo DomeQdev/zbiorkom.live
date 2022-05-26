@@ -14,7 +14,7 @@
         "before_time": "{{}} przed czasem",
         "on_time": "Planowo",
         "scheduled": "Rozkładowo",
-        "early_trip": "Realizuje cześniejszy kurs do {{}}",
+        "early_trip": "Realizuje wcześniejszy kurs do {{}}",
         "platform": "Peron",
         "stop_departures": "Odjazdy z przystanku",
         "bikes_on_station": "Rowery na stacji",
