@@ -23,6 +23,7 @@ export default ({ vehicles, city }: {
     const [vehicle, setVehicle] = useState<Vehicle>();
     const [trip, setTrip] = useState<Trip>();
     const [tripInfo, setTripInfo] = useState<Result>();
+    const [follow, setFollow] = useState(true);
 
     useEffect(() => {
         if (!vehicles.length) return;
@@ -32,7 +33,7 @@ export default ({ vehicles, city }: {
             toast.error(translate(vehicle ? "vehicle_lost" : "vehicle_not_found"));
             return navigate(`/${city}`);
         }
-        if (veh && !vehicle) map.setView(veh.location, 17);
+        if ((veh && !vehicle) || follow) map.setView(veh.location, 17);
         setVehicle(veh);
 
         //@ts-ignore
@@ -45,6 +46,8 @@ export default ({ vehicles, city }: {
                 return navigate(`/${city}`);
             });
     }, [vehicles]);
+
+    map.on("drag", () => setFollow(false));
 
     useEffect(() => {
         if (!trip?.stops) return;

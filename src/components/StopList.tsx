@@ -31,8 +31,8 @@ export default ({ trip, tripInfo }: { trip?: Trip, tripInfo?: Result }) => {
                             {stop?.metersToStop > -50 ? <span style={{ fontSize: 15 }}><br />{stop.platform ? <><Translate name="platform" /> <b>{stop.platform}</b></> : null}</span> : null}
                         </div>
                         {stop?.metersToStop > -50 && minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000) < 60 ? <div>
-                            <p style={{ margin: 0, lineHeight: 1.4, textAlign: "right" }}><span style={{ fontSize: 20, fontWeight: "bold" }}>{minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000) < 0.5 ? "<1" : minutesUntil(stop.arrival + (tripInfo?.delay || 0) * 60000)}</span> min</p> 
-                            <p style={{ color: "#737478", fontSize: 14, lineHeight: 1.4, margin: 0, textAlign: "right" }}>{tripInfo?.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.arrival + (tripInfo?.delay || 0) * 60000)}</p>
+                            <p style={{ margin: 0, lineHeight: 1.4, textAlign: "right" }}><span style={{ fontSize: 20, fontWeight: "bold" }}>{minutesUntil(stop.realTime) < 0.5 ? "<1" : minutesUntil(stop.realTime)}</span> min</p> 
+                            <p style={{ color: "#737478", fontSize: 14, lineHeight: 1.4, margin: 0, textAlign: "right" }}>{tripInfo?.delay ? <s>{timeString(stop.arrival)}</s> : null} {timeString(stop.realTime)}</p>
                         </div> : null}
                     </div>
                 </ListItemText>

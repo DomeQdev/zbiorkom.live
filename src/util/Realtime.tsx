@@ -52,7 +52,13 @@ const TripInfo = ({
     let _delay = delay !== undefined ? delay : tripStart + Math.round(realTime - minutesUntil(nextStop?.arrival));
 
     return {
-        stops: stopList,
+        stops: stopList.map(stop => {
+            let arrival = stop.arrival || stop.departure;
+            return {
+                ...stop,
+                realTime: arrival + _delay * 1000 * 60,
+            }
+        }),
         delay: _delay,
         lastStop,
         serving,

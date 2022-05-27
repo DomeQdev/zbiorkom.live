@@ -21,6 +21,7 @@ interface Stop {
     location: [number, number],
     arrival: number,
     departure: number,
+    realTime: number,
     onLine: number,
     index: number,
     time: number,

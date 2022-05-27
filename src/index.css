@@ -81,3 +81,7 @@ path.leaflet-interactive {
   --rsbs-mr: auto;
   --rsbs-ml: auto;
 }
+
+[data-rsbs-is-blocking='false'] [data-rsbs-overlay] {
+  box-shadow: rgb(0 0 0 / 30%) 0px -2px 16px!important;
+}
