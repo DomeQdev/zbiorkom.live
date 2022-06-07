@@ -51,7 +51,7 @@ const TripInfo = ({
             let arrival = stop.arrival || stop.departure;
             return {
                 ...stop,
-                realTime: arrival + _delay * 1000 * 60,
+                realTime: arrival + _delay * 60000,
             }
         }),
         delay: _delay,

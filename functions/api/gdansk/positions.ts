@@ -33,7 +33,7 @@ export const onRequestGet = async () => {
         trip: `${Object.values(routes).find(x => x.line === String(vehicle.routeShortName))?.id}_${vehicle.tripId}_${timeString(new Date(new Date(vehicle.scheduledTripStartTime).getTime() + 2 * 60 * 60 * 1000).getTime())}_${vehicle.vehicleService}`,
         headsign: vehicle.headsign,
         type: Object.values(routes)?.find(x => x.line === String(vehicle.routeShortName))?.type || "bus",
-        delay: vehicle.delay || 0
+        delay: Math.round(vehicle.delay / 60) || 0
     }))));
 };
 
