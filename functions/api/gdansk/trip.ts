@@ -88,11 +88,12 @@ export const onRequestGet = async ({ request }) => {
                 location: [0, 0],
                 arrival: czas(stop.arrivalTime.split("T")[1]) - 2 * 60 * 60 * 1000,
                 departure: czas(stop.departureTime.split("T")[1]) - 2 * 60 * 60 * 1000,
-                onLine: 0,
-                index: 0,
+                distance: 0,
                 time: (czas(stop.departureTime.split("T")[1]) - czas(stopTime[0].departureTime.split("T")[1])) / 1000 / 60
             };
+
             let nearest = nearestPointOnLine(line, point([stopData?.stopLat, stopData?.stopLon]), { units: 'meters' });
+            
             return {
                 name: `${stopData?.stopName} ${stopData?.stopCode}`,
                 id: stop.stopId,
@@ -100,8 +101,7 @@ export const onRequestGet = async ({ request }) => {
                 location: nearest.properties.dist! < 30 ? nearest.geometry.coordinates : [stopData?.stopLat, stopData?.stopLon],
                 arrival: czas(stop.arrivalTime.split("T")[1]) - 2 * 60 * 60 * 1000,
                 departure: czas(stop.departureTime.split("T")[1]) - 2 * 60 * 60 * 1000,
-                onLine: nearest.properties.location,
-                index: nearest.properties.index,
+                distance: nearest.properties.location,
                 time: (czas(stop.departureTime.split("T")[1]) - czas(stopTime[0].departureTime.split("T")[1])) / 1000 / 60
             }
         })
