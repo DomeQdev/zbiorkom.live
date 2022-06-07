@@ -36,7 +36,7 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
                 toast.error(res.error);
                 return navigate(`/${city}`);
             }
-            setDepartures(res.departures);
+            setDepartures(res);
         });
         loadDepartures();
 
