@@ -3,14 +3,14 @@
         "name": "Warszawa",
         "location": [52.22983095298667, 21.0117354814593],
         "api": {
-            "positions": "/api/warsaw/positions",
+            "positions": "https://api.zbiorkom.live/warsaw/location",
             "positions_websocket": "wss://ws.matfiu.repl.co/",
-            "trip": "/api/warsaw/trip?trip={{trip}}",
-            "filter": "/api/warsaw/filter",
-            "vehicleInfo": "/api/warsaw/vehicle?tab={{tab}}&type={{type}}",
-            "brigade": "/api/warsaw/brigade?line={{line}}&brigade={{brigade}}",
-            "stopList": "/api/warsaw/stops",
-            "stopDepartures": "/api/warsaw/stop?id={{stop}}",
+            "trip": "https://api.zbiorkom.live/warsaw/trip?trip={{trip}}",
+            "filter": "https://api.zbiorkom.live/warsaw/filter",
+            "vehicleInfo": "https://api.zbiorkom.live/warsaw/vehicle?vehicle={{type}}{{tab}}",
+            "brigade": "https://api.zbiorkom.live/warsaw/brigade?line={{line}}&brigade={{brigade}}",
+            "stopList": "https://api.zbiorkom.live/warsaw/stops",
+            "stopDepartures": "https://api.zbiorkom.live/warsaw/stop?id={{stop}}",
             "bikes": "/api/warsaw/bikes",
             "parkings": null
         },
@@ -18,7 +18,7 @@
             "filter": true,
             "vehicleInfo": true,
             "brigades": true,
-            "alerts": true,
+            "alerts": false,
             "stopDepartures": true,
             "bikes": true,
             "parkings": false
@@ -47,6 +47,31 @@
             "stopDepartures": true,
             "bikes": false,
             "parkings": true
+        }
+    },
+    "poznan": {
+        "name": "Poznań",
+        "location": [52.4027541284412, 16.91244334781004],
+        "api": {
+            "positions": "https://api.zbiorkom.live/poznan/location",
+            "positions_websocket": "wss://poznan-ws.matfiu.repl.co/",
+            "trip": "https://api.zbiorkom.live/poznan/trip?trip={{trip}}",
+            "filter": "https://api.zbiorkom.live/poznan/filter",
+            "vehicleInfo": "https://api.zbiorkom.live/poznan/vehicle?vehicle={{tab}}",
+            "brigade": "https://api.zbiorkom.live/poznan/brigade?line={{line}}&brigade={{brigade}}",
+            "stopList": "https://api.zbiorkom.live/poznan/stops",
+            "stopDepartures": "https://api.zbiorkom.live/poznan/stop?id={{stop}}",
+            "bikes": null,
+            "parkings": null
+        },
+        "functions": {
+            "filter": true,
+            "vehicleInfo": true,
+            "brigades": true,
+            "alerts": false,
+            "stopDepartures": true,
+            "bikes": false,
+            "parkings": false
         }
     }
 }

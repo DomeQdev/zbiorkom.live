@@ -31,7 +31,13 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
         setStop(st);
         map.setView(st.location, 17);
 
-        const loadDepartures = () => fetch(cities[city].api.stopDepartures!.replace("{{stop}}", st!.id)).then(res => res.json()).then(setDepartures);
+        const loadDepartures = () => fetch(cities[city].api.stopDepartures!.replace("{{stop}}", st!.id)).then(res => res.json()).then(res => {
+            if (res.error) {
+                toast.error(res.error);
+                return navigate(`/${city}`);
+            }
+            setDepartures(res.departures);
+        });
         loadDepartures();
 
         const int = setInterval(() => document.visibilityState === "visible" ? loadDepartures() : null, 20000);
@@ -43,8 +49,7 @@ export default ({ city, stops, vehicles }: { city: City, stops: Stop[], vehicles
         return {
             ...departure,
             vehicle,
-            realTime: vehicle ? departure.scheduledTime + (vehicle.delay || departure.delay || 0) * 1000 : departure.realTime,
-            delay: Math.floor((vehicle?.delay || departure.delay) / 60)
+            delay: Math.floor(departure.delay / 60)
         };
     }), [departures, vehicles]);
 

@@ -17,7 +17,7 @@ interface NextBike {
     }[]
 }
 
-export const onRequestGet = async ({ request, env }) => {
+export const onRequestGet = async () => {
     let bikes: NextBike = await fetch("https://maps.nextbike.net/maps/nextbike.json?domains=vp").then(res => res.json()).catch(() => null);
     if (!bikes) return new Response(JSON.stringify([]), { status: 404 });
 

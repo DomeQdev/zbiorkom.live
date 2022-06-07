@@ -39,7 +39,7 @@ export default ({ vehicles, city }: {
         //@ts-ignore
         if (!veh?.trip && !vehicle?.trip) return setTrip({ error: true });
 
-        if (!trip?.error && veh?.trip && (!trip || trip.id !== veh.trip)) fetch(cities[city].api.trip.replace("{{trip}}", veh.trip)).then(res => res.json())
+        if (!trip?.error && veh?.trip && (!trip || trip.id !== veh.trip)) fetch(cities[city].api.trip.replace("{{trip}}", encodeURIComponent(veh.trip))).then(res => res.json())
             .then(setTrip)
             .catch(() => {
                 toast.error(translate("fatal_error"));

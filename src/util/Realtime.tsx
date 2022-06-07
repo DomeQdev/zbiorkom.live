@@ -31,15 +31,10 @@ const TripInfo = ({
         let departure = stop.departure;
         let arrival = stop.arrival || departure;
 
-        let nearest = {
-            distance: stop.onLine,
-            location: stop.location
-        };
-
         return {
             ...stop,
-            metersToStop: nearest.distance! - vehicleDistance,
-            location: nearest.location as [number, number],
+            metersToStop: stop.distance - vehicleDistance,
+            location: stop.location as [number, number],
             time: (arrival - stops[0].departure) / 1000 / 60,
         };
     });
