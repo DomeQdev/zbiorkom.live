@@ -4,6 +4,7 @@ import { City, Stop, Vehicle, FilterData, Bikes, Parking } from "../util/typings
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useWebSocket from "react-use-websocket";
+import { io } from "socket.io-client";
 import VehicleMarker from "../components/VehicleMarker";
 import BikeMarker from "../components/BikeMarker";
 import StopMarker from "../components/StopMarker";
@@ -23,20 +24,25 @@ export default ({ city }: {
 	const [stops, setStops] = useState<Stop[]>([]);
 	const [bikes, setBikes] = useState<Bikes[]>([]);
 	const [parkings, setParkings] = useState<Parking[]>([]);
-	const [veh, setVehicles] = useState<Vehicle[]>([]);
+	const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 	const [bounds, setBounds] = useState(map.getBounds());
 
-	const { lastJsonMessage }: { lastJsonMessage: Vehicle[] } = useWebSocket(cities[city].api.positions_websocket, {
-		onOpen: () => console.log('opened'),
-		onClose: () => console.log('closed'),
-		onReconnectStop: () => toast.error("Utracono połączenie z serwerem.", { autoClose: false }),
-		shouldReconnect: () => true,
-		reconnectInterval: 10000,
-		reconnectAttempts: 10,
-		retryOnError: true
-	});
-
-	const vehicles = lastJsonMessage || veh || [];
+	if(city === "warsaw") {
+		useEffect(() => {
+			io("https://wawapi.zbiorkom.live/").on("positions", (data: Vehicle[]) => setVehicles(data));
+		}, [])
+	} else {
+		useWebSocket(cities[city].api.positions_websocket, {
+			onOpen: () => console.log('opened'),
+			onClose: () => console.log('closed'),
+			onReconnectStop: () => toast.error("Utracono połączenie z serwerem.", { autoClose: false }),
+			onMessage: ({ data }) => setVehicles(JSON.parse(data)),
+			shouldReconnect: () => true,
+			reconnectInterval: 10000,
+			reconnectAttempts: 10,
+			retryOnError: true
+		});
+	}
 
 	useEffect(() => {
 		fetch(cities[city].api.positions).then(res => res.json()).then(setVehicles).catch(() => null)
