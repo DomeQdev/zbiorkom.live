@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { City as CityT } from "./util/typings";
 import { useEffect } from "react";
 import Map from "./components/Map";
@@ -12,6 +12,9 @@ import Welcome from "./pages/Welcome";
 export default () => {
     useEffect(() => {
         if (!localStorage.getItem("lang")) return localStorage.setItem("lang", ((navigator.languages && navigator.languages[0]) || navigator.language).split("-")[0]);
+        toast.info(`Informujemy że funkcje aplikacji będą przez pewien czas ograniczone z powodów technicznych. Przepraszamy za utrudnienia. Po więcej informacji, kliknij tutaj aby dołączyć na serwer Discord.`, {
+            onClick: () => window.open("https://discord.gg/QYRswCH6Gw", "_blank")
+        });
     }, []);
 
     return <>

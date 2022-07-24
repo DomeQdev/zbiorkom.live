@@ -33,7 +33,7 @@ export const onRequestGet = async ({ request }) => {
         color: routes[String(departure.routeId)].color,
         brigade: departure.vehicleService.split("-")[1],
         headsign: departure.headsign,
-        delay: departure.delayInSeconds || 0,
+        delay: (departure.delayInSeconds || 0) / 600,
         status: departure.status,
         realTime: new Date(departure.estimatedTime).getTime(),
         scheduledTime: new Date(departure.theoreticalTime).getTime(),
