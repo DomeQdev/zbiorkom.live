@@ -27,9 +27,13 @@ export default ({ city }: {
 	const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 	const [bounds, setBounds] = useState(map.getBounds());
 
-	if(city === "warsaw") {
+	if(city === "warsaw" || city === "poznan") {
 		useEffect(() => {
-			io("https://wawapi.zbiorkom.live/").on("positions", (data: Vehicle[]) => setVehicles(data));
+			io("https://api.zbiorkom.live/", {
+				query: {
+					city: city
+				}
+			}).on("positions", (data: Vehicle[]) => setVehicles(data));
 		}, [])
 	} else {
 		useWebSocket(cities[city].api.positions_websocket, {
