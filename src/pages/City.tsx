@@ -29,7 +29,7 @@ export default ({ city }: {
 
 	if(city === "warsaw" || city === "poznan") {
 		useEffect(() => {
-			io("https://api.zbiorkom.live/", {
+			io("https://cummy-uwu-topped-api.zbiorkom.live/", {
 				query: {
 					city: city
 				}
