@@ -53,20 +53,14 @@ export default () => {
                         <ListItemText primary={cities[city as City].name} />
                         <NavigateNext />
                     </ListItemButton>)).reduce((prev, curr, i) => [prev, <Divider key={i} />, curr])}
+                    <p>Więcej miast w nowej wersji aplikacji.</p>
                 </List>} />
                 <Route path="style" element={<FormControl>
                     <FormLabel><Translate name="map_style" /></FormLabel>
                     <RadioGroup
-                        value={mapStyle}
-                        onChange={({ target }) => setMapStyle(target.value as MapStyle)}
+                        value={"x"}
                     >
-                        <FormControlLabel value="gmaps" control={<Radio />} label="Google Maps" />
-                        <FormControlLabel value="gsat" control={<Radio />} label="Google Satelitte" />
-                        <FormControlLabel value="osm" control={<Radio />} label="Open Street Map" />
-                        <FormControlLabel value="mapbox" control={<Radio />} label="Mapbox" />
-                        <FormControlLabel value="mapstr" control={<Radio />} label="Mapbox Streets" />
-                        <FormControlLabel value="mapnav" control={<Radio />} label="Mapbox Navigation" />
-                        <FormControlLabel value="mapsat" control={<Radio />} label="Mapbox Satelitte" />
+                        <FormControlLabel value="x" control={<Radio />} label="Zmiana stylu mapy dostępna w nowej wersji." />
                     </RadioGroup>
                 </FormControl>} />
                 <Route path="vehicles" element={<>

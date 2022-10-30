@@ -48,30 +48,5 @@
             "bikes": false,
             "parkings": true
         }
-    },
-    "poznan": {
-        "name": "Poznań",
-        "location": [52.4027541284412, 16.91244334781004],
-        "api": {
-            "positions": "https://cummy-uwu-topped-api.zbiorkom.live/poznan/positions",
-            "positions_websocket": "wss://ws.matfiu.repl.co/",
-            "trip": "https://cummy-uwu-topped-api.zbiorkom.live/poznan/oldtrip?trip={{trip}}",
-            "filter": "https://cummy-uwu-topped-api.zbiorkom.live/poznan/filter",
-            "vehicleInfo": "https://cummy-uwu-topped-api.zbiorkom.live/poznan/vehicle?vehicle={{type}}{{tab}}",
-            "brigade": "https://cummy-uwu-topped-api.zbiorkom.live/poznan/brigade?line={{line}}&brigade={{brigade}}",
-            "stopList": "https://cummy-uwu-topped-api.zbiorkom.live/poznan/stops",
-            "stopDepartures": "https://cummy-uwu-topped-api.zbiorkom.live/poznan/oldstop?id={{stop}}",
-            "bikes": null,
-            "parkings": null
-        },
-        "functions": {
-            "filter": true,
-            "vehicleInfo": true,
-            "brigades": true,
-            "alerts": false,
-            "stopDepartures": true,
-            "bikes": true,
-            "parkings": false
-        }
     }
 }

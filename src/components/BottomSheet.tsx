@@ -44,10 +44,7 @@ export default ({ trip, vehicle, city, tripInfo }: { trip?: Trip, vehicle?: Vehi
                         }
                     }}
                 >
-                    {trip?.shapes && <MenuItem onClick={() => { if (trip?.shapes) map.fitBounds(bounds(trip.shapes)); setAnchorEl(null); }}><Route style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="show_route" /></MenuItem>}
-                    {trip?.alerts?.length ? <MenuItem onClick={() => { navigate("alerts"); setAnchorEl(null); }}><Badge color="secondary" variant="dot" anchorOrigin={{ vertical: 'top', horizontal: 'left' }}><BusAlert style={{ width: 20, height: 20 }} color="primary" /></Badge>&nbsp;<Translate name="alerts" /></MenuItem> : null}
-                    {cities[city].functions.brigades && vehicle?.brigade && <MenuItem onClick={() => { navigate("brigade"); setAnchorEl(null); }}><Commit style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="next_trips" /></MenuItem>}
-                    {cities[city].functions.vehicleInfo && vehicle?.brigade && <MenuItem onClick={() => { navigate("vehicle"); setAnchorEl(null); }}><DirectionsBus style={{ width: 20, height: 20 }} color="primary" />&nbsp;<Translate name="vehicle_info" /></MenuItem>}
+                    Użyj nowej wersji aplikacji.
                 </Menu>
             </div>
         </div>}
