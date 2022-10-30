@@ -13,8 +13,7 @@ export default () => {
     useEffect(() => {
         if (!localStorage.getItem("lang")) return localStorage.setItem("lang", ((navigator.languages && navigator.languages[0]) || navigator.language).split("-")[0]);
         toast.info(`Widzisz starą wersję aplikacji, niektóre funkcje mogą nie działać poprawnie. Zalecamy używać z nowej wersji.`, {
-            onClick: () => window.location.href = "https://zbiorkom.live",
-            duration: 10000
+            onClick: () => {window.location.href = "https://zbiorkom.live"}
         });
     }, []);
 
