@@ -12,7 +12,7 @@ import Welcome from "./pages/Welcome";
 export default () => {
     useEffect(() => {
         if (!localStorage.getItem("lang")) return localStorage.setItem("lang", ((navigator.languages && navigator.languages[0]) || navigator.language).split("-")[0]);
-        toast.info(`Widzisz starą wersję aplikacji, niektóre funkcje mogą nie działać poprawnie. Zalecamy używać z nowej wersji.`, {
+        toast.info(`Prosimy o korzystanie z nowej wersji aplikacji. Funkcje tej wersji zostały znacznie ograniczone.`, {
             onClick: () => {window.location.href = "https://zbiorkom.live"}
         });
     }, []);
