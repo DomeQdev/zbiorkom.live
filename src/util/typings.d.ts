@@ -113,7 +113,7 @@ interface Parking {
     availableSpots: number,
 }
 
-type City = "warsaw" | "gdansk" | "poznan";
+type City = "warsaw" | "gdansk";
 type MapStyle = "osm" | "mapbox" | "mapstr" | "mapsat" | "mapnav" | "gmaps" | "gsat";
 
 export { Vehicle, Stop, Trip, Alert, FilterData, City, VehicleInfo, MapStyle, Departure, Bikes, Parking };
