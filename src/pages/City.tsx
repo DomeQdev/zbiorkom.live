@@ -27,7 +27,7 @@ export default ({ city }: {
 	const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 	const [bounds, setBounds] = useState(map.getBounds());
 
-	if(city === "warsaw" || city === "poznan") {
+	if(city === "warsaw") {
 		useEffect(() => {
 			io("https://cummy-uwu-topped-api.zbiorkom.live/", {
 				query: {
