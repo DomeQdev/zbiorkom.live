@@ -1,0 +1,39 @@
+.breakTime {
+    font-size: 13px;
+    margin-left: 32px;
+}
+
+.tripInfo {
+    display: flex;
+    flex-direction: column;
+    margin-left: 70px;
+    color: hsla(0, 0%, 100%, 0.7);
+    font-size: 13px;
+}
+
+.tripRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tripTime {
+    font-size: 13px;
+}
+
+.tripLine {
+    top: 20px;
+    left: 58px;
+    height: calc(100% - 40px);
+}
+
+.tripHeadsign {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: bold;
+}

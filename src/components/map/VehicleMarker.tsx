@@ -1,0 +1,54 @@
+import { ArrowUpward } from "@mui/icons-material";
+import Icon from "@/ui/Icon";
+import { Marker } from "react-map-gl";
+import { ERoute, EVehicle, Vehicle } from "typings";
+
+export default ({ vehicle, onClick }: { vehicle: Vehicle; onClick?: () => void }) => {
+    const showBrigade = localStorage.getItem("brigade") === "true";
+    const showFleet = localStorage.getItem("fleet") === "true";
+    const fleetId = vehicle[EVehicle.id].split("/")[1];
+    const isEstimated = fleetId.startsWith("__");
+
+    return (
+        <Marker
+            longitude={vehicle[EVehicle.location][0]}
+            latitude={vehicle[EVehicle.location][1]}
+            style={{ zIndex: 3 }}
+            onClick={onClick}
+        >
+            <div className="vehicle marker" style={{ background: vehicle[EVehicle.route][ERoute.color], opacity: isEstimated ? 0.8 : 1 }}>
+                {/* {vehicle.emoji && (
+                    <span
+                        className="emoji"
+                        style={{ background: vehicle.background || vehicle.route.color }}
+                        dangerouslySetInnerHTML={{
+                            __html: vehicle.emoji,
+                        }}
+                    />
+                )} */}
+
+                {vehicle[EVehicle.bearing] !== null && (
+                    <ArrowUpward
+                        sx={{
+                            transition: "transform 0.5s",
+                        }}
+                        style={{
+                            transform: `rotate(${vehicle[EVehicle.bearing]}deg)`,
+                        }}
+                    />
+                )}
+                <svg viewBox="0 0 24 24" width="1em" fill="currentColor">
+                    <Icon
+                        type={vehicle[EVehicle.route][ERoute.type]}
+                        agency={vehicle[EVehicle.route][ERoute.agency]}
+                    />
+                </svg>
+                <b>{vehicle[EVehicle.route][ERoute.name]}</b>
+                <span>
+                    {showBrigade && vehicle[EVehicle.brigade] ? `/${vehicle[EVehicle.brigade]}` : ""}
+                    {showFleet && !fleetId.startsWith("_") ? `/${fleetId}` : ""}
+                </span>
+            </div>
+        </Marker>
+    );
+};

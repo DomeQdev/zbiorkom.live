@@ -1,0 +1,207 @@
+{
+    "Menu": {
+        "welcome": "Welcome",
+        "map": "Map",
+        "schedules": "Schedules",
+        "blog": "Blog",
+        "about": "About the app",
+        "settings": "Settings",
+        "dataSources": "Data sources"
+    },
+    "Vehicle": {
+        "onTime": "On time",
+        "early": "Early {{minutes}} min",
+        "delayed": "Delayed {{minutes}} min",
+        "departure": "Waiting for departure",
+        "departed": "Departed",
+        "cancelled": "Cancelled",
+        "live": "Live",
+        "scheduled": "Scheduled",
+        "tripNotFound": "We couldn't find this route...",
+        "vehicleSchedule": "Vehicle schedule",
+        "brigadeSchedule": "Brigade schedule",
+        "vehicleInfo": "Vehicle info",
+        "showTrip": "Show trip",
+        "showVehicle": "Show vehicle",
+        "platform": "Platform",
+        "track": "Track",
+        "breakTime": "{{minutes}} min break",
+        "noBreak": "No break",
+        "addFavoriteRoute": "Add {{route}} to favorites",
+        "removeFavoriteRoute": "Remove {{route}} from favorites",
+        "favoriteStops": "Favorite stops",
+        "selectRoutes": "Select routes:",
+        "frequency": "Every <0>{{minutes}}</0> min",
+        "then": "Then",
+        "noMoreDepartures": "No more departures",
+        "noVehicleInfo": "No vehicle info",
+        "routeChange": "Route change to {{route}}",
+        "terminus": "Terminus",
+        "operatedBy": "Trip operated by {{value}}",
+        "alerts": "Impediments",
+        "sunPosition": "Where to sit?",
+        "sec": "sec",
+        "min": "min"
+    },
+    "Brigades": {
+        "selectBrigade": "Choose the brigade of route <0></0>",
+        "brigadeSchedule": "Schedule of brigade <0></0>",
+        "trips": "{{tripsLength}} trips",
+        "travelTime": "Travel time: {{time}}",
+        "clickForTrip": "Click to see the trip",
+        "operatedBy": "Operated by vehicle #{{vehicle}}",
+        "multilineAlert": "Multiline brigade, possible errors in matching vehicle schedules. Please use your own judgment to verify the correctness of the matches."
+    },
+    "Schedules": {
+        "schedules": "Schedules",
+        "search": "Search routes",
+        "anywhere": "Anywhere (click to change)",
+        "noDepartures": "No upcoming departures",
+        "removeDestination": "Remove destination",
+        "stopNotServed": "Stop {{stop}} is not served today."
+    },
+    "Shared": {
+        "share": "Share"
+    },
+    "Favorites": {
+        "selectDirection": "Select direction",
+        "addStopsHere": "Your favorite stops",
+        "howToAddStopsHere": "To add a stop, click the star ⭐ on the stop.",
+        "thanksToDirection": "By selecting a direction, we'll show only departures in the chosen place."
+    },
+    "Search": {
+        "bestResults": "✨ Best result",
+        "stops": "Stops",
+        "vehicles": "Vehicles",
+        "routes": "Routes",
+        "relations": "Relations",
+        "stations": "Stations",
+        "howToUse": "How to use the search?",
+        "howToVehicles": "Searching for vehicles",
+        "vehiclesDescription": "Search using the fleet number (e.g., 5869), route (e.g., 105/) or brigade (e.g., 105/1)",
+        "howToStops": "Searching for stops and stations",
+        "stopsDescription": "Search using the name, e.g., Main Station.",
+        "howToRoutes": "Searching for routes",
+        "routesDescription": "Search using the route number, e.g., 105.",
+        "howToRelations": "Searching for train relations",
+        "relationsDescription": "Search using the relation number, e.g., 99267.",
+        "howToHistory": "Search history",
+        "historyDescription": "We save recent searches so you can quickly return to them."
+    },
+    "Filter": {
+        "filter": "Filter",
+        "searchRoutesOrModels": "Search routes or models",
+        "routesNearby": "Routes nearby",
+        "activeFilters": "Active filters",
+        "howToUseTitle": "How to use filtering?",
+        "howToUseContent": "To filter vehicles on the map, select the lines or vehicle models you are interested in through the search input, then return to the map by clicking on it."
+    },
+    "VehicleInfo": {
+        "model": "Model",
+        "depot": "Depot",
+        "carrier": "Carrier",
+        "prodYear": "Production year",
+        "lowFloor": "Low floor",
+        "airConditioned": "Air conditioned",
+        "equipment": "Equipment"
+    },
+    "Updates": {
+        "downloadingUpdate": "Downloading update..."
+    },
+    "Blog": {
+        "blog": "Blog"
+    },
+    "Sun": {
+        "sunPosition": "Where to sit?",
+        "travelDirection": "Travel direction",
+        "bestSide.direction": "It's best to sit <bold>{{direction}}</bold> to the direction of travel.",
+        "bestSide.side": "It's best to sit on the <bold>{{direction}}</bold> side of the vehicle.",
+        "and": "and",
+        "left": "⤴️ left",
+        "right": "⤵️ right",
+        "front": "➡️ facing forward",
+        "back": "⬅️ facing backward"
+    },
+    "Settings": {
+        "settings": "Settings",
+        "vehicleMarker": "Vehicle marker",
+        "brigade": "Brigade number",
+        "fleet": "Fleet number",
+        "language": "Language",
+        "searchRoutes": "Search routes",
+        "pickCity": "Select metropolitan area",
+        "changeCity": "Change city",
+        "changeTheme": "Change theme",
+        "behavior": "Application behavior",
+        "moveToLastLocation": "Use last location when opening the map",
+        "useLocationSorting": "Sort stops according to your location",
+        "dataSources": "Data sources",
+        "welcomeTo": "Welcome to",
+        "welcomeText": "Select a city to see live public transport on map.",
+        "searchCities": "Search cities"
+    },
+    "Languages": {
+        "en": "English",
+        "pl": "Polish"
+    },
+    "Seo": {
+        "blogPosts": {
+            "title": "Blog",
+            "description": "Read the latest posts on our blog dedicated to public transportation. Learn more about new features in the app, planned functionalities, and interesting facts related to public transport."
+        },
+        "blogPost": {
+            "title": "{{title}}",
+            "description": "{{description}}"
+        },
+        "brigadeSelect": {
+            "title": "Select brigade for route {{route}} in {{city}}"
+        },
+        "brigadeSchedule": {
+            "title": "Brigade schedule {{route}}/{{brigade}} in {{city}}",
+            "description": "Check the schedule of brigade {{brigade}} for route {{route}} in {{city}}. See all trips, travel times, and information about the vehicle operating the route."
+        },
+        "settings": {
+            "title": "Settings",
+            "description": "Customize the app to your needs. Choose the language, change the app icon, and select the city you are currently in."
+        },
+        "cities": {
+            "title": "Select city",
+            "description": "Check where your bus, tram, or train is in {{cities}}. See departures from stops, timetables, brigades, and vehicle information."
+        },
+        "city": {
+            "title": "{{city}} - Public transport map",
+            "description": "Track the real-time movement of buses, trams, and trains in {{city}}! By clicking on a vehicle or stop, get detailed information about the route and upcoming departures. Customize the map view by filtering according to the lines or vehicle models you are interested in to quickly and efficiently plan your journey."
+        },
+        "route": {
+            "title": "{{city}} - Route {{route}} schedule",
+            "description": "Check the schedule of route {{route}} in {{city}}. See all trips, travel times, brigade schedules, and information about the vehicle operating the route."
+        },
+        "schedules": {
+            "title": "{{city}} - Timetables",
+            "description": "Check the timetables of buses, trams, and trains in {{city}}. See departures from stops, brigade schedules, and vehicle information."
+        },
+        "station": {
+            "title": "Station {{station}}",
+            "description": "Check train departures from station {{station}}. Train delays, platform information, and train location on the map."
+        },
+        "stop": {
+            "title": "Stop {{stop}} in {{city}}",
+            "description": "Check public transport departures from stop {{stop}} in {{city}}. Vehicle location on the map, departure information, and timetable."
+        },
+        "trip": {
+            "title": "Trip of route {{route}} towards {{headsign}}",
+            "description": "Check the trip of route {{route}} towards {{headsign}}. See departures from stops, vehicle location on the map, and vehicle information."
+        },
+        "vehicle": {
+            "title": "Vehicle {{vehicle}} on route {{route}}"
+        }
+    },
+    "Time": {
+        "enterTime": "Enter time",
+        "hour": "Hour",
+        "minute": "Minute",
+        "nextDay": "You will see the schedule for the next day from {{time}}",
+        "cancel": "Cancel",
+        "save": "OK"
+    }
+}

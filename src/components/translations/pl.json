@@ -1,0 +1,209 @@
+{
+    "Menu": {
+        "welcome": "Witaj!",
+        "map": "Mapa",
+        "schedules": "Rozkłady",
+        "blog": "Blog",
+        "about": "O aplikacji",
+        "settings": "Ustawienia",
+        "dataSources": "Źródła danych"
+    },
+    "Vehicle": {
+        "onTime": "Planowo",
+        "early": "{{minutes}} min przed czasem",
+        "delayed": "Opóźniony {{minutes}} min",
+        "departure": "Oczekiwanie na odjazd",
+        "departed": "Odjechał",
+        "cancelled": "Odwołany",
+        "live": "Na bieżąco",
+        "scheduled": "Brak danych o opóźnieniu",
+        "tripNotFound": "Nie znaleźliśmy tej trasy...",
+        "vehicleSchedule": "Rozkład jazdy pojazdu",
+        "brigadeSchedule": "Rozkład brygady",
+        "vehicleInfo": "Informacje o pojeździe",
+        "showTrip": "Pokaż kurs",
+        "showVehicle": "Pokaż pojazd",
+        "platform": "Peron",
+        "track": "Tor",
+        "breakTime": "{{minutes}} min przerwy",
+        "noBreak": "Bez przerwy",
+        "addFavoriteRoute": "Dodaj {{route}} do ulubionych",
+        "removeFavoriteRoute": "Usuń {{route}} z ulubionych",
+        "favoriteStops": "Ulubione przystanki",
+        "selectRoutes": "Wybierz linie:",
+        "frequency": "Co <0>{{minutes}}</0> min",
+        "then": "Potem",
+        "noMoreDepartures": "Brak dalszych odjazdów",
+        "noVehicleInfo": "Brak informacji o pojeździe",
+        "routeChange": "Zmiana linii na {{route}}",
+        "terminus": "Przystanek krańcowy",
+        "operatedBy": "Kurs obsługiwany przez {{value}}",
+        "alerts": "Utrudnienia",
+        "sunPosition": "Gdzie usiąść?",
+        "sec": "sek",
+        "min": "min"
+    },
+    "Brigades": {
+        "selectBrigade": "Wybierz brygadę dla linii <0></0>",
+        "brigadeSchedule": "Rozkład brygady <0></0>",
+        "trips": "{{tripsLength}} kursów",
+        "travelTime": "Czas przejazdu: {{time}}",
+        "clickForTrip": "Kliknij, aby zobaczyć kurs",
+        "operatedBy": "Realizowany przez pojazd #{{vehicle}}",
+        "multilineAlert": "Brygada wieloliniowa, możliwe błędy w dopasowywaniu rozkładów pojazdów. Prosimy o użycie własnego rozsądku w celu weryfikacji poprawności dopasowań."
+    },
+    "Schedules": {
+        "schedules": "Rozkłady",
+        "search": "Wyszukaj linie",
+        "anywhere": "Gdziekolwiek (kliknij, aby zmienić)",
+        "noDepartures": "Brak nadchodzących odjazdów",
+        "removeDestination": "Usuń kierunek",
+        "stopNotServed": "Przystanek {{stop}} nie jest dzisiaj obsługiwany."
+    },
+    "Shared": {
+        "share": "Udostępnij"
+    },
+    "Favorites": {
+        "selectDirection": "Wybierz kierunek",
+        "addStopsHere": "Twoje ulubione przystanki",
+        "howToAddStopsHere": "Aby dodać przystanek, kliknij gwiazkę ⭐ na przystanku.",
+        "thanksToDirection": "Wybierając kierunek, pokażemy tylko odjazdy w wybrane miejsce."
+    },
+    "Search": {
+        "bestResults": "✨ Najlepszy wynik",
+        "stops": "Przystanki",
+        "vehicles": "Pojazdy",
+        "routes": "Linie",
+        "relations": "Relacje",
+        "stations": "Stacje",
+        "howToUse": "Jak używać wyszukiwarki?",
+        "howToVehicles": "Wyszukiwanie pojazdów",
+        "vehiclesDescription": "Wyszukaj używając numeru taborowego (np. 5869), linii (np. 105/) lub brygady (np. 105/1)",
+        "howToStops": "Wyszukiwanie przystanków i stacji",
+        "stopsDescription": "Wyszukaj używając nazwy, np. Dworzec Główny.",
+        "howToRoutes": "Wyszukiwanie linii",
+        "routesDescription": "Wyszukaj używając numeru linii, np. 105.",
+        "howToRelations": "Wyszukiwanie relacji pociągów",
+        "relationsDescription": "Wyszukaj używając numeru relacji, np. 99267.",
+        "howToHistory": "Historia wyszukiwania",
+        "historyDescription": "Zapisujemy ostatnie wyszukiwania, abyś mógł szybko do nich wrócić."
+    },
+    "Filter": {
+        "filter": "Filtrowanie",
+        "searchRoutesOrModels": "Wyszukaj linie lub modele",
+        "routesNearby": "Linie w pobliżu",
+        "activeFilters": "Aktywne filtry",
+        "howToUseTitle": "Jak używać filtrowania?",
+        "howToUseContent": "Aby filtrować pojazdy na mapie, wybierz interesujące Cię linie lub modele pojazdów poprzez wyszukiwarkę, następnie wróć do mapy klikająć na nią."
+    },
+    "VehicleInfo": {
+        "model": "Model",
+        "depot": "Zajezdnia",
+        "carrier": "Przewoźnik",
+        "prodYear": "Rok produkcji",
+        "lowFloor": "Niska podłoga",
+        "airConditioned": "Klimatyzacja",
+        "equipment": "Wyposażenie"
+    },
+    "Updates": {
+        "downloadingUpdate": "Pobieram aktualizację..."
+    },
+    "Blog": {
+        "blog": "Blog"
+    },
+    "Sun": {
+        "sunPosition": "Gdzie usiąść?",
+        "travelDirection": "Kierunek podróży",
+        "bestSide.direction": "Najlepiej usiąść <bold>{{direction}}</bold> do kierunku jazdy.",
+        "bestSide.side": "Najlepiej usiąść po <bold>{{direction}}</bold> stronie pojazdu.",
+        "and": "i",
+        "left": "⤴️ lewej",
+        "right": "⤵️ prawej",
+        "front": "➡️ przodem",
+        "back": "⬅️ tyłem"
+    },
+    "Settings": {
+        "settings": "Ustawienia",
+        "vehicleMarker": "Znaczniki pojazdów",
+        "brigade": "Numer brygady",
+        "fleet": "Numer taborowy",
+        "language": "Język",
+        "searchRoutes": "Wyszukaj linie",
+        "changeCity": "Zmień miasto",
+        "changeTheme": "Zmień motyw",
+        "pickCity": "Wybierz obszar metropolitalny",
+        "welcome": "Witaj na zbiorkom.live!",
+        "selectCity": "Wybierz twoje lub najbliższe miasto.",
+        "behavior": "Zachowanie aplikacji",
+        "moveToLastLocation": "Użyj ostatniej lokalizacji przy otwarciu mapy",
+        "useLocationSorting": "Sortuj przystanki według Twojej lokalizacji",
+        "dataSources": "Źródła danych",
+        "welcomeTo": "Witaj na",
+        "welcomeText": "Wybierz miasto, aby zobaczyć komunikację miejską na żywo.",
+        "searchCities": "Wyszukaj miasto"
+    },
+    "Languages": {
+        "en": "Angielski",
+        "pl": "Polski"
+    },
+    "Seo": {
+        "blogPosts": {
+            "title": "Blog",
+            "description": "Przeczytaj najnowsze wpisy na naszym blogu poświęconym komunikacji miejskiej. Dowiedz się więcej o nowościach w aplikacji, planowanych funkcjach oraz ciekawostkach związanych z transportem publicznym."
+        },
+        "blogPost": {
+            "title": "{{title}}",
+            "description": "{{description}}"
+        },
+        "brigadeSelect": {
+            "title": "Wybierz brygadę dla linii {{route}} w {{city}}"
+        },
+        "brigadeSchedule": {
+            "title": "Rozkład brygady {{route}}/{{brigade}}  w {{city}}",
+            "description": "Sprawdź rozkład brygady {{brigade}} linii {{route}} w {{city}}. Zobacz wszystkie kursy, czasy przejazdu oraz informacje o pojeździe, który realizuje daną trasę."
+        },
+        "settings": {
+            "title": "Ustawienia",
+            "description": "Dostosuj aplikację do swoich potrzeb. Wybierz język, zmień ikonę aplikacji, a także wybierz miasto, w którym aktualnie się znajdujesz."
+        },
+        "cities": {
+            "title": "Wybierz miasto",
+            "description": "Sprawdź gdzie jest twój autobus, tramwaj lub pociąg w {{cities}}. Zobacz odjazdy z przystanków, rozkłady jazdy i brygady oraz informacje o pojazdach."
+        },
+        "city": {
+            "title": "{{city}} - Mapa komunikacji miejskiej",
+            "description": "Śledź w czasie rzeczywistym ruch autobusów, tramwajów i pociągów w {{city}}! Klikając na pojazd lub przystanek, uzyskaj szczegółowe informacje o trasie oraz najbliższych odjazdach. Dostosuj widok mapy, filtrując według interesujących Cię linii lub modelu pojazdu, by szybko i sprawnie planować swoją podróż."
+        },
+        "route": {
+            "title": "{{city}} - Rozkład linii {{route}}",
+            "description": "Sprawdź rozkład jazdy linii {{route}} w {{city}}. Zobacz wszystkie kursy, czasy przejazdu, rozkład brygad oraz informacje o pojeździe, który realizuje daną trasę."
+        },
+        "schedules": {
+            "title": "{{city}} - Rozkłady jazdy",
+            "description": "Sprawdź rozkłady jazdy autobusów, tramwajów i pociągów w {{city}}. Zobacz odjazdy z przystanków, rozkłady brygad oraz informacje o pojazdach."
+        },
+        "station": {
+            "title": "Stacja {{station}}",
+            "description": "Sprawdź odjazdy pociągów ze stacji {{station}}. Opóźnienia pociągów, informacje o peronach oraz lokalizacja pociągu na mapie."
+        },
+        "stop": {
+            "title": "Przystanek {{stop}} w {{city}}",
+            "description": "Sprawdź odjazdy komunikacji miejskiej z przystanku {{stop}} w {{city}}. Lokalizacja pojazdów na mapie, informacje o odjazdach oraz rozkład jazdy."
+        },
+        "trip": {
+            "title": "Kurs linii {{route}} w kierunku {{headsign}}",
+            "description": "Sprawdź trasę kursu linii {{route}} w kierunku {{headsign}}. Zobacz odjazdy z przystanków, lokalizację pojazdu na mapie oraz informacje o pojeździe."
+        },
+        "vehicle": {
+            "title": "Pojazd {{vehicle}} na linii {{route}}"
+        }
+    },
+    "Time": {
+        "enterTime": "Wprowadź czas",
+        "hour": "Godzina",
+        "minute": "Minuty",
+        "nextDay": "Zobaczysz rozkład na następny dzień od {{time}}",
+        "cancel": "Anuluj",
+        "save": "OK"
+    }
+}

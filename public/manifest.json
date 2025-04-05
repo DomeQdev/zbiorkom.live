@@ -1,0 +1,32 @@
+{
+    "short_name": "zbiorkom.live",
+    "name": "zbiorkom.live",
+    "description": "Odkrywaj komunikację miejską w swoim mieście na nowo ✨ z zbiorkom.live. Śledź pojazdy na mapie, sprawdź ich trasy oraz najbliższe odjazdy z przystanków. Dostosuj wyświetlanie dzięki filtrom linii i modelu pojazdu.",
+    "categories": ["navigation", "travel", "utilities"],
+    "icons": [
+        {
+            "src": "/logo128.png",
+            "sizes": "128x128",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/logo512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/maskable.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "start_url": "/?utm_source=homescreen",
+    "scope": "/",
+    "display": "standalone",
+    "theme_color": "#276b2b",
+    "background_color": "#276b2b",
+    "orientation": "portrait"
+}
