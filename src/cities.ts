@@ -12,12 +12,12 @@ const cities = {
         name: "Białystok",
         location: [23.16319, 53.13488],
     },
-    // elblag: {
-    //     id: "elblag",
-    //     name: "Elbląg",
-    //     showNewTag: true,
-    //     location: [19.40884, 54.15657],
-    // },
+    elblag: {
+        id: "elblag",
+        name: "Elbląg",
+        showNewTag: true,
+        location: [19.40884, 54.15657],
+    },
     gzm: {
         id: "gzm",
         name: "Metropolia GZM",
@@ -50,7 +50,7 @@ const cities = {
     // },
     lodz: {
         id: "lodz",
-        name: "Łódź (beta)",
+        name: "Łódź",
         location: [19.46563, 51.77025],
         disableBrigades: true,
         showNewTag: true,
@@ -84,12 +84,12 @@ const cities = {
         name: "Poznań",
         location: [16.91249, 52.40777],
     },
-    // radom: {
-    //     id: "radom",
-    //     name: "Radom",
-    //     showNewTag: true,
-    //     location: [21.14714, 51.40253],
-    // },
+    radom: {
+        id: "radom",
+        name: "Radom",
+        showNewTag: true,
+        location: [21.14714, 51.40253],
+    },
     rzeszow: {
         id: "rzeszow",
         name: "Rzeszów",

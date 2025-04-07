@@ -23,14 +23,14 @@ if (location.protocol === "http:") {
     window.Gay = {
         base: "http://localhost:8005",
         // base: "https://api.zbiorkom.live",
-        cloudBase: "http://127.0.0.1:8788/api",
+        cloudBase: "https://4.zbiorkom.live",
         ws: "https://ws.zbiorkom.live",
         // ws: "http://localhost:8001",
     };
 } else {
     window.Gay = {
         base: "https://api.zbiorkom.live",
-        cloudBase: "/api",
+        cloudBase: "https://4.zbiorkom.live",
         ws: "https://ws.zbiorkom.live",
     };
 }
