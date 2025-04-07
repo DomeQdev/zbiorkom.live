@@ -16,7 +16,7 @@ const cities = {
         id: "elblag",
         name: "Elbląg",
         showNewTag: true,
-        location: [19.40884, 54.15657],
+        location: [19.414848, 54.152099],
     },
     gzm: {
         id: "gzm",
@@ -39,8 +39,7 @@ const cities = {
         id: "kutno",
         name: "Kutno",
         showNewTag: true,
-        location: [19.35286, 52.2335],
-        zoom: 18,
+        location: [19.348265, 52.226985],
     },
     // legnica: {
     //     id: "legnica",

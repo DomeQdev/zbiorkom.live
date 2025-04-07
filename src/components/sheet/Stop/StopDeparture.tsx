@@ -41,6 +41,18 @@ export default ({ departure }: { departure: StopDeparture }) => {
                     setExpanded(!isExpanded);
                 }
             }}
+            onDoubleClick={() => {
+                const vehicle = departure[EStopDeparture.vehicle];
+
+                navigate(
+                    `/${city}/${vehicle ? "vehicle" : "trip"}/${
+                        vehicle ? encodeURIComponent(vehicle[EVehicle.id]) : departure[EStopDeparture.id]
+                    }`,
+                    {
+                        state: -2,
+                    }
+                );
+            }}
             sx={{
                 display: "flex",
                 flexDirection: "column",
