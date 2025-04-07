@@ -66,8 +66,8 @@
     "Favorites": {
         "selectDirection": "Wybierz kierunek",
         "addStopsHere": "Twoje ulubione przystanki",
-        "howToAddStopsHere": "Aby dodać przystanek, kliknij gwiazkę ⭐ na przystanku.",
-        "thanksToDirection": "Wybierając kierunek, pokażemy tylko odjazdy w wybrane miejsce."
+        "howToAddStopsHere": "Aby dodać przystanek, kliknij gwiazdkę ⭐ na przystanku.",
+        "thanksToDirection": "Wybierając kierunek, pokażemy tylko odjazdy do wybranego miejsca."
     },
     "Search": {
         "bestResults": "✨ Najlepszy wynik",
@@ -94,7 +94,7 @@
         "routesNearby": "Linie w pobliżu",
         "activeFilters": "Aktywne filtry",
         "howToUseTitle": "Jak używać filtrowania?",
-        "howToUseContent": "Aby filtrować pojazdy na mapie, wybierz interesujące Cię linie lub modele pojazdów poprzez wyszukiwarkę, następnie wróć do mapy klikająć na nią."
+        "howToUseContent": "Aby filtrować pojazdy na mapie, wybierz interesujące Cię linie lub modele pojazdów poprzez wyszukiwarkę, następnie wróć do mapy klikając na nią."
     },
     "VehicleInfo": {
         "model": "Model",
@@ -159,7 +159,7 @@
             "title": "Wybierz brygadę dla linii {{route}} w {{city}}"
         },
         "brigadeSchedule": {
-            "title": "Rozkład brygady {{route}}/{{brigade}}  w {{city}}",
+            "title": "Rozkład brygady {{route}}/{{brigade}} w {{city}}",
             "description": "Sprawdź rozkład brygady {{brigade}} linii {{route}} w {{city}}. Zobacz wszystkie kursy, czasy przejazdu oraz informacje o pojeździe, który realizuje daną trasę."
         },
         "settings": {
