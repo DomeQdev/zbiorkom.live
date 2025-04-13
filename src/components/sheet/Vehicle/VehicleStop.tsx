@@ -1,6 +1,16 @@
 import { Box, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { ERoute, ETripStop, EVehicle, EStopUpdate, EStopTime, StopUpdate, TripStop, Vehicle } from "typings";
-import { WavingHand } from "@mui/icons-material";
+import {
+    ERoute,
+    ETripStop,
+    EVehicle,
+    EStopUpdate,
+    EStopTime,
+    StopUpdate,
+    TripStop,
+    Vehicle,
+    ETripStopType,
+} from "typings";
+import { RemoveCircleOutline, WavingHand } from "@mui/icons-material";
 import VehicleDelay from "./VehicleDelay";
 import VehicleStopIcon from "./VehicleStopIcon";
 import getTime from "@/util/getTime";
@@ -73,14 +83,26 @@ export default ({ vehicle, stop, index, update, sequence }: Props) => {
             <ListItemText
                 primary={
                     <>
-                        {stop[ETripStop.onDemand] && (
+                        {stop[ETripStop.type] === ETripStopType.notBoardable && (
+                            <RemoveCircleOutline
+                                sx={{
+                                    fontSize: 18,
+                                    marginRight: 0.5,
+                                    color: "error.contrastText",
+                                }}
+                            />
+                        )}
+
+                        {stop[ETripStop.type] === ETripStopType.onDemand && (
                             <WavingHand
                                 sx={{
                                     fontSize: 16,
                                     marginRight: 0.5,
+                                    color: "warning.main",
                                 }}
                             />
                         )}
+
                         {stop[ETripStop.name]}
                     </>
                 }

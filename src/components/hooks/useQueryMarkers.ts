@@ -43,6 +43,7 @@ export default (props: Props) => {
 
     useEffect(() => {
         if (props.disabled) return;
+
         query.refetch();
     }, [props.options]);
 

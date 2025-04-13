@@ -27,7 +27,7 @@ export default ({ city, moveBadge }: Props) => {
     const abortControllerRef = useRef<AbortController | null>(null);
 
     const refreshMarkers = (fetchStops?: boolean) => {
-        if (!map) return;
+        if (!map || (!fetchStops && document.visibilityState !== "visible")) return;
 
         abortControllerRef.current?.abort();
 
@@ -63,12 +63,18 @@ export default ({ city, moveBadge }: Props) => {
         });
     };
 
+    const onMove = (e: any) => {
+        if (e.originalEvent?.type !== "resize") refreshMarkers(true);
+    };
+
+    const onVisibilityChange = () => {
+        if (document.visibilityState !== "visible") return;
+
+        refreshMarkers();
+    };
+
     useEffect(() => {
         if (!map || !socket || tempRoutes.length || tempModels.length) return;
-
-        const onMove = (e: any) => {
-            if (e.originalEvent?.type !== "resize") refreshMarkers(true);
-        };
 
         if (!window.skipPadding) {
             map.flyTo({
@@ -84,10 +90,13 @@ export default ({ city, moveBadge }: Props) => {
         }
 
         refreshMarkers(true);
+
+        document.addEventListener("visibilitychange", onVisibilityChange);
         socket.on("refresh", refreshMarkers);
         map.on("moveend", onMove);
 
         return () => {
+            document.removeEventListener("visibilitychange", onVisibilityChange);
             socket.off("refresh", refreshMarkers);
             map.off("moveend", onMove);
         };

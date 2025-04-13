@@ -10,8 +10,9 @@ import {
     ETrip,
     ERoute,
     EVehicle,
+    ETripStopType,
 } from "typings";
-import { WavingHand } from "@mui/icons-material";
+import { RemoveCircleOutline, WavingHand } from "@mui/icons-material";
 import { useMap } from "react-map-gl";
 import useTime from "@/hooks/useTime";
 import VehicleStopIcon from "@/sheet/Vehicle/VehicleStopIcon";
@@ -82,14 +83,26 @@ export default ({ vehicle, trip, stop, index, update, sequence }: Props) => {
             <ListItemText
                 primary={
                     <>
-                        {stop[ETripStop.onDemand] && (
+                        {stop[ETripStop.type] === ETripStopType.notBoardable && (
+                            <RemoveCircleOutline
+                                sx={{
+                                    fontSize: 18,
+                                    marginRight: 0.5,
+                                    color: "error.contrastText",
+                                }}
+                            />
+                        )}
+
+                        {stop[ETripStop.type] === ETripStopType.onDemand && (
                             <WavingHand
                                 sx={{
                                     fontSize: 16,
                                     marginRight: 0.5,
+                                    color: "warning.main",
                                 }}
                             />
                         )}
+
                         {stop[ETripStop.name]}
                     </>
                 }

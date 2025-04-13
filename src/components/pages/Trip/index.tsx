@@ -33,10 +33,16 @@ export default memo(() => {
 
         const eventName = cityId === "pkp" ? "trainRefresh" : "refresh";
 
-        socket.on(eventName, refetch);
+        const onRefresh = () => {
+            if (document.visibilityState !== "visible") return;
+
+            refetch();
+        };
+
+        socket.on(eventName, onRefresh);
 
         return () => {
-            socket.off(eventName, refetch);
+            socket.off(eventName, onRefresh);
         };
     }, [tripData, socket]);
 

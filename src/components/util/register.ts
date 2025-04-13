@@ -38,9 +38,3 @@ console.log(
     "%czbiorkom.live",
     "font-size: 64px; color: #276b2b; font-weight: bold; text-shadow: 0 0 10px #276b2b;"
 );
-
-console.log(
-    "%cHej! Widzę, że interesuje Cię nasz kod 😊\n" +
-        "Jeśli masz pytania lub chcesz dowiedzieć się więcej, dołącz do nas tutaj: https://discord.gg/gUhMz2Wckf",
-    "color: #5662f6; font-size: 16px; font-weight: bold;"
-);

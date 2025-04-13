@@ -38,10 +38,16 @@ export default memo(() => {
             setHasDataFetched(true);
         }
 
-        socket.on("refresh", refetch);
+        const onRefresh = () => {
+            if (document.visibilityState !== "visible") return;
+
+            refetch();
+        };
+
+        socket.on("refresh", onRefresh);
 
         return () => {
-            socket.off("refresh", refetch);
+            socket.off("refresh", onRefresh);
         };
     }, [data, socket]);
 

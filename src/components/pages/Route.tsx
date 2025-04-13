@@ -60,10 +60,16 @@ export default () => {
     useEffect(() => {
         if (!socket) return;
 
-        socket.on("refresh", refetch);
+        const onRefresh = () => {
+            if (document.visibilityState !== "visible") return;
+
+            refetch();
+        };
+
+        socket.on("refresh", onRefresh);
 
         return () => {
-            socket.off("refresh", refetch);
+            socket.off("refresh", onRefresh);
         };
     }, [socket, refetch]);
 

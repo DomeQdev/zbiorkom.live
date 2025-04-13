@@ -8,10 +8,14 @@ export default () => {
     const socket = useOutletContext<Socket>();
 
     const invalidateStations = () => {
+        if (document.visibilityState !== "visible") return;
+
         queryClient.invalidateQueries({ queryKey: ["station"] });
     };
 
     const invalidateStops = () => {
+        if (document.visibilityState !== "visible") return;
+
         queryClient.invalidateQueries({ queryKey: ["stop"] });
     };
 

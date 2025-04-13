@@ -94,6 +94,12 @@ const cities = {
         name: "Rzeszów",
         location: [22.01597, 50.04132],
     },
+    rybnik: {
+        id: "rybnik",
+        name: "Rybnik",
+        showNewTag: true,
+        location: [18.548055, 50.092947],
+    },
     // siedlce: {
     //     id: "siedlce",
     //     name: "Siedlce",

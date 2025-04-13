@@ -140,8 +140,7 @@ export type TripStop = [
     sequence: number,
     arrival: number,
     departure: number,
-    onDemand: boolean,
-    shapeIndex: number
+    type: ETripStopType,
 ];
 
 export enum ETripStop {
@@ -151,8 +150,13 @@ export enum ETripStop {
     sequence = 3,
     arrival = 4,
     departure = 5,
-    onDemand = 6,
-    shapeIndex = 7,
+    type = 6,
+}
+
+export enum ETripStopType {
+    notBoardable = 0,
+    normal = 1,
+    onDemand = 2,
 }
 
 export type Shape = {
