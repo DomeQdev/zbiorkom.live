@@ -137,6 +137,13 @@ export default ({
                     active={path === "settings"}
                     onClick={() => navigate(`/${city}/settings`, { state: undefined })}
                 />
+                <MenuItem
+                    icon={<>💀</>}
+                    outlinedIcon={<>💀</>}
+                    name={"Egzekucje"}
+                    active={path === "executions"}
+                    onClick={() => navigate(`/${city}/executions`, { state: undefined })}
+                />
             </List>
 
             {isRazem && (
