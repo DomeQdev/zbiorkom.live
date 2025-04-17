@@ -197,6 +197,36 @@ export default () => {
                     },
                 },
             },
+            MuiTabs: {
+                styleOverrides: {
+                    root: {
+                        "& .MuiTabs-indicator": {
+                            backgroundColor: hexFromArgb(md3Theme.primary),
+                        },
+                        "& .MuiTabs-scrollButtons.Mui-disabled": {
+                            opacity: 0.3,
+                        },
+                    },
+                },
+            },
+            MuiTab: {
+                styleOverrides: {
+                    root: {
+                        "&.Mui-selected": {
+                            color: hexFromArgb(md3Theme.primary),
+                        },
+                    },
+                },
+            },
+            MuiFormLabel: {
+                styleOverrides: {
+                    root: {
+                        "&.Mui-focused": {
+                            color: hexFromArgb(md3Theme.primary),
+                        },
+                    },
+                },
+            },
         },
     });
 

@@ -97,6 +97,14 @@ export default () => {
                                         </Suspense>
                                     ),
                                 },
+                                {
+                                    path: "executions",
+                                    element: (
+                                        <Suspense>
+                                            <Executions />
+                                        </Suspense>
+                                    ),
+                                },
                             ],
                         },
                         {
@@ -334,14 +342,6 @@ export default () => {
                             element: (
                                 <Suspense>
                                     <Veturilo />
-                                </Suspense>
-                            ),
-                        },
-                        {
-                            path: "executions",
-                            element: (
-                                <Suspense>
-                                    <Executions />
                                 </Suspense>
                             ),
                         },
