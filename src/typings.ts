@@ -140,7 +140,7 @@ export type TripStop = [
     sequence: number,
     arrival: number,
     departure: number,
-    type: ETripStopType,
+    type: ETripStopType
 ];
 
 export enum ETripStop {
@@ -382,6 +382,55 @@ export interface FavoriteStop {
     location: [number, number];
     directions: [string, string][];
     isStation?: boolean;
+}
+
+export type ExecutionDates = string[];
+
+export type ExecutionVehicles = [
+    date: string,
+    route: string,
+    brigade: string | null,
+    vehicles: ExecutionVehicle[]
+];
+
+export enum EExecutionVehicles {
+    date = 0,
+    route = 1,
+    brigade = 2,
+    vehicles = 3,
+}
+
+export type ExecutionVehicle = [vehicleId: string, trips: number];
+
+export enum EExecutionVehicle {
+    vehicleId = 0,
+    trips = 1,
+}
+
+export type Execution = [
+    gtfsTripId: string,
+    vehicleId: string,
+    route: string,
+    brigade: string | null,
+    scheduledStartTime: number,
+    startDelay: number,
+    scheduledEndTime: number,
+    endDelay: number | null,
+    startStopName: string,
+    endStopName: string
+];
+
+export enum EExecution {
+    gtfsTripId = 0,
+    vehicleId = 1,
+    route = 2,
+    brigade = 3,
+    scheduledStartTime = 4,
+    startDelay = 5,
+    scheduledEndTime = 6,
+    endDelay = 7,
+    startStopName = 8,
+    endStopName = 9,
 }
 
 declare global {

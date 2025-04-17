@@ -12,32 +12,26 @@ import {
 import { ArrowBack, HighlightOff } from "@mui/icons-material";
 import { useRef, useState } from "react";
 import { GroupedVirtuoso } from "react-virtuoso";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Result from "./Result";
 import { useTranslation } from "react-i18next";
 import useGoBack from "@/hooks/useGoBack";
 import useQuerySearch from "@/hooks/useQuerySearch";
 import SearchInfo from "./SearchInfo";
+import useSearchState from "@/hooks/useSearchState";
 
 export default () => {
     const [expandedStop, setExpandedStop] = useState<string | undefined>();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [search, setSearch] = useSearchState("query", "");
     const searchInput = useRef<HTMLInputElement>(null);
     const { t } = useTranslation("Search");
     const { city } = useParams();
     const goBack = useGoBack();
 
-    const [search, setSearch] = useState(searchParams.get("query") || "");
-
     const { data, isLoading } = useQuerySearch({
         city: city!,
         query: search,
     });
-
-    const setQuery = (query: string) => {
-        setSearch(query);
-        setSearchParams({ query }, { replace: true });
-    };
 
     return (
         <Dialog
@@ -72,7 +66,7 @@ export default () => {
                     placeholder="Szukaj"
                     inputRef={searchInput}
                     value={search}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e) => setSearch(e.target.value)}
                     slotProps={{
                         input: {
                             autoComplete: "off",
