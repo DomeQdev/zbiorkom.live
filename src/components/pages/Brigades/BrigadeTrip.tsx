@@ -1,10 +1,9 @@
 import { ListItemButton } from "@mui/material";
-import { BrigadeTrip, EBrigadeTrip, ERoute, ETrip, Route } from "typings";
+import { BrigadeTrip, EBrigadeTrip, ERoute } from "typings";
 import { Link, useParams } from "react-router-dom";
 import getTime from "@/util/getTime";
 import { useTranslation } from "react-i18next";
 import getColors, { hexFromArgb } from "@/util/getColors";
-import RouteChip from "@/ui/RouteChip";
 import RouteTag from "@/map/RouteTag";
 
 type Props = {
@@ -28,6 +27,7 @@ export default ({ trip, showRoute }: Props) => {
             }
             state={-3}
             sx={{
+                display: "block",
                 borderRadius: 1.5,
                 backgroundColor: trip[EBrigadeTrip.vehicle] ? background : "background.paper",
                 "&:hover": {
@@ -35,56 +35,54 @@ export default ({ trip, showRoute }: Props) => {
                 },
             }}
         >
-            <div>
+            <span
+                className="vehicleStopIconLine tripLine"
+                style={{
+                    backgroundColor: trip[EBrigadeTrip.route][ERoute.color],
+                }}
+            />
+            <span className="tripRow">
+                <span className="tripTime">{getTime(trip[EBrigadeTrip.start])}</span>
                 <span
-                    className="vehicleStopIconLine tripLine"
+                    className="vehicleStopIcon"
                     style={{
-                        backgroundColor: trip[EBrigadeTrip.route][ERoute.color],
+                        border: `3px solid ${trip[EBrigadeTrip.route][ERoute.color]}`,
                     }}
                 />
-                <span className="tripRow">
-                    <span className="tripTime">{getTime(trip[EBrigadeTrip.start])}</span>
-                    <span
-                        className="vehicleStopIcon"
-                        style={{
-                            border: `3px solid ${trip[EBrigadeTrip.route][ERoute.color]}`,
-                        }}
-                    />
-                    <span className="tripHeadsign">
-                        {showRoute && <RouteTag route={trip[EBrigadeTrip.route]} />}
-                        {trip[EBrigadeTrip.startStop]}
-                    </span>
+                <span className="tripHeadsign">
+                    {showRoute && <RouteTag route={trip[EBrigadeTrip.route]} />}
+                    {trip[EBrigadeTrip.startStop]}
                 </span>
-                <div className="tripInfo">
-                    <span>
-                        {[
-                            t("travelTime", {
-                                time: `${Math.floor(
-                                    (trip[EBrigadeTrip.end] - trip[EBrigadeTrip.start]) / 60000
-                                )} min`,
-                            }),
-                            `${trip[EBrigadeTrip.distance]
-                                .toString()
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, " ")} m`,
-                        ].join(" · ")}
-                    </span>
-                    <span>
-                        {trip[EBrigadeTrip.vehicle]
-                            ? t("operatedBy", { vehicle: trip[EBrigadeTrip.vehicle].split("/")[1] })
-                            : t("clickForTrip")}
-                    </span>
-                </div>
-                <span className="tripRow">
-                    <span className="tripTime">{getTime(trip[EBrigadeTrip.end])}</span>
-                    <span
-                        className="vehicleStopIcon"
-                        style={{
-                            border: `3px solid ${trip[EBrigadeTrip.route][ERoute.color]}`,
-                        }}
-                    />
-                    <span className="tripHeadsign">{trip[EBrigadeTrip.endStop]}</span>
+            </span>
+
+            <div className="tripInfo">
+                <span>
+                    {[
+                        t("travelTime", {
+                            time: `${Math.floor(
+                                (trip[EBrigadeTrip.end] - trip[EBrigadeTrip.start]) / 60000
+                            )} min`,
+                        }),
+                        `${trip[EBrigadeTrip.distance].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} m`,
+                    ].join(" · ")}
+                </span>
+                <span>
+                    {trip[EBrigadeTrip.vehicle]
+                        ? t("operatedBy", { vehicle: trip[EBrigadeTrip.vehicle].split("/")[1] })
+                        : t("clickForTrip")}
                 </span>
             </div>
+
+            <span className="tripRow">
+                <span className="tripTime">{getTime(trip[EBrigadeTrip.end])}</span>
+                <span
+                    className="vehicleStopIcon"
+                    style={{
+                        border: `3px solid ${trip[EBrigadeTrip.route][ERoute.color]}`,
+                    }}
+                />
+                <span className="tripHeadsign">{trip[EBrigadeTrip.endStop]}</span>
+            </span>
         </ListItemButton>
     );
 };

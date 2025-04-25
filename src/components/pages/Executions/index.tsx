@@ -1,15 +1,15 @@
+import { CircularProgress, Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import useGoBack from "@/hooks/useGoBack";
 import useSearchState from "@/hooks/useSearchState";
-import { Box, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import ExecutionsFilter from "./ExecutionsFilter";
 import { ArrowBack } from "@mui/icons-material";
 import { useState } from "react";
 import { useQueryExecutions } from "@/hooks/useQueryExecutions";
 import { Virtuoso } from "react-virtuoso";
-import { EExecution } from "typings";
-import VehicleDelay from "@/sheet/Vehicle/VehicleDelay";
-import getTime from "@/util/getTime";
+import Execution from "./Execution";
+
+import "../Brigades/brigades.css";
 
 export default () => {
     const { city } = useParams();
@@ -88,62 +88,7 @@ export default () => {
                     <Virtuoso
                         style={{ height: "100%" }}
                         totalCount={executions.length}
-                        itemContent={(index) => {
-                            const execution = executions[index];
-                            return (
-                                <Box
-                                    key={execution[EExecution.gtfsTripId]}
-                                    sx={{
-                                        display: "flex",
-                                        gap: 1,
-                                        padding: 1,
-                                        border: "1px solid",
-                                        borderRadius: 1,
-                                        backgroundColor: "background.paper",
-                                    }}
-                                >
-                                    <Typography
-                                        variant="body2"
-                                        sx={{
-                                            flex: 1,
-                                            "& > span": {
-                                                display: "flex",
-                                                flexDirection: "row",
-                                                alignItems: "center",
-                                                gap: 0.5,
-                                            },
-                                        }}
-                                    >
-                                        <span>
-                                            Pojazd: <b>{execution[EExecution.vehicleId]}</b>
-                                        </span>
-                                        <span>
-                                            Linia/brygada:
-                                            <b>
-                                                {execution[EExecution.route] +
-                                                    (execution[EExecution.brigade]
-                                                        ? `/${execution[EExecution.brigade]}`
-                                                        : "")}
-                                            </b>
-                                        </span>
-                                        <span>
-                                            Start: <b>{execution[EExecution.startStopName]}</b>,{" "}
-                                            {getTime(execution[EExecution.scheduledStartTime])},{" "}
-                                            <VehicleDelay delay={execution[EExecution.startDelay]} />
-                                        </span>
-                                        <span>
-                                            Koniec: <b>{execution[EExecution.endStopName]}</b>,{" "}
-                                            {getTime(execution[EExecution.scheduledEndTime])},{" "}
-                                            {execution[EExecution.endDelay] ? (
-                                                <VehicleDelay delay={execution[EExecution.endDelay]} />
-                                            ) : (
-                                                "nie dojechał"
-                                            )}
-                                        </span>
-                                    </Typography>
-                                </Box>
-                            );
-                        }}
+                        itemContent={(index) => <Execution execution={executions[index]} />}
                     />
                 )}
             </DialogContent>

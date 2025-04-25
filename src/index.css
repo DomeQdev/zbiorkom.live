@@ -129,7 +129,7 @@ h6 {
     left: 16px;
     width: 16px;
     height: 100%;
-    pointer-events: noen;
+    pointer-events: none;
 }
 
 .vehicleStopIconLine.small {

@@ -2,15 +2,15 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Box, IconButton, List, SwipeableDrawer } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import MenuItem from "./MenuItem";
+import { DiscordIcon, Logo } from "@/ui/Icon";
 import cities from "cities";
 import {
-    AlternateEmail,
-    Chat,
     CopyrightOutlined,
-    DirectionsBike,
+    Email,
     EventNote,
     EventNoteOutlined,
     Facebook,
+    GitHub,
     Instagram,
     KeyboardArrowDown,
     Newspaper,
@@ -19,7 +19,6 @@ import {
     Settings,
     SettingsOutlined,
 } from "@mui/icons-material";
-import { Logo } from "@/ui/Icon";
 
 export default ({
     open,
@@ -71,7 +70,7 @@ export default ({
                         flexDirection: "column",
                     }}
                 >
-                    <b>{isRazem ? (city === "kutno" ? "ROZKŁAD JEST ZNANY" : "Razem") : "Zbiorkom.live"}</b>
+                    <b>Zbiorkom.live</b>
                     <span
                         style={{
                             display: "flex",
@@ -121,28 +120,19 @@ export default ({
                     active={path === "copyright"}
                     onClick={() => navigate(`/${city}/copyright`, { state: undefined })}
                 />
-                {/* {city === "warsaw" && (
-                    <MenuItem
-                        icon={<DirectionsBike />}
-                        outlinedIcon={<DirectionsBike />}
-                        name="VETURILO"
-                        active={path === "veturilo"}
-                        onClick={() => navigate(`/${city}/veturilo`, { state: undefined })}
-                    />
-                )} */}
-                <MenuItem
-                    icon={<Settings />}
-                    outlinedIcon={<SettingsOutlined />}
-                    name={t("settings")}
-                    active={path === "settings"}
-                    onClick={() => navigate(`/${city}/settings`, { state: undefined })}
-                />
                 <MenuItem
                     icon={<>💀</>}
                     outlinedIcon={<>💀</>}
                     name={"Egzekucje"}
                     active={path === "executions"}
                     onClick={() => navigate(`/${city}/executions`, { state: undefined })}
+                />
+                <MenuItem
+                    icon={<Settings />}
+                    outlinedIcon={<SettingsOutlined />}
+                    name={t("settings")}
+                    active={path === "settings"}
+                    onClick={() => navigate(`/${city}/settings`, { state: undefined })}
                 />
             </List>
 
@@ -180,11 +170,14 @@ export default ({
                     <IconButton href="https://www.instagram.com/zbiorkom.live/" target="_blank">
                         <Instagram htmlColor="hsla(0, 0%, 100%, 0.6)" />
                     </IconButton>
+                    <IconButton href="https://github.com/DomeQdev/zbiorkom.live" target="_blank">
+                        <GitHub htmlColor="hsla(0, 0%, 100%, 0.6)" />
+                    </IconButton>
                     <IconButton href="https://discord.gg/gUhMz2Wckf" target="_blank">
-                        <Chat htmlColor="hsla(0, 0%, 100%, 0.6)" />
+                        <DiscordIcon htmlColor="hsla(0, 0%, 100%, 0.6)" />
                     </IconButton>
                     <IconButton href="mailto:admin@zbiorkom.live" target="_blank">
-                        <AlternateEmail htmlColor="hsla(0, 0%, 100%, 0.6)" />
+                        <Email htmlColor="hsla(0, 0%, 100%, 0.6)" />
                     </IconButton>
                 </Box>
                 <span
