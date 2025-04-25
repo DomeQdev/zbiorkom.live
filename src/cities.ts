@@ -56,7 +56,6 @@ const cities = {
         id: "lodz",
         name: "Łódź",
         location: [19.46563, 51.77025],
-        disableBrigades: true,
         showNewTag: true,
     },
     // lowicz: {
@@ -70,7 +69,6 @@ const cities = {
         id: "lublin",
         name: "Lublin",
         location: [22.56696, 51.24607],
-        disableBrigades: true,
     },
     olsztyn: {
         id: "olsztyn",

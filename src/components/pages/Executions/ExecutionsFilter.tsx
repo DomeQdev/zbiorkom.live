@@ -1,5 +1,5 @@
 import { SearchState } from "@/hooks/useSearchState";
-import { Box, InputAdornment, MenuItem, Select, Tab, Tabs, TextField } from "@mui/material";
+import { Box, Tab, Tabs, TextField } from "@mui/material";
 import ExecutionsFilterVehicle from "./ExecutionsFilterVehicle";
 import { useQueryExecutionDates } from "@/hooks/useQueryExecutions";
 import { useEffect } from "react";
