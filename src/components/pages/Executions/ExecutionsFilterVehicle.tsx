@@ -1,10 +1,12 @@
 import { Box, MenuItem, Select, SvgIcon, TextField } from "@mui/material";
 import { SearchState } from "@/hooks/useSearchState";
+import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { VehicleType } from "typings";
 import Icon from "@/ui/Icon";
 
 export default ({ vehicle: [vehicle, setVehicle] }: { vehicle: SearchState }) => {
+    const { t } = useTranslation("Executions");
     const [initialValue] = useState(vehicle.split("/"));
 
     const [vehicleId, setVehicleId] = useState<string>(initialValue[1] ?? "");
@@ -63,7 +65,7 @@ export default ({ vehicle: [vehicle, setVehicle] }: { vehicle: SearchState }) =>
                 size="small"
                 value={vehicleId}
                 onChange={({ target }) => setVehicleId(target.value)}
-                label="Pojazd"
+                label={t("vehicle")}
                 sx={{
                     "& .MuiInputBase-root": {
                         borderRadius: 0,

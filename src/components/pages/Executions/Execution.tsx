@@ -3,11 +3,13 @@ import RouteTag from "@/map/RouteTag";
 import { hexFromArgb } from "@/util/getColors";
 import getTime from "@/util/getTime";
 import { Box } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { EExecution, Execution, VehicleType } from "typings";
 
 export default ({ execution }: { execution: Execution }) => {
     const type = +execution[EExecution.vehicleId].split("/")[0] as VehicleType;
     const color = hexFromArgb(useTheme().inversePrimary);
+    const { t } = useTranslation("Executions");
 
     return (
         <Box
@@ -48,8 +50,12 @@ export default ({ execution }: { execution: Execution }) => {
             </span>
 
             <div className="executionTripInfo">
-                <span>Pojazd: #{execution[EExecution.vehicleId].split("/")[1]}</span>
-                <span>Kurs: {execution[EExecution.gtfsTripId]}</span>
+                <span>
+                    {t("vehicle")}: #{execution[EExecution.vehicleId].split("/")[1]}
+                </span>
+                <span>
+                    {t("trip")}: {execution[EExecution.gtfsTripId]}
+                </span>
             </div>
 
             <span className="tripRow">

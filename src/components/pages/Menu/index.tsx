@@ -11,6 +11,7 @@ import {
     EventNoteOutlined,
     Facebook,
     GitHub,
+    History,
     Instagram,
     KeyboardArrowDown,
     Newspaper,
@@ -121,9 +122,9 @@ export default ({
                     onClick={() => navigate(`/${city}/copyright`, { state: undefined })}
                 />
                 <MenuItem
-                    icon={<>💀</>}
-                    outlinedIcon={<>💀</>}
-                    name={"Egzekucje"}
+                    icon={<History />}
+                    outlinedIcon={<History />}
+                    name={t("executions")}
                     active={path === "executions"}
                     onClick={() => navigate(`/${city}/executions`, { state: undefined })}
                 />

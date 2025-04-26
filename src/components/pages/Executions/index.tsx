@@ -1,19 +1,20 @@
 import { CircularProgress, Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
-import useGoBack from "@/hooks/useGoBack";
 import useSearchState from "@/hooks/useSearchState";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ExecutionsFilter from "./ExecutionsFilter";
 import { ArrowBack } from "@mui/icons-material";
 import { useState } from "react";
 import { useQueryExecutions } from "@/hooks/useQueryExecutions";
+import { useTranslation } from "react-i18next";
 import { Virtuoso } from "react-virtuoso";
 import Execution from "./Execution";
 
 import "../Brigades/brigades.css";
 
 export default () => {
+    const { t } = useTranslation("Executions");
+    const navigate = useNavigate();
     const { city } = useParams();
-    const goBack = useGoBack();
 
     const [date, setDate] = useSearchState("date", new Date().toISOString().split("T")[0]);
     const [route, setRoute] = useSearchState("route", "");
@@ -34,7 +35,7 @@ export default () => {
     return (
         <Dialog
             open
-            onClose={() => goBack()}
+            onClose={() => navigate(`/${city}`)}
             fullWidth={window.innerWidth > 600}
             fullScreen={window.innerWidth <= 600}
             sx={(theme) => ({
@@ -58,10 +59,10 @@ export default () => {
                 }}
             >
                 <div>
-                    <IconButton onClick={() => goBack()}>
+                    <IconButton onClick={() => navigate(`/${city}`)}>
                         <ArrowBack />
                     </IconButton>
-                    Egzekucje
+                    {t("executions")}
                 </div>
                 <div>
                     <CircularProgress

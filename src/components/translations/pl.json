@@ -6,7 +6,8 @@
         "blog": "Blog",
         "about": "O aplikacji",
         "settings": "Ustawienia",
-        "dataSources": "Źródła danych"
+        "dataSources": "Źródła danych",
+        "executions": "Co wyjechało?"
     },
     "Vehicle": {
         "onTime": "Planowo",
@@ -205,5 +206,12 @@
         "nextDay": "Zobaczysz rozkład na następny dzień od {{time}}",
         "cancel": "Anuluj",
         "save": "OK"
+    },
+    "Executions": {
+        "executions": "Co wyjechało?",
+        "vehicle": "Pojazd",
+        "trip": "Kurs",
+        "route": "Linia",
+        "brigade": "Brygada"
     }
 }

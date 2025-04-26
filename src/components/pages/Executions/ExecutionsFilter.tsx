@@ -3,6 +3,7 @@ import { Box, Tab, Tabs, TextField } from "@mui/material";
 import ExecutionsFilterVehicle from "./ExecutionsFilterVehicle";
 import { useQueryExecutionDates } from "@/hooks/useQueryExecutions";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     city: string;
@@ -35,6 +36,8 @@ export default ({
     vehicle: [vehicle, setVehicle],
     setLoading,
 }: Props) => {
+    const { t } = useTranslation("Executions");
+
     const { data: dates, isLoading } = useQueryExecutionDates({
         city,
         route,
@@ -67,7 +70,7 @@ export default ({
             >
                 <TextField
                     size="small"
-                    label="Linia"
+                    label={t("route")}
                     value={route}
                     onChange={({ target }) => setRoute(target.value)}
                     slotProps={{
@@ -79,7 +82,7 @@ export default ({
                 />
                 <TextField
                     size="small"
-                    label="Brygada"
+                    label={t("brigade")}
                     value={brigade}
                     onChange={({ target }) => setBrigade(target.value)}
                     slotProps={{
