@@ -6,7 +6,8 @@ export default ({ delay, showGPS }: { delay: DelayType; showGPS?: boolean }) => 
     const [delayClass, delayMinutes] = getDelay(delay);
     const { t } = useTranslation("Vehicle");
 
-    const showFixedGPS = delay === "live" || (showGPS === true && delay !== "scheduled");
+    const showFixedGPS =
+        (showGPS !== false && delay === "live") || (showGPS === true && delay !== "scheduled");
     const showOffGPS = delay === "scheduled" || showGPS === false;
 
     return (

@@ -203,7 +203,8 @@ export type StopDeparture = [
     departure: StopTime,
     destination: StopTime | null,
     platform?: string,
-    track?: string
+    track?: string,
+    alert?: { type: any; text: string }
 ];
 
 export enum EStopDeparture {
@@ -218,6 +219,7 @@ export enum EStopDeparture {
     destination = 8,
     platform = 9,
     track = 10,
+    alert = 11,
 }
 
 export type StopTime = [number, number, DelayType];

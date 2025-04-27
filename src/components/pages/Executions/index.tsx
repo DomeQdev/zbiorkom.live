@@ -97,7 +97,7 @@ export default () => {
                     />
                 )}
 
-                {executions && !executions?.length && (
+                {enabled && !loading && !executions?.length && (
                     <Alert
                         title={t("noResults")}
                         description={t("noResultsDescription")}

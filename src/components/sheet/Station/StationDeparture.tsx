@@ -1,4 +1,4 @@
-import { ERoute, EStopDeparture, EStopTime, StopDeparture } from "typings";
+import { EStopDeparture, EStopTime, StopDeparture } from "typings";
 import { Box, ListItemButton, ListItemText } from "@mui/material";
 import VehicleDelay from "@/sheet/Vehicle/VehicleDelay";
 import getTime from "@/util/getTime";
@@ -6,6 +6,7 @@ import VehicleHeadsign from "@/sheet/Vehicle/VehicleHeadsign";
 import useTime from "@/hooks/useTime";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import SmallAlert from "@/ui/SmallAlert";
 
 export default ({ departure, city }: { departure: StopDeparture; city: string }) => {
     const { t } = useTranslation("Vehicle");
@@ -13,6 +14,7 @@ export default ({ departure, city }: { departure: StopDeparture; city: string })
     const scheduled = departure[EStopDeparture.departure][EStopTime.scheduled];
     const estimated = departure[EStopDeparture.departure][EStopTime.estimated];
     const delay = departure[EStopDeparture.departure][EStopTime.delay];
+    const alert = departure[EStopDeparture.alert];
 
     const hasDelay = typeof delay === "number" && !!Math.floor(Math.abs(delay) / 60000);
     const minutesToDeparture = useTime(estimated);
@@ -29,7 +31,14 @@ export default ({ departure, city }: { departure: StopDeparture; city: string })
                     : `/${city}/trip/${encodeURIComponent(departure[EStopDeparture.id])}?pkp`
             }
             state={-2}
-            sx={{ opacity: isCancelled ? 0.5 : undefined }}
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                opacity: isCancelled ? 0.5 : undefined,
+                "& > *": {
+                    width: "100%",
+                },
+            }}
         >
             <ListItemText
                 primary={
@@ -95,6 +104,8 @@ export default ({ departure, city }: { departure: StopDeparture; city: string })
                     },
                 }}
             />
+
+            {alert && <SmallAlert type={alert.type} text={alert.text} />}
         </ListItemButton>
     );
 };

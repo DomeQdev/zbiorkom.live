@@ -47,12 +47,6 @@ export default ({
     });
 
     useEffect(() => {
-        if (!dates?.includes(date)) {
-            setDate(dates?.[0] ?? "");
-        }
-    }, [dates]);
-
-    useEffect(() => {
         setLoading(isLoading);
     }, [isLoading]);
 
