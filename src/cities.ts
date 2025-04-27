@@ -18,6 +18,12 @@ const cities = {
         showNewTag: true,
         location: [19.414848, 54.152099],
     },
+    // elk: {
+    //     id: "elk",
+    //     name: "Ełk",
+    //     showNewTag: true,
+    //     location: [22.361029, 53.824710],
+    // },
     gzm: {
         id: "gzm",
         name: "Metropolia GZM",
@@ -27,7 +33,6 @@ const cities = {
     iceland: {
         id: "iceland",
         name: "Ísland",
-        showNewTag: true,
         location: [-21.934531, 64.13746],
     },
     krakow: {
@@ -51,7 +56,6 @@ const cities = {
         id: "lodz",
         name: "Łódź",
         location: [19.46563, 51.77025],
-        disableBrigades: true,
         showNewTag: true,
     },
     // lowicz: {
@@ -65,13 +69,18 @@ const cities = {
         id: "lublin",
         name: "Lublin",
         location: [22.56696, 51.24607],
-        disableBrigades: true,
     },
     olsztyn: {
         id: "olsztyn",
         name: "Olsztyn",
         location: [20.48221, 53.77792],
     },
+    // opole: {
+    //     id: "opole",
+    //     name: "Opole",
+    //     showNewTag: true,
+    //     location: [17.926775, 50.662761],
+    // },
     // ostroleka: {
     //     id: "ostroleka",
     //     name: "Ostrołęka",
@@ -92,11 +101,12 @@ const cities = {
     rzeszow: {
         id: "rzeszow",
         name: "Rzeszów",
-        location: [22.01597, 50.04132],
+        location: [21.999114, 50.041083],
     },
     rybnik: {
         id: "rybnik",
         name: "Rybnik",
+        description: "KM Rybnik, MZK Jastrzębie-Zdrój",
         showNewTag: true,
         location: [18.548055, 50.092947],
     },

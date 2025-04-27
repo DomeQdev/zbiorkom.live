@@ -6,7 +6,8 @@
         "blog": "Blog",
         "about": "About the app",
         "settings": "Settings",
-        "dataSources": "Data sources"
+        "dataSources": "Data sources",
+        "executions": "Dispatches"
     },
     "Vehicle": {
         "onTime": "On time",
@@ -203,5 +204,15 @@
         "nextDay": "You will see the schedule for the next day from {{time}}",
         "cancel": "Cancel",
         "save": "OK"
+    },
+    "Executions": {
+        "executions": "Dispatches",
+        "vehicle": "Vehicle",
+        "trip": "Trip",
+        "route": "Route",
+        "brigade": "Brigade",
+        "noResults": "No results...",
+        "noResultsDescription": "Try searching for something else.",
+        "noFilter": "Search for something..."
     }
 }

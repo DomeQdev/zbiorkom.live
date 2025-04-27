@@ -36,6 +36,7 @@ const Cities = lazy(() => import("@/pages/Cities"));
 const City = lazy(() => import("@/pages/City"));
 const Copyright = lazy(() => import("@/pages/Copyright"));
 const Error = lazy(() => import("@/pages/Error"));
+const Executions = lazy(() => import("@/pages/Executions"));
 const FavoriteStops = lazy(() => import("@/pages/FavoriteStops"));
 const Filter = lazy(() => import("@/pages/Filter"));
 const Route = lazy(() => import("@/pages/Route"));
@@ -93,6 +94,14 @@ export default () => {
                                     element: (
                                         <Suspense>
                                             <FavoriteStops />
+                                        </Suspense>
+                                    ),
+                                },
+                                {
+                                    path: "executions",
+                                    element: (
+                                        <Suspense>
+                                            <Executions />
                                         </Suspense>
                                     ),
                                 },

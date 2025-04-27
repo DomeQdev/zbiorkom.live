@@ -11,10 +11,21 @@
     font-size: 13px;
 }
 
+.executionTripInfo {
+    display: flex;
+    flex-direction: column;
+    margin-left: 120px;
+    color: hsla(0, 0%, 100%, 0.7);
+    font-size: 13px;
+}
+
 .tripRow {
     display: flex;
     align-items: center;
     gap: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .tripTime {
@@ -24,6 +35,12 @@
 .tripLine {
     top: 20px;
     left: 58px;
+    height: calc(100% - 40px);
+}
+
+.executionLine {
+    top: 20px;
+    left: 97px;
     height: calc(100% - 40px);
 }
 
