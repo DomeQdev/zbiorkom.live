@@ -2,7 +2,7 @@ import { CircularProgress, Dialog, DialogContent, DialogTitle, IconButton } from
 import useSearchState from "@/hooks/useSearchState";
 import { useNavigate, useParams } from "react-router-dom";
 import ExecutionsFilter from "./ExecutionsFilter";
-import { ArrowBack } from "@mui/icons-material";
+import { ArrowBack, Dangerous, History } from "@mui/icons-material";
 import { useState } from "react";
 import { useQueryExecutions } from "@/hooks/useQueryExecutions";
 import { useTranslation } from "react-i18next";
@@ -10,6 +10,7 @@ import { Virtuoso } from "react-virtuoso";
 import Execution from "./Execution";
 
 import "../Brigades/brigades.css";
+import Alert from "@/ui/Alert";
 
 export default () => {
     const { t } = useTranslation("Executions");
@@ -20,6 +21,7 @@ export default () => {
     const [route, setRoute] = useSearchState("route", "");
     const [brigade, setBrigade] = useSearchState("brigade", "");
     const [vehicle, setVehicle] = useSearchState("vehicle", "");
+    const enabled = !!route || !!(route && brigade) || !!vehicle;
 
     const [filterLoading, setFilterLoading] = useState(false);
 
@@ -29,8 +31,10 @@ export default () => {
         route,
         brigade,
         vehicle,
-        enabled: !!date && (!!route || !!(route && brigade) || !!vehicle),
+        enabled: !!date && enabled,
     });
+
+    const loading = filterLoading || isLoading;
 
     return (
         <Dialog
@@ -68,7 +72,7 @@ export default () => {
                     <CircularProgress
                         size="small"
                         sx={{
-                            visibility: filterLoading || isLoading ? "visible" : "hidden",
+                            visibility: loading ? "visible" : "hidden",
                             width: 24,
                         }}
                     />
@@ -85,6 +89,23 @@ export default () => {
             />
 
             <DialogContent sx={{ padding: 0 }}>
+                {!enabled && (
+                    <Alert
+                        title={t("noFilter")}
+                        Icon={History}
+                        color="error"
+                    />
+                )}
+
+                {executions && !executions?.length && (
+                    <Alert
+                        title={t("noResults")}
+                        description={t("noResultsDescription")}
+                        Icon={Dangerous}
+                        color="error"
+                    />
+                )}
+
                 {!!executions?.length && (
                     <Virtuoso
                         style={{ height: "100%" }}

@@ -70,6 +70,7 @@ export default () => {
                 sx={{
                     position: "absolute",
                     width: "100%",
+                    height: "100%",
                 }}
             >
                 <Suspense fallback={<p>&nbsp;</p>}>{renderContent(type)}</Suspense>

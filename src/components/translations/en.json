@@ -210,6 +210,9 @@
         "vehicle": "Vehicle",
         "trip": "Trip",
         "route": "Route",
-        "brigade": "Brigade"
+        "brigade": "Brigade",
+        "noResults": "No results...",
+        "noResultsDescription": "Try searching for something else.",
+        "noFilter": "Search for something..."
     }
 }

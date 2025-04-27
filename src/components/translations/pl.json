@@ -212,6 +212,9 @@
         "vehicle": "Pojazd",
         "trip": "Kurs",
         "route": "Linia",
-        "brigade": "Brygada"
+        "brigade": "Brygada",
+        "noResults": "Brak wyników...",
+        "noResultsDescription": "Spróbuj wyszukać coś innego.",
+        "noFilter": "Wyszukaj coś..."
     }
 }

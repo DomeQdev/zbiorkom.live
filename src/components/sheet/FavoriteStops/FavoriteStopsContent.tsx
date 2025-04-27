@@ -1,11 +1,14 @@
-import { Virtuoso } from "react-virtuoso";
+import { useTranslation } from "react-i18next";
 import useFavStore from "@/hooks/useFavStore";
-import FavStop from "./FavStop";
+import { Star } from "@mui/icons-material";
+import { Virtuoso } from "react-virtuoso";
 import { useMemo } from "react";
-import FavTutorial from "./FavTutorial";
+import FavStop from "./FavStop";
+import Alert from "@/ui/Alert";
 
 export default () => {
     const favorites = useFavStore((state) => state.favorites);
+    const { t } = useTranslation("Favorites");
 
     const sortedFavorites = useMemo(() => {
         const useSorting = localStorage.getItem("useLocationSorting") === "true";
@@ -22,7 +25,9 @@ export default () => {
         });
     }, [favorites]);
 
-    if (!sortedFavorites.length) return <FavTutorial />;
+    if (!sortedFavorites.length) {
+        return <Alert Icon={Star} title={t("addStopsHere")} description={t("howToAddStopsHere")} />;
+    }
 
     return (
         <Virtuoso

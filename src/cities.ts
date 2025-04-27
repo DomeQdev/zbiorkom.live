@@ -18,12 +18,12 @@ const cities = {
         showNewTag: true,
         location: [19.414848, 54.152099],
     },
-    elk: {
-        id: "elk",
-        name: "Ełk",
-        showNewTag: true,
-        location: [22.361029, 53.824710],
-    },
+    // elk: {
+    //     id: "elk",
+    //     name: "Ełk",
+    //     showNewTag: true,
+    //     location: [22.361029, 53.824710],
+    // },
     gzm: {
         id: "gzm",
         name: "Metropolia GZM",
@@ -75,12 +75,12 @@ const cities = {
         name: "Olsztyn",
         location: [20.48221, 53.77792],
     },
-    opole: {
-        id: "opole",
-        name: "Opole",
-        showNewTag: true,
-        location: [17.926775, 50.662761],
-    },
+    // opole: {
+    //     id: "opole",
+    //     name: "Opole",
+    //     showNewTag: true,
+    //     location: [17.926775, 50.662761],
+    // },
     // ostroleka: {
     //     id: "ostroleka",
     //     name: "Ostrołęka",
