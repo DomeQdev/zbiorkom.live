@@ -1,12 +1,10 @@
-import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { Search, StarOutline } from "@mui/icons-material";
-import { Socket } from "socket.io-client";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { DirectionsOutlined, Search, StarOutline } from "@mui/icons-material";
 import Markers from "@/map/Markers";
 import { Fab } from "@mui/material";
 import Helm from "@/util/Helm";
 
 export default () => {
-    const socket = useOutletContext<Socket>();
     const navigate = useNavigate();
     const { city } = useParams();
 
@@ -30,6 +28,15 @@ export default () => {
                 onClick={() => navigate(`/${city}/favoriteStops`)}
             >
                 <StarOutline />
+            </Fab>
+
+            <Fab
+                color="primary"
+                sx={{ position: "absolute", right: 16, top: 16 * 10 }}
+                size="small"
+                onClick={() => navigate(`/${city}/directions`)}
+            >
+                <DirectionsOutlined />
             </Fab>
 
             <Markers city={city!} />
