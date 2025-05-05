@@ -435,6 +435,20 @@ export enum EExecution {
     endStopName = 9,
 }
 
+export type GeocodePlace = [
+    type: "PLACE" | "STOP" | "ADDRESS",
+    name: string,
+    address: string | null,
+    location: [number, number]
+];
+
+export enum EGeocodePlace {
+    type = 0,
+    name = 1,
+    address = 2,
+    location = 3,
+}
+
 declare global {
     interface Window {
         historyLength: number;

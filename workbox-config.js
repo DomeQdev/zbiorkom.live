@@ -1,3 +1,5 @@
+const { CacheableResponsePlugin } = require("workbox-cacheable-response");
+
 module.exports = {
     globDirectory: "dist/",
     globPatterns: ["**/*.{js,css,html,png,svg,jpg,jpeg,json}"],
@@ -7,14 +9,14 @@ module.exports = {
     runtimeCaching: [
         {
             urlPattern: ({ request }) => request.mode === "navigate",
-            handler: "NetworkFirst",
+            handler: "NetworkOnly",
             options: {
-                cacheName: "html-cache",
-                expiration: {
-                    maxEntries: 10,
-                    maxAgeSeconds: 24 * 60 * 60,
-                },
-                networkTimeoutSeconds: 10,
+                cacheName: "navigations",
+                plugins: [
+                    new CacheableResponsePlugin({
+                        statuses: [200],
+                    }),
+                ],
             },
         },
         {
