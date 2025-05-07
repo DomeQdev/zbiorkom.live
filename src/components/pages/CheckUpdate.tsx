@@ -1,6 +1,6 @@
 import { Update } from "@mui/icons-material";
 import { Box, LinearProgress, ListItemText, Slide } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react"; // Dodano useRef
 import { useTranslation } from "react-i18next";
 
 export default () => {
@@ -8,28 +8,28 @@ export default () => {
     const { t } = useTranslation("Updates");
 
     useEffect(() => {
-        if (window.location.hostname !== "localhost" && "serviceWorker" in navigator) {
-            let refreshing = false;
-            navigator.serviceWorker.addEventListener("controllerchange", () => {
-                if (!refreshing) {
-                    refreshing = true;
-                    window.location.reload();
-                }
-            });
+        if (window.location.hostname === "localhost" || !("serviceWorker" in navigator)) return;
 
-            navigator.serviceWorker.register("/service-worker.js").then((registration) => {
-                const isUpdate = Boolean(registration.active);
+        let refreshing = false;
+        let isUpdate = false;
 
-                registration.onupdatefound = () => {
-                    const installingWorker = registration.installing;
-                    if (!installingWorker) return;
+        navigator.serviceWorker.addEventListener("controllerchange", () => {
+            if (!refreshing && isUpdate) {
+                refreshing = true;
+                window.location.reload();
+            }
+        });
 
-                    if (isUpdate) {
-                        setLoadingUpdate(true);
-                    }
-                };
-            });
-        }
+        navigator.serviceWorker.register("/service-worker.js").then((registration) => {
+            isUpdate = !!registration.active;
+
+            registration.onupdatefound = () => {
+                const installingWorker = registration.installing;
+                if (!installingWorker) return;
+
+                if (isUpdate) setLoadingUpdate(true);
+            };
+        });
     }, []);
 
     return (
