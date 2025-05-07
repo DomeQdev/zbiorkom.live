@@ -75,12 +75,12 @@ const cities = {
         name: "Olsztyn",
         location: [20.48221, 53.77792],
     },
-    // opole: {
-    //     id: "opole",
-    //     name: "Opole",
-    //     showNewTag: true,
-    //     location: [17.926775, 50.662761],
-    // },
+    opole: {
+        id: "opole",
+        name: "Opole",
+        showNewTag: true,
+        location: [17.926775, 50.662761],
+    },
     // ostroleka: {
     //     id: "ostroleka",
     //     name: "Ostrołęka",
