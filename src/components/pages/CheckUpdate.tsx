@@ -1,5 +1,5 @@
 import { Update } from "@mui/icons-material";
-import { Box, LinearProgress, ListItemText, Slide, Button } from "@mui/material";
+import { Box, LinearProgress, ListItemText, Slide } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -27,14 +27,6 @@ export default () => {
                     if (isUpdate) {
                         setLoadingUpdate(true);
                     }
-
-                    installingWorker.onstatechange = () => {
-                        if (installingWorker.state === "installed") {
-                            if (isUpdate) {
-                                registration.waiting?.postMessage({ type: "SKIP_WAITING" });
-                            }
-                        }
-                    };
                 };
             });
         }

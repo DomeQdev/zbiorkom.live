@@ -1,5 +1,3 @@
-const { CacheableResponsePlugin } = require("workbox-cacheable-response");
-
 module.exports = {
     globDirectory: "dist/",
     globPatterns: ["**/*.{js,css,html,png,svg,jpg,jpeg,json}"],
@@ -8,41 +6,18 @@ module.exports = {
     clientsClaim: true,
     runtimeCaching: [
         {
-            urlPattern: ({ request }) => request.mode === "navigate",
-            handler: "NetworkOnly",
-            options: {
-                cacheName: "navigations",
-                plugins: [
-                    new CacheableResponsePlugin({
-                        statuses: [200],
-                    }),
-                ],
-            },
-        },
-        {
             urlPattern: /\.(?:js|css)$/,
             handler: "CacheFirst",
             options: {
                 cacheName: "static-resources",
                 expiration: {
-                    maxEntries: 20,
+                    maxEntries: 50,
                     maxAgeSeconds: 30 * 24 * 60 * 60,
                 },
-                plugins: [
-                    {
-                        cacheDidUpdate: async ({ cacheName }) => {
-                            self.clients.matchAll().then((clients) => {
-                                clients.forEach((client) => {
-                                    client.postMessage({ type: "CACHE_UPDATED", cacheName });
-                                });
-                            });
-                        },
-                    },
-                ],
             },
         },
         {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
+            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
             handler: "CacheFirst",
             options: {
                 cacheName: "image-cache",
