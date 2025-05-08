@@ -43,7 +43,7 @@ export default () => {
             <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 1, padding: 2 }}>
                 {addedDirections.length < 5 && (
                     <StopSelector
-                        directions={data.directions}
+                        directions={data.directions?.filter(direction => !addedDirections.some((fav) => fav[0] === direction[0]))}
                         onAdd={(direction) => {
                             if (addedDirections.some((fav) => fav[0] === direction[0])) return;
 
