@@ -10,6 +10,8 @@ const cities = {
     bialystok: {
         id: "bialystok",
         name: "Białystok",
+        showNewTag: true,
+        description: "+ Wschód Express, Turośń Kościelna",
         location: [23.16319, 53.13488],
     },
     elblag: {
@@ -18,12 +20,12 @@ const cities = {
         showNewTag: true,
         location: [19.414848, 54.152099],
     },
-    // elk: {
-    //     id: "elk",
-    //     name: "Ełk",
-    //     showNewTag: true,
-    //     location: [22.361029, 53.824710],
-    // },
+    elk: {
+        id: "elk",
+        name: "Ełk",
+        showNewTag: true,
+        location: [22.361029, 53.82471],
+    },
     gzm: {
         id: "gzm",
         name: "Metropolia GZM",
@@ -73,6 +75,8 @@ const cities = {
     olsztyn: {
         id: "olsztyn",
         name: "Olsztyn",
+        showNewTag: true,
+        description: "+ Piecki, powiat olsztyński",
         location: [20.48221, 53.77792],
     },
     opole: {
@@ -131,7 +135,7 @@ const cities = {
     warsaw: {
         id: "warsaw",
         name: "Warszawa",
-        description: "+ Grodziskie Przewozy Autobusowe",
+        description: "+ GPA, Dąbrówka, Sochaczew, Żyrardów",
         location: [21.01173, 52.22983],
     },
     wroclaw: {
