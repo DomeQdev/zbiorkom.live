@@ -100,6 +100,10 @@ export enum EStop {
 export type MapData = {
     bbox: [number, number, number, number];
     stops?: Stop[];
+    geoJson?: {
+        source: GeoJSON.GeoJSON;
+        layers: any[];
+    }[];
 } & ({ useDots: false; positions: Vehicle[] } | { useDots: true; positions: DotVehicle[] });
 
 export type APIVehicle = {

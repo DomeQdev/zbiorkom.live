@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Marker } from "react-map-gl";
+import { Layer, Marker, Source } from "react-map-gl";
 import VehicleMarker from "./VehicleMarker";
 import StopMarker from "./StopMarker";
 import { Badge, Fab } from "@mui/material";
@@ -16,7 +16,7 @@ export default ({ city }: { city: string }) => {
     const badgeRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
-    const { vehicles, stops, useDots } = useMarkers({
+    const { vehicles, stops, useDots, geoJson } = useMarkers({
         city,
         moveBadge: () => {
             badgeRef.current?.animate(
@@ -68,6 +68,14 @@ export default ({ city }: { city: string }) => {
                 >
                     <StopMarker stop={stop} />
                 </Marker>
+            ))}
+
+            {geoJson?.map(({ source, layers }, i) => (
+                <Source key={"" + i} type="geojson" data={source}>
+                    {layers.map((layer, j) => (
+                        <Layer key={"" + i + j} {...layer} />
+                    ))}
+                </Source>
             ))}
 
             <Badge

@@ -23,6 +23,7 @@ export default ({ city, moveBadge }: Props) => {
     const [vehicles, setVehicles] = useState<MapData["positions"]>([]);
     const [stops, setStops] = useState<Stop[]>([]);
     const [useDots, setUseDots] = useState<MapData["useDots"]>(false);
+    const [geoJson, setGeoJson] = useState<MapData["geoJson"]>();
 
     const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -56,6 +57,7 @@ export default ({ city, moveBadge }: Props) => {
             setVehicles(data.positions);
             setUseDots(data.useDots || false);
             if (data.stops) setStops(data.stops);
+            setGeoJson(data.geoJson);
 
             if ((routes.length || models.length) && !data.positions.length) {
                 moveBadge();
@@ -106,5 +108,6 @@ export default ({ city, moveBadge }: Props) => {
         useDots,
         vehicles,
         stops,
+        geoJson,
     };
 };

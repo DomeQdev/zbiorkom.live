@@ -6,10 +6,10 @@
         "@emotion/styled": "^11.14.0",
         "@mui/icons-material": "^6.1.6",
         "@mui/material": "^6.1.6",
-        "@tanstack/react-query": "^5.74.4",
+        "@tanstack/react-query": "^5.75.6",
         "body-scroll-lock-upgrade": "^1.1.0",
-        "i18next": "^25.0.1",
-        "mapbox-gl": "^3.11.1",
+        "i18next": "^25.1.2",
+        "mapbox-gl": "^3.12.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-helmet-async": "^2.0.5",
@@ -18,9 +18,9 @@
         "react-router-dom": "^6.28.0",
         "react-spring": "^9.7.5",
         "react-spring-bottom-sheet-updated": "github:DomeQdev/react-bottom-sheet",
-        "react-virtuoso": "^4.12.6",
+        "react-virtuoso": "^4.12.7",
         "socket.io-client": "^4.8.1",
-        "zustand": "^5.0.3"
+        "zustand": "^5.0.4"
     },
     "scripts": {
         "start": "vite",
@@ -34,14 +34,14 @@
         ]
     },
     "devDependencies": {
-        "@tanstack/eslint-plugin-query": "^5.73.3",
+        "@tanstack/eslint-plugin-query": "^5.74.7",
         "@types/mapbox-gl": "^3.4.1",
         "@types/node": "^22.15.2",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
         "@vitejs/plugin-react": "^4.4.1",
         "typescript": "^5.8.3",
-        "vite": "^6.3.3",
+        "vite": "^6.3.5",
         "vite-tsconfig-paths": "^4.3.2",
         "workbox-cli": "^7.3.0"
     }
