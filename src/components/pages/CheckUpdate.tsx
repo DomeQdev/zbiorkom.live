@@ -1,7 +1,7 @@
-import { Update } from "@mui/icons-material";
 import { Box, LinearProgress, ListItemText, Slide } from "@mui/material";
-import { useEffect, useState, useRef } from "react"; // Dodano useRef
 import { useTranslation } from "react-i18next";
+import { Update } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 
 export default () => {
     const [loadingUpdate, setLoadingUpdate] = useState<boolean>(false);

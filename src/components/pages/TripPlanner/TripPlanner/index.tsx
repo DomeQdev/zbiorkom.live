@@ -33,7 +33,8 @@ export default () => {
                     <IconButton onClick={() => navigate(`/${city}`)}>
                         <ArrowBack />
                     </IconButton>
-                    {t("executions")}
+                    {/* {t("executions")} */}
+                    *nadal tu pracujemy*
                 </DialogTitle>
             </Dialog>
         </>
