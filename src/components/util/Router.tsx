@@ -25,6 +25,8 @@ const SettingsTheme = lazy(() => import("@/pages/Settings/ThemeDialog"));
 const Trip = lazy(() => import("@/pages/Trip"));
 const TripAlerts = lazy(() => import("@/pages/Trip/TripAlerts"));
 
+const TripPlanner = lazy(() => import("@/pages/TripPlanner/TripPlanner"));
+
 const Station = lazy(() => import("@/pages/Station"));
 const StationTime = lazy(() => import("@/sheet/Station/StationTime"));
 
@@ -81,6 +83,14 @@ export default () => {
                                 </Suspense>
                             ),
                             children: [
+                                {
+                                    path: "directions",
+                                    element: (
+                                        <Suspense>
+                                            <TripPlanner />
+                                        </Suspense>
+                                    ),
+                                },
                                 {
                                     path: "search",
                                     element: (

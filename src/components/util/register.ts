@@ -19,20 +19,13 @@ document
     .querySelector("meta[name=theme-color]")
     ?.setAttribute("content", localStorage.getItem("themeColor") || "#276b2b");
 
-if (location.protocol === "http:") {
-    window.Gay = {
-        // base: "http://localhost:8005",
-        base: "https://api.zbiorkom.live",
-        cloudBase: "https://4.zbiorkom.live",
-        ws: "https://ws.zbiorkom.live",
-    };
-} else {
-    window.Gay = {
-        base: "https://api.zbiorkom.live",
-        cloudBase: "https://4.zbiorkom.live",
-        ws: "https://ws.zbiorkom.live",
-    };
-}
+let useLocalhost = location.protocol === "http:" && false;
+
+window.Gay = {
+    base: useLocalhost ? "http://localhost:8005" : "https://api.zbiorkom.live",
+    cloudBase: "https://4.zbiorkom.live",
+    ws: "https://ws.zbiorkom.live",
+};
 
 console.log(
     "%czbiorkom.live",

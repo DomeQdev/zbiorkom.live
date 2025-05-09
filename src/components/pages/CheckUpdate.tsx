@@ -1,43 +1,35 @@
-import { Update } from "@mui/icons-material";
-import { Box, LinearProgress, ListItemText, Slide, Button } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, LinearProgress, ListItemText, Slide } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { Update } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 
 export default () => {
     const [loadingUpdate, setLoadingUpdate] = useState<boolean>(false);
     const { t } = useTranslation("Updates");
 
     useEffect(() => {
-        if (window.location.hostname !== "localhost" && "serviceWorker" in navigator) {
-            let refreshing = false;
-            navigator.serviceWorker.addEventListener("controllerchange", () => {
-                if (!refreshing) {
-                    refreshing = true;
-                    window.location.reload();
-                }
-            });
+        if (window.location.hostname === "localhost" || !("serviceWorker" in navigator)) return;
 
-            navigator.serviceWorker.register("/service-worker.js").then((registration) => {
-                const isUpdate = Boolean(registration.active);
+        let refreshing = false;
+        let isUpdate = false;
 
-                registration.onupdatefound = () => {
-                    const installingWorker = registration.installing;
-                    if (!installingWorker) return;
+        navigator.serviceWorker.addEventListener("controllerchange", () => {
+            if (!refreshing && isUpdate) {
+                refreshing = true;
+                window.location.reload();
+            }
+        });
 
-                    if (isUpdate) {
-                        setLoadingUpdate(true);
-                    }
+        navigator.serviceWorker.register("/service-worker.js").then((registration) => {
+            isUpdate = !!registration.active;
 
-                    installingWorker.onstatechange = () => {
-                        if (installingWorker.state === "installed") {
-                            if (isUpdate) {
-                                registration.waiting?.postMessage({ type: "SKIP_WAITING" });
-                            }
-                        }
-                    };
-                };
-            });
-        }
+            registration.onupdatefound = () => {
+                const installingWorker = registration.installing;
+                if (!installingWorker) return;
+
+                if (isUpdate) setLoadingUpdate(true);
+            };
+        });
     }, []);
 
     return (

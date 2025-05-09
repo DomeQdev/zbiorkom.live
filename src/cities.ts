@@ -27,7 +27,7 @@ const cities = {
     gzm: {
         id: "gzm",
         name: "Metropolia GZM",
-        description: "Katowice, Sosnowiec, Gliwice, Zabrze, Bytom, ...",
+        description: "Katowice, Sosnowiec, Gliwice, Zabrze, ...",
         location: [19.02209, 50.25939],
     },
     iceland: {
@@ -75,12 +75,12 @@ const cities = {
         name: "Olsztyn",
         location: [20.48221, 53.77792],
     },
-    // opole: {
-    //     id: "opole",
-    //     name: "Opole",
-    //     showNewTag: true,
-    //     location: [17.926775, 50.662761],
-    // },
+    opole: {
+        id: "opole",
+        name: "Opole",
+        showNewTag: true,
+        location: [17.926775, 50.662761],
+    },
     // ostroleka: {
     //     id: "ostroleka",
     //     name: "Ostrołęka",
@@ -106,7 +106,7 @@ const cities = {
     rybnik: {
         id: "rybnik",
         name: "Rybnik",
-        description: "KM Rybnik, MZK Jastrzębie-Zdrój",
+        description: "+ Jastrzębie-Zdrój",
         showNewTag: true,
         location: [18.548055, 50.092947],
     },
@@ -131,7 +131,7 @@ const cities = {
     warsaw: {
         id: "warsaw",
         name: "Warszawa",
-        description: "ZTM Warszawa, Grodziskie Przewozy Autobusowe",
+        description: "+ Grodziskie Przewozy Autobusowe",
         location: [21.01173, 52.22983],
     },
     wroclaw: {
