@@ -44,6 +44,7 @@ export default ({ type, place: [place, setPlace] }: Props) => {
                                 autoComplete: "off",
                                 autoCorrect: "off",
                                 spellCheck: "false",
+                                ...params.InputProps,
                             },
                         }}
                         sx={{
