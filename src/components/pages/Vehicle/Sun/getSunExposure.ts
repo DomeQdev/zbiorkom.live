@@ -1,9 +1,7 @@
-import { Shape } from "typings";
+import { Location, Shape } from "typings";
 import getSunPosition from "./getSunPosition";
 
-type Coordinate = [number, number];
-
-function calculateAzimuthBetweenPoints(coord1: Coordinate, coord2: Coordinate) {
+function calculateAzimuthBetweenPoints(coord1: Location, coord2: Location) {
     const [lng1, lat1] = coord1;
     const [lng2, lat2] = coord2;
     const dLng = lng2 - lng1;

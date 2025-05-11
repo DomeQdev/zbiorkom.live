@@ -1,25 +1,30 @@
-import { fetchWithAuth } from "@/util/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
-import useLocationStore from "./useLocationStore";
-import cities from "cities";
-import { GeocodePlace } from "typings";
+import { NominatimPlace } from "typings";
 
 const timeout = 300;
 
-export const useQueryGeocode = (city: string, query: string) => {
-    const userLocation = useLocationStore((state) => state.userLocation);
-
+export const useQueryGeocode = (query: string) => {
     return useQuery({
         queryKey: ["geocode", query],
         queryFn: async ({ signal }) => {
+            if (!query) return [];
+
             await new Promise((resolve) => setTimeout(resolve, timeout));
             if (signal.aborted) return;
 
-            return fetchWithAuth<GeocodePlace[]>(
-                `${Gay.base}/${city}/tripPlanner/geocode?query=${query}&place=${userLocation || cities[city].location}`,
-                signal
-            );
+            const params = new URLSearchParams();
+            params.append("q", query);
+            params.append("format", "json");
+            params.append("addressdetails", "1");
+            params.append("countrycodes", "pl");
+
+            return fetch(`https://nominatim.openstreetmap.org/search?${params.toString()}`, {
+                headers: {
+                    "Accept-Language": "pl",
+                },
+            })
+                .then((res) => res.json() as Promise<NominatimPlace[]>)
+                .catch(() => []);
         },
-        enabled: !!query,
     });
 };
