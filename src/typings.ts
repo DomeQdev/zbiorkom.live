@@ -464,6 +464,28 @@ export type NominatimPlace = {
     };
 };
 
+export type NonTransitLeg = {
+    mode: "WALK" | "BIKE" | "RENTAL";
+    distance: number; // (meters)
+    duration: number; // (milliseconds)
+    shape: string;
+    rental?: [fromStationName: string, toStationName: string];
+};
+
+export type SegmentItinerary = {
+    city: string;
+    routes: Route[];
+    stops: TripStop[];
+    shape: string;
+};
+
+export type TransitLeg = {
+    mode: "TRANSIT";
+    itineraries: SegmentItinerary[];
+};
+
+export type PlannerItinerary = (TransitLeg | NonTransitLeg)[];
+
 declare global {
     interface Window {
         historyLength: number;

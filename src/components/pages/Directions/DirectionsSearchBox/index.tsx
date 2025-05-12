@@ -4,12 +4,12 @@ import SearchField from "./SearchField";
 import { DirectionsPlace } from "..";
 
 type Props = {
-    start: [DirectionsPlace, (setStart: DirectionsPlace) => void];
-    end: [DirectionsPlace, (setEnd: DirectionsPlace) => void];
+    from: [DirectionsPlace, (place: DirectionsPlace) => void];
+    to: [DirectionsPlace, (place: DirectionsPlace) => void];
     onClose: () => void;
 };
 
-export default ({ start, end, onClose }: Props) => {
+export default ({ from, to, onClose }: Props) => {
     return (
         <>
             <DialogTitle
@@ -42,8 +42,8 @@ export default ({ start, end, onClose }: Props) => {
 
                 <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     <Box sx={{ flexGrow: 1 }}>
-                        <SearchField type="start" place={start} />
-                        <SearchField type="end" place={end} />
+                        <SearchField type="start" place={from} />
+                        <SearchField type="end" place={to} />
                     </Box>
 
                     <IconButton
@@ -60,8 +60,8 @@ export default ({ start, end, onClose }: Props) => {
                             },
                         }}
                         onClick={() => {
-                            const [startPlace, setStart] = start;
-                            const [endPlace, setEnd] = end;
+                            const [startPlace, setStart] = from;
+                            const [endPlace, setEnd] = to;
 
                             setStart(endPlace);
                             setEnd(startPlace);

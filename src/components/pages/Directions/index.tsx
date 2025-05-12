@@ -3,6 +3,7 @@ import DirectionsSearchBox from "./DirectionsSearchBox";
 import { Dialog } from "@mui/material";
 import { Location } from "typings";
 import { useState } from "react";
+import DirectionsItineraries from "./DirectionsItineraries";
 
 export type DirectionsPlace = {
     name?: string;
@@ -14,8 +15,8 @@ export default () => {
     const navigate = useNavigate();
     const { city } = useParams();
 
-    const [start, setStart] = useState<DirectionsPlace>({ text: "" });
-    const [end, setEnd] = useState<DirectionsPlace>({ text: "" });
+    const [from, setFrom] = useState<DirectionsPlace>({ text: "", location: [21.10044, 52.24483] });
+    const [to, setTo] = useState<DirectionsPlace>({ text: "", location: [19.35293, 52.23348] });
 
     const onClose = () => navigate(`/${city}`);
 
@@ -33,7 +34,9 @@ export default () => {
                 },
             })}
         >
-            <DirectionsSearchBox start={[start, setStart]} end={[end, setEnd]} onClose={onClose} />
+            <DirectionsSearchBox from={[from, setFrom]} to={[to, setTo]} onClose={onClose} />
+
+            {from.location && to.location && <DirectionsItineraries from={from} to={to} />}
         </Dialog>
     );
 };
