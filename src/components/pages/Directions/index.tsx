@@ -15,8 +15,8 @@ export default () => {
     const navigate = useNavigate();
     const { city } = useParams();
 
-    const [from, setFrom] = useState<DirectionsPlace>({ text: "", location: [21.10044, 52.24483] });
-    const [to, setTo] = useState<DirectionsPlace>({ text: "", location: [19.35293, 52.23348] });
+    const [from, setFrom] = useState<DirectionsPlace>({ text: "", location: [20.777834, 52.114033] });
+    const [to, setTo] = useState<DirectionsPlace>({ text: "", location: [19.006691, 50.287495] });
 
     const onClose = () => navigate(`/${city}`);
 
