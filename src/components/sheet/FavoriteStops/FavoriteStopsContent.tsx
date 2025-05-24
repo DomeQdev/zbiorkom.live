@@ -5,6 +5,7 @@ import { Virtuoso } from "react-virtuoso";
 import { useMemo } from "react";
 import FavStop from "./FavStop";
 import Alert from "@/ui/Alert";
+import { Location } from "typings";
 
 export default () => {
     const favorites = useFavStore((state) => state.favorites);
@@ -37,8 +38,6 @@ export default () => {
         />
     );
 };
-
-type Location = [number, number];
 
 const calculateDistance = (loc1: Location, loc2: Location) => {
     const [lng1, lat1] = loc1;

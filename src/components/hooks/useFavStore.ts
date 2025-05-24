@@ -1,11 +1,11 @@
-import { FavoriteStop } from "typings";
+import { FavoriteStop, Location } from "typings";
 import { create } from "zustand";
 
 interface FavState {
     favorites: FavoriteStop[];
     addFavoriteDirection: (
         id: string,
-        location: [number, number],
+        location: Location,
         isStation: boolean,
         direction: [string, string]
     ) => void;
