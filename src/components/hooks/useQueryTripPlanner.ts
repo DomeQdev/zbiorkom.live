@@ -1,57 +1,60 @@
+import { ESearchPlace, PlannerItinerary, SearchPlace } from "typings";
 import { fetchWithAuth } from "@/util/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
-import { Location, NominatimPlace, PlannerItinerary } from "typings";
+import useLocationStore from "./useLocationStore";
+import cities from "cities";
+import { Place } from "./usePlacesStore";
 
-export const useQueryGeocode = (query: string) => {
+export const useQuerySearchPlaces = (city: string, query: string) => {
+    const [longitude, latitude] = useLocationStore((state) => state.userLocation! || cities[city].location);
     const params = new URLSearchParams();
 
-    params.append("q", query);
-    params.append("format", "json");
-    params.append("addressdetails", "1");
-    params.append("countrycodes", "pl");
+    params.append("query", query);
+    params.append("longitude", longitude.toString());
+    params.append("latitude", latitude.toString());
 
     return useQuery({
-        queryKey: ["geocode", query],
+        queryKey: ["searchPlaces", city, query],
         queryFn: async ({ signal }) => {
             if (!query) return [];
 
             await new Promise((resolve) => setTimeout(resolve, 300));
             if (signal.aborted) return;
 
-            return fetch(`https://nominatim.openstreetmap.org/search?${params.toString()}`, {
-                headers: {
-                    "Accept-Language": "pl",
-                },
-            })
-                .then((res) => res.json() as Promise<NominatimPlace[]>)
-                .catch(() => []);
+            return fetchWithAuth<SearchPlace[]>(
+                `${Gay.base}/${city}/tripPlanner/searchPlaces?${params.toString()}`
+            );
         },
     });
 };
 
 export const useQueryPlannerItineraries = (
     city: string,
-    [fromLon, fromLat]: Location,
-    [toLon, toLat]: Location,
+    from: Place,
+    to: Place,
     time: number,
     arriveBy: boolean
 ) => {
     const params = new URLSearchParams();
 
-    params.append("fromPlace", `${fromLat},${fromLon}`);
-    params.append("toPlace", `${toLat},${toLon}`);
+    const fromPlace = from.place?.[ESearchPlace.id] || from.location?.join(",");
+    const toPlace = to.place?.[ESearchPlace.id] || to.location?.join(",");
+
+    params.append("fromPlace", fromPlace || "");
+    params.append("toPlace", toPlace || "");
     params.append("time", time.toString());
     params.append("arriveBy", arriveBy.toString());
 
     return useQuery({
-        queryKey: ["trip-planner", fromLon, fromLat, toLon, toLat, time, arriveBy],
+        queryKey: ["tripPlanner", fromPlace, toPlace, time, arriveBy],
         queryFn: async ({ signal }) => {
             await new Promise((resolve) => setTimeout(resolve, 1000));
             if (signal.aborted) return;
 
-            return fetchWithAuth<PlannerItinerary[]>(
+            return fetchWithAuth<{ journeys: PlannerItinerary[] }>(
                 `${Gay.base}/${city}/tripPlanner/getJourneys?${params.toString()}`
             );
         },
+        enabled: Boolean(fromPlace && toPlace),
     });
 };

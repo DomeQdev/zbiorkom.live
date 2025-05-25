@@ -440,29 +440,14 @@ export enum EExecution {
     endStopName = 9,
 }
 
-export type NominatimPlace = {
-    name: string;
-    lat: string;
-    lon: string;
-    class:
-        | "amenity"
-        | "building"
-        | "club"
-        | "education"
-        | "healthcare"
-        | "leisure"
-        | "natural"
-        | "office"
-        | "public_transport"
-        | "shop"
-        | "tourism";
-    address: {
-        road: string;
-        house_number: string;
-        suburb?: string;
-        town: string;
-    };
-};
+export type SearchPlace = [type: "google" | "station", id: string, name: string, address: string];
+
+export enum ESearchPlace {
+    type = 0,
+    id = 1,
+    name = 2,
+    address = 3,
+}
 
 export type NonTransitLeg = {
     mode: "WALK" | "BIKE" | "RENTAL";

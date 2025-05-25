@@ -1,15 +1,11 @@
 import { Box, ButtonBase, DialogTitle, IconButton, Typography } from "@mui/material";
 import { AccessTime, ArrowBack, SwapVert } from "@mui/icons-material";
 import SearchField from "./SearchField";
-import { DirectionsPlace } from "..";
+import usePlacesStore from "@/hooks/usePlacesStore";
 
-type Props = {
-    from: [DirectionsPlace, (place: DirectionsPlace) => void];
-    to: [DirectionsPlace, (place: DirectionsPlace) => void];
-    onClose: () => void;
-};
+export default ({ onClose }: { onClose: () => void }) => {
+    const switchPlaces = usePlacesStore((state) => state.switchPlaces);
 
-export default ({ from, to, onClose }: Props) => {
     return (
         <>
             <DialogTitle
@@ -24,6 +20,7 @@ export default ({ from, to, onClose }: Props) => {
             >
                 <Typography
                     variant="h6"
+                    component="span"
                     sx={{
                         display: "flex",
                         alignItems: "center",
@@ -42,8 +39,8 @@ export default ({ from, to, onClose }: Props) => {
 
                 <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     <Box sx={{ flexGrow: 1 }}>
-                        <SearchField type="start" place={from} />
-                        <SearchField type="end" place={to} />
+                        <SearchField type="from" />
+                        <SearchField type="to" />
                     </Box>
 
                     <IconButton
@@ -59,13 +56,7 @@ export default ({ from, to, onClose }: Props) => {
                                 backgroundColor: "primary.main",
                             },
                         }}
-                        onClick={() => {
-                            const [startPlace, setStart] = from;
-                            const [endPlace, setEnd] = to;
-
-                            setStart(endPlace);
-                            setEnd(startPlace);
-                        }}
+                        onClick={switchPlaces}
                     >
                         <SwapVert />
                     </IconButton>

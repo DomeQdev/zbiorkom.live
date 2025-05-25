@@ -1,8 +1,6 @@
-import RouteTag from "@/map/RouteTag";
 import Icon from "@/ui/Icon";
 import { DirectionsBike, DirectionsWalk } from "@mui/icons-material";
 import { Box, SvgIcon } from "@mui/material";
-import React from "react";
 import { ERoute, NonTransitLeg, PlannerItinerary, Route, TransitLeg, VehicleType } from "typings";
 
 export default ({ itinerary }: { itinerary: PlannerItinerary }) => {

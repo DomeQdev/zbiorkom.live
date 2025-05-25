@@ -1,16 +1,16 @@
-import { Autocomplete, Box, TextField } from "@mui/material";
-import { DirectionsPlace } from "..";
+import { Autocomplete, Box, ListItemText, TextField } from "@mui/material";
 import { Place, SportsScore } from "@mui/icons-material";
-import { useQueryGeocode } from "@/hooks/useQueryTripPlanner";
-import { useState } from "react";
+import { useQuerySearchPlaces } from "@/hooks/useQueryTripPlanner";
+import { useParams } from "react-router-dom";
+import { ESearchPlace, SearchPlace } from "typings";
+import usePlacesStore from "@/hooks/usePlacesStore";
+import { useShallow } from "zustand/react/shallow";
 
-type Props = {
-    type: "start" | "end";
-    place: [DirectionsPlace, (setPlace: DirectionsPlace) => void];
-};
+export default ({ type }: { type: "from" | "to" }) => {
+    const [place, setPlace] = usePlacesStore(useShallow((state) => [state.places[type], state.setPlace]));
+    const { city } = useParams();
 
-export default ({ type, place: [place, setPlace] }: Props) => {
-    const { data: places, isLoading } = useQueryGeocode(place.text);
+    const { data: places, isLoading } = useQuerySearchPlaces(city!, place.text);
 
     return (
         <Box
@@ -22,22 +22,26 @@ export default ({ type, place: [place, setPlace] }: Props) => {
                 margin: 1,
             }}
         >
-            {type === "start" ? <Place /> : <SportsScore />}
+            {type === "from" ? <Place /> : <SportsScore />}
 
             <Autocomplete
                 size="small"
                 fullWidth
                 options={places || []}
-                getOptionLabel={(option) => option.name}
-                inputValue={place.text}
-                onInputChange={(_, text) => setPlace({ ...place, text })}
-                isOptionEqualToValue={(option, value) => option.name === value.name}
+                onInputChange={(_, newValue, reason) =>
+                    reason === "input" && setPlace(type, { ...place, text: newValue })
+                }
+                getOptionLabel={(option) => option[ESearchPlace.name]}
+                isOptionEqualToValue={(place, value) => place[ESearchPlace.id] === value[ESearchPlace.id]}
                 loading={isLoading}
+                value={place.place}
+                onChange={(_, newValue) => setPlace(type, { ...place, place: newValue || undefined })}
+                filterOptions={(options) => options}
                 renderInput={(params) => (
                     <TextField
                         {...params}
                         variant="outlined"
-                        placeholder={type === "start" ? "Start" : "End"}
+                        placeholder={type === "from" ? "Start" : "End"}
                         slotProps={{
                             input: {
                                 autoCapitalize: "none",
@@ -54,6 +58,14 @@ export default ({ type, place: [place, setPlace] }: Props) => {
                             },
                         }}
                     />
+                )}
+                renderOption={(props, option) => (
+                    <Box {...props} component="li" key={option[ESearchPlace.id]}>
+                        <ListItemText
+                            primary={option[ESearchPlace.name]}
+                            secondary={option[ESearchPlace.address]}
+                        />
+                    </Box>
                 )}
             />
         </Box>
