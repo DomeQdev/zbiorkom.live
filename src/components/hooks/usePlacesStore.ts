@@ -4,7 +4,7 @@ import { create } from "zustand";
 export type Place = {
     place?: SearchPlace;
     text: string;
-    location?: Location
+    location?: Location;
 };
 
 export interface PlacesState {

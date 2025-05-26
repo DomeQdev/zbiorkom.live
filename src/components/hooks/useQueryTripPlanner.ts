@@ -5,13 +5,8 @@ import useLocationStore from "./useLocationStore";
 import cities from "cities";
 import { Place } from "./usePlacesStore";
 
-export const useQuerySearchPlaces = (city: string, query: string) => {
+export const useQuerySearchPlaces = (city: string, query: string, enabled: boolean) => {
     const [longitude, latitude] = useLocationStore((state) => state.userLocation! || cities[city].location);
-    const params = new URLSearchParams();
-
-    params.append("query", query);
-    params.append("longitude", longitude.toString());
-    params.append("latitude", latitude.toString());
 
     return useQuery({
         queryKey: ["searchPlaces", city, query],
@@ -22,9 +17,16 @@ export const useQuerySearchPlaces = (city: string, query: string) => {
             if (signal.aborted) return;
 
             return fetchWithAuth<SearchPlace[]>(
-                `${Gay.base}/${city}/tripPlanner/searchPlaces?${params.toString()}`
+                `${Gay.base}/${city}/tripPlanner/searchPlaces` +
+                    `?query=${encodeURIComponent(query)}` +
+                    `&longitude=${longitude}` +
+                    `&latitude=${latitude}`
             );
         },
+        enabled,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
     });
 };
 
@@ -35,23 +37,24 @@ export const useQueryPlannerItineraries = (
     time: number,
     arriveBy: boolean
 ) => {
-    const params = new URLSearchParams();
-
     const fromPlace = from.place?.[ESearchPlace.id] || from.location?.join(",");
     const toPlace = to.place?.[ESearchPlace.id] || to.location?.join(",");
-
-    params.append("fromPlace", fromPlace || "");
-    params.append("toPlace", toPlace || "");
-    params.append("time", time.toString());
-    params.append("arriveBy", arriveBy.toString());
 
     return useQuery({
         queryKey: ["tripPlanner", fromPlace, toPlace, time, arriveBy],
         queryFn: async ({ signal }) => {
+            if (!fromPlace || !toPlace) return;
+
             await new Promise((resolve) => setTimeout(resolve, 1000));
             if (signal.aborted) return;
 
-            return fetchWithAuth<{ journeys: PlannerItinerary[] }>(
+            const params = new URLSearchParams();
+            params.append("fromPlace", fromPlace);
+            params.append("toPlace", toPlace);
+            params.append("time", time.toString());
+            params.append("arriveBy", arriveBy.toString());
+
+            return fetchWithAuth<PlannerItinerary[]>(
                 `${Gay.base}/${city}/tripPlanner/getJourneys?${params.toString()}`
             );
         },

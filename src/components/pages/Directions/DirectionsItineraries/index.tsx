@@ -1,17 +1,8 @@
-import { useQueryPlannerItineraries } from "@/hooks/useQueryTripPlanner";
-import usePlacesStore from "@/hooks/usePlacesStore";
-import { useParams } from "react-router-dom";
 import Itinerary from "./Itinerary";
 import { Box } from "@mui/material";
+import { PlannerItinerary } from "typings";
 
-const now = Date.now();
-
-export default () => {
-    const { from, to } = usePlacesStore((state) => state.places);
-    const { city } = useParams();
-
-    const { data: itineraries, isLoading } = useQueryPlannerItineraries(city!, from, to, now, false);
-
+export default ({ itineraries }: { itineraries: PlannerItinerary[] }) => {
     return (
         <Box
             sx={{
@@ -20,9 +11,7 @@ export default () => {
                 gap: 1,
             }}
         >
-            {isLoading && <>ładuje</>}
-
-            {itineraries?.journeys.map((itinerary) => (
+            {itineraries.map((itinerary) => (
                 <Itinerary itinerary={itinerary} />
             ))}
         </Box>

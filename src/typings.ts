@@ -457,19 +457,14 @@ export type NonTransitLeg = {
     rental?: [fromStationName: string, toStationName: string];
 };
 
-export type SegmentItinerary = {
-    city: string;
-    routes: Route[];
-    stops: TripStop[];
-    shape: string;
-};
-
 export type TransitLeg = {
     mode: "TRANSIT";
-    itineraries: SegmentItinerary[];
+    routes: Route[];
 };
 
-export type PlannerItinerary = (TransitLeg | NonTransitLeg)[];
+export type PlannerItinerary = {
+    legs: (TransitLeg | NonTransitLeg)[];
+};
 
 declare global {
     interface Window {

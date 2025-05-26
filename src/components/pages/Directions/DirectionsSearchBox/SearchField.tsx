@@ -1,16 +1,18 @@
-import { Autocomplete, Box, ListItemText, TextField } from "@mui/material";
+import { Box, List, ListItemButton, ListItemText, Popover, TextField } from "@mui/material";
 import { Place, SportsScore } from "@mui/icons-material";
 import { useQuerySearchPlaces } from "@/hooks/useQueryTripPlanner";
 import { useParams } from "react-router-dom";
-import { ESearchPlace, SearchPlace } from "typings";
 import usePlacesStore from "@/hooks/usePlacesStore";
 import { useShallow } from "zustand/react/shallow";
+import { useState } from "react";
+import { ESearchPlace } from "typings";
 
 export default ({ type }: { type: "from" | "to" }) => {
     const [place, setPlace] = usePlacesStore(useShallow((state) => [state.places[type], state.setPlace]));
+    const [anchorEl, setAnchorEl] = useState<HTMLInputElement | null>(null);
     const { city } = useParams();
 
-    const { data: places, isLoading } = useQuerySearchPlaces(city!, place.text);
+    const { data: searchPlaces, isLoading } = useQuerySearchPlaces(city!, place.text, Boolean(anchorEl));
 
     return (
         <Box
@@ -24,50 +26,66 @@ export default ({ type }: { type: "from" | "to" }) => {
         >
             {type === "from" ? <Place /> : <SportsScore />}
 
-            <Autocomplete
+            <TextField
                 size="small"
                 fullWidth
-                options={places || []}
-                onInputChange={(_, newValue, reason) =>
-                    reason === "input" && setPlace(type, { ...place, text: newValue })
-                }
-                getOptionLabel={(option) => option[ESearchPlace.name]}
-                isOptionEqualToValue={(place, value) => place[ESearchPlace.id] === value[ESearchPlace.id]}
-                loading={isLoading}
-                value={place.place}
-                onChange={(_, newValue) => setPlace(type, { ...place, place: newValue || undefined })}
-                filterOptions={(options) => options}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        variant="outlined"
-                        placeholder={type === "from" ? "Start" : "End"}
-                        slotProps={{
-                            input: {
-                                autoCapitalize: "none",
-                                autoComplete: "off",
-                                autoCorrect: "off",
-                                spellCheck: "false",
-                                ...params.InputProps,
-                            },
-                        }}
-                        sx={{
-                            "& .MuiInputBase-root": {
-                                backgroundColor: "primary.dark",
-                                borderRadius: 1,
-                            },
-                        }}
-                    />
-                )}
-                renderOption={(props, option) => (
-                    <Box {...props} component="li" key={option[ESearchPlace.id]}>
-                        <ListItemText
-                            primary={option[ESearchPlace.name]}
-                            secondary={option[ESearchPlace.address]}
-                        />
-                    </Box>
-                )}
+                variant="outlined"
+                placeholder={type === "from" ? "Start" : "End"}
+                onFocus={({ currentTarget }) => {
+                    currentTarget.select();
+                    setAnchorEl(currentTarget as HTMLInputElement);
+                }}
+                onBlur={() => setAnchorEl(null)}
+                value={place.text}
+                onChange={(e) => setPlace(type, { text: e.target.value })}
+                slotProps={{
+                    input: {
+                        autoCapitalize: "none",
+                        autoComplete: "off",
+                        autoCorrect: "off",
+                    },
+                }}
+                sx={{
+                    "& .MuiInputBase-root": {
+                        backgroundColor: "primary.dark",
+                        borderRadius: 1,
+                    },
+                }}
             />
+
+            <Popover
+                open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                }}
+                transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                }}
+                disableAutoFocus
+                disableEnforceFocus
+            >
+                <List>
+                    {searchPlaces?.map((searchPlace) => (
+                        <ListItemButton
+                            key={searchPlace[ESearchPlace.id]}
+                            onClick={() => {
+                                setPlace(type, {
+                                    place: searchPlace,
+                                    text: searchPlace[ESearchPlace.name],
+                                });
+                            }}
+                        >
+                            <ListItemText
+                                primary={searchPlace[ESearchPlace.name]}
+                                secondary={searchPlace[ESearchPlace.address]}
+                            />
+                        </ListItemButton>
+                    ))}
+                </List>
+            </Popover>
         </Box>
     );
 };
