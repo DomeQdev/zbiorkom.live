@@ -4,6 +4,7 @@ import { Marker, useMap } from "react-map-gl";
 import { Box, Fab } from "@mui/material";
 import useLocationStore from "@/hooks/useLocationStore";
 import { useShallow } from "zustand/react/shallow";
+import { Location } from "typings";
 
 export default memo(() => {
     const [userLocation, setUserLocation] = useLocationStore(
@@ -43,7 +44,7 @@ export default memo(() => {
     }, [userPermitted]);
 
     const handleLocation = ({ coords }: GeolocationPosition) => {
-        const location = [coords.longitude, coords.latitude] as [number, number];
+        const location = [coords.longitude, coords.latitude] as Location;
 
         setUserLocation(location);
         localStorage.setItem(

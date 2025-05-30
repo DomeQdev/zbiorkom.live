@@ -19,13 +19,13 @@ const Brigade = lazy(() => import("@/pages/Brigades/Brigade"));
 const BrigadesSelect = lazy(() => import("@/pages/Brigades/Select"));
 const BrigadeFromVehicle = lazy(() => import("@/pages/Brigades/BrigadeFromVehicle"));
 
+const Directions = lazy(() => import("@/pages/Directions"));
+
 const Settings = lazy(() => import("@/pages/Settings/"));
 const SettingsTheme = lazy(() => import("@/pages/Settings/ThemeDialog"));
 
 const Trip = lazy(() => import("@/pages/Trip"));
 const TripAlerts = lazy(() => import("@/pages/Trip/TripAlerts"));
-
-const TripPlanner = lazy(() => import("@/pages/TripPlanner/TripPlanner"));
 
 const Station = lazy(() => import("@/pages/Station"));
 const StationTime = lazy(() => import("@/sheet/Station/StationTime"));
@@ -87,7 +87,7 @@ export default () => {
                                     path: "directions",
                                     element: (
                                         <Suspense>
-                                            <TripPlanner />
+                                            <Directions />
                                         </Suspense>
                                     ),
                                 },
