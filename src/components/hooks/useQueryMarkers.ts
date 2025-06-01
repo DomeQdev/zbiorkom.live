@@ -1,4 +1,4 @@
-import { fetchWithAuth } from "@/util/fetchFunctions";
+import { getFromAPI } from "@/util/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { MapData } from "typings";
@@ -20,32 +20,33 @@ type Options = {
 };
 
 const fetchData = (city: Props["city"], options: Props["options"], signal: AbortSignal) => {
-    const searchParams = new URLSearchParams();
-    if (options.bounds) searchParams.append("bounds", options.bounds.join(","));
-    if (options.zoom) searchParams.append("zoom", options.zoom.toString());
-    if (options.fetchStops) searchParams.append("fetchStops", "true");
-    if (options.filterModels) searchParams.append("filterModels", options.filterModels.join(","));
-    if (options.filterRoutes) searchParams.append("filterRoutes", options.filterRoutes.join(","));
-    if (options.filterDirection !== undefined)
-        searchParams.append("filterDirection", options.filterDirection.toString());
-
-    return fetchWithAuth<MapData>(`${Gay.base}/${city}/map/getFeatures?${searchParams}`, signal);
+    return getFromAPI<MapData>(
+        city,
+        "map/getFeatures",
+        {
+            bounds: options.bounds?.join(","),
+            zoom: options.zoom?.toString(),
+            fetchStops: options.fetchStops ? "true" : undefined,
+            filterModels: options.filterModels?.join(","),
+            filterRoutes: options.filterRoutes?.join(","),
+            filterDirection: options.filterDirection?.toString(),
+        },
+        signal
+    );
 };
 
-export default (props: Props) => {
-    const queryKey = ["markers", props.city, props.isFiltering || false];
-
+export default ({ city, options, isFiltering, disabled }: Props) => {
     const query = useQuery({
-        queryKey,
-        queryFn: ({ signal }) => fetchData(props.city, props.options, signal),
-        enabled: !props.disabled,
+        queryKey: ["markers", city, isFiltering || false],
+        queryFn: ({ signal }) => fetchData(city, options, signal),
+        enabled: !disabled,
     });
 
     useEffect(() => {
-        if (props.disabled) return;
+        if (disabled) return;
 
         query.refetch();
-    }, [props.options]);
+    }, [options]);
 
     return query;
 };

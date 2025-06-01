@@ -1,12 +1,28 @@
-import { Stop } from "typings";
+const version = import.meta.env.VITE_APP_VERSION.split(".").slice(0, 2).join(".");
 
-export const fetchStopGroup = (city: string, name: string) =>
-    fetchWithAuth<Stop[]>(`${Gay.base}/${city}/stops/getGroupStops?name=${encodeURIComponent(name)}`);
+export const getFromAPI = async <T>(
+    city: string,
+    endpoint: string,
+    query: Record<string, any>,
+    signal?: AbortSignal
+): Promise<T> => {
+    const url = new URL(`${Gay.base}/${version}/${city}/${endpoint}`);
+    Object.entries(query).forEach(([key, value]) => {
+        if (value) url.searchParams.append(key, String(value));
+    });
 
-export async function fetchWithAuth<T>(url: string, signal?: AbortSignal, options?: RequestInit): Promise<T> {
-    return fetch(url, {
-        ...options,
-        signal,
-        credentials: "include",
-    }).then((r) => (r.ok ? r.json() : Promise.reject()));
-}
+    return fetch(url.toString(), { signal, credentials: "include" }).then((res) => res.json());
+};
+
+export const getFromCloudAPI = async <T>(
+    endpoint: string,
+    query: Record<string, any>,
+    signal?: AbortSignal
+): Promise<T> => {
+    const url = new URL(`${Gay.cloudBase}/${endpoint}`);
+    Object.entries(query).forEach(([key, value]) => {
+        if (value) url.searchParams.append(key, String(value));
+    });
+
+    return fetch(url.toString(), { signal }).then((res) => res.json());
+};

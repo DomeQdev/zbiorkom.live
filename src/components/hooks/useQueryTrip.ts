@@ -1,22 +1,52 @@
-import { fetchWithAuth } from "@/util/fetchFunctions";
-import { useQuery } from "@tanstack/react-query";
-import { APIVehicle } from "typings";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getFromAPI } from "@/util/fetchFunctions";
+import { useShallow } from "zustand/react/shallow";
+import useVehicleStore from "./useVehicleStore";
+import { APIVehicle, ETrip } from "typings";
+import { useEffect } from "react";
 
-type Props = {
+type TripQueryProps = {
     city: string;
-    trip: string;
+    trip?: string;
+    vehicle?: string;
 };
 
-const fetchData = (city: Props["city"], trip: Props["trip"], signal: AbortSignal) => {
-    return fetchWithAuth<APIVehicle>(
-        `${Gay.base}/${city}/trips/getTrip?id=${encodeURIComponent(trip)}`,
-        signal
-    );
-};
+export const useQueryTrip = ({ city, trip, vehicle }: TripQueryProps) => {
+    const vehicleStore = useVehicleStore(useShallow((state) => state));
+    const queryClient = useQueryClient();
+    const queryKey = ["trip", city, trip || vehicle];
 
-export default (props: Props) => {
-    return useQuery({
-        queryKey: ["trip", props.city, props.trip],
-        queryFn: ({ signal }) => fetchData(props.city, props.trip, signal),
+    const query = useQuery({
+        queryKey,
+        queryFn: async ({ signal }) => {
+            return getFromAPI<APIVehicle>(
+                city,
+                trip ? "trips/getTripUpdate" : "trips/getTripByVehicle",
+                {
+                    trip,
+                    vehicle,
+                    currentTrip: vehicleStore.trip?.[ETrip.id],
+                },
+                signal
+            );
+        },
+        refetchOnWindowFocus: true,
     });
+
+    useEffect(() => {
+        if (vehicleStore.fresh === undefined) vehicleStore.setFresh(true);
+        if (query.data?.vehicle) vehicleStore.setVehicle(query.data.vehicle);
+        if (query.data?.trip) vehicleStore.setTrip(query.data.trip);
+        if (query.data?.stops?.length) vehicleStore.setStops(query.data.stops);
+        if (query.data?.sequence !== undefined) vehicleStore.setSequence(query.data.sequence);
+    }, [query.data, vehicleStore]);
+
+    useEffect(() => {
+        return () => {
+            vehicleStore.reset();
+            queryClient.removeQueries({ queryKey });
+        };
+    }, [city, trip, vehicle]);
+
+    return query;
 };

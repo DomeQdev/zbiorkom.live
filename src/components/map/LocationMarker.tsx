@@ -89,7 +89,7 @@ export default memo(() => {
                 zoom: zoom > 15 ? zoom : 15,
             });
         }
-    }
+    };
 
     const moveToUser = () => {
         if (!userPermitted) {
@@ -106,9 +106,7 @@ export default memo(() => {
                     alert("Nie można określić Twojej lokalizacji.");
                 }
             );
-        }
-
-        if (userLocation?.[0]) {
+        } else if (userLocation?.[0]) {
             moveToLocation(userLocation);
         }
     };

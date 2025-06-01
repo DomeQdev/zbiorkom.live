@@ -4,9 +4,9 @@ import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-d
 import { Socket } from "socket.io-client";
 import StopMarker from "@/map/StopMarker";
 import Helm from "@/util/Helm";
-import useQueryStation from "@/hooks/useQueryStation";
 import { EStop, EStopDeparture, EStopDepartures } from "typings";
 import VehicleMarker from "@/map/VehicleMarker";
+import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 
 export default memo(() => {
     const [hasDataFetched, setHasDataFetched] = useState<boolean>(false);
@@ -15,7 +15,7 @@ export default memo(() => {
     const { current: map } = useMap();
     const navigate = useNavigate();
 
-    const { data, refetch } = useQueryStation({ station: station! }, true);
+    const { data, refetch } = useQueryStopDepartures({ city: "pkp", stop: station!, isMainComponent: true });
     const stopData = data?.[EStopDepartures.stop];
 
     useEffect(() => {

@@ -9,10 +9,10 @@ import VehicleMarker from "@/map/VehicleMarker";
 import getSheetHeight from "@/util/getSheetHeight";
 import Helm from "@/util/Helm";
 import TripRoute from "@/map/TripRoute";
-import useQueryRoute from "@/hooks/useQueryRoute";
 import useQueryMarkers from "@/hooks/useQueryMarkers";
 import useDirectionStore from "@/hooks/useDirectionStore";
 import { useShallow } from "zustand/react/shallow";
+import { useQueryRoute } from "@/hooks/useQueryRoutes";
 
 export default () => {
     const direction = useDirectionStore(useShallow((state) => state.direction));

@@ -19,7 +19,7 @@ document
     .querySelector("meta[name=theme-color]")
     ?.setAttribute("content", localStorage.getItem("themeColor") || "#276b2b");
 
-let useLocalhost = location.protocol === "http:" && false;
+let useLocalhost = location.protocol === "http:" && true;
 
 window.Gay = {
     base: useLocalhost ? "http://localhost:8005" : "https://api.zbiorkom.live",

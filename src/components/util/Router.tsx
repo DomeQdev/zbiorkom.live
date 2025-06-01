@@ -45,7 +45,6 @@ const Route = lazy(() => import("@/pages/Route"));
 const Routes = lazy(() => import("@/pages/Routes"));
 const Search = lazy(() => import("@/pages/Search/"));
 const Stop = lazy(() => import("@/pages/Stop"));
-const Veturilo = lazy(() => import("@/pages/Veturilo"));
 
 export default () => {
     const router = createBrowserRouter([
@@ -344,14 +343,6 @@ export default () => {
                             element: (
                                 <Suspense>
                                     <Copyright />
-                                </Suspense>
-                            ),
-                        },
-                        {
-                            path: "veturilo",
-                            element: (
-                                <Suspense>
-                                    <Veturilo />
                                 </Suspense>
                             ),
                         },

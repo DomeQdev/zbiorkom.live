@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { ERoute, Route } from "typings";
 import { LngLatLike } from "mapbox-gl";
-import { SearchRoutesOrModelsResult } from "./useQuerySearchRoutesOrModels";
+import { SearchRoutesOrModelsResult } from "./useQuerySearch";
 
 interface FilterState {
     search: string;

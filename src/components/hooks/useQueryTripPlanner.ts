@@ -1,9 +1,9 @@
 import { ESearchPlace, PlannerItinerary, SearchPlace } from "typings";
-import { fetchWithAuth } from "@/util/fetchFunctions";
-import { useQuery } from "@tanstack/react-query";
+import { getFromAPI } from "@/util/fetchFunctions";
 import useLocationStore from "./useLocationStore";
-import cities from "cities";
+import { useQuery } from "@tanstack/react-query";
 import { Place } from "./usePlacesStore";
+import cities from "cities";
 
 export const useQuerySearchPlaces = (city: string, query: string, enabled: boolean) => {
     const [longitude, latitude] = useLocationStore((state) => state.userLocation! || cities[city].location);
@@ -16,11 +16,15 @@ export const useQuerySearchPlaces = (city: string, query: string, enabled: boole
             await new Promise((resolve) => setTimeout(resolve, 300));
             if (signal.aborted) return;
 
-            return fetchWithAuth<SearchPlace[]>(
-                `${Gay.base}/${city}/tripPlanner/searchPlaces` +
-                    `?query=${encodeURIComponent(query)}` +
-                    `&longitude=${longitude}` +
-                    `&latitude=${latitude}`
+            return getFromAPI<SearchPlace[]>(
+                city,
+                "tripPlanner/searchPlaces",
+                {
+                    query,
+                    longitude,
+                    latitude,
+                },
+                signal
             );
         },
         enabled,
@@ -48,14 +52,16 @@ export const useQueryPlannerItineraries = (
             await new Promise((resolve) => setTimeout(resolve, 1000));
             if (signal.aborted) return;
 
-            const params = new URLSearchParams();
-            params.append("fromPlace", fromPlace);
-            params.append("toPlace", toPlace);
-            params.append("time", time.toString());
-            params.append("arriveBy", arriveBy.toString());
-
-            return fetchWithAuth<PlannerItinerary[]>(
-                `${Gay.base}/${city}/tripPlanner/getJourneys?${params.toString()}`
+            return getFromAPI<PlannerItinerary[]>(
+                city,
+                "tripPlanner/getJourneys",
+                {
+                    fromPlace,
+                    toPlace,
+                    time,
+                    arriveBy,
+                },
+                signal
             );
         },
         enabled: Boolean(fromPlace && toPlace),

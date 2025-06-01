@@ -2,16 +2,16 @@ import { Box, IconButton, Skeleton } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { Close, StarOutline } from "@mui/icons-material";
 import useGoBack from "@/hooks/useGoBack";
-import useQueryStop from "@/hooks/useQueryStop";
 import StopTag from "@/ui/StopTag";
 import { EStopDepartures } from "typings";
+import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 
 export default () => {
     const { city, stop } = useParams();
     const navigate = useNavigate();
     const goBack = useGoBack();
 
-    const { data } = useQueryStop({ city: city!, stop: stop! });
+    const { data } = useQueryStopDepartures({ city: city!, stop: stop! });
 
     if (!data)
         return (

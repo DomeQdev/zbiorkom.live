@@ -5,8 +5,8 @@ import { Socket } from "socket.io-client";
 import StopMarker from "@/map/StopMarker";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";
-import useQueryStop from "@/hooks/useQueryStop";
 import { EStop, EStopDeparture, EStopDepartures } from "typings";
+import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 
 export default memo(() => {
     const [hasDataFetched, setHasDataFetched] = useState<boolean>(false);
@@ -15,13 +15,11 @@ export default memo(() => {
     const { current: map } = useMap();
     const navigate = useNavigate();
 
-    const { data, refetch } = useQueryStop(
-        {
-            city: city!,
-            stop: stop!,
-        },
-        true
-    );
+    const { data, refetch } = useQueryStopDepartures({
+        city: city!,
+        stop: stop!,
+        isMainComponent: true,
+    });
 
     const stopData = data?.[EStopDepartures.stop];
 

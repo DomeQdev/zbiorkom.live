@@ -1,4 +1,4 @@
-import { Box, ButtonBase, CircularProgress, DialogTitle, IconButton, Typography } from "@mui/material";
+import { Box, ButtonBase, DialogTitle, IconButton, Typography } from "@mui/material";
 import { AccessTime, ArrowBack, Refresh, Settings, SwapVert } from "@mui/icons-material";
 import SearchField from "./SearchField";
 import usePlacesStore from "@/hooks/usePlacesStore";

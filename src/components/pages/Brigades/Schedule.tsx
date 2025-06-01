@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Sticky from "@/ui/Sticky";
-import { Box, Collapse, DialogContent, DialogTitle, IconButton, Skeleton, Typography } from "@mui/material";
+import { Box, DialogContent, DialogTitle, IconButton, Skeleton, Typography } from "@mui/material";
 import { ArrowBack, Share } from "@mui/icons-material";
 import { Trans, useTranslation } from "react-i18next";
 import RouteTag from "@/map/RouteTag";
 import useGoBack from "@/hooks/useGoBack";
-import { BrigadeTrip, EBrigadeTrip, ERoute, ETrip, Route } from "typings";
+import { BrigadeTrip, EBrigadeTrip, ERoute, Route } from "typings";
 import RouteChip from "@/ui/RouteChip";
 import Trip from "./BrigadeTrip";
 import MultilineAlert from "./MultilineAlert";

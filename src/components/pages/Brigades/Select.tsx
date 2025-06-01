@@ -17,9 +17,9 @@ import RouteTag from "@/map/RouteTag";
 import { Trans, useTranslation } from "react-i18next";
 import Sticky from "@/ui/Sticky";
 import Helm from "@/util/Helm";
-import useQueryRoute from "@/hooks/useQueryRoute";
-import useQueryBrigadeList from "@/hooks/useQueryBrigadeList";
 import { EBrigade, ERoute, ERouteInfo } from "typings";
+import { useQueryBrigadeList } from "@/hooks/useQueryBrigades";
+import { useQueryRoute } from "@/hooks/useQueryRoutes";
 
 export default memo(() => {
     const scrollContainer = useRef<HTMLDivElement | null>(null);

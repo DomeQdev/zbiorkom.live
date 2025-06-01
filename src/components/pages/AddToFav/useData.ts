@@ -1,19 +1,14 @@
-import useQueryStation from "@/hooks/useQueryStation";
-import useQueryStop from "@/hooks/useQueryStop";
-import useQueryStopDirections from "@/hooks/useQueryStopDirections";
+import { useQueryStopDepartures, useQueryStopDirections } from "@/hooks/useQueryStops";
 import { EStopDepartures } from "typings";
 
-export default (city: string, id: string, isStation?: boolean) => {
-    const { data: stopData } = isStation
-        ? useQueryStation({ station: id })
-        : useQueryStop({ city, stop: id });
-
-    const { data: directionsData } = useQueryStopDirections({ city: isStation ? "pkp" : city, stop: id });
+export default (city: string, stop: string, isStation?: boolean) => {
+    const { data: stopData } = useQueryStopDepartures({ city: isStation ? "pkp" : city, stop });
+    const { data: directions } = useQueryStopDirections({ city: isStation ? "pkp" : city, stop });
 
     if (!stopData) return null;
 
     return {
         info: stopData[EStopDepartures.stop],
-        directions: directionsData,
+        directions,
     };
 };

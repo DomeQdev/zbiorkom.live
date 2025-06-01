@@ -2,10 +2,9 @@ import { Box, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { EStop, SearchItem } from "typings";
 import { Link, useParams } from "react-router-dom";
 import { KeyboardArrowDown } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
-import { fetchStopGroup } from "@/util/fetchFunctions";
 import StopMarker from "@/map/StopMarker";
 import { useTranslation } from "react-i18next";
+import { useQueryStopGroup } from "@/hooks/useQueryStops";
 
 type Props = {
     stop: NonNullable<SearchItem["stop"]>;
@@ -19,9 +18,9 @@ export default ({ stop, borderTop, borderBottom, isExpanded, setExpandedStop }: 
     const { t } = useTranslation("Vehicle");
     const { city } = useParams();
 
-    const { data: stops } = useQuery({
-        queryKey: ["stopGroup", city, stop],
-        queryFn: () => fetchStopGroup(city!, stop),
+    const { data: stops } = useQueryStopGroup({
+        city: city!,
+        stop,
         enabled: isExpanded,
     });
 

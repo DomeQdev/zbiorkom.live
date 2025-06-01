@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import useFilterStore from "@/hooks/useFilterStore";
 import { useShallow } from "zustand/react/shallow";
 import { useMap } from "react-map-gl";
-import useQuerySearchRoutesOrModels from "@/hooks/useQuerySearchRoutesOrModels";
+import { useQuerySearchRoutesOrModels } from "@/hooks/useQuerySearch";
 
 export default () => {
     const [search, tempRoutes, tempModels, initialPosition, setSearch, reset] = useFilterStore(

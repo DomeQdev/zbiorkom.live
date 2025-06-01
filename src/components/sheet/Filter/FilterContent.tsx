@@ -4,10 +4,10 @@ import FilterSearchResult from "./FilterSearchResult";
 import FilterRoutesNearby from "./FilterRoutesNearby";
 import FilterActive from "./FilterActive";
 import FilterHowToUse from "./FilterHowToUse";
-import useQueryRoutesNearby from "@/hooks/useQueryRoutesNearby";
-import useQuerySearchRoutesOrModels from "@/hooks/useQuerySearchRoutesOrModels";
 import useFilterStore from "@/hooks/useFilterStore";
 import { useShallow } from "zustand/react/shallow";
+import { useQueryRoutesNearby } from "@/hooks/useQueryRoutes";
+import { useQuerySearchRoutesOrModels } from "@/hooks/useQuerySearch";
 
 export default () => {
     const [search, tempRoutes, tempModels] = useFilterStore(
