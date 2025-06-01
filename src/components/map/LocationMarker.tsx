@@ -79,12 +79,26 @@ export default memo(() => {
         }
     };
 
+    const moveToLocation = (location: [number, number]) => {
+        if (map) {
+            const zoom = map.getZoom();
+
+            map.easeTo({
+                center: location,
+                zoom: zoom > 15 ? zoom : 15,
+            });
+        }
+    }
+
     const moveToUser = () => {
         if (!userPermitted) {
             navigator.geolocation.getCurrentPosition(
-                () => {
+                (location) => {
+                    const { coords } = location;
+
                     setUserPermitted(true);
-                    moveToUser();
+                    handleLocation(location);
+                    moveToLocation([coords.longitude, coords.latitude]);
                 },
                 (e) => {
                     console.error(e);
@@ -93,13 +107,8 @@ export default memo(() => {
             );
         }
 
-        if (userLocation?.[0] && map) {
-            const zoom = map.getZoom();
-
-            map.easeTo({
-                center: userLocation,
-                zoom: zoom > 15 ? zoom : 15,
-            });
+        if (userLocation?.[0]) {
+            moveToLocation(userLocation);
         }
     };
 
