@@ -227,7 +227,7 @@ export enum EStopDeparture {
     alert = 11,
 }
 
-export type StopTime = [number, number, DelayType];
+export type StopTime = [scheduled: number, estimated: number, delay: DelayType];
 
 export enum EStopTime {
     scheduled = 0,

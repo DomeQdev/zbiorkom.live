@@ -80,7 +80,7 @@ export default memo(() => {
         }
     };
 
-    const moveToLocation = (location: [number, number]) => {
+    const moveToLocation = (location: Location) => {
         if (map) {
             const zoom = map.getZoom();
 

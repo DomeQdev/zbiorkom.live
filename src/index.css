@@ -21,8 +21,7 @@ h6 {
     background-image: none !important;
 }
 
-.mapboxgl-ctrl-bottom-left,
-.mapboxgl-ctrl-bottom-right {
+.mapboxgl-ctrl-attrib {
     display: none !important;
 }
 
