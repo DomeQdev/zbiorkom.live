@@ -1,8 +1,8 @@
+import { useQueryBrigade } from "@/hooks/useQueryBrigades";
+import { useQueryRoute } from "@/hooks/useQueryRoutes";
+import { ERouteInfo } from "typings";
 import { useParams } from "react-router-dom";
 import Schedule from "./Schedule";
-import useQueryBrigade from "@/hooks/useQueryBrigade";
-import useQueryRoute from "@/hooks/useQueryRoute";
-import { ERouteInfo } from "typings";
 
 export default () => {
     const { city, route, brigade } = useParams();

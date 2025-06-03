@@ -19,7 +19,7 @@ export default ({ trip }: { trip: Trip }) => {
                     const [key, value] = pair.split(":");
                     return (
                         <span key={index}>
-                            {t(key, { value })}
+                            {t(key, { value, interpolation: { escapeValue: false } })}
                             {index < array.length - 1 && <>&nbsp;·&nbsp;</>}
                         </span>
                     );

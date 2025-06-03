@@ -4,8 +4,8 @@ import { Box, IconButton } from "@mui/material";
 import { AllInclusive, Close, ImportExport } from "@mui/icons-material";
 import useDirectionStore from "@/hooks/useDirectionStore";
 import { useShallow } from "zustand/react/shallow";
-import useQueryRoute from "@/hooks/useQueryRoute";
 import { ERouteDirection, ERouteInfo } from "typings";
+import { useQueryRoute } from "@/hooks/useQueryRoutes";
 
 export default () => {
     const [direction, setDirection] = useDirectionStore(

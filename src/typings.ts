@@ -1,5 +1,6 @@
 export type VehicleType = 0 | 1 | 2 | 3 | 4 | 11 | 20;
 export type DelayType = number | "departure" | "departed" | "cancelled" | "live" | "scheduled";
+export type Location = [number, number];
 export type SheetContentTypes =
     | "Cities"
     | "Vehicle"
@@ -14,7 +15,7 @@ export type SheetContentTypes =
 export interface City {
     id: string;
     name: string;
-    location: [number, number];
+    location: Location;
     zoom?: number;
     description?: string;
     showNewTag?: boolean;
@@ -47,7 +48,7 @@ export type Vehicle = [
     city: string,
     route: Route,
     brigade: string,
-    location: [number, number],
+    location: Location,
     bearing: number,
     lastPing: number,
     trip: string,
@@ -66,7 +67,7 @@ export enum EVehicle {
     percentTraveled = 8,
 }
 
-export type DotVehicle = [routeColor: string, location: [number, number]];
+export type DotVehicle = [routeColor: string, location: Location];
 
 export enum EDotVehicle {
     routeColor = 0,
@@ -77,7 +78,7 @@ export type Stop = [
     id: string,
     city: string,
     name: string,
-    location: [number, number],
+    location: Location,
     type: VehicleType,
     station: boolean,
     bearing: number,
@@ -140,7 +141,7 @@ export enum ETrip {
 export type TripStop = [
     id: string,
     name: string,
-    location: [number, number],
+    location: Location,
     sequence: number,
     arrival: number,
     departure: number,
@@ -167,7 +168,7 @@ export type Shape = {
     type: "Feature";
     geometry: {
         type: "LineString";
-        coordinates: [number, number][];
+        coordinates: Location[];
     };
     properties: {};
 };
@@ -176,7 +177,7 @@ export type Platform = {
     type: "Feature";
     geometry: {
         type: "Polygon";
-        coordinates: [[number, number][]];
+        coordinates: [Location[]];
     };
     properties: {
         name: string;
@@ -226,7 +227,7 @@ export enum EStopDeparture {
     alert = 11,
 }
 
-export type StopTime = [number, number, DelayType];
+export type StopTime = [scheduled: number, estimated: number, delay: DelayType];
 
 export enum EStopTime {
     scheduled = 0,
@@ -385,7 +386,7 @@ export interface BlogPost {
 
 export interface FavoriteStop {
     id: string;
-    location: [number, number];
+    location: Location;
     directions: [string, string][];
     isStation?: boolean;
 }
@@ -439,19 +440,31 @@ export enum EExecution {
     endStopName = 9,
 }
 
-export type GeocodePlace = [
-    type: "PLACE" | "STOP" | "ADDRESS",
-    name: string,
-    address: string | null,
-    location: [number, number]
-];
+export type SearchPlace = [type: "google" | "station", id: string, name: string, address: string];
 
-export enum EGeocodePlace {
+export enum ESearchPlace {
     type = 0,
-    name = 1,
-    address = 2,
-    location = 3,
+    id = 1,
+    name = 2,
+    address = 3,
 }
+
+export type NonTransitLeg = {
+    mode: "WALK" | "BIKE" | "RENTAL";
+    distance: number; // (meters)
+    duration: number; // (milliseconds)
+    shape: string;
+    rental?: [fromStationName: string, toStationName: string];
+};
+
+export type TransitLeg = {
+    mode: "TRANSIT";
+    routes: Route[];
+};
+
+export type PlannerItinerary = {
+    legs: (TransitLeg | NonTransitLeg)[];
+};
 
 declare global {
     interface Window {

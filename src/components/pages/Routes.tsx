@@ -14,8 +14,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { VirtuosoGrid } from "react-virtuoso";
 import RouteChip from "@/ui/RouteChip";
 import Helm from "@/util/Helm";
-import useQueryRoutes from "@/hooks/useQueryRoutes";
 import { ERoute } from "typings";
+import { useQueryRoutes } from "@/hooks/useQueryRoutes";
 
 export default () => {
     const { t } = useTranslation("Schedules");

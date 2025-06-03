@@ -42,10 +42,11 @@ export default memo(({ children }: { children: JSX.Element | JSX.Element[] }) =>
 
                 target.getCanvas().addEventListener("webglcontextlost", () => {
                     if (!document.hidden) window.location.reload();
-                    else
+                    else {
                         window.addEventListener("focus", () => {
                             window.location.reload();
                         });
+                    }
                 });
             }}
             style={{ position: "absolute" }}

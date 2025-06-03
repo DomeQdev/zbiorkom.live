@@ -1,51 +1,38 @@
-import { useParams } from "react-router-dom";
 import { Virtuoso } from "react-virtuoso";
 import TripStop from "./TripStop";
-import useQueryTrip from "@/hooks/useQueryTrip";
-import useQueryTripUpdate from "@/hooks/useQueryTripUpdate";
 import Loading from "@/ui/Loading";
 import { ETrip, ETripStop } from "typings";
 import TripFooter from "./TripFooter";
+import useVehicleStore from "@/hooks/useVehicleStore";
+import { useShallow } from "zustand/react/shallow";
 
 export default () => {
-    const { city, trip } = useParams();
+    const [vehicle, trip, sequence, stops] = useVehicleStore(
+        useShallow((state) => [state.vehicle, state.trip, state.sequence ?? 0, state.stops])
+    );
 
-    const cityId = window.location.search.includes("pkp") ? "pkp" : city!;
-
-    const { data: tripData } = useQueryTrip({
-        city: cityId,
-        trip: trip!,
-    });
-
-    const { data: tripUpdate } = useQueryTripUpdate({
-        city: cityId,
-        trip: trip!,
-    });
-
-    if (!tripData?.trip || !tripUpdate) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
-
-    const sequence = tripUpdate.sequence ?? 0;
+    if (!trip || !stops) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
 
     return (
         <>
             <Virtuoso
-                data={tripData.trip[ETrip.stops]}
+                data={trip[ETrip.stops]}
                 style={{ height: "calc(var(--rsbs-overlay-h) - 55px)" }}
                 itemContent={(index, stop) => (
                     <TripStop
                         key={stop[ETripStop.id]}
-                        vehicle={tripUpdate.vehicle}
-                        trip={tripData.trip!}
+                        vehicle={vehicle}
+                        trip={trip}
                         stop={stop}
                         index={index}
-                        update={tripUpdate?.stops?.[index]!}
+                        update={stops[index]}
                         sequence={sequence}
                     />
                 )}
                 overscan={100}
                 initialTopMostItemIndex={sequence < 1 ? 0 : sequence - 1}
                 components={{
-                    Footer: () => <TripFooter trip={tripData.trip!} />,
+                    Footer: () => <TripFooter trip={trip} />,
                 }}
             />
         </>

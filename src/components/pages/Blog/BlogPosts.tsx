@@ -1,12 +1,12 @@
-import { Menu } from "@mui/icons-material";
 import { Box, DialogContent, DialogTitle, IconButton, Skeleton, Typography } from "@mui/material";
+import { Menu } from "@mui/icons-material";
 import { memo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import BlogCard from "./BlogCard";
 import Sticky from "@/ui/Sticky";
 import Helm from "@/util/Helm";
-import useQueryBlogPosts from "@/hooks/useQueryBlogPosts";
+import { useQueryBlogPosts } from "@/hooks/useQueryBlog";
 
 export default memo(() => {
     const scrollContainer = useRef<HTMLDivElement | null>(null);
@@ -15,7 +15,7 @@ export default memo(() => {
     const navigate = useNavigate();
 
     const { data } = useQueryBlogPosts();
-    
+
     return (
         <>
             <Helm variable="blogPosts" />
@@ -69,7 +69,7 @@ export default memo(() => {
                 <Box
                     sx={{
                         display: "grid",
-                        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", // Dostosowuje liczbę elementów do szerokości kontenera, z maksymalnie 3 elementami na linię
+                        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
                         gap: 2,
                         flexGrow: 0,
                     }}

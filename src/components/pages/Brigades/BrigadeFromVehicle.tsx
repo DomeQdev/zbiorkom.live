@@ -3,8 +3,8 @@ import Schedule from "./Schedule";
 import { Dialog } from "@mui/material";
 import useGoBack from "@/hooks/useGoBack";
 import useVehicleStore from "@/hooks/useVehicleStore";
-import useQueryBrigade from "@/hooks/useQueryBrigade";
 import { ERoute, EVehicle } from "typings";
+import { useQueryBrigade } from "@/hooks/useQueryBrigades";
 
 import "./brigades.css";
 

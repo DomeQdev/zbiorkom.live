@@ -16,9 +16,9 @@ import { useParams } from "react-router-dom";
 import Result from "./Result";
 import { useTranslation } from "react-i18next";
 import useGoBack from "@/hooks/useGoBack";
-import useQuerySearch from "@/hooks/useQuerySearch";
 import SearchInfo from "./SearchInfo";
 import useSearchState from "@/hooks/useSearchState";
+import { useQuerySearch } from "@/hooks/useQuerySearch";
 
 export default () => {
     const [expandedStop, setExpandedStop] = useState<string | undefined>();
@@ -28,10 +28,7 @@ export default () => {
     const { city } = useParams();
     const goBack = useGoBack();
 
-    const { data, isLoading } = useQuerySearch({
-        city: city!,
-        query: search,
-    });
+    const { data, isLoading } = useQuerySearch({ city: city!, search });
 
     return (
         <Dialog

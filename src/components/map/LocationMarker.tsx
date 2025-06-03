@@ -4,6 +4,7 @@ import { Marker, useMap } from "react-map-gl";
 import { Box, Fab } from "@mui/material";
 import useLocationStore from "@/hooks/useLocationStore";
 import { useShallow } from "zustand/react/shallow";
+import { Location } from "typings";
 
 export default memo(() => {
     const [userLocation, setUserLocation] = useLocationStore(
@@ -43,7 +44,7 @@ export default memo(() => {
     }, [userPermitted]);
 
     const handleLocation = ({ coords }: GeolocationPosition) => {
-        const location = [coords.longitude, coords.latitude] as [number, number];
+        const location = [coords.longitude, coords.latitude] as Location;
 
         setUserLocation(location);
         localStorage.setItem(
@@ -79,27 +80,34 @@ export default memo(() => {
         }
     };
 
+    const moveToLocation = (location: Location) => {
+        if (map) {
+            const zoom = map.getZoom();
+
+            map.easeTo({
+                center: location,
+                zoom: zoom > 15 ? zoom : 15,
+            });
+        }
+    };
+
     const moveToUser = () => {
         if (!userPermitted) {
             navigator.geolocation.getCurrentPosition(
-                () => {
+                (location) => {
+                    const { coords } = location;
+
                     setUserPermitted(true);
-                    moveToUser();
+                    handleLocation(location);
+                    moveToLocation([coords.longitude, coords.latitude]);
                 },
                 (e) => {
                     console.error(e);
                     alert("Nie można określić Twojej lokalizacji.");
                 }
             );
-        }
-
-        if (userLocation?.[0] && map) {
-            const zoom = map.getZoom();
-
-            map.easeTo({
-                center: userLocation,
-                zoom: zoom > 15 ? zoom : 15,
-            });
+        } else if (userLocation?.[0]) {
+            moveToLocation(userLocation);
         }
     };
 

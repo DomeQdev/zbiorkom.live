@@ -1,6 +1,6 @@
 {
     "name": "zbiorkom",
-    "version": "4.5.1",
+    "version": "4.6.0",
     "dependencies": {
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",

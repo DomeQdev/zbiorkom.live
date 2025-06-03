@@ -1,7 +1,5 @@
-import useQueryStation from "@/hooks/useQueryStation";
-import useQueryStop from "@/hooks/useQueryStop";
 import StopTag from "@/ui/StopTag";
-import { Box, ButtonBase, IconButton } from "@mui/material";
+import { ButtonBase, IconButton } from "@mui/material";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { EStopDeparture, EStopDepartures, FavoriteStop } from "typings";
 import Loading from "@/ui/Loading";
@@ -9,12 +7,20 @@ import { Edit } from "@mui/icons-material";
 import FavDeparture from "./FavDeparture";
 import { useTranslation } from "react-i18next";
 import FavNotFound from "./FavNotFound";
+import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 
 export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
     const { t } = useTranslation("Schedules");
-    const { data, isLoading } = useDepartures(stop);
     const navigate = useNavigate();
     const { city } = useParams();
+
+    const { data, isLoading } = useQueryStopDepartures({
+        city: city!,
+        stop: stop.id,
+        limit: 3,
+        wait: 250,
+        destinations: stop.directions.map((direction) => direction[0]),
+    });
 
     if (!data) {
         if (isLoading) return <Loading height={160} />;
@@ -98,27 +104,4 @@ export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
             </ButtonBase>
         </ButtonBase>
     );
-};
-
-const useDepartures = (stop: FavoriteStop) => {
-    const { city } = useParams();
-
-    const destinations = stop.directions.map((direction) => direction[0]);
-
-    if (stop.isStation) {
-        return useQueryStation({
-            station: stop.id,
-            limit: 3,
-            wait: 250,
-            destinations,
-        });
-    } else {
-        return useQueryStop({
-            city: city!,
-            stop: stop.id,
-            limit: 3,
-            wait: 250,
-            destinations,
-        });
-    }
 };

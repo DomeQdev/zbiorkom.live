@@ -5,10 +5,10 @@ import { Outlet, useOutletContext, useParams } from "react-router-dom";
 import { Socket } from "socket.io-client";
 import Helm from "@/util/Helm";
 import TripRoute from "@/map/TripRoute";
-import useQueryVehicle from "@/hooks/useQueryVehicle";
 import useVehicleStore from "@/hooks/useVehicleStore";
 import { useShallow } from "zustand/react/shallow";
 import { ERoute, ETrip, EVehicle } from "typings";
+import { useQueryTrip } from "@/hooks/useQueryTrip";
 
 export default () => {
     const [vehicle, trip, fresh, setFresh] = useVehicleStore(
@@ -19,9 +19,9 @@ export default () => {
     const { current: map } = useMap();
     const params = useParams();
 
-    const { refetch, isLoading } = useQueryVehicle({
+    const { refetch, isLoading } = useQueryTrip({
         city: window.location.search.includes("pkp") ? "pkp" : params.city!,
-        id: params.vehicle!,
+        vehicle: params.vehicle!,
     });
 
     useEffect(() => {

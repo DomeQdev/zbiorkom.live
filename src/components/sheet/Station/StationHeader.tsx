@@ -3,16 +3,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { memo } from "react";
 import { AccessTime, Close, StarOutline } from "@mui/icons-material";
 import useGoBack from "@/hooks/useGoBack";
-import useQueryStation from "@/hooks/useQueryStation";
 import StopTag from "@/ui/StopTag";
 import { EStopDepartures } from "typings";
+import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 
 export default memo(() => {
     const { station } = useParams();
     const navigate = useNavigate();
     const goBack = useGoBack();
 
-    const { data } = useQueryStation({ station: station! });
+    const { data } = useQueryStopDepartures({ city: "pkp", stop: station! });
 
     if (!data)
         return (

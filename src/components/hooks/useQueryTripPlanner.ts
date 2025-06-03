@@ -1,25 +1,69 @@
-import { fetchWithAuth } from "@/util/fetchFunctions";
-import { useQuery } from "@tanstack/react-query";
+import { ESearchPlace, PlannerItinerary, SearchPlace } from "typings";
+import { getFromAPI } from "@/util/fetchFunctions";
 import useLocationStore from "./useLocationStore";
+import { useQuery } from "@tanstack/react-query";
+import { Place } from "./usePlacesStore";
 import cities from "cities";
-import { GeocodePlace } from "typings";
 
-const timeout = 300;
-
-export const useQueryGeocode = (city: string, query: string) => {
-    const userLocation = useLocationStore((state) => state.userLocation);
+export const useQuerySearchPlaces = (city: string, query: string, enabled: boolean) => {
+    const [longitude, latitude] = useLocationStore((state) => state.userLocation! || cities[city].location);
 
     return useQuery({
-        queryKey: ["geocode", query],
+        queryKey: ["searchPlaces", city, query],
         queryFn: async ({ signal }) => {
-            await new Promise((resolve) => setTimeout(resolve, timeout));
+            if (!query) return [];
+
+            await new Promise((resolve) => setTimeout(resolve, 300));
             if (signal.aborted) return;
 
-            return fetchWithAuth<GeocodePlace[]>(
-                `${Gay.base}/${city}/tripPlanner/geocode?query=${query}&place=${userLocation || cities[city].location}`,
+            return getFromAPI<SearchPlace[]>(
+                city,
+                "tripPlanner/searchPlaces",
+                {
+                    query,
+                    longitude,
+                    latitude,
+                },
                 signal
             );
         },
-        enabled: !!query,
+        enabled,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+    });
+};
+
+export const useQueryPlannerItineraries = (
+    city: string,
+    from: Place,
+    to: Place,
+    time: number,
+    arriveBy: boolean
+) => {
+    const fromPlace = from.place?.[ESearchPlace.id] || from.location?.join(",");
+    const toPlace = to.place?.[ESearchPlace.id] || to.location?.join(",");
+
+    return useQuery({
+        queryKey: ["tripPlanner", fromPlace, toPlace, time, arriveBy],
+        queryFn: async ({ signal }) => {
+            if (!fromPlace || !toPlace) return;
+
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            if (signal.aborted) return;
+
+            return getFromAPI<PlannerItinerary[]>(
+                city,
+                "tripPlanner/getJourneys",
+                {
+                    fromPlace,
+                    toPlace,
+                    time,
+                    arriveBy,
+                },
+                signal
+            );
+        },
+        enabled: Boolean(fromPlace && toPlace),
     });
 };

@@ -1,4 +1,4 @@
-import { fetchWithAuth } from "@/util/fetchFunctions";
+import { getFromAPI } from "@/util/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
 import { Execution, ExecutionDates, ExecutionVehicles } from "typings";
 
@@ -11,16 +11,6 @@ type Props = {
     enabled?: boolean;
 };
 
-const getURLFromProps = (endpoint: string, props: Props) => {
-    const searchParams = new URLSearchParams();
-    if (props.date) searchParams.append("date", props.date);
-    if (props.route) searchParams.append("route", props.route);
-    if (props.brigade) searchParams.append("brigade", props.brigade);
-    if (props.vehicle) searchParams.append("vehicle", props.vehicle);
-
-    return `${Gay.base}/${props.city}/tripExecutions/${endpoint}?${searchParams.toString()}`;
-};
-
 const timeout = 1000;
 
 export const useQueryExecutionDates = (props: Props) => {
@@ -30,7 +20,17 @@ export const useQueryExecutionDates = (props: Props) => {
             await new Promise((resolve) => setTimeout(resolve, timeout));
             if (signal.aborted) return;
 
-            return fetchWithAuth<ExecutionDates>(getURLFromProps("getDates", props), signal);
+            return getFromAPI<ExecutionDates>(
+                props.city,
+                "tripExecutions/getDates",
+                {
+                    date: props.date,
+                    route: props.route,
+                    brigade: props.brigade,
+                    vehicle: props.vehicle,
+                },
+                signal
+            );
         },
         enabled: props.enabled,
     });
@@ -43,7 +43,17 @@ export const useQueryExecutions = (props: Props) => {
             await new Promise((resolve) => setTimeout(resolve, timeout));
             if (signal.aborted) return;
 
-            return fetchWithAuth<Execution[]>(getURLFromProps("getExecutions", props), signal);
+            return getFromAPI<Execution[]>(
+                props.city,
+                "tripExecutions/getExecutions",
+                {
+                    date: props.date,
+                    route: props.route,
+                    brigade: props.brigade,
+                    vehicle: props.vehicle,
+                },
+                signal
+            );
         },
         enabled: props.enabled,
     });
@@ -56,7 +66,17 @@ export const useQueryExectionVehicles = (props: Props) => {
             await new Promise((resolve) => setTimeout(resolve, timeout));
             if (signal.aborted) return;
 
-            return fetchWithAuth<ExecutionVehicles[]>(getURLFromProps("getExecutionVehicles", props), signal);
+            return getFromAPI<ExecutionVehicles[]>(
+                props.city,
+                "tripExecutions/getExecutionVehicles",
+                {
+                    date: props.date,
+                    route: props.route,
+                    brigade: props.brigade,
+                    vehicle: props.vehicle,
+                },
+                signal
+            );
         },
         enabled: props.enabled,
     });

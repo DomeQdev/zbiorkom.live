@@ -1,20 +1,12 @@
-import {
-    Box,
-    CardMedia,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-    LinearProgress,
-    Typography,
-} from "@mui/material";
+import { Box, DialogContent, DialogTitle, IconButton, LinearProgress, Typography } from "@mui/material";
 import { memo, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import useGoBack from "@/hooks/useGoBack";
 import { ArrowBack, Share } from "@mui/icons-material";
 import Sticky from "@/ui/Sticky";
 import Helm from "@/util/Helm";
-import useQueryBlogPost from "@/hooks/useQueryBlogPost";
 import normalizeContent from "./normalizeContent";
+import { useQueryBlogPost } from "@/hooks/useQueryBlog";
 
 export default memo(() => {
     const scrollContainer = useRef<HTMLDivElement | null>(null);

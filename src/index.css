@@ -21,8 +21,7 @@ h6 {
     background-image: none !important;
 }
 
-.mapboxgl-ctrl-bottom-left,
-.mapboxgl-ctrl-bottom-right {
+.mapboxgl-ctrl-attrib {
     display: none !important;
 }
 
@@ -204,3 +203,11 @@ input[type="number"]::-webkit-outer-spin-button {
     margin: 0;
 }
 
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -1,18 +1,14 @@
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 
-export default ({
-    icon,
-    outlinedIcon,
-    name,
-    active,
-    onClick,
-}: {
+type Props = {
     icon: JSX.Element;
     outlinedIcon: JSX.Element;
     name: string;
     active: boolean;
     onClick: () => void;
-}) => {
+};
+
+export default ({ icon, outlinedIcon, name, active, onClick }: Props) => {
     return (
         <ListItemButton
             sx={{

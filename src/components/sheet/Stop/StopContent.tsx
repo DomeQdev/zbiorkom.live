@@ -3,17 +3,17 @@ import { memo, useState } from "react";
 import { Virtuoso } from "react-virtuoso";
 import Departure from "./StopDeparture";
 import NoDepartures from "./NoDepartures";
-import useQueryStop from "@/hooks/useQueryStop";
 import useStopStore from "@/hooks/useStopStore";
 import Loading from "@/ui/Loading";
 import { EStopDepartures } from "typings";
+import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 
 export default memo(() => {
     const { city, stop } = useParams();
     const [firstContact] = useState(Date.now());
 
     const expandLimit = useStopStore((state) => state.expandLimit);
-    const { data } = useQueryStop({ city: city!, stop: stop! });
+    const { data } = useQueryStopDepartures({ city: city!, stop: stop! });
 
     if (!data) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
 

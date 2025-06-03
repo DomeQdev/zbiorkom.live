@@ -35,7 +35,6 @@ export default ({
     const navigate = useNavigate();
     const { city } = useParams();
 
-    const isRazem = localStorage.getItem("themeColor") === "#720546";
     const path = pathname.split("/")[2];
 
     return (
@@ -137,9 +136,9 @@ export default ({
                 />
             </List>
 
-            {isRazem && (
+            {localStorage.getItem("themeColor") === "#720546" && (
                 <img
-                    src="https://zandberg2025.pl/img/adrian_zandberg.jpg"
+                    src="/zandbi.jpg"
                     style={{
                         width: "100%",
                         height: "auto",
