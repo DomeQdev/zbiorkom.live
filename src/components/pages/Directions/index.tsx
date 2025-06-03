@@ -21,6 +21,11 @@ export default () => {
 
     const onClose = () => navigate(`/${city}`);
 
+    const isAllowed =
+        localStorage.getItem("themeColor") === "#720546" &&
+        localStorage.getItem("brigade") === "true" &&
+        localStorage.getItem("language") === "en";
+
     return (
         <Dialog
             open
@@ -35,9 +40,45 @@ export default () => {
                 },
             })}
         >
-            <DirectionsSearchBox isLoading={isLoading || isRefetching} refresh={refetch} onClose={onClose} />
+            {isAllowed ? (
+                <>
+                    <DirectionsSearchBox
+                        isLoading={isLoading || isRefetching}
+                        refresh={refetch}
+                        onClose={onClose}
+                    />
 
-            {itineraries && <DirectionsItineraries itineraries={itineraries} />}
+                    {itineraries && <DirectionsItineraries itineraries={itineraries} />}
+                </>
+            ) : (
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: "100%",
+                        width: "100%",
+                        fontSize: "1.5rem",
+                        color: "#720546",
+                        padding: "20px",
+                    }}
+                >
+                    <button
+                        onClick={onClose}
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            backgroundColor: "#720546",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "8px",
+                        }}
+                    >
+                        Zamknij to okno 🤫🤫
+                    </button>
+                </div>
+            )}
         </Dialog>
     );
 };
