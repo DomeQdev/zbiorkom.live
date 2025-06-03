@@ -1,30 +1,19 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, IconButton, Skeleton } from "@mui/material";
-import useQueryTrip from "@/hooks/useQueryTrip";
 import VehicleHeadsign from "@/sheet/Vehicle/VehicleHeadsign";
-import { Close, PriorityHigh, Report } from "@mui/icons-material";
+import { Close, Report } from "@mui/icons-material";
 import useGoBack from "@/hooks/useGoBack";
-import useQueryTripUpdate from "@/hooks/useQueryTripUpdate";
 import { EStopUpdate, ETrip } from "typings";
+import useVehicleStore from "@/hooks/useVehicleStore";
+import { useShallow } from "zustand/react/shallow";
 
 export default () => {
-    const { city, trip } = useParams();
+    const [trip, stops] = useVehicleStore(useShallow((state) => [state.trip, state.stops]));
     const navigate = useNavigate();
+    const params = useParams();
     const goBack = useGoBack();
 
-    const cityId = window.location.search.includes("pkp") ? "pkp" : city!;
-
-    const { data: tripData } = useQueryTrip({
-        city: cityId,
-        trip: trip!,
-    });
-
-    const { data: tripUpdate } = useQueryTripUpdate({
-        city: cityId,
-        trip: trip!,
-    });
-
-    if (!tripData?.trip)
+    if (!trip)
         return (
             <div
                 style={{
@@ -48,9 +37,9 @@ export default () => {
             }}
         >
             <VehicleHeadsign
-                route={tripData.trip[ETrip.route]}
-                shortName={tripData.trip[ETrip.shortName]}
-                headsign={tripData.trip[ETrip.headsign]}
+                route={trip[ETrip.route]}
+                shortName={trip[ETrip.shortName]}
+                headsign={trip[ETrip.headsign]}
             />
 
             <Box
@@ -73,7 +62,7 @@ export default () => {
                     },
                 }}
             >
-                {tripUpdate?.stops?.some((stop) => stop[EStopUpdate.alerts]?.length > 0) && (
+                {stops?.some((stop) => stop[EStopUpdate.alerts]?.length > 0) && (
                     <IconButton
                         id="alertsButton"
                         size="small"
@@ -84,7 +73,7 @@ export default () => {
                                 backgroundColor: "error.dark",
                             },
                         }}
-                        onClick={() => navigate(`/${city}/trip/${trip}/alerts?pkp`)}
+                        onClick={() => navigate(`/${params.city}/trip/${params.trip}/alerts?pkp`)}
                     >
                         <Report />
                     </IconButton>

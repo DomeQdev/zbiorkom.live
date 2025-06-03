@@ -4,48 +4,36 @@ import { ReactNode, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { EStopUpdate, ETrip, ETripStop } from "typings";
-import Sticky from "@/ui/Sticky";
-
 import useGoBack from "@/hooks/useGoBack";
-import useQueryTrip from "@/hooks/useQueryTrip";
-import useQueryTripUpdate from "@/hooks/useQueryTripUpdate";
+import Sticky from "@/ui/Sticky";
+import useVehicleStore from "@/hooks/useVehicleStore";
+import { useShallow } from "zustand/react/shallow";
 
 export default () => {
-    const { city, trip } = useParams();
+    const [tripData, stops] = useVehicleStore(useShallow((state) => [state.trip, state.stops]));
     const { t } = useTranslation("Vehicle");
     const goBack = useGoBack();
 
-    const cityId = window.location.search.includes("pkp") ? "pkp" : city!;
     const scrollContainer = useRef<HTMLDivElement | null>(null);
     const elementRef = useRef<HTMLDivElement | null>(null);
 
-    const { data: tripData } = useQueryTrip({
-        city: cityId,
-        trip: trip!,
-    });
-
-    const { data: tripUpdate } = useQueryTripUpdate({
-        city: cityId,
-        trip: trip!,
-    });
-
     const alerts = useMemo(() => {
-        if (!tripData || !tripUpdate?.stops) return [];
+        if (!tripData || !stops) return [];
 
         const alerts: [string, string[]][] = [];
 
-        for (let i = 0; i < tripUpdate.stops.length; i++) {
-            const stop = tripUpdate.stops[i];
+        for (let i = 0; i < stops.length; i++) {
+            const stop = stops[i];
             const stopAlerts = stop[EStopUpdate.alerts];
 
             if (!stopAlerts?.length) continue;
 
-            const stopName = tripData.trip!?.[ETrip.stops][i][ETripStop.name];
+            const stopName = tripData[ETrip.stops][i][ETripStop.name];
             alerts.push([stopName, stopAlerts]);
         }
 
         return alerts;
-    }, [tripData, tripUpdate]);
+    }, [tripData, stops]);
 
     return (
         <Dialog open onClose={goBack} fullWidth>
