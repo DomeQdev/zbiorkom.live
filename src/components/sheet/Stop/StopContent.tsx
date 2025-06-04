@@ -17,8 +17,8 @@ export default memo(() => {
 
     if (!data) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
 
-    const departures = data[EStopDepartures.departures];
-    if (!departures.length) return <NoDepartures />;
+    const departures = data?.[EStopDepartures.departures];
+    if (!departures?.length) return <NoDepartures />;
 
     return (
         <Virtuoso

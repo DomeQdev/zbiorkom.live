@@ -42,7 +42,8 @@
         "alerts": "Impediments",
         "sunPosition": "Where to sit?",
         "sec": "sec",
-        "min": "min"
+        "min": "min",
+        "vehicleNotFound": "Vehicle not found."
     },
     "Brigades": {
         "selectBrigade": "Choose the brigade of route <0></0>",

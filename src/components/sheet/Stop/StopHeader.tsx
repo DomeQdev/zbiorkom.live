@@ -13,7 +13,7 @@ export default () => {
 
     const { data } = useQueryStopDepartures({ city: city!, stop: stop! });
 
-    if (!data)
+    if (!data?.[EStopDepartures.stop])
         return (
             <div
                 style={{

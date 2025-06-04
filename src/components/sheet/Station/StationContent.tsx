@@ -16,7 +16,7 @@ export default memo(() => {
     const { data } = useQueryStopDepartures({ city: "pkp", stop: station! });
 
     if (!data) return <Loading height="calc(var(--rsbs-overlay-h) - 70px)" />;
-    if (!data[EStopDepartures.departures].length) return <NoDepartures />;
+    if (!data?.[EStopDepartures.departures]?.length) return <NoDepartures />;
 
     return (
         <Virtuoso

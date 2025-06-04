@@ -25,12 +25,14 @@ export default () => {
     });
 
     useEffect(() => {
-        if (!fresh || isLoading || !vehicle) return;
+        if (!fresh || isLoading) return;
 
-        map?.flyTo({
-            center: vehicle[EVehicle.location],
-            zoom: map.getZoom() > 15 ? map.getZoom() : 15,
-        });
+        if (vehicle) {
+            map?.flyTo({
+                center: vehicle[EVehicle.location],
+                zoom: map.getZoom() > 15 ? map.getZoom() : 15,
+            });
+        }
 
         setFresh(false);
     }, [vehicle, fresh, isLoading]);
