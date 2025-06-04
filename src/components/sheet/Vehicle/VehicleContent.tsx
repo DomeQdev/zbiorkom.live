@@ -3,19 +3,19 @@ import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import VehicleStop from "./VehicleStop";
 import { Virtuoso } from "react-virtuoso";
-import { Warning } from "@mui/icons-material";
+import { Report, Warning } from "@mui/icons-material";
 import useVehicleStore from "@/hooks/useVehicleStore";
 import { useShallow } from "zustand/react/shallow";
 import TripFooter from "../Trip/TripFooter";
+import Alert from "@/ui/Alert";
 
 export default () => {
-    const [vehicle, trip, stops, sequence] = useVehicleStore(
-        useShallow((state) => [state.vehicle, state.trip, state.stops, state.sequence])
+    const [vehicle, trip, stops, sequence, fresh] = useVehicleStore(
+        useShallow((state) => [state.vehicle, state.trip, state.stops, state.sequence, state.fresh])
     );
     const { t } = useTranslation("Vehicle");
 
-    //@TODO
-    if (!vehicle) return null;
+    if (!vehicle) return fresh ? null : <Alert Icon={Report} title={t("vehicleNotFound")} color="error" />;
 
     if (!trip || !stops)
         return (

@@ -14,7 +14,7 @@ export default memo(() => {
 
     const { data } = useQueryStopDepartures({ city: "pkp", stop: station! });
 
-    if (!data)
+    if (!data?.[EStopDepartures.stop])
         return (
             <div
                 style={{

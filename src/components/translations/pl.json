@@ -42,7 +42,8 @@
         "alerts": "Utrudnienia",
         "sunPosition": "Gdzie usiąść?",
         "sec": "sek",
-        "min": "min"
+        "min": "min",
+        "vehicleNotFound": "Nie znaleziono pojazdu."
     },
     "Brigades": {
         "selectBrigade": "Wybierz brygadę dla linii <0></0>",

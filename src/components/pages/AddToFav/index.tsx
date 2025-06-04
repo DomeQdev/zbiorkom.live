@@ -27,7 +27,7 @@ export default () => {
     );
 
     const data = useData(city!, id, !!station);
-    if (!data) return null;
+    if (!data?.info) return null;
 
     return (
         <Dialog open fullWidth onClose={() => goBack()}>

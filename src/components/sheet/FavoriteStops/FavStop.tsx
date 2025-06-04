@@ -22,7 +22,7 @@ export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
         destinations: stop.directions.map((direction) => direction[0]),
     });
 
-    if (!data) {
+    if (!data?.[EStopDepartures.stop]) {
         if (isLoading) return <Loading height={160} />;
         else return <FavNotFound index={index} stop={stop} />;
     }
@@ -96,9 +96,9 @@ export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
                     navigate(`${url}#favOnly`, { state: -2 });
                 }}
             >
-                {!data[EStopDepartures.departures].length && t("noDepartures")}
+                {!data?.[EStopDepartures.departures]?.length && t("noDepartures")}
 
-                {data[EStopDepartures.departures].map((departure) => (
+                {data?.[EStopDepartures.departures]?.map((departure) => (
                     <FavDeparture key={`${stop.id}${departure[EStopDeparture.id]}`} departure={departure} />
                 ))}
             </ButtonBase>

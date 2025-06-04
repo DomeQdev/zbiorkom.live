@@ -44,7 +44,7 @@ export default memo(() => {
         const uniqueTrips = [];
         const map = new Set<string>();
 
-        for (const departure of data[EStopDepartures.departures]) {
+        for (const departure of data?.[EStopDepartures.departures] ?? []) {
             if (!departure[EStopDeparture.vehicle] || map.has(departure[EStopDeparture.vehicleId])) {
                 continue;
             }
