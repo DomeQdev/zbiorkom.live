@@ -19,23 +19,23 @@ export default () => {
     const { current: map } = useMap();
     const params = useParams();
 
-    const { refetch, isLoading } = useQueryTrip({
+    const { data, refetch, isLoading } = useQueryTrip({
         city: window.location.search.includes("pkp") ? "pkp" : params.city!,
         vehicle: params.vehicle!,
     });
 
     useEffect(() => {
-        if (!fresh || isLoading) return;
+        if (!fresh || isLoading || !data) return;
 
-        if (vehicle) {
+        if (data.vehicle) {
             map?.flyTo({
-                center: vehicle[EVehicle.location],
+                center: data.vehicle[EVehicle.location],
                 zoom: map.getZoom() > 15 ? map.getZoom() : 15,
             });
         }
 
         setFresh(false);
-    }, [vehicle, fresh, isLoading]);
+    }, [fresh, data, isLoading]);
 
     useEffect(() => {
         if (!socket) return;
