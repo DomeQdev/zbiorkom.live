@@ -43,7 +43,7 @@
         "sunPosition": "Where to sit?",
         "sec": "sec",
         "min": "min",
-        "vehicleNotFound": "Vehicle not found,"
+        "vehicleNotFound": "Vehicle not found."
     },
     "Brigades": {
         "selectBrigade": "Choose the brigade of route <0></0>",
