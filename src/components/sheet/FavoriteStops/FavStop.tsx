@@ -15,7 +15,7 @@ export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
     const { city } = useParams();
 
     const { data, isLoading } = useQueryStopDepartures({
-        city: city!,
+        city: stop.isStation ? "pkp" : city!,
         stop: stop.id,
         limit: 3,
         wait: 250,
