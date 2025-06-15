@@ -15,9 +15,11 @@ export default ({ departure }: { departure: StopDeparture }) => {
             label: "showTrip",
             enabled: true,
             onClick: () => {
-                navigate(`/${city}/trip/${encodeURIComponent(departure[EStopDeparture.id])}`, {
-                    state: -2,
-                });
+                navigate(
+                    `/${city}/trip/${encodeURIComponent(departure[EStopDeparture.id])}` +
+                        (window.location.pathname.includes("/station") ? "?pkp" : ""),
+                    { state: -2 }
+                );
             },
         },
         {
@@ -25,9 +27,11 @@ export default ({ departure }: { departure: StopDeparture }) => {
             label: "showVehicle",
             enabled: !!departure[EStopDeparture.vehicleId],
             onClick: () => {
-                navigate(`/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.vehicleId])}`, {
-                    state: -2,
-                });
+                navigate(
+                    `/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.vehicleId])}` +
+                        (window.location.pathname.includes("/station") ? "?pkp" : ""),
+                    { state: -2 }
+                );
             },
         },
     ] as const;

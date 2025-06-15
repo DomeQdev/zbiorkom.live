@@ -4,7 +4,6 @@ import useStopStore from "@/hooks/useStopStore";
 
 export default () => {
     const stopStore = useStopStore((state) => state);
-
     const [time, setTime] = useState<number>(stopStore.time || Date.now());
 
     return (

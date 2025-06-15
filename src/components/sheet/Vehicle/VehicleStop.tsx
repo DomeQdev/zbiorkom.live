@@ -13,11 +13,11 @@ import {
 import { RemoveCircleOutline, WavingHand } from "@mui/icons-material";
 import VehicleDelay from "./VehicleDelay";
 import VehicleStopIcon from "./VehicleStopIcon";
-import getTime from "@/util/getTime";
 import { useMap } from "react-map-gl";
 import useTime from "@/hooks/useTime";
 import { useTranslation } from "react-i18next";
 import TripStopTimes from "../Trip/TripStopTimes";
+import { getTime } from "@/util/tools";
 
 type Props = {
     vehicle: Vehicle;

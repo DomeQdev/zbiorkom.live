@@ -3,7 +3,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import cities from "cities";
 import Map from "react-map-gl";
 import { useLocation } from "react-router-dom";
-import { getStyle } from "@/util/getMapStyle";
+import { getMapStyle } from "@/util/tools";
 
 export default memo(({ children }: { children: JSX.Element | JSX.Element[] }) => {
     const { pathname } = useLocation();
@@ -34,7 +34,7 @@ export default memo(({ children }: { children: JSX.Element | JSX.Element[] }) =>
     return (
         <Map
             mapboxAccessToken="pk.eyJ1IjoiZG9tZXEiLCJhIjoiY2t6c2JlOWZ3MGx3cjJubW9zNDc5eGpwdiJ9.nUlvFKfUzpxBxJVc4zmAMA"
-            mapStyle={getStyle()}
+            mapStyle={getMapStyle()}
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}
             onLoad={({ target }: { target: any }) => {

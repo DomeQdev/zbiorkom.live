@@ -1,6 +1,6 @@
 import { Box, IconButton, Skeleton } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { Close, StarOutline } from "@mui/icons-material";
+import { AccessTime, Close, StarOutline } from "@mui/icons-material";
 import useGoBack from "@/hooks/useGoBack";
 import StopTag from "@/ui/StopTag";
 import { EStopDepartures } from "typings";
@@ -11,7 +11,10 @@ export default () => {
     const navigate = useNavigate();
     const goBack = useGoBack();
 
-    const { data } = useQueryStopDepartures({ city: city!, stop: stop! });
+    const { data } = useQueryStopDepartures({
+        city: window.location.pathname.includes("/station") ? "pkp" : city!,
+        stop: stop!,
+    });
 
     if (!data?.[EStopDepartures.stop])
         return (
@@ -62,6 +65,10 @@ export default () => {
             >
                 <IconButton size="small" onClick={() => navigate(window.location.pathname + "/addToFav")}>
                     <StarOutline />
+                </IconButton>
+
+                <IconButton size="small" onClick={() => navigate(window.location.pathname + "/time")}>
+                    <AccessTime />
                 </IconButton>
 
                 <IconButton size="small" onClick={() => goBack()}>

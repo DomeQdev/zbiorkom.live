@@ -1,7 +1,6 @@
 import { createBrowserRouter, Outlet, redirect, RouterProvider } from "react-router-dom";
-import { lazy, Suspense, useState } from "react";
 import CityRedirect from "./CityRedirect";
-import { Socket } from "socket.io-client";
+import { lazy, Suspense } from "react";
 
 import LocationMarker from "@/map/LocationMarker";
 import Sheet from "@/sheet/Sheet";
@@ -24,11 +23,11 @@ const Directions = lazy(() => import("@/pages/Directions"));
 const Settings = lazy(() => import("@/pages/Settings/"));
 const SettingsTheme = lazy(() => import("@/pages/Settings/ThemeDialog"));
 
+const Stop = lazy(() => import("@/pages/Stop"));
+const StopTimePicker = lazy(() => import("@/sheet/Stop/StopTimePicker"));
+
 const Trip = lazy(() => import("@/pages/Trip"));
 const TripAlerts = lazy(() => import("@/pages/Trip/TripAlerts"));
-
-const Station = lazy(() => import("@/pages/Station"));
-const StationTime = lazy(() => import("@/sheet/Station/StationTime"));
 
 const Vehicle = lazy(() => import("@/pages/Vehicle"));
 const VehicleInfo = lazy(() => import("@/pages/Vehicle/Info"));
@@ -44,7 +43,6 @@ const Filter = lazy(() => import("@/pages/Filter"));
 const Route = lazy(() => import("@/pages/Route"));
 const Routes = lazy(() => import("@/pages/Routes"));
 const Search = lazy(() => import("@/pages/Search/"));
-const Stop = lazy(() => import("@/pages/Stop"));
 
 export default () => {
     const router = createBrowserRouter([
@@ -159,10 +157,10 @@ export default () => {
                             ],
                         },
                         {
-                            path: "station/:station",
+                            path: "station/:stop",
                             element: (
                                 <Suspense>
-                                    <Station />
+                                    <Stop />
                                 </Suspense>
                             ),
                             children: [
@@ -170,7 +168,7 @@ export default () => {
                                     path: "time",
                                     element: (
                                         <Suspense>
-                                            <StationTime />
+                                            <StopTimePicker />
                                         </Suspense>
                                     ),
                                 },
@@ -192,6 +190,14 @@ export default () => {
                                 </Suspense>
                             ),
                             children: [
+                                {
+                                    path: "time",
+                                    element: (
+                                        <Suspense>
+                                            <StopTimePicker />
+                                        </Suspense>
+                                    ),
+                                },
                                 {
                                     path: "addToFav",
                                     element: (

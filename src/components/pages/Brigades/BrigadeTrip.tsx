@@ -1,7 +1,7 @@
 import { ListItemButton } from "@mui/material";
 import { BrigadeTrip, EBrigadeTrip, ERoute } from "typings";
 import { Link, useParams } from "react-router-dom";
-import getTime from "@/util/getTime";
+import { getTime } from "@/util/tools";
 import { useTranslation } from "react-i18next";
 import getColors, { hexFromArgb } from "@/util/getColors";
 import RouteTag from "@/map/RouteTag";

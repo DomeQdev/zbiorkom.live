@@ -1,4 +1,4 @@
-import getTime from "@/util/getTime";
+import { getTime } from "@/util/tools";
 import { Box, Typography } from "@mui/material";
 import { EStopUpdate, EStopTime, StopUpdate } from "typings";
 

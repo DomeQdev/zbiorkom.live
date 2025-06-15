@@ -2,7 +2,7 @@ import VehicleHeadsign from "@/sheet/Vehicle/VehicleHeadsign";
 import { ListItemButton, ListItemText } from "@mui/material";
 import { ESearchRelation, SearchItem } from "typings";
 import { Link } from "react-router-dom";
-import getTime from "@/util/getTime";
+import { getTime } from "@/util/tools";
 
 type Props = {
     relation: NonNullable<SearchItem["relation"]>;

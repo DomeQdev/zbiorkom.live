@@ -13,20 +13,20 @@ import AddedDirections from "./AddedDirections";
 import { EStop } from "typings";
 
 export default () => {
-    const { city, stop, station } = useParams();
+    const { city, stop } = useParams();
     const { t } = useTranslation("Favorites");
-    const id = (stop || station)!;
+    const isStation = location.pathname.includes("station/");
     const goBack = useGoBack();
 
     const [favorites, add, remove] = useFavStore(
         useShallow((state) => [state.favorites, state.addFavoriteDirection, state.removeFavoriteDirection])
     );
     const addedDirections = useMemo(
-        () => favorites.find((fav) => fav.id === id)?.directions || [],
+        () => favorites.find((fav) => fav.id === stop!)?.directions || [],
         [favorites]
     );
 
-    const data = useData(city!, id, !!station);
+    const data = useData(isStation ? "pkp" : city!, stop!);
     if (!data?.info) return null;
 
     return (
@@ -49,7 +49,7 @@ export default () => {
                         onAdd={(direction) => {
                             if (addedDirections.some((fav) => fav[0] === direction[0])) return;
 
-                            add(id, data.info[EStop.location], !!station, [
+                            add(stop!, data.info[EStop.location], isStation, [
                                 direction[0],
                                 `${direction[1]} ${direction[2] || ""}`.trim(),
                             ]);
@@ -57,7 +57,7 @@ export default () => {
                     />
                 )}
 
-                <AddedDirections directions={addedDirections} onRemove={(index) => remove(id, index)} />
+                <AddedDirections directions={addedDirections} onRemove={(index) => remove(stop!, index)} />
 
                 {!addedDirections.length && (
                     <Typography variant="body2" sx={{ color: "text.secondary", textAlign: "center" }}>

@@ -1,7 +1,7 @@
 import useTheme from "@/hooks/useTheme";
 import RouteTag from "@/map/RouteTag";
 import { hexFromArgb } from "@/util/getColors";
-import getTime from "@/util/getTime";
+import { getTime } from "@/util/tools";
 import { Box } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { EExecution, Execution, VehicleType } from "typings";

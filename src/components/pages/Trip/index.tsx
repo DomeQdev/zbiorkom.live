@@ -4,7 +4,6 @@ import { useMap } from "react-map-gl";
 import { LngLatBounds } from "mapbox-gl";
 import { Socket } from "socket.io-client";
 import VehicleMarker from "@/map/VehicleMarker";
-import getSheetHeight from "@/util/getSheetHeight";
 import Helm from "@/util/Helm";
 import TripRoute from "@/map/TripRoute";
 import TripPlatforms from "@/map/TripPlatforms";
@@ -12,6 +11,7 @@ import { ERoute, ETrip, ETripStop, EVehicle } from "typings";
 import useVehicleStore from "@/hooks/useVehicleStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryTrip } from "@/hooks/useQueryTrip";
+import { getSheetHeight } from "@/util/tools";
 
 export default memo(() => {
     const [vehicle, tripData, sequence, fresh, setFresh] = useVehicleStore(

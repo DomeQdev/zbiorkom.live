@@ -3,20 +3,23 @@ import VehicleHeadsign from "@/sheet/Vehicle/VehicleHeadsign";
 import VehicleDelay from "@/sheet/Vehicle/VehicleDelay";
 import { StopDeparture, EStopTime, EStopDeparture, EVehicle } from "typings";
 import useTime from "@/hooks/useTime";
-import getTime from "@/util/getTime";
+import { getTime } from "@/util/tools";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMap } from "react-map-gl";
 import StopDepartureActions from "./StopDepartureActions";
 import SmallAlert from "@/ui/SmallAlert";
+import { useTranslation } from "react-i18next";
 
-export default ({ departure }: { departure: StopDeparture }) => {
+export default ({ departure, isStation }: { departure: StopDeparture; isStation: boolean }) => {
+    const { t } = useTranslation("Vehicle");
     const [isExpanded, setExpanded] = useState(false);
 
     const { current: map } = useMap();
     const navigate = useNavigate();
     const { city } = useParams();
 
+    const vehicle = departure[EStopDeparture.vehicle];
     const scheduled = departure[EStopDeparture.departure][EStopTime.scheduled];
     const estimated = departure[EStopDeparture.departure][EStopTime.estimated];
     const delay = departure[EStopDeparture.departure][EStopTime.delay];
@@ -28,30 +31,36 @@ export default ({ departure }: { departure: StopDeparture }) => {
     const isCancelled = delay === "cancelled";
     const showCountdown = !isCancelled;
 
+    const onSuperClick = () => {
+        navigate(
+            [
+                city,
+                vehicle ? "vehicle" : "trip",
+                vehicle ? encodeURIComponent(vehicle[EVehicle.id]) : departure[EStopDeparture.id],
+            ].join("/") + (isStation ? "?pkp" : ""),
+            {
+                state: -2,
+            }
+        );
+    };
+
     return (
         <ListItemButton
             onClick={() => {
-                if (departure[EStopDeparture.vehicle]) {
-                    map?.flyTo({
-                        center: departure[EStopDeparture.vehicle][EVehicle.location],
-                        zoom: map.getZoom() > 15 ? map.getZoom() : 15,
-                    });
+                if (isStation) {
+                    onSuperClick();
                 } else {
-                    setExpanded(!isExpanded);
+                    if (vehicle) {
+                        map?.flyTo({
+                            center: vehicle[EVehicle.location],
+                            zoom: map.getZoom() > 15 ? map.getZoom() : 15,
+                        });
+                    } else {
+                        setExpanded(!isExpanded);
+                    }
                 }
             }}
-            onDoubleClick={() => {
-                const vehicle = departure[EStopDeparture.vehicle];
-
-                navigate(
-                    `/${city}/${vehicle ? "vehicle" : "trip"}/${
-                        vehicle ? encodeURIComponent(vehicle[EVehicle.id]) : departure[EStopDeparture.id]
-                    }`,
-                    {
-                        state: -2,
-                    }
-                );
-            }}
+            onDoubleClick={onSuperClick}
             sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -74,22 +83,11 @@ export default ({ departure }: { departure: StopDeparture }) => {
                         <VehicleHeadsign
                             route={departure[EStopDeparture.route]}
                             headsign={departure[EStopDeparture.headsign]}
+                            shortName={departure[EStopDeparture.shortName]}
                             brigade={departure[EStopDeparture.brigade]}
                         />
 
-                        {showCountdown && (
-                            <span>
-                                {false ? (
-                                    <>
-                                        <b>~{minutesToDeparture > 0 ? minutesToDeparture : "0"}</b> min
-                                    </>
-                                ) : minutesToDeparture > 0 ? (
-                                    minutesToDeparture
-                                ) : (
-                                    "<1"
-                                )}
-                            </span>
-                        )}
+                        {showCountdown && <span>{minutesToDeparture > 0 ? minutesToDeparture : "<1"}</span>}
                     </>
                 }
                 secondary={
@@ -101,13 +99,29 @@ export default ({ departure }: { departure: StopDeparture }) => {
                                 gap: 0.5,
                             }}
                         >
-                            <VehicleDelay delay={delay} showGPS={!!departure[EStopDeparture.vehicleId]} />·
+                            <VehicleDelay
+                                delay={delay}
+                                showGPS={
+                                    !!departure[EStopDeparture.vehicleId] || (isStation ? undefined : false)
+                                }
+                            />
+                            ·
                             {hasDelay || isCancelled ? (
                                 <span style={{ textDecoration: "line-through" }}>{getTime(scheduled)}</span>
                             ) : (
                                 <span>{getTime(estimated)}</span>
                             )}
                             {hasDelay && <span>{getTime(estimated)}</span>}
+                            {departure[EStopDeparture.platform] && (
+                                <span>
+                                    · {t("platform")} <b>{departure[EStopDeparture.platform]}</b>
+                                </span>
+                            )}
+                            {departure[EStopDeparture.track] && (
+                                <span>
+                                    · {t("track")} <b>{departure[EStopDeparture.track]}</b>
+                                </span>
+                            )}
                         </Box>
 
                         {showCountdown && <span>min</span>}

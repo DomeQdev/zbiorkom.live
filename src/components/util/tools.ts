@@ -1,4 +1,14 @@
-const styles: Record<string, any> = {
+export const getTime = (time: number) => {
+    return new Date(time).toLocaleTimeString("pl", {
+        hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+};
+
+export const getSheetHeight = () => window.innerHeight / 3 + 24;
+
+const mapStyles: Record<string, any> = {
     default: "mapbox://styles/domeq/cm7ayfc91005c01r3f6m77mjx",
     osm: {
         version: 8,
@@ -24,9 +34,9 @@ const styles: Record<string, any> = {
     },
 };
 
-export const getStyle = () => {
+export const getMapStyle = () => {
     const style = localStorage.getItem("mapStyle")!;
 
-    if (styles[style]) return styles[style];
-    else return styles.default;
+    if (mapStyles[style]) return mapStyles[style];
+    else return mapStyles.default;
 };

@@ -3,7 +3,7 @@ import { StopDeparture, EStopTime, EStopDeparture } from "typings";
 import VehicleHeadsign from "../Vehicle/VehicleHeadsign";
 import useTime from "@/hooks/useTime";
 import { getDelay } from "../Vehicle/VehicleDelay";
-import getTime from "@/util/getTime";
+import { getTime } from "@/util/tools";
 
 export default ({ departure }: { departure: StopDeparture }) => {
     const minutesToDeparture = useTime(departure[EStopDeparture.departure][EStopTime.estimated]);

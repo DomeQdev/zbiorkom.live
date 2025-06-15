@@ -16,7 +16,7 @@ export default memo(() => {
     const navigate = useNavigate();
 
     const { data, refetch } = useQueryStopDepartures({
-        city: city!,
+        city: window.location.pathname.includes("/station") ? "pkp" : city!,
         stop: stop!,
         isMainComponent: true,
     });

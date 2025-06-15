@@ -17,7 +17,7 @@ export default () => {
     useEffect(() => {
         const lastSeenAlert = JSON.parse(localStorage.getItem("lastSeenAlert") || "0");
 
-        fetch(`https://re61.2137.workers.dev/${city}`, { credentials: "include" })
+        fetch(`https://re61.2137.workers.dev/${city}`)
             .then((res) => res.json() as Promise<Alert | null>)
             .then((res) => {
                 if (!res || (res.closeable && res.published <= lastSeenAlert)) return;

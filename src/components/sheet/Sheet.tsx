@@ -3,7 +3,7 @@ import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { SheetContentTypes } from "typings";
 import useGoBack from "@/hooks/useGoBack";
 import { Box } from "@mui/material";
-import getType from "./getType";
+import { useLocation } from "react-router-dom";
 
 const FavoriteStopsHeader = lazy(() => import("./FavoriteStops/FavoriteStopsHeader"));
 const FavoriteStopsContent = lazy(() => import("./FavoriteStops/FavoriteStopsContent"));
@@ -14,9 +14,6 @@ const FilterContent = lazy(() => import("./Filter/FilterContent"));
 const RouteHeader = lazy(() => import("./Route/RouteHeader"));
 const RouteContent = lazy(() => import("./Route/RouteContent"));
 
-const StationHeader = lazy(() => import("./Station/StationHeader"));
-const StationContent = lazy(() => import("./Station/StationContent"));
-
 const StopHeader = lazy(() => import("./Stop/StopHeader"));
 const StopContent = lazy(() => import("./Stop/StopContent"));
 
@@ -25,6 +22,18 @@ const TripContent = lazy(() => import("./Trip/TripContent"));
 
 const VehicleHeader = lazy(() => import("./Vehicle/VehicleHeader"));
 const VehicleContent = lazy(() => import("./Vehicle/VehicleContent"));
+
+const getType = () => {
+    const { pathname } = useLocation();
+
+    if (pathname.includes("favoriteStops")) return "FavoriteStops";
+    else if (pathname.includes("filter")) return "Filter";
+    else if (pathname.includes("route/")) return "Route";
+    else if (pathname.includes("stop/") || pathname.includes("station/")) return "Stop";
+    else if (pathname.includes("vehicle/")) return "Vehicle";
+    else if (pathname.includes("trip/")) return "Trip";
+    else return null;
+};
 
 export default () => {
     const [closing, setClosing] = useState<boolean>(false);
@@ -84,7 +93,6 @@ const renderHeader = (type: SheetContentTypes) => {
     if (type === "FavoriteStops") return <FavoriteStopsHeader />;
     else if (type === "Filter") return <FilterHeader />;
     else if (type === "Route") return <RouteHeader />;
-    else if (type === "Station") return <StationHeader />;
     else if (type === "Stop") return <StopHeader />;
     else if (type === "Vehicle") return <VehicleHeader />;
     else if (type === "Trip") return <TripHeader />;
@@ -94,7 +102,6 @@ const renderContent = (type: SheetContentTypes) => {
     if (type === "FavoriteStops") return <FavoriteStopsContent />;
     else if (type === "Filter") return <FilterContent />;
     else if (type === "Route") return <RouteContent />;
-    else if (type === "Station") return <StationContent />;
     else if (type === "Stop") return <StopContent />;
     else if (type === "Vehicle") return <VehicleContent />;
     else if (type === "Trip") return <TripContent />;
