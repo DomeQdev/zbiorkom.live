@@ -27,9 +27,14 @@ const getLast30Days = (language: string) => {
             year: "numeric",
         });
         
-        const dayName = date.toLocaleDateString(locale, {
-            weekday: "short",
+        let dayName = date.toLocaleDateString(locale, {
+            weekday: "long",
         });
+        
+        // Skróć poniedziałek do "poniedz." dla polskiego
+        if (locale === "pl-PL" && dayName === "poniedziałek") {
+            dayName = "poniedz.";
+        }
 
         return [
             date.toISOString().split("T")[0],
