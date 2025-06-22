@@ -217,5 +217,11 @@
         "noResults": "Brak wyników...",
         "noResultsDescription": "Spróbuj wyszukać coś innego.",
         "noFilter": "Wyszukaj coś..."
+    },
+    "Trip": {
+        "nextDepartureFromLoop": "Następny odjazd z pętli: za {{minutes}} min",
+        "nextDepartureFromLoopAt": "Następny odjazd z pętli: {{time}}",
+        "nextDepartureFromFirst": "Następny odjazd z {{stopName}}: za {{minutes}} min",
+        "nextDepartureFromFirstAt": "Następny odjazd z {{stopName}}: {{time}}"
     }
 }

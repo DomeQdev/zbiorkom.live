@@ -215,5 +215,11 @@
         "noResults": "No results...",
         "noResultsDescription": "Try searching for something else.",
         "noFilter": "Search for something..."
+    },
+    "Trip": {
+        "nextDepartureFromLoop": "Next departure from loop: in {{minutes}} min",
+        "nextDepartureFromLoopAt": "Next departure from loop: {{time}}",
+        "nextDepartureFromFirst": "Next departure from {{stopName}}: in {{minutes}} min",
+        "nextDepartureFromFirstAt": "Next departure from {{stopName}}: {{time}}"
     }
 }
