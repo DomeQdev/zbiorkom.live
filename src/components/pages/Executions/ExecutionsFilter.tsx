@@ -14,19 +14,29 @@ type Props = {
     setLoading: (loading: boolean) => void;
 };
 
-const last30Days = Array.from({ length: 30 }, (_, index) => {
-    const date = new Date();
-    date.setDate(date.getDate() - index);
+const getLast30Days = (language: string) => {
+    const locale = language === "en" ? "en-US" : "pl-PL";
+    
+    return Array.from({ length: 30 }, (_, index) => {
+        const date = new Date();
+        date.setDate(date.getDate() - index);
 
-    return [
-        date.toISOString().split("T")[0],
-        date.toLocaleDateString("pl-PL", {
+        const dateString = date.toLocaleDateString(locale, {
             day: "2-digit",
             month: "2-digit",
             year: "numeric",
-        }),
-    ];
-});
+        });
+        
+        const dayName = date.toLocaleDateString(locale, {
+            weekday: "short",
+        });
+
+        return [
+            date.toISOString().split("T")[0],
+            `${dateString}\n${dayName}`,
+        ];
+    });
+};
 
 export default ({
     city,
@@ -36,7 +46,8 @@ export default ({
     vehicle: [vehicle, setVehicle],
     setLoading,
 }: Props) => {
-    const { t } = useTranslation("Executions");
+    const { t, i18n } = useTranslation("Executions");
+    const last30Days = getLast30Days(i18n.language);
 
     const { data: dates, isLoading } = useQueryExecutionDates({
         city,
@@ -102,6 +113,14 @@ export default ({
                         label={displayDate}
                         value={valueDate}
                         disabled={!dates?.includes(valueDate)}
+                        sx={{
+                            whiteSpace: "pre-line",
+                            textAlign: "center",
+                            minHeight: "48px",
+                            "& .MuiTab-wrapper": {
+                                flexDirection: "column",
+                            },
+                        }}
                     />
                 ))}
             </Tabs>
