@@ -3,20 +3,23 @@ import { useNavigate } from "react-router-dom";
 import { Layer, Marker, Source } from "react-map-gl";
 import VehicleMarker from "./VehicleMarker";
 import StopMarker from "./StopMarker";
-import { Badge, Fab } from "@mui/material";
+import { Badge, Box, Button, Fab } from "@mui/material";
 import { FilterAlt, FilterAltOutlined } from "@mui/icons-material";
 import useFilterStore from "@/hooks/useFilterStore";
 import { useShallow } from "zustand/react/shallow";
 import useMarkers from "@/hooks/useMarkers";
 import DotMarkers from "./DotMarkers";
 import { DotVehicle, EStop, EVehicle, Vehicle } from "typings";
+import cities from "cities";
+import { useTranslation } from "react-i18next";
 
 export default ({ city }: { city: string }) => {
     const [routes, models] = useFilterStore(useShallow((state) => [state.routes, state.models]));
     const badgeRef = useRef<HTMLDivElement>(null);
+    const { t } = useTranslation("Menu");
     const navigate = useNavigate();
 
-    const { vehicles, stops, useDots, geoJson } = useMarkers({
+    const { vehicles, stops, useDots, geoJson, suggestedCity } = useMarkers({
         city,
         moveBadge: () => {
             badgeRef.current?.animate(
@@ -98,6 +101,39 @@ export default ({ city }: { city: string }) => {
                     {isFiltering ? <FilterAlt /> : <FilterAltOutlined />}
                 </Fab>
             </Badge>
+
+            {suggestedCity && (
+                <Box
+                    sx={{
+                        position: "absolute",
+                        top: 16,
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        backgroundColor: "background.paper",
+                        color: "text.primary",
+                        fontSize: "0.875rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        padding: 1,
+                        borderRadius: 2,
+                        zIndex: 1000,
+                    }}
+                >
+                    <span style={{ marginLeft: 8 }}>
+                        {t("switchTo")} <b>{cities[suggestedCity].name}</b>?
+                    </span>
+                    <Button
+                        variant="contained"
+                        size="small"
+                        sx={{ fontWeight: "bold" }}
+                        color="primary"
+                        onClick={() => navigate(`/${suggestedCity}`, { replace: true })}
+                    >
+                        {t("yes")}
+                    </Button>
+                </Box>
+            )}
         </>
     );
 };

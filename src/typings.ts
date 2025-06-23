@@ -99,6 +99,7 @@ export enum EStop {
 }
 
 export type MapData = {
+    suggestedCity?: string;
     bbox: [number, number, number, number];
     stops?: Stop[];
     geoJson?: {

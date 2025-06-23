@@ -24,6 +24,7 @@ export default ({ city, moveBadge }: Props) => {
     const [stops, setStops] = useState<Stop[]>([]);
     const [useDots, setUseDots] = useState<MapData["useDots"]>(false);
     const [geoJson, setGeoJson] = useState<MapData["geoJson"]>();
+    const [suggestedCity, setSuggestedCity] = useState<string | undefined>(undefined);
 
     const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -58,6 +59,7 @@ export default ({ city, moveBadge }: Props) => {
             setUseDots(data.useDots || false);
             if (data.stops) setStops(data.stops);
             setGeoJson(data.geoJson);
+            setSuggestedCity(data.suggestedCity);
 
             if ((routes.length || models.length) && !data.positions.length) {
                 moveBadge();
@@ -109,5 +111,6 @@ export default ({ city, moveBadge }: Props) => {
         vehicles,
         stops,
         geoJson,
+        suggestedCity,
     };
 };

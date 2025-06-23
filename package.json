@@ -22,6 +22,11 @@
         "socket.io-client": "^4.8.1",
         "zustand": "^5.0.4"
     },
+    "browserslist": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+    ],
     "scripts": {
         "start": "vite",
         "build": "vite build && npx workbox-cli generateSW workbox-config.js",
@@ -39,6 +44,7 @@
         "@types/node": "^22.15.2",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
+        "@vitejs/plugin-legacy": "^6.1.1",
         "@vitejs/plugin-react": "^4.4.1",
         "typescript": "^5.8.3",
         "vite": "^6.3.5",

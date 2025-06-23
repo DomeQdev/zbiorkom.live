@@ -15,8 +15,10 @@ export default memo(() => {
     const { current: map } = useMap();
     const navigate = useNavigate();
 
+    const isStation = window.location.pathname.includes("/station");
+
     const { data, refetch } = useQueryStopDepartures({
-        city: window.location.pathname.includes("/station") ? "pkp" : city!,
+        city: isStation ? "pkp" : city!,
         stop: stop!,
         isMainComponent: true,
     });
@@ -90,10 +92,9 @@ export default memo(() => {
                     vehicle={departure[EStopDeparture.vehicle]!}
                     onClick={() => {
                         navigate(
-                            `/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.vehicleId])}`,
-                            {
-                                state: -2,
-                            }
+                            `/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.vehicleId])}` +
+                                (isStation ? "?pkp" : ""),
+                            { state: -2 }
                         );
                     }}
                 />

@@ -186,6 +186,19 @@ export default ({
                 >
                     &copy; OpenStreetMap contributors
                 </span>
+                <a
+                    style={{
+                        fontSize: "0.75rem",
+                        cursor: "pointer",
+                        textDecoration: "none",
+                        color: "inherit",
+                    }}
+                    href="/privacy-policy.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {t("privacyPolicy")}
+                </a>
             </div>
         </SwipeableDrawer>
     );
