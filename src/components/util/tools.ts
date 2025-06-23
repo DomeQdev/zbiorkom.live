@@ -9,7 +9,7 @@ export const getTime = (time: number) => {
 export const getSheetHeight = () => window.innerHeight / 3 + 24;
 
 const mapStyles: Record<string, any> = {
-    default: "mapbox://styles/domeq/cm7ayfc91005c01r3f6m77mjx",
+    default: "mapbox://styles/domeq2alt/cmc8v1vbc01p001sddiys24cv",
     osm: {
         version: 8,
         sources: {

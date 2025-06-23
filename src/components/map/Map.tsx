@@ -33,7 +33,7 @@ export default memo(({ children }: { children: JSX.Element | JSX.Element[] }) =>
 
     return (
         <Map
-            mapboxAccessToken="pk.eyJ1IjoiZG9tZXEiLCJhIjoiY2t6c2JlOWZ3MGx3cjJubW9zNDc5eGpwdiJ9.nUlvFKfUzpxBxJVc4zmAMA"
+            mapboxAccessToken="pk.eyJ1IjoiZG9tZXEyYWx0IiwiYSI6ImNtYzh2M2NhNDA2eTEyanBjbzU5bG02ZnkifQ.QSqseCfhAQdA3ndk08ZCqQ"
             mapStyle={getMapStyle()}
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}
