@@ -29,4 +29,5 @@ module.exports = {
         },
     ],
     navigateFallback: "/index.html",
+    navigateFallbackDenylist: [/\.pdf$/],
 };
