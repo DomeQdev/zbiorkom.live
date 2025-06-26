@@ -22,6 +22,9 @@ export default () => {
     const navigate = useNavigate();
     const goBack = useGoBack();
 
+    const showBrigade = localStorage.getItem("brigade") === "true";
+    const showFleet = localStorage.getItem("fleet") === "true";
+
     const { data } = useQueryRoute({
         city: city!,
         route: route!,
@@ -89,6 +92,8 @@ export default () => {
                 <VehicleMarker
                     key={vehicle[EVehicle.id]}
                     vehicle={vehicle as Vehicle}
+                    showBrigade={showBrigade}
+                    showFleet={showFleet}
                     onClick={() =>
                         navigate(`/${city}/vehicle/${encodeURIComponent(vehicle[EVehicle.id])}`, {
                             state: -3,

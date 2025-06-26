@@ -11,7 +11,7 @@ type Props = {
     enabled?: boolean;
 };
 
-const timeout = 1000;
+const timeout = 500;
 
 export const useQueryExecutionDates = (props: Props) => {
     return useQuery({

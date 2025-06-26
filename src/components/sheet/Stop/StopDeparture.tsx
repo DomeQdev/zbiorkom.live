@@ -29,14 +29,14 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
     const minutesToDeparture = useTime(estimated);
 
     const isCancelled = delay === "cancelled";
-    const showCountdown = !isCancelled;
+    const showCountdown = !isCancelled && estimated > Date.now();
 
     const onSuperClick = () => {
         navigate(
             [
                 city,
                 vehicle ? "vehicle" : "trip",
-                vehicle ? encodeURIComponent(vehicle[EVehicle.id]) : departure[EStopDeparture.id],
+                encodeURIComponent(vehicle ? vehicle[EVehicle.id] : departure[EStopDeparture.id]),
             ].join("/") + (isStation ? "?pkp" : ""),
             {
                 state: -2,
@@ -47,17 +47,15 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
     return (
         <ListItemButton
             onClick={() => {
-                if (isStation) {
-                    onSuperClick();
+                if (isStation) return onSuperClick();
+
+                if (vehicle) {
+                    map?.flyTo({
+                        center: vehicle[EVehicle.location],
+                        zoom: map.getZoom() > 15 ? map.getZoom() : 15,
+                    });
                 } else {
-                    if (vehicle) {
-                        map?.flyTo({
-                            center: vehicle[EVehicle.location],
-                            zoom: map.getZoom() > 15 ? map.getZoom() : 15,
-                        });
-                    } else {
-                        setExpanded(!isExpanded);
-                    }
+                    setExpanded(!isExpanded);
                 }
             }}
             onDoubleClick={onSuperClick}

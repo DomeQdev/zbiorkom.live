@@ -3,11 +3,17 @@ import Icon from "@/ui/Icon";
 import { Marker } from "react-map-gl";
 import { ERoute, EVehicle, Vehicle } from "typings";
 
-export default ({ vehicle, onClick }: { vehicle: Vehicle; onClick?: () => void }) => {
-    const showBrigade = localStorage.getItem("brigade") === "true";
-    const showFleet = localStorage.getItem("fleet") === "true";
+type Props = {
+    vehicle: Vehicle;
+    showBrigade: boolean;
+    showFleet: boolean;
+    onClick?: () => void;
+};
+
+export default ({ vehicle, showBrigade, showFleet, onClick }: Props) => {
+    // const showBrigade = localStorage.getItem("brigade") === "true";
+    // const showFleet = localStorage.getItem("fleet") === "true";
     const fleetId = vehicle[EVehicle.id].split("/")[1];
-    const isEstimated = fleetId.startsWith("__");
 
     return (
         <Marker
@@ -16,7 +22,7 @@ export default ({ vehicle, onClick }: { vehicle: Vehicle; onClick?: () => void }
             style={{ zIndex: 3 }}
             onClick={onClick}
         >
-            <div className="vehicle marker" style={{ background: vehicle[EVehicle.route][ERoute.color], opacity: isEstimated ? 0.8 : 1 }}>
+            <div className="vehicle marker" style={{ background: vehicle[EVehicle.route][ERoute.color] }}>
                 {/* {vehicle.emoji && (
                     <span
                         className="emoji"

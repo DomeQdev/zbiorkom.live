@@ -64,7 +64,12 @@ export default () => {
                     route: vehicle[EVehicle.route][ERoute.name],
                 }}
             />
-            <VehicleMarker vehicle={vehicle} />
+
+            <VehicleMarker
+                vehicle={vehicle}
+                showBrigade={localStorage.getItem("brigade") === "true"}
+                showFleet={localStorage.getItem("fleet") === "true"}
+            />
 
             {trip && (
                 <TripRoute

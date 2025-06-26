@@ -2,7 +2,13 @@ import Icon, { defaultColors } from "@/ui/Icon";
 import { SvgIcon } from "@mui/material";
 import { EStop, Stop } from "typings";
 
-export default ({ stop, disablePadding }: { stop: Stop; disablePadding?: boolean }) => {
+type Props = {
+    stop: Stop;
+    disablePadding?: boolean;
+    useStopCodeAsIcon?: boolean;
+};
+
+export default ({ stop, disablePadding, useStopCodeAsIcon }: Props) => {
     const color = defaultColors[stop[EStop.type]];
 
     if (stop[EStop.station]) {
@@ -23,6 +29,8 @@ export default ({ stop, disablePadding }: { stop: Stop; disablePadding?: boolean
         );
     }
 
+    const useStopCode = stop[EStop.code] && stop[EStop.code].length <= 2 && useStopCodeAsIcon;
+
     return (
         <svg
             width="30"
@@ -33,13 +41,28 @@ export default ({ stop, disablePadding }: { stop: Stop; disablePadding?: boolean
             style={{ cursor: "pointer", transform: `rotate(${stop[EStop.bearing] || 0}deg)` }}
         >
             <circle cx="15" cy="15" r="11" fill={color} />
+
             <g
                 data-stop-icon
                 fill="hsla(0, 0%, 100%, 0.8)"
                 transform={`translate(6, 6) scale(0.75) rotate(${-stop[EStop.bearing] || 0} 12 12)`}
             >
-                <Icon type={stop[EStop.type]} />
+                {useStopCode ? (
+                    <text
+                        x="12"
+                        y="13.25"
+                        dominantBaseline="middle"
+                        textAnchor="middle"
+                        fontSize="16"
+                        fontWeight="bold"
+                    >
+                        {stop[EStop.code]}
+                    </text>
+                ) : (
+                    <Icon type={stop[EStop.type]} />
+                )}
             </g>
+
             {stop[EStop.bearing] !== null && (
                 <g transform={`translate(15, 15) rotate(45) translate(-30, -30)`}>
                     <path d="m10 19 5-5 5 5z" fill={color} transform="rotate(-45 19.5 13)" />

@@ -60,7 +60,6 @@ const VehicleInformation = ({ title, icon, text }: { title: string; icon: JSX.El
             py: 0,
             backgroundColor: "background.paper",
             color: "hsla(0, 0%, 100%, 0.9)",
-            borderRadius: 0.5,
             minHeight: 56,
         }}
     >

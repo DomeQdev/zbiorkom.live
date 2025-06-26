@@ -13,6 +13,9 @@ export default () => {
     const { current: map } = useMap();
     const { city } = useParams();
 
+    const showBrigade = localStorage.getItem("brigade") === "true";
+    const showFleet = localStorage.getItem("fleet") === "true";
+
     const [tempRoutes, tempModels, useTemp, setSearch, setInitialPosition, applyChanges] = useFilterStore(
         useShallow((state) => [
             state.tempRoutes,
@@ -60,12 +63,18 @@ export default () => {
         <>
             <Helm variable="city" />
 
-            {!data?.useDots &&
+            {data?.useDots ? (
+                <DotMarkers vehicles={data.positions} />
+            ) : (
                 data?.positions.map((vehicle) => (
-                    <VehicleMarker key={vehicle[EVehicle.id]} vehicle={vehicle} />
-                ))}
-
-            {data?.useDots && <DotMarkers vehicles={data.positions} />}
+                    <VehicleMarker
+                        key={vehicle[EVehicle.id]}
+                        vehicle={vehicle}
+                        showBrigade={showBrigade}
+                        showFleet={showFleet}
+                    />
+                ))
+            )}
         </>
     );
 };

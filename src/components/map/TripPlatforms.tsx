@@ -12,7 +12,7 @@ export default ({ platforms, color }: { platforms: Platforms; color: string }) =
                     "fill-opacity": 0.5,
                     "fill-outline-color": color,
                 }}
-                filter={[">=", ["zoom"] as unknown as "zoom", 13]}
+                filter={[">=", ["zoom"], 13]}
             />
 
             <Layer
@@ -32,7 +32,7 @@ export default ({ platforms, color }: { platforms: Platforms; color: string }) =
                     "text-halo-color": color,
                     "text-halo-width": 1,
                 }}
-                filter={[">=", ["zoom"] as unknown as "zoom", 16]}
+                filter={[">=", ["zoom"], 16]}
             />
         </Source>
     );

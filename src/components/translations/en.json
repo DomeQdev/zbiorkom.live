@@ -83,7 +83,7 @@
         "stations": "Stations",
         "howToUse": "How to use the search?",
         "howToVehicles": "Searching for vehicles",
-        "vehiclesDescription": "Search using the fleet number (e.g., 5869), route (e.g., 105/) or brigade (e.g., 105/1)",
+        "vehiclesDescription": "Search using the fleet number (e.g., 5869), route (e.g., 105) or brigade (e.g., 105/1)",
         "howToStops": "Searching for stops and stations",
         "stopsDescription": "Search using the name, e.g., Main Station.",
         "howToRoutes": "Searching for routes",
@@ -143,7 +143,8 @@
         "dataSources": "Data sources",
         "welcomeTo": "Welcome to",
         "welcomeText": "Select a city to see live public transport on map.",
-        "searchCities": "Search cities"
+        "searchCities": "Search cities",
+        "useStopCodeAsIcon": "Use stop code as icon"
     },
     "Languages": {
         "en": "English",
