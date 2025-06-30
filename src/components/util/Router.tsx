@@ -35,7 +35,6 @@ const VehicleSun = lazy(() => import("@/pages/Vehicle/Sun"));
 
 const Cities = lazy(() => import("@/pages/Cities"));
 const City = lazy(() => import("@/pages/City"));
-const Copyright = lazy(() => import("@/pages/Copyright"));
 const Error = lazy(() => import("@/pages/Error"));
 const Executions = lazy(() => import("@/pages/Executions"));
 const FavoriteStops = lazy(() => import("@/pages/FavoriteStops"));
@@ -55,6 +54,7 @@ export default () => {
                     <Outlet />
                 </Map>
             ),
+            errorElement: <Error />,
             children: [
                 {
                     path: "",
@@ -343,14 +343,6 @@ export default () => {
                                     ),
                                 },
                             ],
-                        },
-                        {
-                            path: "copyright",
-                            element: (
-                                <Suspense>
-                                    <Copyright />
-                                </Suspense>
-                            ),
                         },
                     ],
                 },

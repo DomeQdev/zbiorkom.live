@@ -6,7 +6,6 @@
         "blog": "Blog",
         "about": "About the app",
         "settings": "Settings",
-        "dataSources": "Data sources",
         "executions": "Dispatches",
         "privacyPolicy": "Privacy policy",
         "switchTo": "Switch to",
@@ -140,7 +139,6 @@
         "behavior": "Application behavior",
         "moveToLastLocation": "Use last location when opening the map",
         "useLocationSorting": "Sort stops according to your location",
-        "dataSources": "Data sources",
         "welcomeTo": "Welcome to",
         "welcomeText": "Select a city to see live public transport on map.",
         "searchCities": "Search cities"

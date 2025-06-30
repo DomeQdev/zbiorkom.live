@@ -6,7 +6,6 @@
         "blog": "Blog",
         "about": "O aplikacji",
         "settings": "Ustawienia",
-        "dataSources": "Źródła danych",
         "executions": "Co wyjechało?",
         "privacyPolicy": "Polityka prywatności",
         "switchTo": "Przełączyć na",
@@ -142,7 +141,6 @@
         "behavior": "Zachowanie aplikacji",
         "moveToLastLocation": "Użyj ostatniej lokalizacji przy otwarciu mapy",
         "useLocationSorting": "Sortuj przystanki według Twojej lokalizacji",
-        "dataSources": "Źródła danych",
         "welcomeTo": "Witaj na",
         "welcomeText": "Wybierz miasto, aby zobaczyć komunikację miejską na żywo.",
         "searchCities": "Wyszukaj miasto"
