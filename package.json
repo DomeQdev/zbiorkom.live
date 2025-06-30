@@ -29,7 +29,7 @@
     ],
     "scripts": {
         "start": "vite",
-        "build": "vite build && npx workbox-cli generateSW workbox-config.js",
+        "build": "vite build && npx workbox-cli generateSW workbox-config.cjs",
         "preview": "vite preview"
     },
     "eslintConfig": {
