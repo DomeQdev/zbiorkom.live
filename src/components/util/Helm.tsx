@@ -20,7 +20,7 @@ export default ({ variable, dictionary }: { variable: string; dictionary?: $Dict
 
     return (
         <>
-            <title>zbiorkom.live - {title}</title>
+            <title>{`zbiorkom.live - ${title}`}</title>
             <meta property="og:title" content={`zbiorkom.live - ${title}`} />
 
             {hasDescription && <meta name="description" content={description} />}
