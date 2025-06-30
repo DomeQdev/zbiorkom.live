@@ -32,6 +32,9 @@ export default ({ city }: { city: string }) => {
         },
     });
 
+    const useStopCodeAsIcon = localStorage.getItem("useStopCodeAsIcon") === "true";
+    const showBrigade = localStorage.getItem("brigade") === "true";
+    const showFleet = localStorage.getItem("fleet") === "true";
     const isFiltering = routes.length || models.length;
 
     return (
@@ -43,6 +46,8 @@ export default ({ city }: { city: string }) => {
                     <VehicleMarker
                         key={vehicle[EVehicle.id]}
                         vehicle={vehicle as Vehicle}
+                        showBrigade={showBrigade}
+                        showFleet={showFleet}
                         onClick={() =>
                             navigate(
                                 `/${city}/vehicle/${encodeURIComponent(vehicle[EVehicle.id])}` +
@@ -69,7 +74,7 @@ export default ({ city }: { city: string }) => {
                         navigate(`/${city}/${stopType}/${encodeURIComponent(stop[EStop.id])}`);
                     }}
                 >
-                    <StopMarker stop={stop} />
+                    <StopMarker stop={stop} useStopCodeAsIcon={useStopCodeAsIcon} />
                 </Marker>
             ))}
 

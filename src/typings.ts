@@ -83,7 +83,9 @@ export type Stop = [
     station: boolean,
     bearing: number,
     routes: Route[],
-    direction?: string
+    direction?: string,
+    code?: string,
+    exits?: StopExit[]
 ];
 
 export enum EStop {
@@ -96,6 +98,15 @@ export enum EStop {
     bearing = 6,
     routes = 7,
     direction = 8,
+    code = 9,
+    exits = 10,
+}
+
+export type StopExit = [name: string, location: Location];
+
+export enum EStopExit {
+    name = 0,
+    location = 1,
 }
 
 export type MapData = {

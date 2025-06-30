@@ -3,9 +3,17 @@ import { useTranslation } from "react-i18next";
 import { memo, useState } from "react";
 
 export default memo(() => {
-    const [moveToLastLocation, setMove] = useState<boolean>(JSON.parse(localStorage.getItem("moveToLastLocation") || "false"));
-    const [useLocationSorting, setSorting] = useState<boolean>(JSON.parse(localStorage.getItem("useLocationSorting") || "false"));
     const { t } = useTranslation("Settings");
+
+    const [moveToLastLocation, setMove] = useState<boolean>(
+        JSON.parse(localStorage.getItem("moveToLastLocation") || "false")
+    );
+    const [useLocationSorting, setSorting] = useState<boolean>(
+        JSON.parse(localStorage.getItem("useLocationSorting") || "false")
+    );
+    const [useStopCodeAsIcon, setStopCodeAsIcon] = useState<boolean>(
+        JSON.parse(localStorage.getItem("useStopCodeAsIcon") || "false")
+    );
 
     const settings = [
         {
@@ -17,6 +25,11 @@ export default memo(() => {
             key: "useLocationSorting",
             value: useLocationSorting,
             setValue: setSorting,
+        },
+        {
+            key: "useStopCodeAsIcon",
+            value: useStopCodeAsIcon,
+            setValue: setStopCodeAsIcon,
         },
     ] as const;
 

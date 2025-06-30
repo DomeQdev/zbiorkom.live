@@ -1,11 +1,11 @@
-import { Marker, useMap } from "react-map-gl";
+import { Layer, Marker, Source, useMap } from "react-map-gl";
 import { memo, useEffect, useMemo, useState } from "react";
 import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { Socket } from "socket.io-client";
 import StopMarker from "@/map/StopMarker";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";
-import { EStop, EStopDeparture, EStopDepartures } from "typings";
+import { EStop, EStopDeparture, EStopDepartures, EStopExit } from "typings";
 import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 
 export default memo(() => {
@@ -16,6 +16,8 @@ export default memo(() => {
     const navigate = useNavigate();
 
     const isStation = window.location.pathname.includes("/station");
+    const showBrigade = localStorage.getItem("brigade") === "true";
+    const showFleet = localStorage.getItem("fleet") === "true";
 
     const { data, refetch } = useQueryStopDepartures({
         city: isStation ? "pkp" : city!,
@@ -69,27 +71,84 @@ export default memo(() => {
         return uniqueTrips;
     }, [data]);
 
+    const stopExits = useMemo(() => {
+        if (!stopData?.[EStop.exits]?.length) return null;
+
+        return {
+            type: "FeatureCollection",
+            features: stopData[EStop.exits].map((exit) => ({
+                type: "Feature",
+                geometry: {
+                    type: "Point",
+                    coordinates: exit[EStopExit.location],
+                },
+                properties: {
+                    name: exit[EStopExit.name],
+                },
+            })),
+        };
+    }, [stopData]);
+
+    if (!stopData) return null;
+
     return (
         <>
-            {stopData && <Helm variable="stop" dictionary={{ stop: stopData[EStop.name] }} />}
+            <Helm variable="stop" dictionary={{ stop: stopData[EStop.name] }} />
 
-            {stopData && (
-                <Marker
-                    key={stopData[EStop.id]}
-                    longitude={stopData[EStop.location][0]}
-                    latitude={stopData[EStop.location][1]}
-                    style={{ zIndex: 2 }}
-                    pitchAlignment="map"
-                    rotationAlignment="map"
-                >
-                    <StopMarker stop={stopData} />
-                </Marker>
+            <Marker
+                key={stopData[EStop.id]}
+                longitude={stopData[EStop.location][0]}
+                latitude={stopData[EStop.location][1]}
+                style={{ zIndex: 2 }}
+                pitchAlignment="map"
+                rotationAlignment="map"
+            >
+                <StopMarker
+                    stop={stopData}
+                    useStopCodeAsIcon={localStorage.getItem("useStopCodeAsIcon") === "true"}
+                />
+            </Marker>
+
+            {stopExits && (
+                <Source type="geojson" data={stopExits}>
+                    <Layer
+                        id="stop-exits"
+                        type="symbol"
+                        layout={{
+                            "icon-image": "entrance",
+                            "icon-size": 1.3,
+                            "icon-allow-overlap": true,
+                        }}
+                        filter={[">=", ["zoom"], 16]}
+                    />
+                    <Layer
+                        id="stop-exit-labels"
+                        type="symbol"
+                        layout={{
+                            "text-field": ["get", "name"],
+                            "text-size": 14,
+                            "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
+                            "text-anchor": "top",
+                            "text-justify": "center",
+                            "text-offset": [0, 0.8],
+                            "text-allow-overlap": false,
+                        }}
+                        paint={{
+                            "text-color": "#fff",
+                            "text-halo-color": "#5373d4",
+                            "text-halo-width": 1.5,
+                        }}
+                        filter={[">=", ["zoom"], 16]}
+                    />
+                </Source>
             )}
 
             {liveDepartures.map((departure) => (
                 <VehicleMarker
                     key={departure[EStopDeparture.vehicleId]}
                     vehicle={departure[EStopDeparture.vehicle]!}
+                    showBrigade={showBrigade}
+                    showFleet={showFleet}
                     onClick={() => {
                         navigate(
                             `/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.vehicleId])}` +

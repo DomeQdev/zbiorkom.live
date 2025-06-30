@@ -97,7 +97,13 @@ export default memo(() => {
                 />
             )}
 
-            {vehicle && <VehicleMarker vehicle={vehicle} />}
+            {vehicle && (
+                <VehicleMarker
+                    vehicle={vehicle}
+                    showBrigade={localStorage.getItem("brigade") === "true"}
+                    showFleet={localStorage.getItem("fleet") === "true"}
+                />
+            )}
 
             <Outlet />
         </>

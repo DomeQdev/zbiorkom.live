@@ -82,7 +82,7 @@
         "stations": "Stacje",
         "howToUse": "Jak używać wyszukiwarki?",
         "howToVehicles": "Wyszukiwanie pojazdów",
-        "vehiclesDescription": "Wyszukaj używając numeru taborowego (np. 5869), linii (np. 105/) lub brygady (np. 105/1)",
+        "vehiclesDescription": "Wyszukaj używając numeru taborowego (np. 5869), linii (np. 105) lub brygady (np. 105/1)",
         "howToStops": "Wyszukiwanie przystanków i stacji",
         "stopsDescription": "Wyszukaj używając nazwy, np. Dworzec Główny.",
         "howToRoutes": "Wyszukiwanie linii",
@@ -143,7 +143,8 @@
         "useLocationSorting": "Sortuj przystanki według Twojej lokalizacji",
         "welcomeTo": "Witaj na",
         "welcomeText": "Wybierz miasto, aby zobaczyć komunikację miejską na żywo.",
-        "searchCities": "Wyszukaj miasto"
+        "searchCities": "Wyszukaj miasto",
+        "useStopCodeAsIcon": "Użyj numeru przystanku jako ikony"
     },
     "Languages": {
         "en": "Angielski",

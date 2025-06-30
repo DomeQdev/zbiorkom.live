@@ -72,7 +72,7 @@ export default ({ shape, stops, color }: Props) => {
                         "text-halo-color": "#fff",
                         "text-halo-width": 1,
                     }}
-                    filter={[">=", ["zoom"] as unknown as "zoom", 13.5]}
+                    filter={[">=", ["zoom"], 13.5]}
                 />
             </Source>
         </>

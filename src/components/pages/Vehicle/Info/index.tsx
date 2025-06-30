@@ -93,19 +93,22 @@ export default () => {
                     {name}
                 </Typography>
 
-                {data && <VehicleInfo vehicle={data} />}
-
-                {data === null && (
-                    <p
-                        style={{
-                            paddingLeft: 16,
-                        }}
-                    >
-                        {t("noVehicleInfo")}
-                    </p>
+                {data?.[EVehicleInfo.id] ? (
+                    <>
+                        <VehicleInfo vehicle={data} />
+                        <VehicleImage hash={data[EVehicleInfo.imageHash]} imageHeight={imageHeight} />
+                    </>
+                ) : (
+                    !isLoading && (
+                        <p
+                            style={{
+                                paddingLeft: 16,
+                            }}
+                        >
+                            {t("noVehicleInfo")}
+                        </p>
+                    )
                 )}
-
-                {data && <VehicleImage hash={data[EVehicleInfo.imageHash]} imageHeight={imageHeight} />}
 
                 {isLoading && (
                     <Box
