@@ -1,12 +1,9 @@
 import { Box, Button, Typography } from "@mui/material";
-import { Helmet } from "react-helmet-async";
 
 export default () => {
     return (
         <>
-            <Helmet>
-                <meta name="robots" content="noindex" />
-            </Helmet>
+            <meta name="robots" content="noindex" />
 
             <Box
                 sx={{

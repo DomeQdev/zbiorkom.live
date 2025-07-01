@@ -6,7 +6,6 @@
         "blog": "Blog",
         "about": "About the app",
         "settings": "Settings",
-        "dataSources": "Data sources",
         "executions": "Dispatches",
         "privacyPolicy": "Privacy policy",
         "switchTo": "Switch to",
@@ -38,7 +37,6 @@
         "frequency": "Every <0>{{minutes}}</0> min",
         "then": "Then",
         "noMoreDepartures": "No more departures",
-        "noVehicleInfo": "No vehicle info",
         "routeChange": "Route change to {{route}}",
         "terminus": "Terminus",
         "operatedBy": "Trip operated by {{value}}",
@@ -108,7 +106,8 @@
         "prodYear": "Production year",
         "lowFloor": "Low floor",
         "airConditioned": "Air conditioned",
-        "equipment": "Equipment"
+        "equipment": "Equipment",
+        "noData": "No vehicle data available"
     },
     "Updates": {
         "downloadingUpdate": "Downloading update..."
@@ -140,7 +139,6 @@
         "behavior": "Application behavior",
         "moveToLastLocation": "Use last location when opening the map",
         "useLocationSorting": "Sort stops according to your location",
-        "dataSources": "Data sources",
         "welcomeTo": "Welcome to",
         "welcomeText": "Select a city to see live public transport on map.",
         "searchCities": "Search cities",

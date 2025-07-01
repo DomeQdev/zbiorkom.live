@@ -2,7 +2,6 @@ import { Box, Dialog, DialogContent, DialogTitle, Divider, IconButton, Typograph
 import { ArrowBack } from "@mui/icons-material";
 import { ReactNode, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
 import { EStopUpdate, ETrip, ETripStop } from "typings";
 import useGoBack from "@/hooks/useGoBack";
 import Sticky from "@/ui/Sticky";

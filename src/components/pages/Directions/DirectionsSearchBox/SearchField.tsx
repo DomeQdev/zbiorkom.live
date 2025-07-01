@@ -12,7 +12,7 @@ export default ({ type }: { type: "from" | "to" }) => {
     const [anchorEl, setAnchorEl] = useState<HTMLInputElement | null>(null);
     const { city } = useParams();
 
-    const { data: searchPlaces, isLoading } = useQuerySearchPlaces(city!, place.text, Boolean(anchorEl));
+    const { data: searchPlaces, isLoading } = useQuerySearchPlaces(city!, place.text);
 
     return (
         <Box

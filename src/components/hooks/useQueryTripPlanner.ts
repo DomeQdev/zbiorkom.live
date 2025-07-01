@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Place } from "./usePlacesStore";
 import cities from "cities";
 
-export const useQuerySearchPlaces = (city: string, query: string, enabled: boolean) => {
+export const useQuerySearchPlaces = (city: string, query: string) => {
     const [longitude, latitude] = useLocationStore((state) => state.userLocation! || cities[city].location);
 
     return useQuery({
@@ -27,7 +27,6 @@ export const useQuerySearchPlaces = (city: string, query: string, enabled: boole
                 signal
             );
         },
-        enabled,
         refetchOnMount: false,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,

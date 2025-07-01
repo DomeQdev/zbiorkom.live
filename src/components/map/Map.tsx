@@ -1,11 +1,11 @@
-import { memo, useMemo } from "react";
+import { memo, ReactElement, useMemo } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import cities from "cities";
 import Map from "react-map-gl";
 import { useLocation } from "react-router-dom";
 import { getMapStyle } from "@/util/tools";
 
-export default memo(({ children }: { children: JSX.Element | JSX.Element[] }) => {
+export default memo(({ children }: { children: ReactElement[] }) => {
     const { pathname } = useLocation();
 
     const initialViewState = useMemo(() => {
@@ -41,8 +41,9 @@ export default memo(({ children }: { children: JSX.Element | JSX.Element[] }) =>
                 target.touchZoomRotate.disableRotation();
 
                 target.getCanvas().addEventListener("webglcontextlost", () => {
-                    if (!document.hidden) window.location.reload();
-                    else {
+                    if (!document.hidden) {
+                        window.location.reload();
+                    } else {
                         window.addEventListener("focus", () => {
                             window.location.reload();
                         });

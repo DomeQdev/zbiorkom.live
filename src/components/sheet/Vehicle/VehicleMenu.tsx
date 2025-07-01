@@ -1,15 +1,14 @@
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
-import { Build, EventNote, MoreVert, Share, WbSunny } from "@mui/icons-material";
+import { Build, EventNote, MoreVert, Share } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { useMemo, useState } from "react";
-import cities from "cities";
 import useVehicleStore from "@/hooks/useVehicleStore";
-import { useShallow } from "zustand/react/shallow";
-import { ETrip, EVehicle } from "typings";
+import { EVehicle } from "typings";
+import { useState } from "react";
+import cities from "cities";
 
 export default () => {
-    const [vehicle, trip] = useVehicleStore(useShallow((state) => [state.vehicle, state.trip]));
+    const vehicle = useVehicleStore(((state) => state.vehicle));
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const { t } = useTranslation(["Vehicle", "Shared"]);
@@ -17,18 +16,6 @@ export default () => {
     const navigate = useNavigate();
 
     const cityData = cities[city!];
-
-    const showSunPosition = useMemo(() => {
-        if (
-            !trip ||
-            !trip[ETrip.shape] ||
-            trip[ETrip.shape].geometry.coordinates.length <= trip[ETrip.stops].length
-        ) {
-            return false;
-        }
-
-        return true;
-    }, [trip]);
 
     return (
         <>
@@ -62,17 +49,6 @@ export default () => {
                     </ListItemIcon>
                     <ListItemText primary={t("share", { ns: "Shared" })} />
                 </MenuItem>
-
-                {showSunPosition && (
-                    <MenuItem
-                        onClick={() => navigate(window.location.pathname + "/sun" + window.location.search)}
-                    >
-                        <ListItemIcon>
-                            <WbSunny fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary={t("sunPosition")} />
-                    </MenuItem>
-                )}
 
                 {!!vehicle?.[EVehicle.brigade] && (
                     <MenuItem

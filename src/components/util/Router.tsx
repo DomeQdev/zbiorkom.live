@@ -28,14 +28,10 @@ const StopTimePicker = lazy(() => import("@/sheet/Stop/StopTimePicker"));
 
 const Trip = lazy(() => import("@/pages/Trip"));
 const TripAlerts = lazy(() => import("@/pages/Trip/TripAlerts"));
-
-const Vehicle = lazy(() => import("@/pages/Vehicle"));
-const VehicleInfo = lazy(() => import("@/pages/Vehicle/Info"));
-const VehicleSun = lazy(() => import("@/pages/Vehicle/Sun"));
+const VehicleInfo = lazy(() => import("@/pages/Trip/VehicleInfo"));
 
 const Cities = lazy(() => import("@/pages/Cities"));
 const City = lazy(() => import("@/pages/City"));
-const Copyright = lazy(() => import("@/pages/Copyright"));
 const Error = lazy(() => import("@/pages/Error"));
 const Executions = lazy(() => import("@/pages/Executions"));
 const FavoriteStops = lazy(() => import("@/pages/FavoriteStops"));
@@ -55,6 +51,7 @@ export default () => {
                     <Outlet />
                 </Map>
             ),
+            errorElement: <Error />,
             children: [
                 {
                     path: "",
@@ -126,7 +123,7 @@ export default () => {
                             path: "vehicle/:vehicle",
                             element: (
                                 <Suspense>
-                                    <Vehicle />
+                                    <Trip />
                                 </Suspense>
                             ),
                             children: [
@@ -135,14 +132,6 @@ export default () => {
                                     element: (
                                         <Suspense>
                                             <VehicleInfo />
-                                        </Suspense>
-                                    ),
-                                },
-                                {
-                                    path: "sun",
-                                    element: (
-                                        <Suspense>
-                                            <VehicleSun />
                                         </Suspense>
                                     ),
                                 },
@@ -343,14 +332,6 @@ export default () => {
                                     ),
                                 },
                             ],
-                        },
-                        {
-                            path: "copyright",
-                            element: (
-                                <Suspense>
-                                    <Copyright />
-                                </Suspense>
-                            ),
                         },
                     ],
                 },

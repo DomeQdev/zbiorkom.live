@@ -54,7 +54,6 @@ export default ({ trip, showRoute }: Props) => {
                     {trip[EBrigadeTrip.startStop]}
                 </span>
             </span>
-
             <div className="tripInfo">
                 <span>
                     {[
@@ -72,7 +71,6 @@ export default ({ trip, showRoute }: Props) => {
                         : t("clickForTrip")}
                 </span>
             </div>
-
             <span className="tripRow">
                 <span className="tripTime">{getTime(trip[EBrigadeTrip.end])}</span>
                 <span

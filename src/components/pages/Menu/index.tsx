@@ -5,7 +5,6 @@ import MenuItem from "./MenuItem";
 import { DiscordIcon, Logo } from "@/ui/Icon";
 import cities from "cities";
 import {
-    CopyrightOutlined,
     Email,
     EventNote,
     EventNoteOutlined,
@@ -114,13 +113,6 @@ export default ({
                     onClick={() => navigate(`/${city}/blog`, { state: undefined })}
                 />
                 <MenuItem
-                    icon={<CopyrightOutlined />}
-                    outlinedIcon={<CopyrightOutlined />}
-                    name={t("dataSources")}
-                    active={path === "copyright"}
-                    onClick={() => navigate(`/${city}/copyright`, { state: undefined })}
-                />
-                <MenuItem
                     icon={<History />}
                     outlinedIcon={<History />}
                     name={t("executions")}
@@ -180,12 +172,7 @@ export default ({
                         <Email htmlColor="hsla(0, 0%, 100%, 0.6)" />
                     </IconButton>
                 </Box>
-                <span
-                    style={{ fontSize: "0.75rem", cursor: "none" }}
-                    onClick={() => window.open("https://www.openstreetmap.org/copyright", "_blank")}
-                >
-                    &copy; OpenStreetMap contributors
-                </span>
+
                 <a
                     style={{
                         fontSize: "0.75rem",
@@ -199,6 +186,12 @@ export default ({
                 >
                     {t("privacyPolicy")}
                 </a>
+                <span
+                    style={{ fontSize: "0.75rem", cursor: "pointer" }}
+                    onClick={() => window.open("https://www.openstreetmap.org/copyright", "_blank")}
+                >
+                    &copy; OpenStreetMap contributors
+                </span>
             </div>
         </SwipeableDrawer>
     );

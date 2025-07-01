@@ -14,17 +14,18 @@ import { useQueryTrip } from "@/hooks/useQueryTrip";
 import { getSheetHeight } from "@/util/tools";
 
 export default memo(() => {
-    const [vehicle, tripData, sequence, fresh, setFresh] = useVehicleStore(
+    const [vehicleData, tripData, sequence, fresh, setFresh] = useVehicleStore(
         useShallow((state) => [state.vehicle, state.trip, state.sequence ?? 0, state.fresh, state.setFresh])
     );
     const socket = useOutletContext<Socket>();
-    const { city, trip } = useParams();
+    const { city, trip, vehicle } = useParams();
     const { current: map } = useMap();
     const cityId = window.location.search.includes("pkp") ? "pkp" : city!;
 
     const { refetch, isLoading } = useQueryTrip({
         city: window.location.search.includes("pkp") ? "pkp" : city!,
         trip: trip!,
+        vehicle: vehicle!,
     });
 
     useEffect(() => {
@@ -48,58 +49,63 @@ export default memo(() => {
     useEffect(() => {
         if (!fresh || isLoading || !tripData) return;
 
-        const bounds = vehicle?.[EVehicle.location]
-            ? new LngLatBounds(
-                  vehicle[EVehicle.location],
-                  tripData[ETrip.stops][sequence][ETripStop.location]
-              )
-            : tripData[ETrip.stops]
-                  .slice(sequence, sequence === -1 ? undefined : sequence + 3)
-                  .reduce((bounds, stop) => bounds.extend(stop[ETripStop.location]), new LngLatBounds());
+        if (vehicleData?.[EVehicle.location]) {
+            map?.flyTo({
+                center: vehicleData[EVehicle.location],
+                zoom: map.getZoom() > 15 ? map.getZoom() : 15,
+            });
+        } else {
+            const bounds = tripData[ETrip.stops]
+                .slice(sequence, sequence === -1 ? undefined : sequence + 3)
+                .reduce((bounds, stop) => bounds.extend(stop[ETripStop.location]), new LngLatBounds());
 
-        map?.fitBounds(bounds, {
-            padding: {
-                left: 30,
-                right: 30,
-                top: 30,
-                bottom: getSheetHeight(),
-            },
-            maxZoom: 16,
-        });
+            map?.fitBounds(bounds, {
+                padding: {
+                    left: 30,
+                    right: 30,
+                    top: 30,
+                    bottom: getSheetHeight(),
+                },
+                maxZoom: 16,
+            });
+        }
 
         setFresh(false);
-    }, [tripData, vehicle, isLoading, fresh]);
-
-    if (!tripData) return null;
+    }, [tripData, vehicleData, isLoading, fresh]);
 
     return (
         <>
-            {tripData && (
+            {(vehicleData || tripData) && (
                 <Helm
-                    variable="trip"
+                    variable={vehicle ? "vehicle" : "trip"}
                     dictionary={{
-                        route: tripData[ETrip.route][ERoute.name],
-                        headsign: tripData[ETrip.headsign],
+                        route: (vehicleData?.[EVehicle.route] || tripData?.[ETrip.route])?.[ERoute.name],
+                        vehicle: vehicleData?.[EVehicle.id]?.split("/")[1] || "",
+                        headsign: tripData?.[ETrip.headsign],
                     }}
                 />
             )}
 
-            <TripRoute
-                shape={tripData[ETrip.shape]}
-                stops={tripData[ETrip.stops]}
-                color={tripData[ETrip.route][ERoute.color]}
-            />
+            {tripData && (
+                <>
+                    <TripRoute
+                        shape={tripData[ETrip.shape]}
+                        stops={tripData[ETrip.stops]}
+                        color={tripData[ETrip.route][ERoute.color]}
+                    />
 
-            {tripData[ETrip.platforms] && (
-                <TripPlatforms
-                    platforms={tripData[ETrip.platforms]}
-                    color={tripData[ETrip.route][ERoute.color]}
-                />
+                    {tripData[ETrip.platforms] && (
+                        <TripPlatforms
+                            platforms={tripData[ETrip.platforms]}
+                            color={tripData[ETrip.route][ERoute.color]}
+                        />
+                    )}
+                </>
             )}
 
-            {vehicle && (
+            {vehicleData && (
                 <VehicleMarker
-                    vehicle={vehicle}
+                    vehicle={vehicleData}
                     showBrigade={localStorage.getItem("brigade") === "true"}
                     showFleet={localStorage.getItem("fleet") === "true"}
                 />
