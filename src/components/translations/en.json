@@ -37,7 +37,6 @@
         "frequency": "Every <0>{{minutes}}</0> min",
         "then": "Then",
         "noMoreDepartures": "No more departures",
-        "noVehicleInfo": "No vehicle info",
         "routeChange": "Route change to {{route}}",
         "terminus": "Terminus",
         "operatedBy": "Trip operated by {{value}}",
@@ -107,7 +106,8 @@
         "prodYear": "Production year",
         "lowFloor": "Low floor",
         "airConditioned": "Air conditioned",
-        "equipment": "Equipment"
+        "equipment": "Equipment",
+        "noData": "No vehicle data available"
     },
     "Updates": {
         "downloadingUpdate": "Downloading update..."

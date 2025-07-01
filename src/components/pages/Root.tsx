@@ -18,7 +18,10 @@ export default () => {
     const showBackButton = !!pathname.split("/")[3];
 
     useEffect(() => {
-        if (!city || !cities[city]) return navigate("/cities");
+        if (!city || !cities[city]) {
+            navigate("/cities");
+            return;
+        }
 
         const socket = io(Gay.ws, {
             query: {

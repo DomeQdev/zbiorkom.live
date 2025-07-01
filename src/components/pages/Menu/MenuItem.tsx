@@ -1,8 +1,9 @@
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { ReactElement } from "react";
 
 type Props = {
-    icon: JSX.Element;
-    outlinedIcon: JSX.Element;
+    icon: ReactElement;
+    outlinedIcon: ReactElement;
     name: string;
     active: boolean;
     onClick: () => void;

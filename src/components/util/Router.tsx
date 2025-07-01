@@ -28,10 +28,7 @@ const StopTimePicker = lazy(() => import("@/sheet/Stop/StopTimePicker"));
 
 const Trip = lazy(() => import("@/pages/Trip"));
 const TripAlerts = lazy(() => import("@/pages/Trip/TripAlerts"));
-
-const Vehicle = lazy(() => import("@/pages/Vehicle"));
-const VehicleInfo = lazy(() => import("@/pages/Vehicle/Info"));
-const VehicleSun = lazy(() => import("@/pages/Vehicle/Sun"));
+const VehicleInfo = lazy(() => import("@/pages/Trip/VehicleInfo"));
 
 const Cities = lazy(() => import("@/pages/Cities"));
 const City = lazy(() => import("@/pages/City"));
@@ -126,7 +123,7 @@ export default () => {
                             path: "vehicle/:vehicle",
                             element: (
                                 <Suspense>
-                                    <Vehicle />
+                                    <Trip />
                                 </Suspense>
                             ),
                             children: [
@@ -135,14 +132,6 @@ export default () => {
                                     element: (
                                         <Suspense>
                                             <VehicleInfo />
-                                        </Suspense>
-                                    ),
-                                },
-                                {
-                                    path: "sun",
-                                    element: (
-                                        <Suspense>
-                                            <VehicleSun />
                                         </Suspense>
                                     ),
                                 },

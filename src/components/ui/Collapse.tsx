@@ -1,9 +1,9 @@
 import { KeyboardArrowDown } from "@mui/icons-material";
 import { Box, Collapse, ListItemButton, ListItemIcon, ListItemText, SxProps } from "@mui/material";
-import { ReactNode, useState } from "react";
+import { ReactElement, ReactNode, useState } from "react";
 
 type Props = {
-    icon: JSX.Element;
+    icon: ReactElement;
     title: string;
     open?: boolean;
     sx?: SxProps;

@@ -37,7 +37,6 @@
         "frequency": "Co <0>{{minutes}}</0> min",
         "then": "Potem",
         "noMoreDepartures": "Brak dalszych odjazdów",
-        "noVehicleInfo": "Brak informacji o pojeździe",
         "routeChange": "Zmiana linii na {{route}}",
         "terminus": "Przystanek krańcowy",
         "operatedBy": "Kurs obsługiwany przez {{value}}",
@@ -107,7 +106,8 @@
         "prodYear": "Rok produkcji",
         "lowFloor": "Niska podłoga",
         "airConditioned": "Klimatyzacja",
-        "equipment": "Wyposażenie"
+        "equipment": "Wyposażenie",
+        "noData": "Brak danych o pojeździe"
     },
     "Updates": {
         "downloadingUpdate": "Pobieram aktualizację..."
