@@ -1,9 +1,8 @@
 import { Box } from "@mui/material";
 import { StopDeparture, EStopTime, EStopDeparture } from "typings";
-import VehicleHeadsign from "../Vehicle/VehicleHeadsign";
+import VehicleHeadsign from "../Trip/TripHeadsign";
 import useTime from "@/hooks/useTime";
-import { getDelay } from "../Vehicle/VehicleDelay";
-import { getTime } from "@/util/tools";
+import { getDelay, getTime } from "@/util/tools";
 
 export default ({ departure }: { departure: StopDeparture }) => {
     const minutesToDeparture = useTime(departure[EStopDeparture.departure][EStopTime.estimated]);

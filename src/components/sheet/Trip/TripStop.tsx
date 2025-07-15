@@ -15,8 +15,8 @@ import {
 import { RemoveCircleOutline, WavingHand } from "@mui/icons-material";
 import { useMap } from "react-map-gl";
 import useTime from "@/hooks/useTime";
-import VehicleStopIcon from "@/sheet/Vehicle/VehicleStopIcon";
-import VehicleDelay from "@/sheet/Vehicle/VehicleDelay";
+import VehicleStopIcon from "@/sheet/Trip/TripStopIcon";
+import VehicleDelay from "@/sheet/Trip/TripDelay";
 import { useTranslation } from "react-i18next";
 import TripStopTimes from "./TripStopTimes";
 
@@ -39,7 +39,9 @@ export default ({ vehicle, trip, stop, index, update, sequence }: Props) => {
     const delay = departure[EStopTime.delay];
 
     const shouldUseSeconds = isServingStop && estimatedDeparture - Date.now() < 100000;
-    const hasDeparted = estimatedDeparture < Date.now() || delay === "cancelled";
+    const hasDeparted =
+        delay === "cancelled" ||
+        (sequence === undefined ? estimatedDeparture < Date.now() : sequence! > stop[ETripStop.sequence]);
     const toDeparture = useTime(estimatedDeparture, shouldUseSeconds);
 
     const platform = update[EStopUpdate.platform];
@@ -76,7 +78,7 @@ export default ({ vehicle, trip, stop, index, update, sequence }: Props) => {
                             ? vehicle?.[EVehicle.percentTraveled]
                             : undefined
                     }
-                    lineMargin={43}
+                    lineMargin={41}
                 />
             </ListItemIcon>
 
@@ -130,7 +132,7 @@ export default ({ vehicle, trip, stop, index, update, sequence }: Props) => {
                     </Box>
                 }
                 sx={{
-                    marginLeft: "16px",
+                    marginLeft: "12px",
                     "& .MuiListItemText-primary": {
                         display: "flex",
                         alignItems: "center",

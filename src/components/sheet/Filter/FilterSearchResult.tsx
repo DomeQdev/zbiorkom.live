@@ -1,6 +1,6 @@
 import { ERoute, Route } from "typings";
 import { Checkbox, ListItemButton, ListItemText } from "@mui/material";
-import VehicleHeadsign from "@/sheet/Vehicle/VehicleHeadsign";
+import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
 import useFilterStore from "@/hooks/useFilterStore";
 import { useShallow } from "zustand/react/shallow";
 

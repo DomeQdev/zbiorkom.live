@@ -1,4 +1,4 @@
-import VehicleHeadsign from "@/sheet/Vehicle/VehicleHeadsign";
+import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
 import { ListItemButton, ListItemText } from "@mui/material";
 import { ESearchRelation, SearchItem } from "typings";
 import { Link } from "react-router-dom";

@@ -87,7 +87,7 @@ h6 {
 }
 
 .delay {
-    font-weight: bold;
+    font-weight: bold !important;
     display: flex;
     align-items: center;
     gap: 4px;

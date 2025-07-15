@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import VehicleHeadsign from "@/sheet/Vehicle/VehicleHeadsign";
+import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
 import { Box, IconButton } from "@mui/material";
 import { AllInclusive, Close, ImportExport } from "@mui/icons-material";
 import useDirectionStore from "@/hooks/useDirectionStore";

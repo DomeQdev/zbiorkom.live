@@ -11,6 +11,7 @@ import Trip from "./BrigadeTrip";
 import MultilineAlert from "./MultilineAlert";
 import Helm from "@/util/Helm";
 import ScrollButton from "./ScrollButton";
+import { milisecondsToTime } from "@/util/tools";
 
 type Props = {
     route?: Route;
@@ -201,14 +202,12 @@ export default ({ route, brigade, trips }: Props) => {
                     {filteredTrips && (
                         <>
                             {filteredTrips.map((trip, i) => {
-                                let breakTime: number | false = false,
+                                let breakTime: string | false = false,
                                     routeChange: string | false = false;
 
                                 const nextTrip = filteredTrips[i + 1];
                                 if (nextTrip) {
-                                    breakTime = Math.floor(
-                                        (nextTrip[EBrigadeTrip.start] - trip[EBrigadeTrip.end]) / 60000
-                                    );
+                                    breakTime = milisecondsToTime(nextTrip[EBrigadeTrip.start] - trip[EBrigadeTrip.end]);
 
                                     if (
                                         trip[EBrigadeTrip.route][ERoute.id] !==
@@ -225,7 +224,7 @@ export default ({ route, brigade, trips }: Props) => {
                                         {breakTime !== false && (
                                             <span className="breakTime">
                                                 {breakTime
-                                                    ? t("breakTime", { minutes: breakTime })
+                                                    ? t("breakTime", { time: breakTime })
                                                     : t("noBreak")}
                                                 {routeChange &&
                                                     ` • ${t("routeChange", { route: routeChange })}`}

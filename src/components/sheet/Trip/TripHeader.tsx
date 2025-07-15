@@ -1,11 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, IconButton, Skeleton } from "@mui/material";
-import VehicleHeadsign from "@/sheet/Vehicle/VehicleHeadsign";
+import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
 import { Close, Report } from "@mui/icons-material";
 import useGoBack from "@/hooks/useGoBack";
 import { EStopUpdate, ETrip } from "typings";
 import useVehicleStore from "@/hooks/useVehicleStore";
 import { useShallow } from "zustand/react/shallow";
+import TripMenu from "./TripMenu";
 
 export default () => {
     const [trip, stops] = useVehicleStore(useShallow((state) => [state.trip, state.stops]));
@@ -78,6 +79,8 @@ export default () => {
                         <Report />
                     </IconButton>
                 )}
+
+                <TripMenu />
 
                 <IconButton size="small" onClick={() => goBack()}>
                     <Close />

@@ -15,7 +15,6 @@ export default ({ route, shortName, headsign, brigade, fontSize, onClick }: Prop
         <div
             style={{
                 fontSize,
-
                 cursor: onClick ? "pointer" : "default",
             }}
             className="vehicleHeader"
