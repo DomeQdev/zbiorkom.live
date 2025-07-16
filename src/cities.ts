@@ -130,7 +130,6 @@ const cities = {
         name: "Trójmiasto",
         description: "Gdańsk, Gdynia, Sopot",
         location: [18.64631, 54.35188],
-        disableVehicleInfo: true,
     },
     warsaw: {
         id: "warsaw",

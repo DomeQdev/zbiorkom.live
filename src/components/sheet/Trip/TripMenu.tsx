@@ -1,21 +1,19 @@
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
-import { Build, EventNote, MoreVert, Share } from "@mui/icons-material";
+import { Build, EventNote, GpsNotFixed, MoreVert, Share } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useVehicleStore from "@/hooks/useVehicleStore";
 import { EVehicle } from "typings";
 import { useState } from "react";
-import cities from "cities";
+import TripLastPing from "./TripLastPing";
+import { useShallow } from "zustand/react/shallow";
 
 export default () => {
-    const vehicle = useVehicleStore(((state) => state.vehicle));
+    const [vehicle, lastPing] = useVehicleStore(useShallow((state) => [state.vehicle, state.lastPing]));
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const { t } = useTranslation(["Vehicle", "Shared"]);
-    const { city } = useParams();
     const navigate = useNavigate();
-
-    const cityData = cities[city!];
 
     return (
         <>
@@ -37,6 +35,15 @@ export default () => {
                     },
                 }}
             >
+                {!!lastPing && (
+                    <MenuItem sx={{ pointerEvents: "none" }}>
+                        <ListItemIcon>
+                            <GpsNotFixed fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary={<TripLastPing lastPing={lastPing} />} />
+                    </MenuItem>
+                )}
+
                 <MenuItem
                     onClick={() => {
                         navigator.share({
@@ -63,7 +70,7 @@ export default () => {
                     </MenuItem>
                 )}
 
-                {!cityData.disableVehicleInfo && !vehicle?.[EVehicle.id].split("/")[1].startsWith("_") && (
+                {!vehicle?.[EVehicle.id].split("/")[1].startsWith("_") && (
                     <MenuItem
                         onClick={() => navigate(window.location.pathname + "/info" + window.location.search)}
                     >

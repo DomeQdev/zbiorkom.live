@@ -8,6 +8,7 @@ interface VehicleState extends APIVehicle {
     setTrip: (trip: APIVehicle["trip"]) => void;
     setStops: (stops: APIVehicle["stops"]) => void;
     setSequence: (sequence: APIVehicle["sequence"]) => void;
+    setLastPing: (lastPing: APIVehicle["lastPing"]) => void;
     reset: () => void;
 }
 
@@ -17,7 +18,15 @@ export default create<VehicleState>()((set) => ({
     setTrip: (trip) => set({ trip }),
     setStops: (stops) => set({ stops }),
     setSequence: (sequence) => set({ sequence }),
+    setLastPing: (lastPing) => set({ lastPing }),
     reset: () => {
-        set({ vehicle: undefined, trip: undefined, fresh: undefined, stops: undefined, sequence: undefined });
+        set({
+            vehicle: undefined,
+            trip: undefined,
+            fresh: undefined,
+            stops: undefined,
+            sequence: undefined,
+            lastPing: undefined,
+        });
     },
 }));

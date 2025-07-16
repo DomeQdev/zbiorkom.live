@@ -25,20 +25,20 @@ type Props = {
     trip: Trip;
     stop: TripStop;
     index: number;
+    color: [color: string, text: string, background: string];
     update: StopUpdate;
     sequence?: number;
 };
 
-export default ({ vehicle, trip, stop, index, update, sequence }: Props) => {
+export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) => {
     const { current: map } = useMap();
     const { t } = useTranslation("Vehicle");
 
-    const isServingStop = sequence === stop[ETripStop.sequence];
     const departure = update[EStopUpdate.departure];
     const estimatedDeparture = departure[EStopTime.estimated];
     const delay = departure[EStopTime.delay];
 
-    const shouldUseSeconds = isServingStop && estimatedDeparture - Date.now() < 100000;
+    const shouldUseSeconds = index === 0 && estimatedDeparture - Date.now() < 100000;
     const hasDeparted =
         delay === "cancelled" ||
         (sequence === undefined ? estimatedDeparture < Date.now() : sequence! > stop[ETripStop.sequence]);
@@ -68,13 +68,13 @@ export default ({ vehicle, trip, stop, index, update, sequence }: Props) => {
             >
                 <TripStopTimes update={update} hasDeparted={hasDeparted} />
                 <VehicleStopIcon
-                    color={trip[ETrip.route][ERoute.color]}
+                    color={color}
                     index={index}
                     type={trip[ETrip.route][ERoute.type]}
                     percentTraveled={
                         sequence === 0 && index === 1
                             ? 0
-                            : isServingStop
+                            : sequence === stop[ETripStop.sequence]
                             ? vehicle?.[EVehicle.percentTraveled]
                             : undefined
                     }
