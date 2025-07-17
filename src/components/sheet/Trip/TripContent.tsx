@@ -28,8 +28,8 @@ export default () => {
         return [trip[ETrip.route][ERoute.color], text, background];
     }, [trip]);
 
-    if (!vehicle && fresh) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
-    if (!vehicle) return <Alert Icon={Report} title={t("vehicleNotFound")} color="error" />;
+    if ((!vehicle && !trip) && fresh) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
+    if (!vehicle && !trip) return <Alert Icon={Report} title={t("vehicleNotFound")} color="error" />;
     if (!trip || !stops) return <Alert Icon={Warning} title={t("tripNotFound")} color="warning" />;
 
     return (
