@@ -1,10 +1,12 @@
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { DirectionsOutlined, Search, StarOutline } from "@mui/icons-material";
+import { DarkModeOutlined, DirectionsOutlined, Search, StarOutline, Sunny } from "@mui/icons-material";
 import Markers from "@/map/Markers";
 import { Fab } from "@mui/material";
 import Helm from "@/util/Helm";
+import { useState } from "react";
 
 export default () => {
+    const [darkMode, setDarkMode] = useState(localStorage.getItem("dark") === "true");
     const navigate = useNavigate();
     const { city } = useParams();
 
@@ -37,6 +39,19 @@ export default () => {
                 onClick={() => navigate(`/${city}/directions`)}
             >
                 <DirectionsOutlined />
+            </Fab>
+
+            <Fab
+                sx={{ position: "absolute", right: 16, top: 16 * 10 }}
+                color="primary"
+                size="small"
+                onClick={() => {
+                    localStorage.setItem("dark", (!darkMode).toString());
+                    document.body.classList.toggle("dark", !darkMode);
+                    setDarkMode(!darkMode);
+                }}
+            >
+                {darkMode ? <DarkModeOutlined /> : <Sunny />}
             </Fab>
 
             <Markers city={city!} />
