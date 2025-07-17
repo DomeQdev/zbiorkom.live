@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { Socket } from "socket.io-client";
 import { useMap } from "react-map-gl";
-import { LngLatBounds } from "mapbox-gl";
+import { LngLatBounds } from "maplibre-gl";
 import useGoBack from "@/hooks/useGoBack";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";

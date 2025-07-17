@@ -1,7 +1,7 @@
 import { memo, useEffect } from "react";
 import { Outlet, useOutletContext, useParams } from "react-router-dom";
 import { useMap } from "react-map-gl";
-import { LngLatBounds } from "mapbox-gl";
+import { LngLatBounds } from "maplibre-gl";
 import { Socket } from "socket.io-client";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";

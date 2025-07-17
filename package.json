@@ -10,7 +10,7 @@
         "@tanstack/react-query": "^5.81.5",
         "body-scroll-lock-upgrade": "^1.1.0",
         "i18next": "^25.2.1",
-        "mapbox-gl": "^3.13.0",
+        "maplibre-gl": "^4.7.1",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
         "react-i18next": "^15.5.3",
@@ -40,7 +40,6 @@
     },
     "devDependencies": {
         "@tanstack/eslint-plugin-query": "^5.81.2",
-        "@types/mapbox-gl": "^3.4.1",
         "@types/node": "^24.0.7",
         "@types/react": "^19.1.8",
         "@types/react-dom": "^19.1.6",

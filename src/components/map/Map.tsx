@@ -1,9 +1,9 @@
 import { memo, ReactElement, useMemo } from "react";
-import "mapbox-gl/dist/mapbox-gl.css";
 import cities from "cities";
-import Map from "react-map-gl";
+import { Map } from "react-map-gl/maplibre";
 import { useLocation } from "react-router-dom";
-import { getMapStyle } from "@/util/tools";
+
+import "maplibre-gl/dist/maplibre-gl.css";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
     const { pathname } = useLocation();
@@ -33,8 +33,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
 
     return (
         <Map
-            mapboxAccessToken="pk.eyJ1IjoiZG9tZXEyYWx0IiwiYSI6ImNtYzh2M2NhNDA2eTEyanBjbzU5bG02ZnkifQ.QSqseCfhAQdA3ndk08ZCqQ"
-            mapStyle={getMapStyle()}
+            mapStyle="https://maps.zbiorkom.live/style.json"
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}
             onLoad={({ target }: { target: any }) => {
