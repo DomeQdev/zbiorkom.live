@@ -1,4 +1,4 @@
-import { Box, SvgIconTypeMap, Typography } from "@mui/material";
+import { Box, SvgIconTypeMap, SxProps, Typography } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 type Props = {
@@ -6,9 +6,10 @@ type Props = {
     title: string;
     description?: string;
     color?: string;
+    sx?: SxProps;
 };
 
-export default ({ Icon, title, description, color = "primary" }: Props) => {
+export default ({ Icon, title, description, color = "primary", sx }: Props) => {
     return (
         <Box
             sx={{
@@ -17,6 +18,7 @@ export default ({ Icon, title, description, color = "primary" }: Props) => {
                 alignItems: "center",
                 justifyContent: "center",
                 height: "calc(100% - 120px)",
+                ...sx,
             }}
         >
             <Icon

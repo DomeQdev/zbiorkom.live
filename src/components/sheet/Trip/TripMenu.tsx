@@ -1,15 +1,21 @@
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
-import { Build, EventNote, GpsNotFixed, MoreVert, Share } from "@mui/icons-material";
+import { Build, EventNote, MoreVert, Report, Share } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import useVehicleStore from "@/hooks/useVehicleStore";
-import { EVehicle } from "typings";
+import { EStopUpdate, EVehicle } from "typings";
 import { useState } from "react";
 import TripLastPing from "./TripLastPing";
 import { useShallow } from "zustand/react/shallow";
 
 export default () => {
-    const [vehicle, lastPing] = useVehicleStore(useShallow((state) => [state.vehicle, state.lastPing]));
+    const [vehicle, lastPing, hasAlerts] = useVehicleStore(
+        useShallow((state) => [
+            state.vehicle,
+            state.lastPing,
+            state.stops?.some((stop) => stop[EStopUpdate.alerts]?.length > 0),
+        ])
+    );
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const { t } = useTranslation(["Vehicle", "Shared"]);
@@ -36,10 +42,7 @@ export default () => {
                 }}
             >
                 {!!lastPing && (
-                    <MenuItem sx={{ pointerEvents: "none" }}>
-                        <ListItemIcon>
-                            <GpsNotFixed fontSize="small" />
-                        </ListItemIcon>
+                    <MenuItem sx={{ pointerEvents: "none" }} disabled>
                         <ListItemText primary={<TripLastPing lastPing={lastPing} />} />
                     </MenuItem>
                 )}
@@ -57,6 +60,19 @@ export default () => {
                     <ListItemText primary={t("share", { ns: "Shared" })} />
                 </MenuItem>
 
+                {hasAlerts && (
+                    <MenuItem
+                        onClick={() =>
+                            navigate(window.location.pathname + "/alerts" + window.location.search)
+                        }
+                    >
+                        <ListItemIcon>
+                            <Report fontSize="small" sx={{ color: "error.contrastText" }} />
+                        </ListItemIcon>
+                        <ListItemText primary={t("alerts")} />
+                    </MenuItem>
+                )}
+
                 {!!vehicle?.[EVehicle.brigade] && (
                     <MenuItem
                         onClick={() =>
@@ -70,7 +86,7 @@ export default () => {
                     </MenuItem>
                 )}
 
-                {!vehicle?.[EVehicle.id].split("/")[1].startsWith("_") && (
+                {vehicle && !vehicle[EVehicle.id].split("/")[1].startsWith("_") && (
                     <MenuItem
                         onClick={() => navigate(window.location.pathname + "/info" + window.location.search)}
                     >

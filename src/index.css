@@ -1,3 +1,11 @@
+.mapboxgl-map {
+    background-color: black;
+}
+
+.mapboxgl-canvas-container {
+    filter: invert(1) hue-rotate(180deg) contrast(90%) brightness(90%);
+}
+
 .mapboxgl-marker * {
     font-family: Roboto, "Helvetica Neue", sans-serif !important;
 }

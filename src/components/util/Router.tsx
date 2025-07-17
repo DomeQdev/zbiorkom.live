@@ -143,6 +143,48 @@ export default () => {
                                         </Suspense>
                                     ),
                                 },
+                                {
+                                    path: "alerts",
+                                    element: (
+                                        <Suspense>
+                                            <TripAlerts />
+                                        </Suspense>
+                                    ),
+                                },
+                            ],
+                        },
+                        {
+                            path: "trip/:trip",
+                            element: (
+                                <Suspense>
+                                    <Trip />
+                                </Suspense>
+                            ),
+                            children: [
+                                {
+                                    path: "info",
+                                    element: (
+                                        <Suspense>
+                                            <VehicleInfo />
+                                        </Suspense>
+                                    ),
+                                },
+                                {
+                                    path: "brigade",
+                                    element: (
+                                        <Suspense>
+                                            <BrigadeFromVehicle />
+                                        </Suspense>
+                                    ),
+                                },
+                                {
+                                    path: "alerts",
+                                    element: (
+                                        <Suspense>
+                                            <TripAlerts />
+                                        </Suspense>
+                                    ),
+                                },
                             ],
                         },
                         {
@@ -192,24 +234,6 @@ export default () => {
                                     element: (
                                         <Suspense>
                                             <AddToFav />
-                                        </Suspense>
-                                    ),
-                                },
-                            ],
-                        },
-                        {
-                            path: "trip/:trip",
-                            element: (
-                                <Suspense>
-                                    <Trip />
-                                </Suspense>
-                            ),
-                            children: [
-                                {
-                                    path: "alerts",
-                                    element: (
-                                        <Suspense>
-                                            <TripAlerts />
                                         </Suspense>
                                     ),
                                 },

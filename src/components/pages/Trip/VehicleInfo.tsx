@@ -62,7 +62,7 @@ export default () => {
             });
     }, [data]);
 
-    const name = `#${vehicle?.[EVehicle.id]?.split("/")[1]} ${data?.[EVehicleInfo.model] || ""}`;
+    const name = vehicle ? `#${vehicle[EVehicle.id].split("/")[1]} ${data?.[EVehicleInfo.model] || ""}` : "";
 
     return (
         <Dialog
@@ -211,7 +211,9 @@ export default () => {
                     </>
                 )}
 
-                {!data?.[EVehicle.id] && !isLoading && <Alert Icon={Dangerous} title={t("noData")} />}
+                {!data?.[EVehicle.id] && !isLoading && (
+                    <Alert Icon={Dangerous} title={t("noData")} sx={{ paddingBottom: 6 }} />
+                )}
                 {isLoading && <Loading />}
             </DialogContent>
         </Dialog>

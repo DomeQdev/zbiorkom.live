@@ -7,10 +7,14 @@ import useVehicleStore from "@/hooks/useVehicleStore";
 import { useShallow } from "zustand/react/shallow";
 import { useMemo } from "react";
 import getColors, { hexFromArgb } from "@/util/getColors";
+import Alert from "@/ui/Alert";
+import { useTranslation } from "react-i18next";
+import { Report, Warning } from "@mui/icons-material";
 
 export default () => {
-    const [vehicle, trip, sequence, stops] = useVehicleStore(
-        useShallow((state) => [state.vehicle, state.trip, state.sequence ?? 0, state.stops])
+    const { t } = useTranslation("Vehicle");
+    const [vehicle, trip, sequence, stops, fresh] = useVehicleStore(
+        useShallow((state) => [state.vehicle, state.trip, state.sequence ?? 0, state.stops, state.fresh])
     );
 
     const color: [string, string, string] = useMemo(() => {
@@ -24,7 +28,9 @@ export default () => {
         return [trip[ETrip.route][ERoute.color], text, background];
     }, [trip]);
 
-    if (!trip || !stops) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
+    if (!vehicle && fresh) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
+    if (!vehicle) return <Alert Icon={Report} title={t("vehicleNotFound")} color="error" />;
+    if (!trip || !stops) return <Alert Icon={Warning} title={t("tripNotFound")} color="warning" />;
 
     return (
         <>
