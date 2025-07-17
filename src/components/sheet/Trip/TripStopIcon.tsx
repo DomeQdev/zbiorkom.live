@@ -1,22 +1,16 @@
-import Icon from "@/ui/Icon";
-import getColors, { hexFromArgb } from "@/util/getColors";
 import { SvgIcon } from "@mui/material";
 import { VehicleType } from "typings";
+import Icon from "@/ui/Icon";
 
 type Props = {
-    color: string;
+    color: [color: string, text: string, background: string];
     index: number;
     type: VehicleType;
     percentTraveled?: number;
     lineMargin?: number;
 };
 
-export default ({ color, index, type, percentTraveled, lineMargin }: Props) => {
-    const { primary, onPrimary } = getColors(color);
-
-    const text = hexFromArgb(primary);
-    const background = hexFromArgb(onPrimary);
-
+export default ({ color: [color, text, background], index, type, percentTraveled, lineMargin }: Props) => {
     return (
         <>
             <span

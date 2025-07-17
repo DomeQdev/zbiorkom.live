@@ -1,11 +1,11 @@
-import { MutableRefObject, useEffect, useState } from "react";
+import { RefObject, ReactElement, useEffect, useState } from "react";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock-upgrade";
 
 type Props = {
-    scrollContainer: MutableRefObject<HTMLDivElement | null>;
-    element: MutableRefObject<HTMLDivElement | null>;
+    scrollContainer: RefObject<HTMLDivElement | null>;
+    element: RefObject<HTMLDivElement | null>;
     offset?: number;
-    children?: (percent: number) => JSX.Element;
+    children?: (percent: number) => ReactElement;
 };
 
 export default ({ scrollContainer, element, offset, children }: Props) => {

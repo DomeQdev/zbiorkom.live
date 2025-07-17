@@ -15,8 +15,8 @@ import {
 import { RemoveCircleOutline, WavingHand } from "@mui/icons-material";
 import { useMap } from "react-map-gl";
 import useTime from "@/hooks/useTime";
-import VehicleStopIcon from "@/sheet/Vehicle/VehicleStopIcon";
-import VehicleDelay from "@/sheet/Vehicle/VehicleDelay";
+import VehicleStopIcon from "@/sheet/Trip/TripStopIcon";
+import VehicleDelay from "@/sheet/Trip/TripDelay";
 import { useTranslation } from "react-i18next";
 import TripStopTimes from "./TripStopTimes";
 
@@ -25,21 +25,23 @@ type Props = {
     trip: Trip;
     stop: TripStop;
     index: number;
+    color: [color: string, text: string, background: string];
     update: StopUpdate;
     sequence?: number;
 };
 
-export default ({ vehicle, trip, stop, index, update, sequence }: Props) => {
+export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) => {
     const { current: map } = useMap();
     const { t } = useTranslation("Vehicle");
 
-    const isServingStop = sequence === stop[ETripStop.sequence];
     const departure = update[EStopUpdate.departure];
     const estimatedDeparture = departure[EStopTime.estimated];
     const delay = departure[EStopTime.delay];
 
-    const shouldUseSeconds = isServingStop && estimatedDeparture - Date.now() < 100000;
-    const hasDeparted = estimatedDeparture < Date.now() || delay === "cancelled";
+    const shouldUseSeconds = index === 0 && estimatedDeparture - Date.now() < 100000;
+    const hasDeparted =
+        delay === "cancelled" ||
+        (sequence === undefined ? estimatedDeparture < Date.now() : sequence! > stop[ETripStop.sequence]);
     const toDeparture = useTime(estimatedDeparture, shouldUseSeconds);
 
     const platform = update[EStopUpdate.platform];
@@ -64,19 +66,19 @@ export default ({ vehicle, trip, stop, index, update, sequence }: Props) => {
                     gap: 1,
                 }}
             >
-                <TripStopTimes update={update} hasDeparted={hasDeparted} />
+                <TripStopTimes isTrain={trip[ETrip.route][ERoute.type] === 2} update={update} hasDeparted={hasDeparted} />
                 <VehicleStopIcon
-                    color={trip[ETrip.route][ERoute.color]}
+                    color={color}
                     index={index}
                     type={trip[ETrip.route][ERoute.type]}
                     percentTraveled={
                         sequence === 0 && index === 1
                             ? 0
-                            : isServingStop
+                            : sequence === stop[ETripStop.sequence]
                             ? vehicle?.[EVehicle.percentTraveled]
                             : undefined
                     }
-                    lineMargin={43}
+                    lineMargin={41}
                 />
             </ListItemIcon>
 
@@ -130,7 +132,7 @@ export default ({ vehicle, trip, stop, index, update, sequence }: Props) => {
                     </Box>
                 }
                 sx={{
-                    marginLeft: "16px",
+                    marginLeft: "12px",
                     "& .MuiListItemText-primary": {
                         display: "flex",
                         alignItems: "center",

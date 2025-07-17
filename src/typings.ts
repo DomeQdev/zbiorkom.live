@@ -20,7 +20,6 @@ export interface City {
     description?: string;
     showNewTag?: boolean;
     disableBrigades?: boolean;
-    disableVehicleInfo?: boolean;
 }
 
 export type Route = [
@@ -124,6 +123,7 @@ export type APIVehicle = {
     vehicle?: Vehicle;
     trip?: Trip;
     stops?: StopUpdate[];
+    lastPing?: number;
 };
 
 export type Trip = [

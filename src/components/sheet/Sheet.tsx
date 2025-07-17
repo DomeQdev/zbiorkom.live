@@ -20,9 +20,6 @@ const StopContent = lazy(() => import("./Stop/StopContent"));
 const TripHeader = lazy(() => import("./Trip/TripHeader"));
 const TripContent = lazy(() => import("./Trip/TripContent"));
 
-const VehicleHeader = lazy(() => import("./Vehicle/VehicleHeader"));
-const VehicleContent = lazy(() => import("./Vehicle/VehicleContent"));
-
 const getType = () => {
     const { pathname } = useLocation();
 
@@ -30,8 +27,7 @@ const getType = () => {
     else if (pathname.includes("filter")) return "Filter";
     else if (pathname.includes("route/")) return "Route";
     else if (pathname.includes("stop/") || pathname.includes("station/")) return "Stop";
-    else if (pathname.includes("vehicle/")) return "Vehicle";
-    else if (pathname.includes("trip/")) return "Trip";
+    else if (pathname.includes("vehicle/") || pathname.includes("trip/")) return "Trip";
     else return null;
 };
 
@@ -94,7 +90,6 @@ const renderHeader = (type: SheetContentTypes) => {
     else if (type === "Filter") return <FilterHeader />;
     else if (type === "Route") return <RouteHeader />;
     else if (type === "Stop") return <StopHeader />;
-    else if (type === "Vehicle") return <VehicleHeader />;
     else if (type === "Trip") return <TripHeader />;
 };
 
@@ -103,7 +98,6 @@ const renderContent = (type: SheetContentTypes) => {
     else if (type === "Filter") return <FilterContent />;
     else if (type === "Route") return <RouteContent />;
     else if (type === "Stop") return <StopContent />;
-    else if (type === "Vehicle") return <VehicleContent />;
     else if (type === "Trip") return <TripContent />;
     else return <p />;
 };

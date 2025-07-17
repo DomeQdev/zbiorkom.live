@@ -28,14 +28,10 @@ const StopTimePicker = lazy(() => import("@/sheet/Stop/StopTimePicker"));
 
 const Trip = lazy(() => import("@/pages/Trip"));
 const TripAlerts = lazy(() => import("@/pages/Trip/TripAlerts"));
-
-const Vehicle = lazy(() => import("@/pages/Vehicle"));
-const VehicleInfo = lazy(() => import("@/pages/Vehicle/Info"));
-const VehicleSun = lazy(() => import("@/pages/Vehicle/Sun"));
+const VehicleInfo = lazy(() => import("@/pages/Trip/VehicleInfo"));
 
 const Cities = lazy(() => import("@/pages/Cities"));
 const City = lazy(() => import("@/pages/City"));
-const Copyright = lazy(() => import("@/pages/Copyright"));
 const Error = lazy(() => import("@/pages/Error"));
 const Executions = lazy(() => import("@/pages/Executions"));
 const FavoriteStops = lazy(() => import("@/pages/FavoriteStops"));
@@ -55,6 +51,7 @@ export default () => {
                     <Outlet />
                 </Map>
             ),
+            errorElement: <Error />,
             children: [
                 {
                     path: "",
@@ -126,7 +123,7 @@ export default () => {
                             path: "vehicle/:vehicle",
                             element: (
                                 <Suspense>
-                                    <Vehicle />
+                                    <Trip />
                                 </Suspense>
                             ),
                             children: [
@@ -139,10 +136,36 @@ export default () => {
                                     ),
                                 },
                                 {
-                                    path: "sun",
+                                    path: "brigade",
                                     element: (
                                         <Suspense>
-                                            <VehicleSun />
+                                            <BrigadeFromVehicle />
+                                        </Suspense>
+                                    ),
+                                },
+                                {
+                                    path: "alerts",
+                                    element: (
+                                        <Suspense>
+                                            <TripAlerts />
+                                        </Suspense>
+                                    ),
+                                },
+                            ],
+                        },
+                        {
+                            path: "trip/:trip",
+                            element: (
+                                <Suspense>
+                                    <Trip />
+                                </Suspense>
+                            ),
+                            children: [
+                                {
+                                    path: "info",
+                                    element: (
+                                        <Suspense>
+                                            <VehicleInfo />
                                         </Suspense>
                                     ),
                                 },
@@ -151,6 +174,14 @@ export default () => {
                                     element: (
                                         <Suspense>
                                             <BrigadeFromVehicle />
+                                        </Suspense>
+                                    ),
+                                },
+                                {
+                                    path: "alerts",
+                                    element: (
+                                        <Suspense>
+                                            <TripAlerts />
                                         </Suspense>
                                     ),
                                 },
@@ -203,24 +234,6 @@ export default () => {
                                     element: (
                                         <Suspense>
                                             <AddToFav />
-                                        </Suspense>
-                                    ),
-                                },
-                            ],
-                        },
-                        {
-                            path: "trip/:trip",
-                            element: (
-                                <Suspense>
-                                    <Trip />
-                                </Suspense>
-                            ),
-                            children: [
-                                {
-                                    path: "alerts",
-                                    element: (
-                                        <Suspense>
-                                            <TripAlerts />
                                         </Suspense>
                                     ),
                                 },
@@ -343,14 +356,6 @@ export default () => {
                                     ),
                                 },
                             ],
-                        },
-                        {
-                            path: "copyright",
-                            element: (
-                                <Suspense>
-                                    <Copyright />
-                                </Suspense>
-                            ),
                         },
                     ],
                 },

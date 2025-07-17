@@ -15,10 +15,6 @@ i18n.use(initReactI18next).init({
     fallbackLng: "pl",
 });
 
-document
-    .querySelector("meta[name=theme-color]")
-    ?.setAttribute("content", localStorage.getItem("themeColor") || "#276b2b");
-
 let useLocalhost = location.protocol === "http:" && false;
 
 window.Gay = {

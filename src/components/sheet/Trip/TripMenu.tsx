@@ -1,34 +1,25 @@
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
-import { Build, EventNote, MoreVert, Share, WbSunny } from "@mui/icons-material";
+import { Build, EventNote, MoreVert, Report, Share } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
-import { useMemo, useState } from "react";
-import cities from "cities";
+import { useNavigate } from "react-router-dom";
 import useVehicleStore from "@/hooks/useVehicleStore";
+import { EStopUpdate, EVehicle } from "typings";
+import { useState } from "react";
+import TripLastPing from "./TripLastPing";
 import { useShallow } from "zustand/react/shallow";
-import { ETrip, EVehicle } from "typings";
 
 export default () => {
-    const [vehicle, trip] = useVehicleStore(useShallow((state) => [state.vehicle, state.trip]));
+    const [vehicle, lastPing, hasAlerts] = useVehicleStore(
+        useShallow((state) => [
+            state.vehicle,
+            state.lastPing,
+            state.stops?.some((stop) => stop[EStopUpdate.alerts]?.length > 0),
+        ])
+    );
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const { t } = useTranslation(["Vehicle", "Shared"]);
-    const { city } = useParams();
     const navigate = useNavigate();
-
-    const cityData = cities[city!];
-
-    const showSunPosition = useMemo(() => {
-        if (
-            !trip ||
-            !trip[ETrip.shape] ||
-            trip[ETrip.shape].geometry.coordinates.length <= trip[ETrip.stops].length
-        ) {
-            return false;
-        }
-
-        return true;
-    }, [trip]);
 
     return (
         <>
@@ -50,6 +41,12 @@ export default () => {
                     },
                 }}
             >
+                {!!lastPing && (
+                    <MenuItem sx={{ pointerEvents: "none" }} disabled>
+                        <ListItemText primary={<TripLastPing lastPing={lastPing} />} />
+                    </MenuItem>
+                )}
+
                 <MenuItem
                     onClick={() => {
                         navigator.share({
@@ -63,14 +60,16 @@ export default () => {
                     <ListItemText primary={t("share", { ns: "Shared" })} />
                 </MenuItem>
 
-                {showSunPosition && (
+                {hasAlerts && (
                     <MenuItem
-                        onClick={() => navigate(window.location.pathname + "/sun" + window.location.search)}
+                        onClick={() =>
+                            navigate(window.location.pathname + "/alerts" + window.location.search)
+                        }
                     >
                         <ListItemIcon>
-                            <WbSunny fontSize="small" />
+                            <Report fontSize="small" sx={{ color: "error.contrastText" }} />
                         </ListItemIcon>
-                        <ListItemText primary={t("sunPosition")} />
+                        <ListItemText primary={t("alerts")} />
                     </MenuItem>
                 )}
 
@@ -87,7 +86,7 @@ export default () => {
                     </MenuItem>
                 )}
 
-                {!cityData.disableVehicleInfo && !vehicle?.[EVehicle.id].split("/")[1].startsWith("_") && (
+                {vehicle && !vehicle[EVehicle.id].split("/")[1].startsWith("_") && (
                     <MenuItem
                         onClick={() => navigate(window.location.pathname + "/info" + window.location.search)}
                     >

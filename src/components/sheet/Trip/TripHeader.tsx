@@ -1,31 +1,14 @@
-import { useNavigate, useParams } from "react-router-dom";
 import { Box, IconButton, Skeleton } from "@mui/material";
-import VehicleHeadsign from "@/sheet/Vehicle/VehicleHeadsign";
-import { Close, Report } from "@mui/icons-material";
+import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
+import { Close } from "@mui/icons-material";
 import useGoBack from "@/hooks/useGoBack";
-import { EStopUpdate, ETrip } from "typings";
+import { ETrip } from "typings";
 import useVehicleStore from "@/hooks/useVehicleStore";
-import { useShallow } from "zustand/react/shallow";
+import TripMenu from "./TripMenu";
 
 export default () => {
-    const [trip, stops] = useVehicleStore(useShallow((state) => [state.trip, state.stops]));
-    const navigate = useNavigate();
-    const params = useParams();
+    const trip = useVehicleStore((state) => state.trip);
     const goBack = useGoBack();
-
-    if (!trip)
-        return (
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: 8,
-                }}
-            >
-                <Skeleton variant="rectangular" width={32} height={32} sx={{ borderRadius: 0.5 }} />
-                <Skeleton variant="text" width={160} height={32} />
-            </div>
-        );
 
     return (
         <Box
@@ -36,11 +19,24 @@ export default () => {
                 marginTop: -1,
             }}
         >
-            <VehicleHeadsign
-                route={trip[ETrip.route]}
-                shortName={trip[ETrip.shortName]}
-                headsign={trip[ETrip.headsign]}
-            />
+            {trip ? (
+                <VehicleHeadsign
+                    route={trip[ETrip.route]}
+                    shortName={trip[ETrip.shortName]}
+                    headsign={trip[ETrip.headsign]}
+                />
+            ) : (
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 8,
+                    }}
+                >
+                    <Skeleton variant="rectangular" width={72} height={26} sx={{ borderRadius: 0.5 }} />
+                    <Skeleton variant="text" width={160} height={26} />
+                </div>
+            )}
 
             <Box
                 sx={{
@@ -62,22 +58,7 @@ export default () => {
                     },
                 }}
             >
-                {stops?.some((stop) => stop[EStopUpdate.alerts]?.length > 0) && (
-                    <IconButton
-                        id="alertsButton"
-                        size="small"
-                        sx={{
-                            backgroundColor: "error.main",
-                            color: "error.contrastText",
-                            "&:hover": {
-                                backgroundColor: "error.dark",
-                            },
-                        }}
-                        onClick={() => navigate(`/${params.city}/trip/${params.trip}/alerts?pkp`)}
-                    >
-                        <Report />
-                    </IconButton>
-                )}
+                <TripMenu />
 
                 <IconButton size="small" onClick={() => goBack()}>
                     <Close />

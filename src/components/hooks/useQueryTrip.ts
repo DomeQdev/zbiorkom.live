@@ -39,6 +39,7 @@ export const useQueryTrip = ({ city, trip, vehicle }: TripQueryProps) => {
         if (query.data?.trip) vehicleStore.setTrip(query.data.trip);
         if (query.data?.stops?.length) vehicleStore.setStops(query.data.stops);
         if (query.data?.sequence !== undefined) vehicleStore.setSequence(query.data.sequence);
+        if (query.data?.lastPing !== undefined) vehicleStore.setLastPing(query.data.lastPing);
     }, [query.data, vehicleStore]);
 
     useEffect(() => {

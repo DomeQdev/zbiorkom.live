@@ -1,6 +1,6 @@
 import { Box, ListItemButton, ListItemText } from "@mui/material";
-import VehicleHeadsign from "@/sheet/Vehicle/VehicleHeadsign";
-import VehicleDelay from "@/sheet/Vehicle/VehicleDelay";
+import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
+import VehicleDelay from "@/sheet/Trip/TripDelay";
 import { StopDeparture, EStopTime, EStopDeparture, EVehicle } from "typings";
 import useTime from "@/hooks/useTime";
 import { getTime } from "@/util/tools";

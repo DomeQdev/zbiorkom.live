@@ -1,7 +1,7 @@
 import { ListItemButton } from "@mui/material";
 import { BrigadeTrip, EBrigadeTrip, ERoute } from "typings";
 import { Link, useParams } from "react-router-dom";
-import { getTime } from "@/util/tools";
+import { getTime, milisecondsToTime } from "@/util/tools";
 import { useTranslation } from "react-i18next";
 import getColors, { hexFromArgb } from "@/util/getColors";
 import RouteTag from "@/map/RouteTag";
@@ -54,14 +54,11 @@ export default ({ trip, showRoute }: Props) => {
                     {trip[EBrigadeTrip.startStop]}
                 </span>
             </span>
-
             <div className="tripInfo">
                 <span>
                     {[
                         t("travelTime", {
-                            time: `${Math.floor(
-                                (trip[EBrigadeTrip.end] - trip[EBrigadeTrip.start]) / 60000
-                            )} min`,
+                            time: milisecondsToTime(trip[EBrigadeTrip.end] - trip[EBrigadeTrip.start]),
                         }),
                         `${trip[EBrigadeTrip.distance].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} m`,
                     ].join(" · ")}
@@ -72,7 +69,6 @@ export default ({ trip, showRoute }: Props) => {
                         : t("clickForTrip")}
                 </span>
             </div>
-
             <span className="tripRow">
                 <span className="tripTime">{getTime(trip[EBrigadeTrip.end])}</span>
                 <span
