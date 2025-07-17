@@ -17,7 +17,7 @@ export default ({ isTrain, update, hasDeparted }: Props) => {
 
         return [
             departureTime,
-            isTrain &&
+            !isTrain &&
                 isSingleTime &&
                 Math.abs(update[EStopUpdate.departure][EStopTime.delay] as number) >= 60000,
             (update[EStopUpdate.departure][EStopTime.delay] as number) > 0 ? "delayed" : "early",
