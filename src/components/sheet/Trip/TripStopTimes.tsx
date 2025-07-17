@@ -3,17 +3,23 @@ import { Box, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { EStopUpdate, EStopTime, StopUpdate } from "typings";
 
-export default ({ update, hasDeparted }: { update: StopUpdate; hasDeparted: boolean }) => {
+type Props = {
+    isTrain: boolean;
+    update: StopUpdate;
+    hasDeparted: boolean;
+};
+
+export default ({ isTrain, update, hasDeparted }: Props) => {
     const [departureTime, isSingleTimeButDelayed, delayType, times] = useMemo(() => {
         const arrivalTime = getTime(update[EStopUpdate.arrival][EStopTime.estimated]);
         const departureTime = getTime(update[EStopUpdate.departure][EStopTime.estimated]);
         const isSingleTime = arrivalTime === departureTime;
-        const isSingleTimeButDelayed =
-            isSingleTime && Math.abs(update[EStopUpdate.departure][EStopTime.delay] as number) >= 60000;
 
         return [
             departureTime,
-            isSingleTimeButDelayed,
+            isTrain &&
+                isSingleTime &&
+                Math.abs(update[EStopUpdate.departure][EStopTime.delay] as number) >= 60000,
             (update[EStopUpdate.departure][EStopTime.delay] as number) > 0 ? "delayed" : "early",
             isSingleTime
                 ? [update[EStopUpdate.departure]]

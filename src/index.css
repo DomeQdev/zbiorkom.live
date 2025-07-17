@@ -1,8 +1,12 @@
-.mapboxgl-map {
-    background-color: black;
+.mapboxgl-canvas-container {
+    transition: all 0.2s ease-in-out;
 }
 
-.mapboxgl-canvas-container {
+.dark .mapboxgl-map {
+    background-color: #1a1f26;
+}
+
+.dark .mapboxgl-canvas-container {
     filter: invert(1) hue-rotate(180deg) contrast(90%) brightness(90%);
 }
 

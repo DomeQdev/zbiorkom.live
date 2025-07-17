@@ -66,7 +66,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                     gap: 1,
                 }}
             >
-                <TripStopTimes update={update} hasDeparted={hasDeparted} />
+                <TripStopTimes isTrain={trip[ETrip.route][ERoute.type] === 2} update={update} hasDeparted={hasDeparted} />
                 <VehicleStopIcon
                     color={color}
                     index={index}
