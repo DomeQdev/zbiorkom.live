@@ -4,6 +4,7 @@ import { useShallow } from "zustand/react/shallow";
 import useVehicleStore from "./useVehicleStore";
 import { APIVehicle, ETrip } from "typings";
 import { useEffect } from "react";
+import { polylineToGeoJson } from "@/util/tools";
 
 type TripQueryProps = {
     city: string;
@@ -19,7 +20,7 @@ export const useQueryTrip = ({ city, trip, vehicle }: TripQueryProps) => {
     const query = useQuery({
         queryKey,
         queryFn: async ({ signal }) => {
-            return getFromAPI<APIVehicle>(
+            const response = await getFromAPI<APIVehicle>(
                 city,
                 trip ? "trips/getTripUpdate" : "trips/getTripByVehicle",
                 {
@@ -29,6 +30,12 @@ export const useQueryTrip = ({ city, trip, vehicle }: TripQueryProps) => {
                 },
                 signal
             );
+
+            if (response.trip?.[ETrip.shape]) {
+                response.trip[ETrip.shape] = polylineToGeoJson(response.trip[ETrip.shape] as any);
+            }
+
+            return response;
         },
         refetchOnWindowFocus: true,
     });

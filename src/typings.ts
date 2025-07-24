@@ -150,24 +150,13 @@ export enum ETrip {
     platforms = 8,
 }
 
-export type TripStop = [
-    id: string,
-    name: string,
-    location: Location,
-    sequence: number,
-    arrival: number,
-    departure: number,
-    type: ETripStopType
-];
+export type TripStop = [id: string, name: string, location: Location, type: ETripStopType];
 
 export enum ETripStop {
     id = 0,
     name = 1,
     location = 2,
-    sequence = 3,
-    arrival = 4,
-    departure = 5,
-    type = 6,
+    type = 3,
 }
 
 export enum ETripStopType {
@@ -176,30 +165,9 @@ export enum ETripStopType {
     onDemand = 2,
 }
 
-export type Shape = {
-    type: "Feature";
-    geometry: {
-        type: "LineString";
-        coordinates: Location[];
-    };
-    properties: {};
-};
-
-export type Platform = {
-    type: "Feature";
-    geometry: {
-        type: "Polygon";
-        coordinates: [Location[]];
-    };
-    properties: {
-        name: string;
-    };
-};
-
-export type Platforms = {
-    type: "FeatureCollection";
-    features: Platform[];
-};
+export type Shape = GeoJSON.Feature<GeoJSON.LineString>;
+export type Platform = GeoJSON.Feature<GeoJSON.Polygon, { name: string }>;
+export type Platforms = GeoJSON.FeatureCollection<GeoJSON.Polygon, { name: string }>;
 
 export type StopDepartures = [stop: Stop, departures: StopDeparture[], hasMore: boolean];
 
@@ -465,7 +433,7 @@ export type NonTransitLeg = {
     mode: "WALK" | "BIKE" | "RENTAL";
     distance: number; // (meters)
     duration: number; // (milliseconds)
-    shape: string;
+    shape: Shape;
     rental?: [fromStationName: string, toStationName: string];
 };
 

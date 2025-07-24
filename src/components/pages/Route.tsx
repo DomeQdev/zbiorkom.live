@@ -1,4 +1,4 @@
-import { ERoute, ERouteDirection, ERouteInfo, EVehicle, Vehicle } from "typings";
+import { ERoute, ERouteDirection, ERouteInfo, EVehicle, Location, Vehicle } from "typings";
 import { useEffect } from "react";
 import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { Socket } from "socket.io-client";
@@ -45,7 +45,7 @@ export default () => {
 
         map?.fitBounds(
             data[ERouteInfo.directions][direction][ERouteDirection.shape].geometry.coordinates.reduce(
-                (bounds, coord) => bounds.extend(coord),
+                (bounds, coord) => bounds.extend(coord as Location),
                 new LngLatBounds()
             ),
             {

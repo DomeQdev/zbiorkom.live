@@ -1,4 +1,4 @@
-import { milisecondsToTime } from "@/util/tools";
+import { msToTime } from "@/util/tools";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -7,7 +7,7 @@ export default ({ lastPing }: { lastPing: number }) => {
     const { t } = useTranslation("Shared");
 
     const updateTime = () => {
-        setTime(milisecondsToTime(Date.now() - lastPing, true));
+        setTime(msToTime(Date.now() - lastPing, true));
     };
 
     useEffect(() => {

@@ -11,7 +11,7 @@ import Trip from "./BrigadeTrip";
 import MultilineAlert from "./MultilineAlert";
 import Helm from "@/util/Helm";
 import ScrollButton from "./ScrollButton";
-import { milisecondsToTime } from "@/util/tools";
+import { msToTime } from "@/util/tools";
 
 type Props = {
     route?: Route;
@@ -207,7 +207,7 @@ export default ({ route, brigade, trips }: Props) => {
 
                                 const nextTrip = filteredTrips[i + 1];
                                 if (nextTrip) {
-                                    breakTime = milisecondsToTime(nextTrip[EBrigadeTrip.start] - trip[EBrigadeTrip.end]);
+                                    breakTime = msToTime(nextTrip[EBrigadeTrip.start] - trip[EBrigadeTrip.end]);
 
                                     if (
                                         trip[EBrigadeTrip.route][ERoute.id] !==

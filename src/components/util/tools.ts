@@ -45,7 +45,7 @@ export const getMapStyle = () => {
 
 export const getDelay = (delay?: DelayType) => {
     const isNumber = typeof delay === "number";
-    const delayTime = milisecondsToTime(isNumber ? Math.abs(delay) : 0);
+    const delayTime = msToTime(isNumber ? Math.abs(delay) : 0);
 
     return [
         isNumber ? (delayTime ? (delay > 0 ? "delayed" : "early") : "none") : "unknown",
@@ -53,7 +53,7 @@ export const getDelay = (delay?: DelayType) => {
     ] as const;
 };
 
-export const milisecondsToTime = (ms: number, withSeconds?: boolean) => {
+export const msToTime = (ms: number, withSeconds?: boolean) => {
     let formattedTime: string[] = [];
 
     const seconds = Math.floor(ms / 1000);
@@ -65,7 +65,54 @@ export const milisecondsToTime = (ms: number, withSeconds?: boolean) => {
 
     if (hours > 0) formattedTime.push(`${hours} h`);
     if (remainingMinutes > 0) formattedTime.push(`${remainingMinutes} min`);
-    if (withSeconds && remainingSeconds > 0) formattedTime.push(`${remainingSeconds} s`);
+    if (withSeconds) formattedTime.push(`${remainingSeconds} s`);
 
     return formattedTime.join(" ");
+};
+
+export const polylineToGeoJson = (polyline: string) => {
+    const factor = Math.pow(10, +polyline[1]);
+    polyline = polyline.slice(3);
+
+    let index = 0;
+    let lat = 0;
+    let lng = 0;
+
+    const geoJson: GeoJSON.Feature<GeoJSON.LineString> = {
+        type: "Feature",
+        geometry: {
+            type: "LineString",
+            coordinates: [],
+        },
+        properties: {},
+    };
+
+    while (index < polyline.length) {
+        let b;
+        let shift = 0;
+        let result = 0;
+
+        do {
+            b = polyline.charCodeAt(index++) - 63;
+            result |= (b & 0x1f) << shift;
+            shift += 5;
+        } while (b >= 0x20);
+
+        lat += (result >> 1) ^ -(result & 1);
+
+        shift = 0;
+        result = 0;
+
+        do {
+            b = polyline.charCodeAt(index++) - 63;
+            result |= (b & 0x1f) << shift;
+            shift += 5;
+        } while (b >= 0x20);
+
+        lng += (result >> 1) ^ -(result & 1);
+
+        geoJson.geometry.coordinates.push([lng / factor, lat / factor]);
+    }
+
+    return geoJson;
 };
