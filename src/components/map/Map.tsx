@@ -3,7 +3,6 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import cities from "cities";
 import Map from "react-map-gl";
 import { useLocation } from "react-router-dom";
-import { getMapStyle } from "@/util/tools";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
     const { pathname } = useLocation();
@@ -33,8 +32,8 @@ export default memo(({ children }: { children: ReactElement[] }) => {
 
     return (
         <Map
-            mapboxAccessToken="pk.eyJ1IjoiZG9tZXEyYWx0IiwiYSI6ImNtYzh2M2NhNDA2eTEyanBjbzU5bG02ZnkifQ.QSqseCfhAQdA3ndk08ZCqQ"
-            mapStyle={getMapStyle()}
+            mapboxAccessToken="pk.eyJ1IjoiZG9tZXEzYWx0IiwiYSI6ImNtZGxudDJqdjE2emMyanF0M3dremQyeWwifQ.Y7acOCCmqJGS3OlEZPKhzw"
+            mapStyle={"mapbox://styles/domeq3alt/cmdlnw048007j01s887f864sf"}
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}
             onLoad={({ target }: { target: any }) => {

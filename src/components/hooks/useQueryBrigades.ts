@@ -4,8 +4,8 @@ import { BrigadeTrip } from "typings";
 
 type BrigadeQueryProps = {
     city: string;
-    route: string;
-    brigade: string;
+    route?: string;
+    brigade?: string;
 };
 
 export const useQueryBrigade = ({ city, route, brigade }: BrigadeQueryProps) => {
@@ -14,6 +14,7 @@ export const useQueryBrigade = ({ city, route, brigade }: BrigadeQueryProps) => 
         queryFn: async ({ signal }) =>
             getFromAPI<BrigadeTrip[]>(city, "brigades/getBrigade", { route, brigade }, signal),
         refetchOnMount: true,
+        enabled: !!route && !!brigade,
     });
 };
 

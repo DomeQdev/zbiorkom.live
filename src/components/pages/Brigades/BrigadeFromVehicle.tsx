@@ -9,14 +9,14 @@ import { useQueryBrigade } from "@/hooks/useQueryBrigades";
 import "./brigades.css";
 
 export default () => {
-    const vehicle = useVehicleStore((state) => state.vehicle!);
+    const vehicle = useVehicleStore((state) => state.vehicle);
     const { city } = useParams();
     const goBack = useGoBack();
 
     const { data } = useQueryBrigade({
         city: window.location.search.includes("pkp") ? "pkp" : city!,
-        route: vehicle[EVehicle.route][ERoute.id],
-        brigade: vehicle[EVehicle.brigade],
+        route: vehicle?.[EVehicle.route][ERoute.id],
+        brigade: vehicle?.[EVehicle.brigade],
     });
 
     return (
@@ -26,7 +26,7 @@ export default () => {
             open
             onClose={() => goBack()}
         >
-            <Schedule route={vehicle[EVehicle.route]} brigade={vehicle[EVehicle.brigade]} trips={data} />
+            <Schedule route={vehicle?.[EVehicle.route]} brigade={vehicle?.[EVehicle.brigade]} trips={data} />
         </Dialog>
     );
 };

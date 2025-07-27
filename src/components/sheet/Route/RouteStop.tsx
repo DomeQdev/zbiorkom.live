@@ -1,7 +1,6 @@
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { ETripStop, TripStop } from "typings";
 import { useMap } from "react-map-gl";
-import { ETripStop, ETripStopType, TripStop } from "typings";
-import { RemoveCircleOutline, WavingHand } from "@mui/icons-material";
 
 type Props = {
     stop: TripStop;
@@ -20,9 +19,7 @@ export default ({ stop, color, index }: Props) => {
                     zoom: map.getZoom() > 15 ? map.getZoom() : 15,
                 })
             }
-            sx={{
-                paddingY: 0.5,
-            }}
+            sx={{ paddingY: 0.5 }}
         >
             <ListItemIcon>
                 <span
@@ -41,31 +38,7 @@ export default ({ stop, color, index }: Props) => {
                 )}
             </ListItemIcon>
             <ListItemText
-                primary={
-                    <>
-                        {stop[ETripStop.type] === ETripStopType.notBoardable && (
-                            <RemoveCircleOutline
-                                sx={{
-                                    fontSize: 18,
-                                    marginRight: 0.5,
-                                    color: "error.contrastText",
-                                }}
-                            />
-                        )}
-
-                        {stop[ETripStop.type] === ETripStopType.onDemand && (
-                            <WavingHand
-                                sx={{
-                                    fontSize: 16,
-                                    marginRight: 0.5,
-                                    color: "warning.main",
-                                }}
-                            />
-                        )}
-
-                        {stop[ETripStop.name]}
-                    </>
-                }
+                primary={stop[ETripStop.name]}
                 sx={{
                     marginLeft: "-15px",
                     "& .MuiListItemText-primary": {

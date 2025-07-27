@@ -134,7 +134,7 @@ const cities = {
     warsaw: {
         id: "warsaw",
         name: "Warszawa",
-        description: "+ GPA, Dąbrówka, Sochaczew, Żyrardów",
+        description: "+ GPA, Otwock, Sochaczew, Żyrardów",
         location: [21.01173, 52.22983],
     },
     wroclaw: {
