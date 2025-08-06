@@ -32,7 +32,7 @@ export default ({ city, route, brigade }: Props) => {
     const elementRef = useRef<HTMLDivElement | null>(null);
     const listRef = useRef<HTMLDivElement | null>(null);
 
-    const { t, i18n } = useTranslation("Vehicle");
+    const { t, i18n } = useTranslation(["Vehicle", "Brigades"]);
     const goBack = useGoBack();
 
     const { data: trips } = useQueryBrigade({ city, route: route?.[ERoute.id], brigade, date });
@@ -264,10 +264,10 @@ export default ({ city, route, brigade }: Props) => {
                                         {breakTime !== false && (
                                             <span className="breakTime">
                                                 {breakTime
-                                                    ? t("breakTime", { time: breakTime })
-                                                    : t("noBreak")}
+                                                    ? t("breakTime", { time: breakTime, ns: "Vehicle" })
+                                                    : t("noBreak", { ns: "Vehicle" })}
                                                 {routeChange &&
-                                                    ` • ${t("routeChange", { route: routeChange })}`}
+                                                    ` • ${t("routeChange", { route: routeChange, ns: "Vehicle" })}`}
                                             </span>
                                         )}
                                     </div>
@@ -293,7 +293,7 @@ export default ({ city, route, brigade }: Props) => {
                             curr,
                         ])}
 
-                {trips && !trips.length && <Alert Icon={Dangerous} title="No trips available" color="error" />}
+                {trips && !trips.length && <Alert Icon={Dangerous} title={t("noDuty", { ns: "Brigades" })} color="error" />}
 
                 <ScrollButton
                     scrollType={showScroll}

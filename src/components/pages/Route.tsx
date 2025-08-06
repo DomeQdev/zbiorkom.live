@@ -60,10 +60,6 @@ export default () => {
                 maxDuration: 1000,
             }
         );
-
-        return () => {
-            setDirection(0);
-        };
     }, [data, direction]);
 
     useEffect(() => {
@@ -81,6 +77,12 @@ export default () => {
             socket.off("refresh", onRefresh);
         };
     }, [socket, refetch]);
+
+    useEffect(() => {
+        return () => {
+            setDirection(0);
+        };
+    }, []);
 
     return (
         <>
