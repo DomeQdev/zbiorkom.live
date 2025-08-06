@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Sticky from "@/ui/Sticky";
 import { Box, DialogContent, DialogTitle, IconButton, Skeleton, Typography } from "@mui/material";
-import { ArrowBack, Share } from "@mui/icons-material";
+import { ArrowBack, Dangerous, Share } from "@mui/icons-material";
 import { Trans, useTranslation } from "react-i18next";
 import RouteTag from "@/map/RouteTag";
 import useGoBack from "@/hooks/useGoBack";
@@ -12,23 +12,30 @@ import MultilineAlert from "./MultilineAlert";
 import Helm from "@/util/Helm";
 import ScrollButton from "./ScrollButton";
 import { msToTime } from "@/util/tools";
+import DayPicker from "@/ui/DayPicker";
+import useSearchState from "@/hooks/useSearchState";
+import { getBrigadeDays, useQueryBrigade } from "@/hooks/useQueryBrigades";
+import Alert from "@/ui/Alert";
 
 type Props = {
+    city: string;
     route?: Route;
     brigade?: string;
-    trips?: BrigadeTrip[];
 };
 
-export default ({ route, brigade, trips }: Props) => {
+export default ({ city, route, brigade }: Props) => {
     const [showScroll, setShowScroll] = useState<"up" | "down" | false>(false);
     const [filteredRoutes, setFilteredRoutes] = useState<string[]>([]);
+    const [date, setDate] = useSearchState("date");
 
     const scrollContainer = useRef<HTMLDivElement | null>(null);
     const elementRef = useRef<HTMLDivElement | null>(null);
     const listRef = useRef<HTMLDivElement | null>(null);
 
-    const { t } = useTranslation("Vehicle");
+    const { t, i18n } = useTranslation("Vehicle");
     const goBack = useGoBack();
+
+    const { data: trips } = useQueryBrigade({ city, route: route?.[ERoute.id], brigade, date });
 
     const [routes, routeKeys] = useMemo(() => {
         const routeKeys = new Set<string>();
@@ -43,17 +50,42 @@ export default ({ route, brigade, trips }: Props) => {
             }
         }
 
-        return [routes, Array.from(routeKeys)] as const;
+        return [routes, Array.from(routeKeys).sort()] as const;
     }, [trips]);
 
-    const filteredTrips = trips?.filter((trip) =>
-        filteredRoutes.length ? filteredRoutes?.includes(trip[EBrigadeTrip.route][ERoute.id]) : true
-    );
-    const currentTripIndex = trips?.findIndex((trip) => trip[EBrigadeTrip.vehicle] !== null)!;
-    const actualFilteredRoutes = filteredRoutes.length ? filteredRoutes : routeKeys;
+    const [filteredTrips, currentTripIndex, actualFilteredRoutes] = useMemo(() => {
+        const filteredTrips: BrigadeTrip[] = [];
+        let currentTripIndex = -1;
+
+        for (const trip of trips || []) {
+            if (filteredRoutes.length && !filteredRoutes.includes(trip[EBrigadeTrip.route][ERoute.id])) {
+                continue;
+            }
+
+            filteredTrips.push(trip);
+
+            if (trip[EBrigadeTrip.vehicle] !== null) {
+                currentTripIndex = filteredTrips.length - 1;
+            }
+        }
+
+        if (currentTripIndex === -1 && filteredTrips.length) {
+            currentTripIndex = filteredTrips.findIndex(
+                (trip) =>
+                    trip[EBrigadeTrip.end] > Date.now() &&
+                    trip[EBrigadeTrip.start] <= Date.now() + 2 * 60 * 60 * 1000
+            );
+        }
+
+        const actualFilteredRoutes = filteredRoutes.length ? filteredRoutes : routeKeys;
+
+        return [filteredTrips, currentTripIndex, actualFilteredRoutes] as const;
+    }, [trips, filteredRoutes, routeKeys]);
+
+    const next7days = useMemo(() => getBrigadeDays(i18n.language), [i18n.language]);
 
     const updateScroll = () => {
-        if (!listRef.current?.children.length || currentTripIndex === -1) return;
+        if (!listRef.current?.children.length || currentTripIndex === -1) return setShowScroll(false);
 
         const currentTrip = listRef.current.children[currentTripIndex];
         const rect = currentTrip.getBoundingClientRect();
@@ -159,6 +191,8 @@ export default ({ route, brigade, trips }: Props) => {
                     </Trans>
                 </Typography>
 
+                <DayPicker value={date} setValue={setDate} days={next7days} />
+
                 {routeKeys.length > 1 && (
                     <Box
                         sx={{
@@ -167,7 +201,7 @@ export default ({ route, brigade, trips }: Props) => {
                             flexDirection: "row",
                             flexWrap: "wrap",
                             borderRadius: 2,
-                            margin: "0 8px 8px 8px",
+                            margin: 1,
                             gap: 1,
                         }}
                     >
@@ -207,7 +241,9 @@ export default ({ route, brigade, trips }: Props) => {
 
                                 const nextTrip = filteredTrips[i + 1];
                                 if (nextTrip) {
-                                    breakTime = msToTime(nextTrip[EBrigadeTrip.start] - trip[EBrigadeTrip.end]);
+                                    breakTime = msToTime(
+                                        nextTrip[EBrigadeTrip.start] - trip[EBrigadeTrip.end]
+                                    );
 
                                     if (
                                         trip[EBrigadeTrip.route][ERoute.id] !==
@@ -219,7 +255,11 @@ export default ({ route, brigade, trips }: Props) => {
 
                                 return (
                                     <div key={trip[EBrigadeTrip.id]}>
-                                        <Trip trip={trip} showRoute={routeKeys.length > 1} />
+                                        <Trip
+                                            trip={trip}
+                                            isActive={currentTripIndex === i}
+                                            showRoute={routeKeys.length > 1}
+                                        />
 
                                         {breakTime !== false && (
                                             <span className="breakTime">
@@ -249,9 +289,11 @@ export default ({ route, brigade, trips }: Props) => {
                         ))
                         .reduce((prev, curr, i) => [
                             prev,
-                            <Skeleton key={`skelet${i}`} variant="text" width={77} sx={{ marginLeft: 2 }} />,
+                            <Skeleton key={`skelet${i}`} variant="text" width={98} sx={{ marginLeft: 2 }} />,
                             curr,
                         ])}
+
+                {trips && !trips.length && <Alert Icon={Dangerous} title="No trips available" color="error" />}
 
                 <ScrollButton
                     scrollType={showScroll}

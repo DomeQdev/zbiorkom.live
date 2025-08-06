@@ -1,12 +1,11 @@
 import { Box, DialogContent, DialogTitle, IconButton, LinearProgress, Typography } from "@mui/material";
+import { useQueryBlogPost } from "@/hooks/useQueryBlog";
+import { ArrowBack, Share } from "@mui/icons-material";
 import { memo, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import useGoBack from "@/hooks/useGoBack";
-import { ArrowBack, Share } from "@mui/icons-material";
 import Sticky from "@/ui/Sticky";
 import Helm from "@/util/Helm";
-import normalizeContent from "./normalizeContent";
-import { useQueryBlogPost } from "@/hooks/useQueryBlog";
 
 export default memo(() => {
     const scrollContainer = useRef<HTMLDivElement | null>(null);
@@ -95,12 +94,7 @@ export default memo(() => {
                 </Box>
 
                 {data?.content && (
-                    <div
-                        className="blogContent"
-                        dangerouslySetInnerHTML={{
-                            __html: normalizeContent(data.content),
-                        }}
-                    />
+                    <div className="blogContent" dangerouslySetInnerHTML={{ __html: data.content }} />
                 )}
             </DialogContent>
         </>

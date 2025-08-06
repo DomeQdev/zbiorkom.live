@@ -53,7 +53,8 @@
     "travelTime": "Czas przejazdu: {{time}}",
     "clickForTrip": "Kliknij, aby zobaczyć kurs",
     "operatedBy": "Realizowany przez pojazd #{{vehicle}}",
-    "multilineAlert": "Brygada wieloliniowa, możliwe błędy w dopasowywaniu rozkładów pojazdów. Prosimy o użycie własnego rozsądku w celu weryfikacji poprawności dopasowań."
+    "multilineAlert": "Brygada wieloliniowa, możliwe błędy w dopasowywaniu rozkładów pojazdów. Prosimy o użycie własnego rozsądku w celu weryfikacji poprawności dopasowań.",
+    "noDuty": "Brak rozkładów brygadowych w wybranym dniu"
   },
   "Schedules": {
     "schedules": "Rozkłady",

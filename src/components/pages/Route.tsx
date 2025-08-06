@@ -15,7 +15,9 @@ import { useQueryRoute } from "@/hooks/useQueryRoutes";
 import { getSheetHeight } from "@/util/tools";
 
 export default () => {
-    const direction = useDirectionStore(useShallow((state) => state.direction));
+    const [direction, setDirection] = useDirectionStore(
+        useShallow((state) => [state.direction, state.setDirection])
+    );
     const socket = useOutletContext<Socket>();
     const { city, route } = useParams();
     const { current: map } = useMap();
@@ -58,6 +60,10 @@ export default () => {
                 maxDuration: 1000,
             }
         );
+
+        return () => {
+            setDirection(0);
+        };
     }, [data, direction]);
 
     useEffect(() => {

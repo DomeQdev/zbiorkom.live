@@ -8,10 +8,11 @@ import RouteTag from "@/map/RouteTag";
 
 type Props = {
     trip: BrigadeTrip;
-    showRoute?: boolean;
+    isActive: boolean;
+    showRoute: boolean;
 };
 
-export default ({ trip, showRoute }: Props) => {
+export default ({ trip, isActive, showRoute }: Props) => {
     const { t } = useTranslation("Brigades");
     const { city } = useParams();
 
@@ -29,9 +30,9 @@ export default ({ trip, showRoute }: Props) => {
             sx={{
                 display: "block",
                 borderRadius: 1.5,
-                backgroundColor: trip[EBrigadeTrip.vehicle] ? background : "background.paper",
+                backgroundColor: isActive || trip[EBrigadeTrip.vehicle] ? background : "background.paper",
                 "&:hover": {
-                    backgroundColor: trip[EBrigadeTrip.vehicle] ? background : "background.paper",
+                    backgroundColor: isActive || trip[EBrigadeTrip.vehicle] ? background : "background.paper",
                 },
             }}
         >

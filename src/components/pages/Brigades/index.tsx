@@ -9,7 +9,7 @@ export default memo(() => {
     const goBack = useGoBack();
 
     return (
-        <Dialog fullWidth={window.innerWidth > 600} fullScreen={window.innerWidth <= 600} open onClose={() => goBack()}>
+        <Dialog fullWidth fullScreen={window.innerWidth <= 600} open onClose={() => goBack()}>
             <Outlet />
         </Dialog>
     );
