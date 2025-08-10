@@ -53,7 +53,8 @@
     "travelTime": "Travel time: {{time}}",
     "clickForTrip": "Click to see the trip",
     "operatedBy": "Operated by vehicle #{{vehicle}}",
-    "multilineAlert": "Multiline brigade, possible errors in matching vehicle schedules. Please use your own judgment to verify the correctness of the matches."
+    "multilineAlert": "Multiline brigade, possible errors in matching vehicle schedules. Please use your own judgment to verify the correctness of the matches.",
+    "noDuty": "No duty schedules are available on the selected day"
   },
   "Schedules": {
     "schedules": "Schedules",

@@ -41,7 +41,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
     const shouldUseSeconds = index === 0 && estimatedDeparture - Date.now() < 100000;
     const hasDeparted =
         delay === "cancelled" ||
-        (sequence === undefined ? estimatedDeparture < Date.now() : sequence! > stop[ETripStop.sequence]);
+        (sequence === undefined ? estimatedDeparture < Date.now() : sequence! > index);
     const toDeparture = useTime(estimatedDeparture, shouldUseSeconds);
 
     const platform = update[EStopUpdate.platform];
@@ -66,7 +66,11 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                     gap: 1,
                 }}
             >
-                <TripStopTimes update={update} hasDeparted={hasDeparted} />
+                <TripStopTimes
+                    isTrain={trip[ETrip.route][ERoute.type] === 2}
+                    update={update}
+                    hasDeparted={hasDeparted}
+                />
                 <VehicleStopIcon
                     color={color}
                     index={index}
@@ -74,7 +78,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                     percentTraveled={
                         sequence === 0 && index === 1
                             ? 0
-                            : sequence === stop[ETripStop.sequence]
+                            : sequence === index
                             ? vehicle?.[EVehicle.percentTraveled]
                             : undefined
                     }

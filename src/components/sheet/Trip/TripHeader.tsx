@@ -2,12 +2,13 @@ import { Box, IconButton, Skeleton } from "@mui/material";
 import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
 import { Close } from "@mui/icons-material";
 import useGoBack from "@/hooks/useGoBack";
-import { ETrip } from "typings";
+import { ETrip, EVehicle } from "typings";
 import useVehicleStore from "@/hooks/useVehicleStore";
 import TripMenu from "./TripMenu";
+import { useShallow } from "zustand/react/shallow";
 
 export default () => {
-    const trip = useVehicleStore((state) => state.trip);
+    const [trip, vehicle] = useVehicleStore(useShallow((state) => [state.trip, state.vehicle]));
     const goBack = useGoBack();
 
     return (
@@ -19,11 +20,11 @@ export default () => {
                 marginTop: -1,
             }}
         >
-            {trip ? (
+            {trip || vehicle ? (
                 <VehicleHeadsign
-                    route={trip[ETrip.route]}
-                    shortName={trip[ETrip.shortName]}
-                    headsign={trip[ETrip.headsign]}
+                    route={(trip?.[ETrip.route] || vehicle?.[EVehicle.route])!}
+                    shortName={trip?.[ETrip.shortName]}
+                    headsign={trip?.[ETrip.headsign]}
                 />
             ) : (
                 <div

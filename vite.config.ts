@@ -18,6 +18,14 @@ export default defineConfig({
         sourcemap: false,
         minify: "terser",
         target: "es2020",
+        rollupOptions: {
+            output: {
+                manualChunks: (id) => {
+                    if (id.includes("icons-material")) return "icons";
+                    if (id.includes("use")) return "hooks";
+                }
+            }
+        },
     },
     resolve: {
         alias: {

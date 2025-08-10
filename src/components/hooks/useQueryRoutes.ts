@@ -1,7 +1,8 @@
 import { getFromAPI } from "@/util/fetchFunctions";
 import useLocationStore from "./useLocationStore";
 import { useQuery } from "@tanstack/react-query";
-import { Route, RouteInfo } from "typings";
+import { ERouteDirection, ERouteInfo, Route, RouteInfo } from "typings";
+import { polylineToGeoJson } from "@/util/tools";
 
 export const useQueryRoutes = ({ city }: { city: string }) => {
     return useQuery({
@@ -13,7 +14,15 @@ export const useQueryRoutes = ({ city }: { city: string }) => {
 export const useQueryRoute = ({ city, route }: { city: string; route: string }) => {
     return useQuery({
         queryKey: ["route", city, route],
-        queryFn: async ({ signal }) => getFromAPI<RouteInfo>(city, "routes/getRoute", { id: route }, signal),
+        queryFn: async ({ signal }) => {
+            const routeInfo = await getFromAPI<RouteInfo>(city, "routes/getRoute", { id: route }, signal);
+
+            routeInfo[ERouteInfo.directions].forEach((direction) => {
+                direction[ERouteDirection.shape] = polylineToGeoJson(direction[ERouteDirection.shape] as any);
+            });
+
+            return routeInfo;
+        },
     });
 };
 

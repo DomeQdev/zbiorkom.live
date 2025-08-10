@@ -33,5 +33,15 @@
         <noscript><div data-nosnippet="true">Włącz JavaScript, aby uruchomić tą aplikację.</div></noscript>
         <div id="root"></div>
         <script type="module" src="/src/index.tsx"></script>
+
+        <script>
+            document
+                .querySelector("meta[name=theme-color]")
+                .setAttribute("content", localStorage.getItem("themeColor") || "#276b2b");
+
+            if (localStorage.getItem("dark") === "true") {
+                document.body.classList.add("dark");
+            }
+        </script>
     </body>
 </html>

@@ -1,4 +1,5 @@
-import { APIVehicle } from "typings";
+import { polylineToGeoJson } from "@/util/tools";
+import { APIVehicle, ETrip } from "typings";
 import { create } from "zustand";
 
 interface VehicleState extends APIVehicle {

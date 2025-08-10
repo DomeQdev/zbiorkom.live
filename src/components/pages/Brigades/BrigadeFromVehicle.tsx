@@ -3,21 +3,14 @@ import Schedule from "./Schedule";
 import { Dialog } from "@mui/material";
 import useGoBack from "@/hooks/useGoBack";
 import useVehicleStore from "@/hooks/useVehicleStore";
-import { ERoute, EVehicle } from "typings";
-import { useQueryBrigade } from "@/hooks/useQueryBrigades";
+import { EVehicle } from "typings";
 
 import "./brigades.css";
 
 export default () => {
-    const vehicle = useVehicleStore((state) => state.vehicle!);
+    const vehicle = useVehicleStore((state) => state.vehicle);
     const { city } = useParams();
     const goBack = useGoBack();
-
-    const { data } = useQueryBrigade({
-        city: window.location.search.includes("pkp") ? "pkp" : city!,
-        route: vehicle[EVehicle.route][ERoute.id],
-        brigade: vehicle[EVehicle.brigade],
-    });
 
     return (
         <Dialog
@@ -26,7 +19,11 @@ export default () => {
             open
             onClose={() => goBack()}
         >
-            <Schedule route={vehicle[EVehicle.route]} brigade={vehicle[EVehicle.brigade]} trips={data} />
+            <Schedule
+                city={window.location.search.includes("pkp") ? "pkp" : city!}
+                route={vehicle?.[EVehicle.route]}
+                brigade={vehicle?.[EVehicle.brigade]}
+            />
         </Dialog>
     );
 };

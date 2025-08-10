@@ -42,12 +42,7 @@ export default () => {
     return (
         <>
             <Fab
-                sx={{
-                    position: "absolute",
-                    top: 16,
-                    left: 16,
-                    zIndex: 600,
-                }}
+                sx={{ position: "absolute", left: 16, top: 16 }}
                 color="primary"
                 size="small"
                 onClick={() => {

@@ -1,4 +1,4 @@
-import { ERoute, ERouteDirection, ERouteInfo, EVehicle, Vehicle } from "typings";
+import { ERoute, ERouteDirection, ERouteInfo, EVehicle, Location, Vehicle } from "typings";
 import { useEffect } from "react";
 import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { Socket } from "socket.io-client";
@@ -15,7 +15,9 @@ import { useQueryRoute } from "@/hooks/useQueryRoutes";
 import { getSheetHeight } from "@/util/tools";
 
 export default () => {
-    const direction = useDirectionStore(useShallow((state) => state.direction));
+    const [direction, setDirection] = useDirectionStore(
+        useShallow((state) => [state.direction, state.setDirection])
+    );
     const socket = useOutletContext<Socket>();
     const { city, route } = useParams();
     const { current: map } = useMap();
@@ -45,7 +47,7 @@ export default () => {
 
         map?.fitBounds(
             data[ERouteInfo.directions][direction][ERouteDirection.shape].geometry.coordinates.reduce(
-                (bounds, coord) => bounds.extend(coord),
+                (bounds, coord) => bounds.extend(coord as Location),
                 new LngLatBounds()
             ),
             {
@@ -75,6 +77,12 @@ export default () => {
             socket.off("refresh", onRefresh);
         };
     }, [socket, refetch]);
+
+    useEffect(() => {
+        return () => {
+            setDirection(0);
+        };
+    }, []);
 
     return (
         <>

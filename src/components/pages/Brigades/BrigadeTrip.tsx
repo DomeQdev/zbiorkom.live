@@ -1,17 +1,18 @@
 import { ListItemButton } from "@mui/material";
 import { BrigadeTrip, EBrigadeTrip, ERoute } from "typings";
 import { Link, useParams } from "react-router-dom";
-import { getTime, milisecondsToTime } from "@/util/tools";
+import { getTime, msToTime } from "@/util/tools";
 import { useTranslation } from "react-i18next";
 import getColors, { hexFromArgb } from "@/util/getColors";
 import RouteTag from "@/map/RouteTag";
 
 type Props = {
     trip: BrigadeTrip;
-    showRoute?: boolean;
+    isActive: boolean;
+    showRoute: boolean;
 };
 
-export default ({ trip, showRoute }: Props) => {
+export default ({ trip, isActive, showRoute }: Props) => {
     const { t } = useTranslation("Brigades");
     const { city } = useParams();
 
@@ -29,9 +30,9 @@ export default ({ trip, showRoute }: Props) => {
             sx={{
                 display: "block",
                 borderRadius: 1.5,
-                backgroundColor: trip[EBrigadeTrip.vehicle] ? background : "background.paper",
+                backgroundColor: isActive || trip[EBrigadeTrip.vehicle] ? background : "background.paper",
                 "&:hover": {
-                    backgroundColor: trip[EBrigadeTrip.vehicle] ? background : "background.paper",
+                    backgroundColor: isActive || trip[EBrigadeTrip.vehicle] ? background : "background.paper",
                 },
             }}
         >
@@ -58,7 +59,7 @@ export default ({ trip, showRoute }: Props) => {
                 <span>
                     {[
                         t("travelTime", {
-                            time: milisecondsToTime(trip[EBrigadeTrip.end] - trip[EBrigadeTrip.start]),
+                            time: msToTime(trip[EBrigadeTrip.end] - trip[EBrigadeTrip.start]),
                         }),
                         `${trip[EBrigadeTrip.distance].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} m`,
                     ].join(" · ")}

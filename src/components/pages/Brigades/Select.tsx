@@ -1,5 +1,4 @@
 import {
-    Box,
     DialogContent,
     DialogTitle,
     IconButton,
@@ -9,34 +8,33 @@ import {
     Skeleton,
     Typography,
 } from "@mui/material";
-import { memo, useRef } from "react";
+import { memo, useMemo, useRef } from "react";
 import useGoBack from "@/hooks/useGoBack";
-import { ArrowBack } from "@mui/icons-material";
+import { ArrowBack, Dangerous } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import RouteTag from "@/map/RouteTag";
 import { Trans, useTranslation } from "react-i18next";
 import Sticky from "@/ui/Sticky";
 import Helm from "@/util/Helm";
 import { EBrigade, ERoute, ERouteInfo } from "typings";
-import { useQueryBrigadeList } from "@/hooks/useQueryBrigades";
+import { getBrigadeDays, useQueryBrigadeList } from "@/hooks/useQueryBrigades";
 import { useQueryRoute } from "@/hooks/useQueryRoutes";
+import useSearchState from "@/hooks/useSearchState";
+import DayPicker from "@/ui/DayPicker";
+import Alert from "@/ui/Alert";
 
 export default memo(() => {
     const scrollContainer = useRef<HTMLDivElement | null>(null);
     const elementRef = useRef<HTMLDivElement | null>(null);
-    const { t } = useTranslation("Brigades");
+    const [date, setDate] = useSearchState("date");
+    const { t, i18n } = useTranslation("Brigades");
     const { city, route } = useParams();
     const goBack = useGoBack();
 
-    const { data: brigades } = useQueryBrigadeList({
-        city: city!,
-        route: route!,
-    });
+    const next7days = useMemo(() => getBrigadeDays(i18n.language), [i18n.language]);
 
-    const { data: routeData } = useQueryRoute({
-        city: city!,
-        route: route!,
-    });
+    const { data: brigades } = useQueryBrigadeList({ city: city!, route, date });
+    const { data: routeData } = useQueryRoute({ city: city!, route: route! });
 
     const displayBrigades = !!(brigades && routeData);
 
@@ -120,6 +118,8 @@ export default memo(() => {
                     </Trans>
                 </Typography>
 
+                <DayPicker value={date} setValue={setDate} days={next7days} />
+
                 <List
                     sx={{
                         display: "flex",
@@ -163,7 +163,7 @@ export default memo(() => {
                             <ListItemButton
                                 key={brigade[EBrigade.brigade]}
                                 component={Link}
-                                to={brigade[EBrigade.brigade]}
+                                to={brigade[EBrigade.brigade] + `?date=${date}`}
                             >
                                 <ListItemText
                                     primary={
@@ -183,6 +183,10 @@ export default memo(() => {
                                 />
                             </ListItemButton>
                         ))}
+
+                    {displayBrigades && !brigades?.length && (
+                        <Alert Icon={Dangerous} title={t("noDuty")} />
+                    )}
 
                     {!displayBrigades &&
                         new Array(5).fill(0).map((_, i) => (
