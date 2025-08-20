@@ -81,7 +81,7 @@ export const useQueryStopGroup = ({ city, stop, enabled }: StopGroupQueryProps) 
     return useQuery({
         queryKey: ["stopGroup", city, stop],
         queryFn: async ({ signal }) => {
-            return getFromAPI<Stop[]>(city, "stops/getGroupStops", { name: stop }, signal);
+            return getFromAPI<Stop[]>(city, "stops/getStopGroup", { id: stop }, signal);
         },
         enabled,
     });

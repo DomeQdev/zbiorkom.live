@@ -315,9 +315,9 @@ export type SearchItem = {
     borderTop?: boolean;
     borderBottom?: boolean;
 
-    stop?: string;
-    station?: string;
     route?: Route;
+    stop?: [id: string, city: string, name: string];
+    station?: [id: string, city: string, name: string];
     relation?: [id: string, route: Route, shortName: string, start: number, end: number, headsign: string];
     vehicle?: [id: string, route: Route, brigade: string, headsign?: string, model?: string];
 };

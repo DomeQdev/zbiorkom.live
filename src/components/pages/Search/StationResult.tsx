@@ -1,5 +1,5 @@
 import { ListItemButton, ListItemText } from "@mui/material";
-import { SearchItem } from "typings";
+import { EStop, SearchItem } from "typings";
 import { Link } from "react-router-dom";
 
 type Props = {
@@ -9,12 +9,10 @@ type Props = {
 };
 
 export default ({ station, borderTop, borderBottom }: Props) => {
-    const [name, id] = station.split("#:#");
-
     return (
         <ListItemButton
             component={Link}
-            to={`../station/${id}`}
+            to={`../station/${station[EStop.id]}`}
             state={-2}
             sx={{
                 mx: 1,
@@ -29,7 +27,7 @@ export default ({ station, borderTop, borderBottom }: Props) => {
                 },
             }}
         >
-            <ListItemText primary={name} />
+            <ListItemText primary={station[EStop.name]} />
         </ListItemButton>
     );
 };

@@ -15,7 +15,13 @@ import { getSheetHeight } from "@/util/tools";
 
 export default memo(() => {
     const [vehicleData, tripData, sequence, fresh, setFresh] = useVehicleStore(
-        useShallow((state) => [state.vehicle, state.trip, state.sequence ?? 0, state.fresh, state.setFresh])
+        useShallow((state) => [
+            state.vehicle,
+            state.trip,
+            state.sequence ?? state.stops?.length! - 1,
+            state.fresh,
+            state.setFresh,
+        ])
     );
     const socket = useOutletContext<Socket>();
     const { city, trip, vehicle } = useParams();
@@ -47,16 +53,16 @@ export default memo(() => {
     }, [tripData, socket]);
 
     useEffect(() => {
-        if (!fresh || isLoading || !tripData) return;
+        if (!fresh || isLoading || (!tripData && !vehicleData)) return;
 
         if (vehicleData?.[EVehicle.location]) {
             map?.flyTo({
                 center: vehicleData[EVehicle.location],
                 zoom: map.getZoom() > 15 ? map.getZoom() : 15,
             });
-        } else {
+        } else if (tripData) {
             const bounds = tripData[ETrip.stops]
-                .slice(sequence, sequence === -1 ? undefined : sequence + 3)
+                .slice(sequence, sequence === undefined || sequence === -1 ? undefined : sequence + 3)
                 .reduce((bounds, stop) => bounds.extend(stop[ETripStop.location]), new LngLatBounds());
 
             map?.fitBounds(bounds, {

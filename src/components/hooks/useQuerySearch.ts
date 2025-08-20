@@ -11,7 +11,7 @@ export const useQuerySearch = ({ city, search }: { city: string; search?: string
     const query = useQuery({
         queryKey,
         queryFn: async ({ signal }) => {
-            await new Promise((resolve) => setTimeout(resolve, 150));
+            await new Promise((resolve) => setTimeout(resolve, 300));
             if (signal.aborted) return;
 
             return getFromAPI<APISearch>(city, "search", { query: search }, signal);

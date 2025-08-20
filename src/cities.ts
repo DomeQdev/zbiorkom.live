@@ -10,20 +10,17 @@ const cities = {
     bialystok: {
         id: "bialystok",
         name: "Białystok",
-        showNewTag: true,
         description: "+ Wschód Express, Turośń Kościelna",
         location: [23.16319, 53.13488],
     },
     elblag: {
         id: "elblag",
         name: "Elbląg",
-        showNewTag: true,
         location: [19.414848, 54.152099],
     },
     elk: {
         id: "elk",
         name: "Ełk",
-        showNewTag: true,
         location: [22.361029, 53.82471],
     },
     gzm: {
@@ -42,23 +39,27 @@ const cities = {
         name: "Kraków",
         location: [19.94781, 50.06865],
     },
+    kielce: {
+        id: "kielce",
+        name: "Kielce",
+        showNewTag: true,
+        location: [20.618886, 50.874126],
+    },
     kutno: {
         id: "kutno",
         name: "Kutno",
-        showNewTag: true,
         location: [19.348265, 52.226985],
     },
-    // legnica: {
-    //     id: "legnica",
-    //     name: "Legnica",
-    //     showNewTag: true,
-    //     location: [16.15638, 51.21006],
-    // },
+    legnica: {
+        id: "legnica",
+        name: "Legnica",
+        showNewTag: true,
+        location: [16.15638, 51.21006],
+    },
     lodz: {
         id: "lodz",
         name: "Łódź",
         location: [19.46563, 51.77025],
-        showNewTag: true,
     },
     // lowicz: {
     //     id: "lowicz",
@@ -75,14 +76,12 @@ const cities = {
     olsztyn: {
         id: "olsztyn",
         name: "Olsztyn",
-        showNewTag: true,
         description: "+ Piecki, powiat olsztyński",
         location: [20.48221, 53.77792],
     },
     opole: {
         id: "opole",
         name: "Opole",
-        showNewTag: true,
         location: [17.926775, 50.662761],
     },
     // ostroleka: {
@@ -99,7 +98,6 @@ const cities = {
     radom: {
         id: "radom",
         name: "Radom",
-        showNewTag: true,
         location: [21.14714, 51.40253],
     },
     rzeszow: {
@@ -111,7 +109,6 @@ const cities = {
         id: "rybnik",
         name: "Rybnik",
         description: "+ Jastrzębie-Zdrój",
-        showNewTag: true,
         location: [18.548055, 50.092947],
     },
     // siedlce: {

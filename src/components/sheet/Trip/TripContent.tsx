@@ -14,7 +14,7 @@ import { Report, Warning } from "@mui/icons-material";
 export default () => {
     const { t } = useTranslation("Vehicle");
     const [vehicle, trip, sequence, stops, fresh] = useVehicleStore(
-        useShallow((state) => [state.vehicle, state.trip, state.sequence ?? 0, state.stops, state.fresh])
+        useShallow((state) => [state.vehicle, state.trip, state.sequence, state.stops, state.fresh])
     );
 
     const color: [string, string, string] = useMemo(() => {
@@ -28,7 +28,7 @@ export default () => {
         return [trip[ETrip.route][ERoute.color], text, background];
     }, [trip]);
 
-    if ((!vehicle && !trip) && fresh) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
+    if (!vehicle && !trip && fresh) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
     if (!vehicle && !trip) return <Alert Icon={Report} title={t("vehicleNotFound")} color="error" />;
     if (!trip || !stops) return <Alert Icon={Warning} title={t("tripNotFound")} color="warning" />;
 
@@ -50,7 +50,7 @@ export default () => {
                     />
                 )}
                 overscan={100}
-                initialTopMostItemIndex={sequence < 1 ? 0 : sequence - 1}
+                initialTopMostItemIndex={sequence === undefined || sequence < 1 ? 0 : sequence - 1}
                 components={{
                     Footer: () => <TripFooter trip={trip} />,
                 }}
