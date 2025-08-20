@@ -2,7 +2,7 @@ import { Socket } from "socket.io-client";
 import useFilterStore from "./useFilterStore";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect, useState, useRef } from "react";
-import { useMap } from "react-map-gl";
+import { useMap } from "@vis.gl/react-maplibre";
 import { fetchMarkers } from "./useQueryMarkers";
 import { ERoute, MapData, Stop } from "typings";
 import { useOutletContext } from "react-router-dom";

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { useMap } from "react-map-gl";
+import { useMap } from "@vis.gl/react-maplibre";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";
 import useFilterStore from "@/hooks/useFilterStore";

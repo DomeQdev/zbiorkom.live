@@ -1,4 +1,4 @@
-import { Layer, Source } from "react-map-gl";
+import { Layer, Source } from "@vis.gl/react-maplibre";
 import { useMemo } from "react";
 import { ETripStop, Shape, TripStop } from "typings";
 

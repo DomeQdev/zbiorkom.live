@@ -1,6 +1,6 @@
 import { ArrowDropUp, GpsNotFixed, LocationDisabled } from "@mui/icons-material";
 import { memo, useEffect, useState } from "react";
-import { Marker, useMap } from "react-map-gl";
+import { Marker, useMap } from "@vis.gl/react-maplibre";
 import { Box, Fab } from "@mui/material";
 import useLocationStore from "@/hooks/useLocationStore";
 import { useShallow } from "zustand/react/shallow";

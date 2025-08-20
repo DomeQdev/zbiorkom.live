@@ -1,4 +1,4 @@
-import { Layer, Source } from "react-map-gl";
+import { Layer, Source } from "@vis.gl/react-maplibre";
 import { Platforms } from "typings";
 
 export default ({ platforms, color }: { platforms: Platforms; color: string }) => {

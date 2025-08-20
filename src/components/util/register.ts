@@ -15,7 +15,7 @@ i18n.use(initReactI18next).init({
     fallbackLng: "pl",
 });
 
-const useLocalhost = location.protocol === "http:" && false;
+const useLocalhost = location.protocol === "http:" && true;
 
 window.Gay = {
     base: useLocalhost ? "http://localhost:8005" : "https://api.zbiorkom.live",

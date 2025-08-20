@@ -2,7 +2,7 @@ import { ERoute, ERouteDirection, ERouteInfo, EVehicle, Location, Vehicle } from
 import { useEffect } from "react";
 import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { Socket } from "socket.io-client";
-import { useMap } from "react-map-gl";
+import { useMap } from "@vis.gl/react-maplibre";
 import { LngLatBounds } from "maplibre-gl";
 import useGoBack from "@/hooks/useGoBack";
 import VehicleMarker from "@/map/VehicleMarker";

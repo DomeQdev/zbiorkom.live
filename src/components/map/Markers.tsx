@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Layer, Marker, Source } from "react-map-gl";
+import { Layer, Marker, Source } from "@vis.gl/react-maplibre";
 import VehicleMarker from "./VehicleMarker";
 import StopMarker from "./StopMarker";
 import { Badge, Box, Button, Fab } from "@mui/material";

@@ -1,6 +1,6 @@
 import { memo, useEffect } from "react";
 import { Outlet, useOutletContext, useParams } from "react-router-dom";
-import { useMap } from "react-map-gl";
+import { useMap } from "@vis.gl/react-maplibre";
 import { LngLatBounds } from "maplibre-gl";
 import { Socket } from "socket.io-client";
 import VehicleMarker from "@/map/VehicleMarker";

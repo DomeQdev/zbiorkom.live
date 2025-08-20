@@ -1,4 +1,4 @@
-import { useMap } from "react-map-gl";
+import { useMap } from "@vis.gl/react-maplibre";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 export default () => {

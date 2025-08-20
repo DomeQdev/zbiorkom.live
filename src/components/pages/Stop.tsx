@@ -1,4 +1,4 @@
-import { Layer, Marker, Source, useMap } from "react-map-gl";
+import { Layer, Marker, Source, useMap } from "@vis.gl/react-maplibre";
 import { memo, useEffect, useMemo, useState } from "react";
 import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { Socket } from "socket.io-client";

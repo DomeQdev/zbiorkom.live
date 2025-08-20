@@ -6,7 +6,7 @@ import useTime from "@/hooks/useTime";
 import { getTime } from "@/util/tools";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useMap } from "react-map-gl";
+import { useMap } from "@vis.gl/react-maplibre";
 import StopDepartureActions from "./StopDepartureActions";
 import SmallAlert from "@/ui/SmallAlert";
 import { useTranslation } from "react-i18next";

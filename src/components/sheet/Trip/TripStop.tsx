@@ -13,7 +13,7 @@ import {
     ETripStopType,
 } from "typings";
 import { RemoveCircleOutline, WavingHand } from "@mui/icons-material";
-import { useMap } from "react-map-gl";
+import { useMap } from "@vis.gl/react-maplibre";
 import useTime from "@/hooks/useTime";
 import VehicleStopIcon from "@/sheet/Trip/TripStopIcon";
 import VehicleDelay from "@/sheet/Trip/TripDelay";

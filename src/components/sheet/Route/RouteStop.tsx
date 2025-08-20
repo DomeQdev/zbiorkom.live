@@ -1,6 +1,6 @@
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { ETripStop, TripStop } from "typings";
-import { useMap } from "react-map-gl";
+import { useMap } from "@vis.gl/react-maplibre";
 
 type Props = {
     stop: TripStop;
