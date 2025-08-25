@@ -10,6 +10,7 @@ import getColors, { hexFromArgb } from "@/util/getColors";
 import Alert from "@/ui/Alert";
 import { useTranslation } from "react-i18next";
 import { Report, Warning } from "@mui/icons-material";
+import { Box } from "@mui/material";
 
 export default () => {
     const { t } = useTranslation("Vehicle");
@@ -52,6 +53,27 @@ export default () => {
                 overscan={100}
                 initialTopMostItemIndex={sequence === undefined || sequence < 1 ? 0 : sequence - 1}
                 components={{
+                    Header: () => (
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                width: "max-width",
+                                marginTop: 1.5,
+                                marginX: 1.5,
+                                paddingX: 2,
+                                paddingY: 1,
+                                borderRadius: 2,
+                                backgroundColor: color,
+                                color: "hsla(0, 0%, 100%, 0.7)",
+                            }}
+                        >
+                            <b>Czekam na Ciebie...</b>
+                            <span style={{ fontSize: "0.9rem" }}>
+                                Ten autobus jest skomunikowany z pociągiem <b>R3 16312/3</b>.
+                            </span>
+                        </Box>
+                    ),
                     Footer: () => <TripFooter trip={trip} />,
                 }}
             />
