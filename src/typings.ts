@@ -182,7 +182,7 @@ export type StopDeparture = [
     headsign: string,
     route: Route,
     shortName: string,
-    brgiade: string,
+    brigade: string,
     vehicleId: string,
     vehicle: Vehicle | null,
     departure: StopTime,
@@ -420,7 +420,7 @@ export enum EExecution {
     endStopName = 9,
 }
 
-export type SearchPlace = [type: "google" | "station", id: string, name: string, address: string];
+export type SearchPlace = [type: "google" | "station", id: string, name: string, address?: string];
 
 export enum ESearchPlace {
     type = 0,
@@ -433,18 +433,31 @@ export type NonTransitLeg = {
     mode: "WALK" | "BIKE" | "RENTAL";
     distance: number; // (meters)
     duration: number; // (milliseconds)
+    rental?: {
+        fromStation: string;
+        toStation: string;
+    };
     shape: Shape;
-    rental?: [fromStationName: string, toStationName: string];
 };
 
 export type TransitLeg = {
     mode: "TRANSIT";
+    fromStop: Stop;
+    toStop: Stop;
+    departures: StopDeparture[];
+    token: string;
     routes: Route[];
+    intermediateStops: Stop[];
+    shape: Shape;
 };
 
-export type PlannerItinerary = {
-    legs: (TransitLeg | NonTransitLeg)[];
-};
+export type PlannerItinerary = (TransitLeg | NonTransitLeg)[];
+
+export type PlannerResult = {
+    fromLocation: Location;
+    toLocation: Location;
+    itineraries: PlannerItinerary[];
+}
 
 declare global {
     interface Window {

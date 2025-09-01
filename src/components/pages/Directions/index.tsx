@@ -1,9 +1,13 @@
+import { useQueryPlannerItineraries } from "@/hooks/useQueryTripPlanner";
+import DirectionsItineraries from "./DirectionsItineraries";
 import { useNavigate, useParams } from "react-router-dom";
 import DirectionsSearchBox from "./DirectionsSearchBox";
-import { Dialog } from "@mui/material";
-import DirectionsItineraries from "./DirectionsItineraries";
 import usePlacesStore from "@/hooks/usePlacesStore";
-import { useQueryPlannerItineraries } from "@/hooks/useQueryTripPlanner";
+import { lazy, Suspense } from "react";
+import { Dialog } from "@mui/material";
+import BikeComfort from "./BikeComfort";
+
+const RoutingAnimation = lazy(() => import("./RoutingAnimation"));
 
 const now = Date.now();
 
@@ -13,7 +17,7 @@ export default () => {
     const { city } = useParams();
 
     const {
-        data: itineraries,
+        data: plannerResult,
         refetch,
         isLoading,
         isRefetching,
@@ -21,10 +25,8 @@ export default () => {
 
     const onClose = () => navigate(`/${city}`);
 
-    const isAllowed =
-        localStorage.getItem("themeColor") === "#720546" &&
-        localStorage.getItem("brigade") === "true" &&
-        localStorage.getItem("language") === "en";
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const loading = isLoading || isRefetching;
 
     return (
         <Dialog
@@ -40,45 +42,16 @@ export default () => {
                 },
             })}
         >
-            {isAllowed ? (
-                <>
-                    <DirectionsSearchBox
-                        isLoading={isLoading || isRefetching}
-                        refresh={refetch}
-                        onClose={onClose}
-                    />
+            <DirectionsSearchBox isLoading={loading} refresh={refetch} onClose={onClose} />
+            <BikeComfort />
 
-                    {itineraries && <DirectionsItineraries itineraries={itineraries} />}
-                </>
-            ) : (
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        height: "100%",
-                        width: "100%",
-                        fontSize: "1.5rem",
-                        color: "#720546",
-                        padding: "20px",
-                    }}
-                >
-                    <button
-                        onClick={onClose}
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            backgroundColor: "#720546",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "8px",
-                        }}
-                    >
-                        Zamknij to okno 🤫🤫
-                    </button>
-                </div>
+            {loading && !prefersReducedMotion && (
+                <Suspense>
+                    <RoutingAnimation />
+                </Suspense>
             )}
+
+            {!loading && plannerResult && <DirectionsItineraries itineraries={plannerResult.itineraries} />}
         </Dialog>
     );
 };

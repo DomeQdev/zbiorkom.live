@@ -1,4 +1,4 @@
-import { ESearchPlace, PlannerItinerary, SearchPlace } from "typings";
+import { ESearchPlace, PlannerResult, SearchPlace } from "typings";
 import { getFromAPI } from "@/util/fetchFunctions";
 import useLocationStore from "./useLocationStore";
 import { useQuery } from "@tanstack/react-query";
@@ -51,7 +51,7 @@ export const useQueryPlannerItineraries = (
             await new Promise((resolve) => setTimeout(resolve, 1000));
             if (signal.aborted) return;
 
-            return getFromAPI<PlannerItinerary[]>(
+            return getFromAPI<PlannerResult>(
                 city,
                 "tripPlanner/getJourneys",
                 {

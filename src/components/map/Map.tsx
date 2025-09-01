@@ -32,7 +32,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
 
     return (
         <Map
-            mapboxAccessToken="pk.eyJ1IjoiZG9tZXEzYWx0IiwiYSI6ImNtZGxudDJqdjE2emMyanF0M3dremQyeWwifQ.Y7acOCCmqJGS3OlEZPKhzw"
+            mapboxAccessToken="pk.eyJ1IjoibWljaGFlbHBvbGFuc2t5IiwiYSI6ImNtZGVmMTc4ZTAyZHkya3NkcXIwbXZ6MWMifQ.o0hSYJfks9nfbUT30V76jQ"
             mapStyle={"mapbox://styles/domeq3alt/cmdlnw048007j01s887f864sf"}
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}

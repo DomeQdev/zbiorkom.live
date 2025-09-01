@@ -1,4 +1,4 @@
-import { Box, List, ListItemButton, ListItemText, Popover, TextField } from "@mui/material";
+import { Box, Divider, List, ListItemButton, ListItemText, Popover, TextField } from "@mui/material";
 import { Place, SportsScore } from "@mui/icons-material";
 import { useQuerySearchPlaces } from "@/hooks/useQueryTripPlanner";
 import { useParams } from "react-router-dom";
@@ -66,8 +66,24 @@ export default ({ type }: { type: "from" | "to" }) => {
                 }}
                 disableAutoFocus
                 disableEnforceFocus
+                slotProps={{
+                    paper: { onMouseDown: (e) => e.preventDefault() },
+                }}
             >
-                <List>
+                <List
+                    sx={{
+                        padding: 0,
+                        "& .MuiListItemButton-root": { borderRadius: 1 },
+                        maxHeight: 300,
+                    }}
+                >
+                    <ListItemButton>
+                        <ListItemText primary="Twoja lokalizacja" />
+                    </ListItemButton>
+                    <ListItemButton>
+                        <ListItemText primary="Wybierz na mapie" />
+                    </ListItemButton>
+                    <Divider />
                     {searchPlaces?.map((searchPlace) => (
                         <ListItemButton
                             key={searchPlace[ESearchPlace.id]}
@@ -76,6 +92,8 @@ export default ({ type }: { type: "from" | "to" }) => {
                                     place: searchPlace,
                                     text: searchPlace[ESearchPlace.name],
                                 });
+                                // POPRAWKA 2: Zamknij Popover ręcznie po wyborze
+                                setAnchorEl(null);
                             }}
                         >
                             <ListItemText
