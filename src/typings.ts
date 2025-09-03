@@ -420,7 +420,7 @@ export enum EExecution {
     endStopName = 9,
 }
 
-export type SearchPlace = [type: "google" | "station", id: string, name: string, address?: string];
+export type SearchPlace = [type: "google" | "stop", id: string, name: string, address?: string];
 
 export enum ESearchPlace {
     type = 0,
@@ -451,7 +451,10 @@ export type TransitLeg = {
     shape: Shape;
 };
 
-export type PlannerItinerary = (TransitLeg | NonTransitLeg)[];
+export type PlannerItinerary = {
+    index: number;
+    legs: (TransitLeg | NonTransitLeg)[];
+};
 
 export type PlannerResult = {
     fromLocation: Location;
