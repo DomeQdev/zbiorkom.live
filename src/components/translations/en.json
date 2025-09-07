@@ -117,17 +117,6 @@
   "Blog": {
     "blog": "Blog"
   },
-  "Sun": {
-    "sunPosition": "Where to sit?",
-    "travelDirection": "Travel direction",
-    "bestSide.direction": "It's best to sit <bold>{{direction}}</bold> to the direction of travel.",
-    "bestSide.side": "It's best to sit on the <bold>{{direction}}</bold> side of the vehicle.",
-    "and": "and",
-    "left": "⤴️ left",
-    "right": "⤵️ right",
-    "front": "➡️ facing forward",
-    "back": "⬅️ facing backward"
-  },
   "Settings": {
     "settings": "Settings",
     "vehicleMarker": "Vehicle marker",
@@ -219,5 +208,9 @@
     "noResults": "No results...",
     "noResultsDescription": "Try searching for something else.",
     "noFilter": "Search for something..."
+  },
+  "Directions": {
+    "noResultsFound": "We're lost!",
+    "noResultsFoundDescription": "We don't know how to get there..."
   }
 }

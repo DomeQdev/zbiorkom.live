@@ -1,31 +1,39 @@
 import { useQueryPlannerItineraries } from "@/hooks/useQueryTripPlanner";
+import useTripPlannerStore from "@/hooks/useTripPlannerStore";
 import DirectionsItineraries from "./DirectionsItineraries";
 import { useNavigate, useParams } from "react-router-dom";
 import DirectionsSearchBox from "./DirectionsSearchBox";
-import usePlacesStore from "@/hooks/usePlacesStore";
+import { useShallow } from "zustand/react/shallow";
 import { lazy, Suspense } from "react";
 import { Dialog } from "@mui/material";
-import BikeComfort from "./BikeComfort";
+import Alert from "@/ui/Alert";
+import { Sick } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 const RoutingAnimation = lazy(() => import("./RoutingAnimation"));
 
-const now = Date.now();
-
 export default () => {
-    const { from, to } = usePlacesStore((state) => state.places);
+    const { t } = useTranslation("Directions");
     const navigate = useNavigate();
     const { city } = useParams();
 
+    const [{ from, to }, time, reset] = useTripPlannerStore(
+        useShallow((state) => [state.places, state.time, state.reset])
+    );
+
     const {
-        data: plannerResult,
+        data: showItineraries,
+        error,
         refetch,
         isLoading,
         isRefetching,
-    } = useQueryPlannerItineraries(city!, from, to, now, false);
+    } = useQueryPlannerItineraries(city!, from, to, time);
 
-    const onClose = () => navigate(`/${city}`);
+    const onClose = () => {
+        navigate(`/${city}`);
+        reset();
+    };
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const loading = isLoading || isRefetching;
 
     return (
@@ -43,15 +51,22 @@ export default () => {
             })}
         >
             <DirectionsSearchBox isLoading={loading} refresh={refetch} onClose={onClose} />
-            <BikeComfort />
 
-            {loading && !prefersReducedMotion && (
+            {showItineraries === true && <DirectionsItineraries />}
+            {(showItineraries === false || error) && (
+                <Alert
+                    Icon={Sick}
+                    title={t("noResultsFound")}
+                    description={t("noResultsFoundDescription")}
+                    color="error"
+                />
+            )}
+
+            {loading && (
                 <Suspense>
                     <RoutingAnimation />
                 </Suspense>
             )}
-
-            {!loading && plannerResult && <DirectionsItineraries itineraries={plannerResult.itineraries} />}
         </Dialog>
     );
 };

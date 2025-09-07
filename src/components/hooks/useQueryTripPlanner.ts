@@ -1,8 +1,9 @@
+import useTripPlannerStore, { Place, TripPlannerTime } from "./useTripPlannerStore";
 import { ESearchPlace, PlannerResult, SearchPlace } from "typings";
 import { getFromAPI } from "@/util/fetchFunctions";
+import { useShallow } from "zustand/react/shallow";
 import useLocationStore from "./useLocationStore";
 import { useQuery } from "@tanstack/react-query";
-import { Place } from "./usePlacesStore";
 import cities from "cities";
 
 export const useQuerySearchPlaces = (city: string, query: string) => {
@@ -37,32 +38,40 @@ export const useQueryPlannerItineraries = (
     city: string,
     from: Place,
     to: Place,
-    time: number,
-    arriveBy: boolean
+    { timestamp, arriveBy }: TripPlannerTime
 ) => {
-    const fromPlace = from.place?.[ESearchPlace.id] || from.location?.join(",");
-    const toPlace = to.place?.[ESearchPlace.id] || to.location?.join(",");
+    const setResult = useTripPlannerStore(useShallow((state) => state.setResult));
+
+    const fromPlace = from.place?.[ESearchPlace.id];
+    const toPlace = to.place?.[ESearchPlace.id];
 
     return useQuery({
-        queryKey: ["tripPlanner", fromPlace, toPlace, time, arriveBy],
+        queryKey: ["tripPlanner", fromPlace, toPlace, timestamp, arriveBy],
         queryFn: async ({ signal }) => {
             if (!fromPlace || !toPlace) return;
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
             if (signal.aborted) return;
 
-            return getFromAPI<PlannerResult>(
+            const result = await getFromAPI<PlannerResult>(
                 city,
                 "tripPlanner/getJourneys",
                 {
                     fromPlace,
                     toPlace,
-                    time,
+                    time: timestamp === "now" ? Date.now() : timestamp,
                     arriveBy,
                 },
                 signal
             );
+
+            setResult(result);
+
+            return !!result.itineraries.length;
         },
         enabled: Boolean(fromPlace && toPlace),
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
     });
 };

@@ -451,16 +451,26 @@ export type TransitLeg = {
     shape: Shape;
 };
 
+export type SelectedTrip = {
+    tripId: string;
+    scheduled: number;
+    legIndex: number;
+};
+
 export type PlannerItinerary = {
-    index: number;
     legs: (TransitLeg | NonTransitLeg)[];
+    itineraryIndex: number;
+    departureTime: number;
+    arrivalTime: number;
+    duration: number;
+    selectedTrips: SelectedTrip[];
 };
 
 export type PlannerResult = {
     fromLocation: Location;
     toLocation: Location;
     itineraries: PlannerItinerary[];
-}
+};
 
 declare global {
     interface Window {
