@@ -1,4 +1,4 @@
-import { Box, ButtonBase, Grow, Typography } from "@mui/material";
+import { Box, ButtonBase, Grow } from "@mui/material";
 import ItineraryTransitLeg from "./ItineraryTransitLeg";
 import ItineraryNonTransitLeg from "./ItineraryNonTransitLeg";
 import { getTime, msToTime } from "@/util/tools";
@@ -19,6 +19,8 @@ export default () => {
 
     useEffect(() => {
         const interval = setInterval(() => {
+            if (document.hidden) return;
+
             updateDepartures(city!);
         }, 45000);
 
@@ -60,25 +62,31 @@ export default () => {
                             {itinerary.legs.map((leg, legIndex) => {
                                 const key = `leg-${itinerary.itineraryIndex}-${legIndex}`;
 
-                                if (leg.mode === "TRANSIT")
+                                if (leg.mode === "TRANSIT") {
                                     return <ItineraryTransitLeg key={key} leg={leg} />;
-                                return <ItineraryNonTransitLeg key={key} leg={leg} />;
+                                } else {
+                                    return <ItineraryNonTransitLeg key={key} leg={leg} />;
+                                }
                             })}
                         </Box>
 
-                        {itinerary.duration !== Infinity && itinerary.duration > 0 && (
-                            <Typography
-                                variant="caption"
+                        {itinerary.duration ? (
+                            <Box
                                 sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
                                     width: "100%",
-                                    textAlign: "right",
+                                    marginTop: 1,
                                     color: "text.secondary",
-                                    mt: 0.5,
                                 }}
                             >
-                                {getTime(itinerary.departureTime)} - {getTime(itinerary.arrivalTime)} (
-                                {msToTime(itinerary.duration)})
-                            </Typography>
+                                <span>Leave: {getTime(itinerary.departureTime)}</span>
+                                <span>{msToTime(itinerary.duration)}</span>
+                                <span>Arrive: {getTime(itinerary.arrivalTime)}</span>
+                            </Box>
+                        ) : (
+                            <>niemożliwe do wykonania w obecnym czasie</>
                         )}
                     </ButtonBase>
                 ))}

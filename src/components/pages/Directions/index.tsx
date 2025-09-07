@@ -4,11 +4,11 @@ import DirectionsItineraries from "./DirectionsItineraries";
 import { useNavigate, useParams } from "react-router-dom";
 import DirectionsSearchBox from "./DirectionsSearchBox";
 import { useShallow } from "zustand/react/shallow";
+import { useTranslation } from "react-i18next";
+import { Sick } from "@mui/icons-material";
 import { lazy, Suspense } from "react";
 import { Dialog } from "@mui/material";
 import Alert from "@/ui/Alert";
-import { Sick } from "@mui/icons-material";
-import { useTranslation } from "react-i18next";
 
 const RoutingAnimation = lazy(() => import("./RoutingAnimation"));
 
@@ -52,20 +52,22 @@ export default () => {
         >
             <DirectionsSearchBox isLoading={loading} refresh={refetch} onClose={onClose} />
 
-            {showItineraries === true && <DirectionsItineraries />}
-            {(showItineraries === false || error) && (
-                <Alert
-                    Icon={Sick}
-                    title={t("noResultsFound")}
-                    description={t("noResultsFoundDescription")}
-                    color="error"
-                />
-            )}
-
-            {loading && (
+            {loading ? (
                 <Suspense>
                     <RoutingAnimation />
                 </Suspense>
+            ) : (
+                <>
+                    {showItineraries === true && <DirectionsItineraries />}
+                    {(showItineraries === false || error) && (
+                        <Alert
+                            Icon={Sick}
+                            title={t("noResultsFound")}
+                            description={t("noResultsFoundDescription")}
+                            color="error"
+                        />
+                    )}
+                </>
             )}
         </Dialog>
     );
