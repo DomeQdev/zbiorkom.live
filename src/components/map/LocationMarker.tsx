@@ -15,8 +15,13 @@ export default memo(() => {
     const map = useMap()?.current;
 
     useEffect(() => {
-        if (!navigator.permissions?.query || !navigator.geolocation)
-            return alert("Twoja przeglądarka nie obsługuje geolokalizacji.");
+        if (!navigator.permissions?.query || !navigator.geolocation) {
+            if (userPermitted) {
+                alert("Twoja przeglądarka nie obsługuje geolokalizacji.");
+            }
+            setUserPermitted(false);
+            return;
+        }
 
         navigator.permissions
             .query({ name: "geolocation" })
