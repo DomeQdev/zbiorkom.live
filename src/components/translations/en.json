@@ -211,6 +211,9 @@
   },
   "Directions": {
     "noResultsFound": "We're lost!",
-    "noResultsFoundDescription": "We don't know how to get there..."
+    "noResultsFoundDescription": "We don't know how to get there...",
+    "lastUpdated": "Last updated",
+    "leave": "Leave at",
+    "arrive": "Arrive by"
   }
 }

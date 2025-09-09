@@ -213,6 +213,9 @@
   },
   "Directions": {
     "noResultsFound": "Zgubiliśmy się!",
-    "noResultsFoundDescription": "Nie wiemy jak tu dojechać..."
+    "noResultsFoundDescription": "Nie wiemy jak tu dojechać...",
+    "lastUpdated": "Ostatnio zaktualizowano",
+    "leave": "Wyjdź o",
+    "arrive": "Przyjazd o"
   }
 }
