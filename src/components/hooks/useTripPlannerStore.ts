@@ -56,7 +56,10 @@ export default create<TripPlannerState>()((set, get) => ({
         set(({ time }) => ({
             fromLocation,
             toLocation,
-            itineraries: itineraries.map((itinerary) => calculateItineraryMetadata(itinerary, time)),
+            itineraries: itineraries
+                .map((itinerary) => calculateItineraryMetadata(itinerary, time))
+                .filter((itinerary) => itinerary.duration > 0)
+                .sort((a, b) => a.duration - b.duration),
             lastRefresh: Date.now(),
         }));
     },

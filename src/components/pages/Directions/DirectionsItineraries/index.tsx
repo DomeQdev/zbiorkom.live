@@ -15,13 +15,7 @@ export default () => {
     const { city } = useParams();
 
     const [itineraries, updateDepartures, lastRefresh] = useTripPlannerStore(
-        useShallow((state) => [
-            state
-                .itineraries!.filter((itinerary) => itinerary.duration > 0)
-                .sort((a, b) => a.duration - b.duration),
-            state.updateDepartures,
-            state.lastRefresh,
-        ])
+        useShallow((state) => [state.itineraries, state.updateDepartures, state.lastRefresh])
     );
 
     useEffect(() => {
@@ -53,7 +47,7 @@ export default () => {
                         },
                     }}
                 >
-                    {itineraries.map((itinerary) => (
+                    {itineraries?.map((itinerary) => (
                         <ButtonBase
                             sx={{
                                 width: "100%",
