@@ -67,6 +67,7 @@ export default () => {
                                     alignItems: "flex-start",
                                     justifyContent: "space-between",
                                     width: "100%",
+                                    gap: 1,
                                 }}
                             >
                                 <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 1 }}>
@@ -92,7 +93,7 @@ export default () => {
                                     }}
                                 >
                                     {msToTime(itinerary.duration)}
-                                    <RssFeed fontSize="small" color="success" />
+                                    {itinerary.isLive && <RssFeed fontSize="small" color="success" />}
                                 </Typography>
                             </Box>
 

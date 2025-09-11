@@ -463,6 +463,7 @@ export type PlannerItinerary = {
     departureTime: number;
     arrivalTime: number;
     duration: number;
+    isLive: boolean;
     selectedTrips: SelectedTrip[];
 };
 

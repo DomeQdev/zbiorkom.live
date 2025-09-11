@@ -191,6 +191,7 @@ const calculateItineraryMetadata = (
 ) => {
     const startTime = timestamp === "now" ? Date.now() : timestamp;
     const selectedTrips: SelectedTrip[] = [];
+    let liveTrips = 0;
 
     if (arriveBy) {
         let currentTime = startTime;
@@ -209,6 +210,10 @@ const calculateItineraryMetadata = (
 
                 if (!selectedDeparture) return itinerary;
 
+                if (selectedDeparture[EStopDeparture.departure][EStopTime.delay] !== "scheduled") {
+                    liveTrips++;
+                }
+
                 currentTime = selectedDeparture[EStopDeparture.departure][EStopTime.estimated];
                 selectedTrips.unshift({
                     tripId: selectedDeparture[EStopDeparture.id],
@@ -225,6 +230,7 @@ const calculateItineraryMetadata = (
             departureTime: currentTime,
             arrivalTime: startTime,
             duration: startTime - currentTime,
+            isLive: liveTrips / selectedTrips.length >= 0.5,
             selectedTrips,
         };
     } else {
@@ -241,6 +247,10 @@ const calculateItineraryMetadata = (
                 );
 
                 if (!selectedDeparture) return itinerary;
+
+                if (selectedDeparture[EStopDeparture.departure][EStopTime.delay] !== "scheduled") {
+                    liveTrips++;
+                }
 
                 currentTime = selectedDeparture[EStopDeparture.destination]![EStopTime.estimated];
                 selectedTrips.push({
@@ -274,6 +284,7 @@ const calculateItineraryMetadata = (
             departureTime,
             arrivalTime: currentTime,
             duration: currentTime - departureTime,
+            isLive: liveTrips / selectedTrips.length >= 0.5,
             selectedTrips,
         };
     }
