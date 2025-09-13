@@ -13,7 +13,7 @@
   },
   "Vehicle": {
     "onTime": "On time",
-    "early": "Early {{time}}",
+    "early": "{{time}} early",
     "delayed": "Delayed {{time}}",
     "departure": "Waiting for departure",
     "departed": "Departed",
@@ -22,7 +22,7 @@
     "scheduled": "Scheduled",
     "tripNotFound": "We couldn't find this route...",
     "vehicleSchedule": "Vehicle schedule",
-    "brigadeSchedule": "Brigade schedule",
+    "brigadeSchedule": "Diagram schedule",
     "vehicleInfo": "Vehicle info",
     "showTrip": "Show trip",
     "showVehicle": "Show vehicle",
@@ -46,15 +46,15 @@
     "min": "min",
     "vehicleNotFound": "Vehicle not found."
   },
-  "Brigades": {
-    "selectBrigade": "Choose the brigade of route <0></0>",
-    "brigadeSchedule": "Schedule of brigade <0></0>",
+  "Diagrams": {
+    "selectBrigade": "Choose diagram on route <0></0>",
+    "brigadeSchedule": "Schedule of diagram <0></0>",
     "trips": "{{tripsLength}} trips",
     "travelTime": "Travel time: {{time}}",
     "clickForTrip": "Click to see the trip",
     "operatedBy": "Operated by vehicle #{{vehicle}}",
-    "multilineAlert": "Multiline brigade, possible errors in matching vehicle schedules. Please use your own judgment to verify the correctness of the matches.",
-    "noDuty": "No duty schedules are available on the selected day"
+    "multilineAlert": "Interlined diagram, possible errors in matching vehicle schedules. Please use your own judgment to verify the correctness of the matches.",
+    "noDuty": "No diagram schedules are available on the selected day"
   },
   "Schedules": {
     "schedules": "Schedules",
@@ -83,7 +83,7 @@
     "stations": "Stations",
     "howToUse": "How to use the search?",
     "howToVehicles": "Searching for vehicles",
-    "vehiclesDescription": "Search using the fleet number (e.g., 5869), route (e.g., 105) or brigade (e.g., 105/1)",
+    "vehiclesDescription": "Search using the fleet number (e.g., 5869), route (e.g., 105) or diagram (e.g., 105/1)",
     "howToStops": "Searching for stops and stations",
     "stopsDescription": "Search using the name, e.g., Main Station.",
     "howToRoutes": "Searching for routes",
@@ -104,7 +104,7 @@
   "VehicleInfo": {
     "model": "Model",
     "depot": "Depot",
-    "carrier": "Carrier",
+    "carrier": "Operator",
     "prodYear": "Production year",
     "lowFloor": "Low floor",
     "airConditioned": "Air conditioned",
@@ -131,7 +131,7 @@
   "Settings": {
     "settings": "Settings",
     "vehicleMarker": "Vehicle marker",
-    "brigade": "Brigade number",
+    "brigade": "Diagram number",
     "fleet": "Fleet number",
     "language": "Language",
     "searchRoutes": "Search routes",
@@ -160,11 +160,11 @@
       "description": "{{description}}"
     },
     "brigadeSelect": {
-      "title": "Select brigade for route {{route}} in {{city}}"
+      "title": "Select diagram for route {{route}} in {{city}}"
     },
     "brigadeSchedule": {
-      "title": "Brigade schedule {{route}}/{{brigade}} in {{city}}",
-      "description": "Check the schedule of brigade {{brigade}} for route {{route}} in {{city}}. See all trips, travel times, and information about the vehicle operating the route."
+      "title": "Diagram schedule {{route}}/{{brigade}} in {{city}}",
+      "description": "Check the schedule of diagram {{brigade}} for route {{route}} in {{city}}. See all trips, travel times, and information about the vehicle operating the route."
     },
     "settings": {
       "title": "Settings",
@@ -180,11 +180,11 @@
     },
     "route": {
       "title": "{{city}} - Route {{route}} schedule",
-      "description": "Check the schedule of route {{route}} in {{city}}. See all trips, travel times, brigade schedules, and information about the vehicle operating the route."
+      "description": "Check the schedule of route {{route}} in {{city}}. See all trips, travel times, diagram schedules, and information about the vehicle operating the route."
     },
     "schedules": {
       "title": "{{city}} - Timetables",
-      "description": "Check the timetables of buses, trams, and trains in {{city}}. See departures from stops, brigade schedules, and vehicle information."
+      "description": "Check the timetables of buses, trams, and trains in {{city}}. See departures from stops, diagram schedules, and vehicle information."
     },
     "station": {
       "title": "Station {{station}}",
@@ -215,7 +215,7 @@
     "vehicle": "Vehicle",
     "trip": "Trip",
     "route": "Route",
-    "brigade": "Brigade",
+    "brigade": "Diagram",
     "noResults": "No results...",
     "noResultsDescription": "Try searching for something else.",
     "noFilter": "Search for something..."
