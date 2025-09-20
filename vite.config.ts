@@ -23,22 +23,11 @@ export default defineConfig({
                 manualChunks: (id) => {
                     if (id.includes("icons-material")) return "icons";
                     if (id.includes("use")) return "hooks";
-                }
-            }
+                },
+            },
         },
     },
     resolve: {
-        alias: {
-            "@root": resolve(__dirname, "src"),
-            "@": resolve(__dirname, "src/components"),
-            "@hooks": resolve(__dirname, "src/components/hooks"),
-            "@map": resolve(__dirname, "src/components/map"),
-            "@pages": resolve(__dirname, "src/components/pages"),
-            "@redux": resolve(__dirname, "src/components/redux"),
-            "@sheet": resolve(__dirname, "src/components/sheet"),
-            "@translations": resolve(__dirname, "src/components/translations"),
-            "@ui": resolve(__dirname, "src/components/ui"),
-            "@util": resolve(__dirname, "src/components/util"),
-        },
+        alias: { "@": resolve(__dirname, "src/components") },
     },
 });

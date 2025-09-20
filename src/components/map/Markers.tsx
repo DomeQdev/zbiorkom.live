@@ -66,10 +66,7 @@ export default ({ city }: { city: string }) => {
                     latitude={stop[EStop.location][1]}
                     style={{ zIndex: 2 }}
                     onClick={() => {
-                        const stopType =
-                            stop[EStop.station] && stop[EStop.type] === 2 && stop[EStop.city] === "pkp"
-                                ? "station"
-                                : "stop";
+                        const stopType = stop[EStop.city] === "pkp" ? "station" : "stop";
 
                         navigate(`/${city}/${stopType}/${encodeURIComponent(stop[EStop.id])}`);
                     }}

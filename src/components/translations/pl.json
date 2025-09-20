@@ -117,17 +117,6 @@
   "Blog": {
     "blog": "Blog"
   },
-  "Sun": {
-    "sunPosition": "Gdzie usiąść?",
-    "travelDirection": "Kierunek podróży",
-    "bestSide.direction": "Najlepiej usiąść <bold>{{direction}}</bold> do kierunku jazdy.",
-    "bestSide.side": "Najlepiej usiąść po <bold>{{direction}}</bold> stronie pojazdu.",
-    "and": "i",
-    "left": "⤴️ lewej",
-    "right": "⤵️ prawej",
-    "front": "➡️ przodem",
-    "back": "⬅️ tyłem"
-  },
   "Settings": {
     "settings": "Ustawienia",
     "vehicleMarker": "Znaczniki pojazdów",
@@ -221,5 +210,12 @@
     "noResults": "Brak wyników...",
     "noResultsDescription": "Spróbuj wyszukać coś innego.",
     "noFilter": "Wyszukaj coś..."
+  },
+  "Directions": {
+    "noResultsFound": "Zgubiliśmy się!",
+    "noResultsFoundDescription": "Nie wiemy jak tu dojechać...",
+    "lastUpdated": "Ostatnio zaktualizowano",
+    "leave": "Wyjdź o",
+    "arrive": "Przyjazd o"
   }
 }

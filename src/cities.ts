@@ -1,6 +1,6 @@
 import { City } from "./typings";
 
-const cities = {
+const cities: Record<string, City> = {
     // bialaPodlaska: {
     //     id: "bialaPodlaska",
     //     name: "Biała Podlaska",
@@ -54,7 +54,7 @@ const cities = {
         id: "legnica",
         name: "Legnica",
         showNewTag: true,
-        location: [16.15638, 51.21006],
+        location: [16.16768, 51.212859],
     },
     lodz: {
         id: "lodz",
@@ -90,10 +90,22 @@ const cities = {
     //     showNewTag: true,
     //     location: [21.58325, 53.08781],
     // },
+    pksnova: {
+        id: "pksnova",
+        name: "PKS Nova",
+        description: "Autobusy dalekobieżne",
+        location: [17.992183, 53.134703],
+    },
     poznan: {
         id: "poznan",
         name: "Poznań",
         location: [16.91249, 52.40777],
+    },
+    przemysl: {
+        id: "przemysl",
+        name: "Przemyśl",
+        location: [22.775302, 49.784097],
+        showNewTag: true,
     },
     radom: {
         id: "radom",
@@ -117,6 +129,12 @@ const cities = {
     //     showNewTag: true,
     //     location: [22.26820, 52.16778],
     // },
+    suwalki: {
+        id: "suwalki",
+        name: "Suwałki",
+        location: [22.932619, 54.100809],
+        showNewTag: true,
+    },
     szczecin: {
         id: "szczecin",
         name: "Szczecin",
@@ -146,9 +164,13 @@ const cities = {
         location: [21.01173, 52.22983],
         zoom: 10,
     },
-} as {
-    [key: string]: City;
-};
+    netherlands: {
+        id: "netherlands",
+        name: "Nederland",
+        location: [4.900562, 52.378818],
+        showNewTag: true,
+    },
+}
 
 export const cityList = Object.values(cities);
 

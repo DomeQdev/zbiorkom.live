@@ -2,7 +2,7 @@ import Icon from "@/ui/Icon";
 import { Box, SvgIcon } from "@mui/material";
 import { ERoute, TransitLeg } from "typings";
 
-const maxRoutesToShow = 4;
+const maxRoutesToShow = 3;
 
 export default ({ leg }: { leg: TransitLeg }) => {
     const slicedRoutes = leg.routes.slice(0, maxRoutesToShow + 1);

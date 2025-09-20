@@ -1,7 +1,8 @@
 import { Box, ButtonBase, DialogTitle, IconButton, Typography } from "@mui/material";
 import { AccessTime, ArrowBack, Refresh, Settings, SwapVert } from "@mui/icons-material";
+import useTripPlannerStore from "@/hooks/useTripPlannerStore";
+import { useShallow } from "zustand/react/shallow";
 import SearchField from "./SearchField";
-import usePlacesStore from "@/hooks/usePlacesStore";
 
 type Props = {
     isLoading: boolean;
@@ -10,7 +11,7 @@ type Props = {
 };
 
 export default ({ isLoading, refresh, onClose }: Props) => {
-    const switchPlaces = usePlacesStore((state) => state.switchPlaces);
+    const switchPlaces = useTripPlannerStore(useShallow((state) => state.switchPlaces));
 
     return (
         <>

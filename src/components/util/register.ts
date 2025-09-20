@@ -20,7 +20,6 @@ const useLocalhost = location.protocol === "http:" && false;
 window.Gay = {
     base: useLocalhost ? "http://localhost:8005" : "https://api.zbiorkom.live",
     cloudBase: "https://4.zbiorkom.live",
-    ws: "https://ws.zbiorkom.live",
 };
 
 console.log(

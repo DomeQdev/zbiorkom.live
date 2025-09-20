@@ -5,22 +5,21 @@
     "dependencies": {
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.1",
-        "@mui/icons-material": "^7.2.0",
-        "@mui/material": "^7.2.0",
-        "@tanstack/react-query": "^5.83.0",
+        "@mui/icons-material": "^7.3.2",
+        "@mui/material": "^7.3.2",
+        "@tanstack/react-query": "^5.87.1",
         "body-scroll-lock-upgrade": "^1.1.0",
-        "i18next": "^25.3.2",
-        "mapbox-gl": "^3.13.0",
-        "react": "^19.1.0",
-        "react-dom": "^19.1.0",
-        "react-i18next": "^15.6.1",
+        "i18next": "^25.5.2",
+        "mapbox-gl": "^3.14.0",
+        "react": "^19.1.1",
+        "react-dom": "^19.1.1",
+        "react-i18next": "^15.7.3",
         "react-map-gl": "^7.1.9",
-        "react-router-dom": "^7.7.1",
+        "react-router-dom": "^7.8.2",
         "react-spring": "^10.0.1",
         "react-spring-bottom-sheet-updated": "github:DomeQdev/react-bottom-sheet",
-        "react-virtuoso": "^4.13.0",
-        "socket.io-client": "^4.8.1",
-        "zustand": "^5.0.6"
+        "react-virtuoso": "^4.14.0",
+        "zustand": "^5.0.8"
     },
     "browserslist": [
         ">0.2%",
@@ -39,14 +38,13 @@
         ]
     },
     "devDependencies": {
-        "@tanstack/eslint-plugin-query": "^5.81.2",
         "@types/mapbox-gl": "^3.4.1",
-        "@types/node": "^24.1.0",
-        "@types/react": "^19.1.8",
-        "@types/react-dom": "^19.1.6",
+        "@types/node": "^24.3.1",
+        "@types/react": "^19.1.12",
+        "@types/react-dom": "^19.1.9",
         "@vitejs/plugin-react": "^4.7.0",
-        "typescript": "^5.8.3",
-        "vite": "^7.0.6",
+        "typescript": "^5.9.2",
+        "vite": "^7.1.4",
         "vite-tsconfig-paths": "^5.1.4",
         "workbox-cli": "^7.3.0"
     }
