@@ -32,8 +32,8 @@ export default memo(({ children }: { children: ReactElement[] }) => {
 
     return (
         <Map
-            mapboxAccessToken="pk.eyJ1IjoiZG9tZXEzYWx0IiwiYSI6ImNtZGxudDJqdjE2emMyanF0M3dremQyeWwifQ.Y7acOCCmqJGS3OlEZPKhzw"
-            mapStyle={"mapbox://styles/domeq3alt/cmdlnw048007j01s887f864sf"}
+            mapboxAccessToken="pk.eyJ1Ijoibm93aWNraWFkYW0wMDAxMSIsImEiOiJjbWZzcHl3NDIwbmRqMm1xeTAzaWlicjN0In0.HZEkTowgQ-iDuXOwyxr2Jg"
+            mapStyle="mapbox://styles/zbiorkomlive/cmfsptjzn00ic01qr7whp2thi"
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}
             onLoad={({ target }: { target: any }) => {
