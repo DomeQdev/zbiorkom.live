@@ -135,7 +135,11 @@
     "welcomeTo": "Witaj na",
     "welcomeText": "Wybierz miasto, aby zobaczyć komunikację miejską na żywo.",
     "searchCities": "Wyszukaj miasto",
-    "useStopCodeAsIcon": "Użyj numeru przystanku jako ikony"
+    "useStopCodeAsIcon": "Użyj numeru przystanku jako ikony",
+    "settingsBackup": "Kopia Zapasowa Ustawień",
+    "exportSettingsBackup": "Zapisz",
+    "importSettingsBackup": "Importuj",
+    "clearSettings": "Zresetuj"
   },
   "Languages": {
     "en": "Angielski",

@@ -9,6 +9,7 @@ import CitySettings from "./CitySettings";
 import ThemeSettings from "./ThemeSettings";
 import Helm from "@/util/Helm";
 import BehaviorSettings from "./BehaviorSettings";
+import SettingsBackup from "./SettingsBackup";
 
 export default memo(() => {
     const { t } = useTranslation("Settings");
@@ -54,6 +55,7 @@ export default memo(() => {
                         <CitySettings />
                         <ThemeSettings />
                     </Box>
+                    <SettingsBackup />
                 </DialogContent>
             </Dialog>
 

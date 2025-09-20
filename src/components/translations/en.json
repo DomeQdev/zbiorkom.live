@@ -133,7 +133,11 @@
     "welcomeTo": "Welcome to",
     "welcomeText": "Select a city to see live public transport on map.",
     "searchCities": "Search cities",
-    "useStopCodeAsIcon": "Use stop code as icon"
+    "useStopCodeAsIcon": "Use stop code as icon",
+    "settingsBackup": "Settings backup",
+    "exportSettingsBackup": "Export",
+    "importSettingsBackup": "Import",
+    "clearSettings": "Restore Defaults"
   },
   "Languages": {
     "en": "English",
