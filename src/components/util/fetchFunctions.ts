@@ -1,4 +1,4 @@
-const version = import.meta.env.VITE_APP_VERSION.split(".").slice(0, 2).join(".");
+export const version = import.meta.env.VITE_APP_VERSION.split(".").slice(0, 2).join(".");
 
 export const getFromAPI = async <T>(
     city: string,

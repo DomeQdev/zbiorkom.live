@@ -1,7 +1,6 @@
 import { ERoute, ERouteDirection, ERouteInfo, EVehicle, Location, Vehicle } from "typings";
 import { useEffect } from "react";
-import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { Socket } from "socket.io-client";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useMap } from "react-map-gl";
 import { LngLatBounds } from "mapbox-gl";
 import useGoBack from "@/hooks/useGoBack";
@@ -13,12 +12,13 @@ import useDirectionStore from "@/hooks/useDirectionStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryRoute } from "@/hooks/useQueryRoutes";
 import { getSheetHeight } from "@/util/tools";
+import { useWebSocket } from "@/hooks/useWebSocket";
 
 export default () => {
     const [direction, setDirection] = useDirectionStore(
         useShallow((state) => [state.direction, state.setDirection])
     );
-    const socket = useOutletContext<Socket>();
+    const { subscribe } = useWebSocket();
     const { city, route } = useParams();
     const { current: map } = useMap();
     const navigate = useNavigate();
@@ -63,20 +63,18 @@ export default () => {
     }, [data, direction]);
 
     useEffect(() => {
-        if (!socket) return;
-
         const onRefresh = () => {
             if (document.visibilityState !== "visible") return;
 
             refetch();
         };
 
-        socket.on("refresh", onRefresh);
+        const unsubscribe = subscribe("refresh", onRefresh);
 
         return () => {
-            socket.off("refresh", onRefresh);
+            unsubscribe();
         };
-    }, [socket, refetch]);
+    }, [subscribe, refetch]);
 
     useEffect(() => {
         return () => {

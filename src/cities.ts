@@ -1,6 +1,6 @@
 import { City } from "./typings";
 
-const cities = {
+const cities: Record<string, City> = {
     // bialaPodlaska: {
     //     id: "bialaPodlaska",
     //     name: "Biała Podlaska",
@@ -164,9 +164,13 @@ const cities = {
         location: [21.01173, 52.22983],
         zoom: 10,
     },
-} as {
-    [key: string]: City;
-};
+    netherlands: {
+        id: "netherlands",
+        name: "Nederland",
+        location: [4.900562, 52.378818],
+        showNewTag: true,
+    },
+}
 
 export const cityList = Object.values(cities);
 

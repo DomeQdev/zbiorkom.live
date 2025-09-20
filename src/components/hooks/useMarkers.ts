@@ -1,11 +1,10 @@
-import { Socket } from "socket.io-client";
 import useFilterStore from "./useFilterStore";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect, useState, useRef } from "react";
 import { useMap } from "react-map-gl";
 import { fetchMarkers } from "./useQueryMarkers";
 import { ERoute, MapData, Stop } from "typings";
-import { useOutletContext } from "react-router-dom";
+import { useWebSocket } from "./useWebSocket";
 
 type Props = {
     city: string;
@@ -13,7 +12,7 @@ type Props = {
 };
 
 export default ({ city, moveBadge }: Props) => {
-    const socket = useOutletContext<Socket>();
+    const { subscribe } = useWebSocket();
     const { current: map } = useMap();
 
     const [routes, tempRoutes, models, tempModels] = useFilterStore(
@@ -78,7 +77,7 @@ export default ({ city, moveBadge }: Props) => {
     };
 
     useEffect(() => {
-        if (!map || !socket || tempRoutes.length || tempModels.length) return;
+        if (!map || tempRoutes.length || tempModels.length) return;
 
         if (!window.skipPadding) {
             map.flyTo({
@@ -96,15 +95,15 @@ export default ({ city, moveBadge }: Props) => {
         refreshMarkers(true);
 
         document.addEventListener("visibilitychange", onVisibilityChange);
-        socket.on("refresh", refreshMarkers);
+        const unsubscribe = subscribe("refresh", refreshMarkers);
         map.on("moveend", onMove);
 
         return () => {
             document.removeEventListener("visibilitychange", onVisibilityChange);
-            socket.off("refresh", refreshMarkers);
+            unsubscribe();
             map.off("moveend", onMove);
         };
-    }, [map, socket, city, routes, tempRoutes, models, tempModels]);
+    }, [map, subscribe, city, routes, tempRoutes, models, tempModels]);
 
     return {
         useDots,

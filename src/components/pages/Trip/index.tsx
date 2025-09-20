@@ -1,8 +1,7 @@
 import { memo, useEffect } from "react";
-import { Outlet, useOutletContext, useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { useMap } from "react-map-gl";
 import { LngLatBounds } from "mapbox-gl";
-import { Socket } from "socket.io-client";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";
 import TripRoute from "@/map/TripRoute";
@@ -12,6 +11,7 @@ import useVehicleStore from "@/hooks/useVehicleStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryTrip } from "@/hooks/useQueryTrip";
 import { getSheetHeight } from "@/util/tools";
+import { useWebSocket } from "@/hooks/useWebSocket";
 
 export default memo(() => {
     const [vehicleData, tripData, sequence, fresh, setFresh] = useVehicleStore(
@@ -23,7 +23,7 @@ export default memo(() => {
             state.setFresh,
         ])
     );
-    const socket = useOutletContext<Socket>();
+    const { subscribe } = useWebSocket();
     const { city, trip, vehicle } = useParams();
     const { current: map } = useMap();
     const cityId = window.location.search.includes("pkp") ? "pkp" : city!;
@@ -35,9 +35,7 @@ export default memo(() => {
     });
 
     useEffect(() => {
-        if (!tripData || !socket) return;
-
-        const eventName = cityId === "pkp" ? "trainRefresh" : "refresh";
+        if (!tripData) return;
 
         const onRefresh = () => {
             if (document.visibilityState !== "visible") return;
@@ -45,12 +43,12 @@ export default memo(() => {
             refetch();
         };
 
-        socket.on(eventName, onRefresh);
+        const unsubscribe = subscribe(cityId === "pkp" ? "trainRefresh" : "refresh", onRefresh);
 
         return () => {
-            socket.off(eventName, onRefresh);
+            unsubscribe();
         };
-    }, [tripData, socket]);
+    }, [tripData, cityId, refetch, subscribe]);
 
     useEffect(() => {
         if (!fresh || isLoading || (!tripData && !vehicleData)) return;

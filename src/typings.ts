@@ -482,7 +482,6 @@ declare global {
     interface Gay {
         base: string;
         cloudBase: string;
-        ws: string;
     }
 
     var Gay: Gay;

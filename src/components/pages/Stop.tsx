@@ -1,16 +1,16 @@
 import { Layer, Marker, Source, useMap } from "react-map-gl";
 import { memo, useEffect, useMemo, useState } from "react";
-import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { Socket } from "socket.io-client";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import StopMarker from "@/map/StopMarker";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";
 import { EStop, EStopDeparture, EStopDepartures, EStopExit } from "typings";
 import { useQueryStopDepartures } from "@/hooks/useQueryStops";
+import { useWebSocket } from "@/hooks/useWebSocket";
 
 export default memo(() => {
     const [hasDataFetched, setHasDataFetched] = useState<boolean>(false);
-    const socket = useOutletContext<Socket>();
+    const { subscribe } = useWebSocket();
     const { city, stop } = useParams();
     const { current: map } = useMap();
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ export default memo(() => {
     const stopData = data?.[EStopDepartures.stop];
 
     useEffect(() => {
-        if (!stopData || !socket) return;
+        if (!stopData) return;
 
         if (!hasDataFetched) {
             map?.flyTo({
@@ -46,12 +46,12 @@ export default memo(() => {
             refetch();
         };
 
-        socket.on("refresh", onRefresh);
+        const unsubscribe = subscribe(isStation ? "trainRefresh" : "refresh", onRefresh);
 
         return () => {
-            socket.off("refresh", onRefresh);
+            unsubscribe();
         };
-    }, [data, socket]);
+    }, [data, subscribe, refetch]);
 
     const liveDepartures = useMemo(() => {
         if (!data) return [];

@@ -19,7 +19,6 @@
         "react-spring": "^10.0.1",
         "react-spring-bottom-sheet-updated": "github:DomeQdev/react-bottom-sheet",
         "react-virtuoso": "^4.14.0",
-        "socket.io-client": "^4.8.1",
         "zustand": "^5.0.8"
     },
     "browserslist": [
