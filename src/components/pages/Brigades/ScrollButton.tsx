@@ -1,6 +1,7 @@
-import getColors, { hexFromArgb } from "@/util/getColors";
 import { ArrowDropDown, ArrowDropUp } from "@mui/icons-material";
 import { Fab, Fade } from "@mui/material";
+import { ColorRole, generateDarkScheme } from "material-color-lite";
+import { useMemo } from "react";
 
 type Props = {
     scrollType?: "up" | "down" | false;
@@ -9,10 +10,10 @@ type Props = {
 };
 
 export default ({ scrollType, color, onClick }: Props) => {
-    const { primaryContainer, onPrimaryContainer } = getColors(color);
-
-    const text = hexFromArgb(onPrimaryContainer);
-    const background = hexFromArgb(primaryContainer);
+    const { primaryContainer, onPrimaryContainer } = useMemo(
+        () => generateDarkScheme(color, [ColorRole.PrimaryContainer, ColorRole.OnPrimaryContainer]),
+        [color]
+    );
 
     return (
         <Fade in={!!scrollType}>
@@ -24,10 +25,10 @@ export default ({ scrollType, color, onClick }: Props) => {
                     bottom: 16,
                     right: 16,
                     zIndex: 9999,
-                    color: text,
-                    backgroundColor: background,
+                    color: onPrimaryContainer,
+                    backgroundColor: primaryContainer,
                     "&:hover": {
-                        backgroundColor: background,
+                        backgroundColor: primaryContainer,
                     },
                 }}
                 onClick={onClick}
