@@ -50,8 +50,8 @@ export default () => {
                 sx={{
                     display: "flex",
                     flexDirection: "column",
-                    borderTopLeftRadiusRadius: 0.4,
-                    borderTopRightRadiusRadius: 0.4,
+                    borderTopLeftRadius: 0.4,
+                    borderTopRightRadius: 0.4,
                     backgroundColor: "background.paper",
                     padding: 2,
                 }}

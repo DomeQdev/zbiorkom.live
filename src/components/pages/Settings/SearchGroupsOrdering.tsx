@@ -7,7 +7,7 @@ export default () => {
     const { t } = useTranslation("Settings");
     const { t: t_groups } = useTranslation("Search");
 
-    const [groups, setGroups] = useState<string[]>(JSON.parse(localStorage.getItem("searchGroupOrdering") || "[]") || ["vehicles", "stops", "stations", "routes", "relations"])
+    const [groups, setGroups] = useState<string[]>(JSON.parse(localStorage.getItem("searchGroupOrdering") || '["vehicles", "stops", "stations", "routes", "relations"]'))
     const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
     const handleDragStart = (index: number) => () => setDraggedIndex(index);
