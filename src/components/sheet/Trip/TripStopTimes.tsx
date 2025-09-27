@@ -17,12 +17,7 @@ export default ({ update, hasDeparted }: Props) => {
         if (!(typeof delay === "number")) {
             return delay;
         }
-        if (delay > 0) {
-            return Math.floor(Math.abs(delay) / 60000) ? "delayed" : "unknown";
-
-        } else if (delay < 0) {
-            return "early";
-        }
+        return (delay > 60000 ? "delayed" : (delay < -60000 ? "early" : undefined));
     };
 
     const [arrivalTime, departureTime] = useMemo(() => {
@@ -56,43 +51,30 @@ export default ({ update, hasDeparted }: Props) => {
                 opacity: hasDeparted ? 0.5 : undefined,
             }}
         >
-            {mergeArrivalDeparture && arrivalTime[1] === departureTime[1] ? (
+            {!(mergeArrivalDeparture && arrivalTime[1] === departureTime[1]) && (
                 <>
-                    {departureTime[0] !== departureTime[1] && showScheduledTimes && (
-                        <Typography sx={{ textDecoration: 'line-through' }}>
-                            {departureTime[0]}
-                        </Typography>
-                    )}
-                    <Typography
-                        className={`delay delay-${departureTime[2]}`}
-                    >
-                        {departureTime[1]}
-                    </Typography>
-                </>
-            ) : (
-                <>
-                    {arrivalTime[0] !== arrivalTime[1] && showScheduledTimes && (
-                        <Typography sx={{ textDecoration: 'line-through' }}>
+                {showScheduledTimes && arrivalTime[0] !== arrivalTime[1] && arrivalTime[2] && (
+                    <Typography sx={{ textDecoration: 'line-through' }}>
                             {arrivalTime[0]}
                         </Typography>
-                    )}
-                    <Typography
-                        className={`delay delay-${arrivalTime[2]}`}
-                    >
-                        {arrivalTime[1]}
-                    </Typography>
-                    {departureTime[0] !== departureTime[1] && showScheduledTimes && (
-                        <Typography sx={{ textDecoration: 'line-through' }}>
-                            {departureTime[0]}
-                        </Typography>
-                    )}
-                    <Typography
-                        className={`delay delay-${departureTime[2]}`}
-                    >
-                        {departureTime[1]}
-                    </Typography>
+                )}
+                <Typography
+                    className={`delay delay-${arrivalTime[2]}`}
+                >
+                    {arrivalTime[1]}
+                </Typography>
                 </>
             )}
+            {departureTime[0] !== departureTime[1] && showScheduledTimes && departureTime[2] && (
+                <Typography sx={{ textDecoration: 'line-through' }}>
+                    {departureTime[0]}
+                </Typography>
+            )}
+            <Typography
+                className={`delay delay-${departureTime[2]}`}
+            >
+                {departureTime[1]}
+            </Typography>
         </Box>
     );
 };
