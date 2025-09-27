@@ -15,6 +15,7 @@ import {
 import { RemoveCircleOutline, WavingHand } from "@mui/icons-material";
 import { useMap } from "react-map-gl";
 import useTime from "@/hooks/useTime";
+import { useNavigate, useParams } from "react-router-dom";
 import VehicleStopIcon from "@/sheet/Trip/TripStopIcon";
 import VehicleDelay from "@/sheet/Trip/TripDelay";
 import { useTranslation } from "react-i18next";
@@ -33,6 +34,8 @@ type Props = {
 export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) => {
     const { current: map } = useMap();
     const { t } = useTranslation("Vehicle");
+    const navigate = useNavigate();
+    const { city } = useParams();
 
     const departure = update[EStopUpdate.departure];
     const estimatedDeparture = departure[EStopTime.estimated];

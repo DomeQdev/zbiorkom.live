@@ -1,6 +1,7 @@
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { ETripStop, TripStop, VehicleType } from "typings";
 import { useMap } from "react-map-gl";
+import { useNavigate, useParams } from "react-router-dom";
 
 type Props = {
     stop: TripStop;
@@ -11,6 +12,8 @@ type Props = {
 
 export default ({ stop, color, index, type }: Props) => {
     const { current: map } = useMap();
+    const navigate = useNavigate();
+    const { city } = useParams();
 
     return (
         <ListItemButton
