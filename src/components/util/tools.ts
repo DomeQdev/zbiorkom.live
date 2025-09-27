@@ -5,6 +5,7 @@ export const getTime = (time: number) => {
         hour12: false,
         hour: "2-digit",
         minute: "2-digit",
+        second: (JSON.parse(localStorage.getItem("showSeconds") || "false") ? "2-digit" : undefined)
     });
 };
 

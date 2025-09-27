@@ -16,6 +16,7 @@ export default () => {
                 alignItems: "center",
                 gap: 1,
                 borderRadius: 0.4,
+                borderBottomLeftRadius: 16,
                 padding: 2,
                 backgroundColor: "background.paper",
                 width: "50%",

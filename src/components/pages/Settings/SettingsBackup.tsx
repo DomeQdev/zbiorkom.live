@@ -1,4 +1,4 @@
-import { Save, FileOpen, Delete } from "@mui/icons-material";
+import { Save, FileOpen, Restore } from "@mui/icons-material";
 import { Box, ButtonBase } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
@@ -36,7 +36,6 @@ export default () => {
                 for (const [key, value] of Object.entries(data)) {
                     localStorage.setItem(key, value);
                 }
-
                 location.reload();
             } catch (err) {
                 console.error("Failed to import settings:", err);
@@ -46,12 +45,13 @@ export default () => {
     };
 
     return (
-        <>
+        <Box>
             <Box
                 sx={{
                     display: "flex",
                     flexDirection: "column",
-                    borderRadius: 0.4,
+                    borderTopLeftRadiusRadius: 0.4,
+                    borderTopRightRadiusRadius: 0.4,
                     backgroundColor: "background.paper",
                     padding: 2,
                 }}
@@ -73,8 +73,7 @@ export default () => {
                         flexDirection: "row",
                         alignItems: "center",
                         gap: 1,
-                        borderRadius: 0.4,
-                        borderBottomLeftRadius: 16,
+                        // borderBottomLeftRadius: 16,
                         padding: 2,
                         backgroundColor: "background.paper",
                         width: "50%",
@@ -98,7 +97,6 @@ export default () => {
                         flexDirection: "row",
                         alignItems: "center",
                         gap: 1,
-                        borderRadius: 0.4,
                         padding: 2,
                         backgroundColor: "background.paper",
                         width: "50%",
@@ -116,14 +114,13 @@ export default () => {
                     {t("exportSettingsBackup")}
                 </ButtonBase>
                 <ButtonBase
-                    onClick={() => localStorage.clear()}
+                    onClick={() => {localStorage.clear(); location.reload()}}
                     sx={{
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",
                         gap: 1,
-                        borderRadius: 0.4,
-                        borderBottomRightRadius: 16,
+                        // borderBottomRightRadius: 16,
                         padding: 2,
                         backgroundColor: "background.paper",
                         width: "50%",
@@ -137,10 +134,10 @@ export default () => {
                         },
                     }}
                 >
-                    <Delete />
+                    <Restore />
                     {t("clearSettings")}
                 </ButtonBase>
             </Box>
-        </>
+        </Box>
     );
 };

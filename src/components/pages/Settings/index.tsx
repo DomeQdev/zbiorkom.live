@@ -10,6 +10,7 @@ import ThemeSettings from "./ThemeSettings";
 import Helm from "@/util/Helm";
 import BehaviorSettings from "./BehaviorSettings";
 import SettingsBackup from "./SettingsBackup";
+import SearchGroupsOrdering from "./SearchGroupsOrdering";
 
 export default memo(() => {
     const { t } = useTranslation("Settings");
@@ -43,7 +44,12 @@ export default memo(() => {
                     <MarkerSettings />
                     <BehaviorSettings />
                     <LanguageSettings />
-
+                    {JSON.parse(localStorage.getItem("jebaćdominika") || "false") &&
+                        <>
+                            <SearchGroupsOrdering />
+                            <SettingsBackup />
+                        </>
+                    }
                     <Box
                         sx={{
                             display: "flex",
@@ -55,7 +61,6 @@ export default memo(() => {
                         <CitySettings />
                         <ThemeSettings />
                     </Box>
-                    <SettingsBackup />
                 </DialogContent>
             </Dialog>
 
