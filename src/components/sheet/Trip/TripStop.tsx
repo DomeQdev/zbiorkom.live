@@ -55,6 +55,14 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                     zoom: map.getZoom() > 15 ? map.getZoom() : 15,
                 })
             }
+            onDoubleClick={() =>
+                navigate(
+                    `/${city}/${trip[ETrip.route][ERoute.type] == 2 ? "station" : "stop"}/${stop[ETripStop.id]}`,
+                    {
+                        state: -2,
+                    }
+                )
+            }
             sx={{
                 paddingY: 0.5,
             }}
@@ -67,7 +75,6 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                 }}
             >
                 <TripStopTimes
-                    isTrain={trip[ETrip.route][ERoute.type] === 2}
                     update={update}
                     hasDeparted={hasDeparted}
                 />
@@ -82,7 +89,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                             ? vehicle?.[EVehicle.percentTraveled]
                             : undefined
                     }
-                    lineMargin={41}
+                    lineMargin={(JSON.parse(localStorage.getItem("showSeconds") || "false")) ? 57.5 : 41}
                 />
             </ListItemIcon>
 
