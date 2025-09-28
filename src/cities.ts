@@ -164,12 +164,6 @@ const cities: Record<string, City> = {
         location: [21.01173, 52.22983],
         zoom: 10,
     },
-    netherlands: {
-        id: "netherlands",
-        name: "Nederland",
-        location: [4.900562, 52.378818],
-        showNewTag: true,
-    },
 }
 
 export const cityList = Object.values(cities);
