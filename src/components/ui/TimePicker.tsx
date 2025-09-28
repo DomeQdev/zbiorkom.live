@@ -116,7 +116,7 @@ export default ({ value, onChange }: Props) => {
     const nextHour = parsedHours + 1;
     const previousHour = parsedHours - 1;
 
-    const displaySuggestions = !navigator.userAgent.includes("iPhone");
+    const displaySuggestions = navigator.userAgent.includes("Android");
 
     const save = () => {
         onChange(new Date(date).setHours(parsedHours, parseInt(minutes) || 0));
@@ -211,7 +211,7 @@ export default ({ value, onChange }: Props) => {
                                 text: "-15 min",
                                 onClick: () => {
                                     const newMinutes = parsedMinutes - 15;
-
+                                    
                                     if (newMinutes < 0) {
                                         const newHours = parsedHours - 1;
                                         setHours(String(newHours).padStart(2, "0"));

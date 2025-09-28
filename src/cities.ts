@@ -12,7 +12,6 @@ const cities: Record<string, City> = {
         name: "Białystok",
         description: "+ Wschód Express, Turośń Kościelna",
         location: [23.16319, 53.13488],
-        zoom: 15
     },
     elblag: {
         id: "elblag",
@@ -95,8 +94,7 @@ const cities: Record<string, City> = {
         id: "pksnova",
         name: "PKS Nova",
         description: "Autobusy dalekobieżne",
-        location: [23.16319, 53.13488],
-        zoom: 8
+        location: [17.992183, 53.134703],
     },
     poznan: {
         id: "poznan",
