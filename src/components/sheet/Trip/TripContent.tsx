@@ -6,10 +6,10 @@ import TripFooter from "./TripFooter";
 import useVehicleStore from "@/hooks/useVehicleStore";
 import { useShallow } from "zustand/react/shallow";
 import { useMemo } from "react";
+import getColors, { hexFromArgb } from "@/util/getColors";
 import Alert from "@/ui/Alert";
 import { useTranslation } from "react-i18next";
 import { Report, Warning } from "@mui/icons-material";
-import { ColorRole, generateDarkScheme } from "material-color-lite";
 
 export default () => {
     const { t } = useTranslation("Vehicle");
@@ -20,12 +20,12 @@ export default () => {
     const color: [string, string, string] = useMemo(() => {
         if (!trip) return ["#000", "#fff", "#000"];
 
-        const { primary, onPrimary } = generateDarkScheme(trip[ETrip.route][ERoute.color], [
-            ColorRole.Primary,
-            ColorRole.OnPrimary,
-        ]);
+        const { primary, onPrimary } = getColors(trip[ETrip.route][ERoute.color]);
 
-        return [trip[ETrip.route][ERoute.color], primary, onPrimary];
+        const text = hexFromArgb(primary);
+        const background = hexFromArgb(onPrimary);
+
+        return [trip[ETrip.route][ERoute.color], text, background];
     }, [trip]);
 
     if (!vehicle && !trip && fresh) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;

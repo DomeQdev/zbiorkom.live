@@ -24,7 +24,7 @@ export default memo(() => {
             data={data[ERouteInfo.directions][direction][ERouteDirection.stops]}
             style={{ height: "calc(var(--rsbs-overlay-h) - 55px)" }}
             itemContent={(index, stop) => (
-                <RouteStop stop={stop} color={data[ERouteInfo.route][ERoute.color]} index={index} type={data[ERouteInfo.route][ERoute.type]} />
+                <RouteStop stop={stop} color={data[ERouteInfo.route][ERoute.color]} index={index} />
             )}
             components={{
                 Header: RouteActions,

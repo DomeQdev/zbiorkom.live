@@ -5,7 +5,6 @@ export const getTime = (time: number) => {
         hour12: false,
         hour: "2-digit",
         minute: "2-digit",
-        second: (JSON.parse(localStorage.getItem("showSeconds") || "false") ? "2-digit" : undefined)
     });
 };
 
@@ -83,15 +82,4 @@ export const polylineToGeoJson = (polyline: string) => {
     }
 
     return geoJson;
-};
-
-
-export const maybeShare = (url: string) => {
-    if (navigator.share !== undefined) {
-        navigator.share({
-            url: url,
-        });
-    } else {
-        navigator.clipboard.writeText(url);
-    }
 };

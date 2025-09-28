@@ -130,18 +130,10 @@
     "behavior": "Application behavior",
     "moveToLastLocation": "Use last location when opening the map",
     "useLocationSorting": "Sort stops according to your location",
-    "showScheduledTimes": "Show the original time next to the projected delay",
-    "mergeArrivalDeparture": "Merge arrival and departure times if they're equal",
-    "showSeconds": "Show seconds",
     "welcomeTo": "Welcome to",
     "welcomeText": "Select a city to see live public transport on map.",
     "searchCities": "Search cities",
-    "useStopCodeAsIcon": "Use stop code as icon",
-    "settingsBackup": "Backup settings",
-    "exportSettingsBackup": "Export",
-    "importSettingsBackup": "Import",
-    "clearSettings": "Restore Defaults",
-    "searchGroupOrdering": "Search order"
+    "useStopCodeAsIcon": "Use stop code as icon"
   },
   "Languages": {
     "en": "English",
