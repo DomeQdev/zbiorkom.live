@@ -1,10 +1,11 @@
+import { ColorRole, generateDarkScheme } from "material-color-lite";
 import { ListItemButton } from "@mui/material";
 import { BrigadeTrip, EBrigadeTrip, ERoute } from "typings";
 import { Link, useParams } from "react-router-dom";
 import { getTime, msToTime } from "@/util/tools";
 import { useTranslation } from "react-i18next";
-import getColors, { hexFromArgb } from "@/util/getColors";
 import RouteTag from "@/map/RouteTag";
+import { useMemo } from "react";
 
 type Props = {
     trip: BrigadeTrip;
@@ -16,7 +17,10 @@ export default ({ trip, isActive, showRoute }: Props) => {
     const { t } = useTranslation("Brigades");
     const { city } = useParams();
 
-    const background = hexFromArgb(getColors(trip[EBrigadeTrip.route][ERoute.color]).secondaryContainer);
+    const background = useMemo(
+        () => generateDarkScheme(trip[EBrigadeTrip.route][ERoute.color], [ColorRole.SecondaryContainer]),
+        [trip]
+    ).secondaryContainer;
 
     return (
         <ListItemButton

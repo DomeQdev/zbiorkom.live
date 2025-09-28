@@ -130,7 +130,10 @@ export default ({ city }: { city: string }) => {
                         size="small"
                         sx={{ fontWeight: "bold" }}
                         color="primary"
-                        onClick={() => navigate(`/${suggestedCity}`, { replace: true })}
+                        onClick={() => {
+                            navigate(`/${suggestedCity}`, { replace: true });
+                            localStorage.setItem("city", suggestedCity);
+                        }}
                     >
                         {t("yes")}
                     </Button>

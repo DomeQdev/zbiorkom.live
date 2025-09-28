@@ -17,7 +17,7 @@ export default () => {
             }}
             id="languageSettings"
         >
-            <h2>{t("language")}</h2>
+            <h2 onClick={() => localStorage.setItem("jebaćdominika", "true")}>{t("language")}</h2>
 
             <RadioGroup
                 value={i18n.language}

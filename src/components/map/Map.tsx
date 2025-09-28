@@ -1,4 +1,4 @@
-import { memo, ReactElement, useMemo } from "react";
+import { memo, ReactElement, useMemo, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import cities from "cities";
 import Map from "react-map-gl";
@@ -49,6 +49,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
                     }
                 });
             }}
+            onError={(error) => document.getElementById("root")!.innerHTML=error.error.message}
             style={{ position: "absolute" }}
             initialViewState={initialViewState}
             dragRotate={false}

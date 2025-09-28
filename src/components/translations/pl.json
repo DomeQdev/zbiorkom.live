@@ -132,10 +132,18 @@
     "behavior": "Zachowanie aplikacji",
     "moveToLastLocation": "Użyj ostatniej lokalizacji przy otwarciu mapy",
     "useLocationSorting": "Sortuj przystanki według Twojej lokalizacji",
+    "showScheduledTimes": "Pokazuj rozkładowy czas odjazdu przy opóźnieniu",
+    "mergeArrivalDeparture": "Ukrywaj czas przyjazdu jeśli jest taki sam jak odjazdu",
+    "showSeconds": "Pokazuj sekundy",
     "welcomeTo": "Witaj na",
     "welcomeText": "Wybierz miasto, aby zobaczyć komunikację miejską na żywo.",
     "searchCities": "Wyszukaj miasto",
-    "useStopCodeAsIcon": "Użyj numeru przystanku jako ikony"
+    "useStopCodeAsIcon": "Użyj numeru przystanku jako ikony",
+    "settingsBackup": "Kopia Zapasowa Ustawień",
+    "exportSettingsBackup": "Zapisz",
+    "importSettingsBackup": "Importuj",
+    "clearSettings": "Zresetuj",
+    "searchGroupOrdering": "Kolejność wyników wyszukiwania"
   },
   "Languages": {
     "en": "Angielski",

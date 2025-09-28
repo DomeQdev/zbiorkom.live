@@ -1,15 +1,19 @@
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { ETripStop, TripStop } from "typings";
+import { ETripStop, TripStop, VehicleType } from "typings";
 import { useMap } from "react-map-gl";
+import { useNavigate, useParams } from "react-router-dom";
 
 type Props = {
     stop: TripStop;
     color: string;
     index: number;
+    type: VehicleType;
 };
 
-export default ({ stop, color, index }: Props) => {
+export default ({ stop, color, index, type }: Props) => {
     const { current: map } = useMap();
+    const navigate = useNavigate();
+    const { city } = useParams();
 
     return (
         <ListItemButton
@@ -18,6 +22,14 @@ export default ({ stop, color, index }: Props) => {
                     center: stop[ETripStop.location],
                     zoom: map.getZoom() > 15 ? map.getZoom() : 15,
                 })
+            }
+            onDoubleClick={() =>
+                navigate(
+                    `/${city}/${type == 2 ? "station" : "stop"}/${stop[ETripStop.id]}`,
+                    {
+                        state: -2,
+                    }
+                )
             }
             sx={{ paddingY: 0.5 }}
         >
