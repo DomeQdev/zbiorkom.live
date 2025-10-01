@@ -7,6 +7,7 @@ import { EStopUpdate, EVehicle } from "typings";
 import { useState } from "react";
 import TripLastPing from "./TripLastPing";
 import { useShallow } from "zustand/react/shallow";
+import { share } from "@/util/tools";
 
 export default () => {
     const [vehicle, lastPing, hasAlerts] = useVehicleStore(
@@ -48,11 +49,7 @@ export default () => {
                 )}
 
                 <MenuItem
-                    onClick={() => {
-                        navigator.share({
-                            url: window.location.href,
-                        });
-                    }}
+                    onClick={() => share(window.location.href)}
                 >
                     <ListItemIcon>
                         <Share fontSize="small" />
