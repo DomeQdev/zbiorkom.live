@@ -249,7 +249,7 @@ export default ({ value, onChange }: Props) => {
                                     setMinutes("00");
                                     setPrevMinutesString("00");
                                 },
-                                disabled: () => hours === hour,
+                                disabled: () => hours === hour && minutes == "00",
                             })),
                             {
                                 text: "🌙",
