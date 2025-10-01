@@ -85,7 +85,7 @@ export const polylineToGeoJson = (polyline: string) => {
 };
 
 
-export const maybeShare = (url: string) => {
+export const share = (url: string) => {
     if (navigator.share !== undefined) {
         navigator.share({
             url: url,
