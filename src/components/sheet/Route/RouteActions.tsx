@@ -1,3 +1,4 @@
+import { maybeShare } from "@/util/tools";
 import { Event, Share } from "@mui/icons-material";
 import { Box, ButtonBase } from "@mui/material";
 import { useTranslation } from "react-i18next";
@@ -40,11 +41,7 @@ export default () => {
                 {t("brigadeSchedule")}
             </ButtonBase>
             <ButtonBase
-                onClick={() =>
-                    navigator.share({
-                        url: window.location.href,
-                    })
-                }
+                onClick={() => maybeShare(window.location.href)}
                 sx={{
                     borderRadius: 0.4,
                     borderTopRightRadius: 16,

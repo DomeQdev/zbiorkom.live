@@ -11,7 +11,7 @@ import Trip from "./BrigadeTrip";
 import MultilineAlert from "./MultilineAlert";
 import Helm from "@/util/Helm";
 import ScrollButton from "./ScrollButton";
-import { msToTime } from "@/util/tools";
+import { maybeShare, msToTime } from "@/util/tools";
 import DayPicker from "@/ui/DayPicker";
 import useSearchState from "@/hooks/useSearchState";
 import { getBrigadeDays, useQueryBrigade } from "@/hooks/useQueryBrigades";
@@ -144,11 +144,7 @@ export default ({ city, route, brigade }: Props) => {
                             </span>
                         </div>
                         <IconButton
-                            onClick={() =>
-                                navigator.share({
-                                    url: window.location.pathname,
-                                })
-                            }
+                            onClick={() => maybeShare(window.location.href)}
                         >
                             <Share />
                         </IconButton>
