@@ -61,9 +61,7 @@ export default memo(() => {
                                 {data?.title}
                             </span>
                         </Box>
-                        <IconButton
-                            onClick={() => share(window.location.href)}
-                        >
+                        <IconButton onClick={() => share(window.location.href)}>
                             <Share />
                         </IconButton>
                     </DialogTitle>

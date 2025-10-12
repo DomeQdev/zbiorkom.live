@@ -10,7 +10,7 @@ import { AddCircle } from "@mui/icons-material";
 export default ({ routes, models }: { routes: Route[]; models: string[] }) => {
     const { t } = useTranslation("Filter");
     const [removeRoute, removeModel] = useFilterStore(
-        useShallow((state) => [state.removeRoute, state.removeModel])
+        useShallow((state) => [state.removeRoute, state.removeModel]),
     );
 
     return (

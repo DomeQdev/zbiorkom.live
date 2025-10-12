@@ -18,7 +18,7 @@ export default ({ departure }: { departure: StopDeparture }) => {
                 navigate(
                     `/${city}/trip/${encodeURIComponent(departure[EStopDeparture.id])}` +
                         (window.location.pathname.includes("/station") ? "?pkp" : ""),
-                    { state: -2 }
+                    { state: -2 },
                 );
             },
         },
@@ -30,7 +30,7 @@ export default ({ departure }: { departure: StopDeparture }) => {
                 navigate(
                     `/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.vehicleId])}` +
                         (window.location.pathname.includes("/station") ? "?pkp" : ""),
-                    { state: -2 }
+                    { state: -2 },
                 );
             },
         },

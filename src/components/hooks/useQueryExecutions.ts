@@ -29,7 +29,7 @@ export const useQueryExecutionDates = (props: Props) => {
                     brigade: props.brigade,
                     vehicle: props.vehicle,
                 },
-                signal
+                signal,
             );
         },
         enabled: props.enabled,
@@ -52,7 +52,7 @@ export const useQueryExecutions = (props: Props) => {
                     brigade: props.brigade,
                     vehicle: props.vehicle,
                 },
-                signal
+                signal,
             );
         },
         enabled: props.enabled,
@@ -75,7 +75,7 @@ export const useQueryExectionVehicles = (props: Props) => {
                     brigade: props.brigade,
                     vehicle: props.vehicle,
                 },
-                signal
+                signal,
             );
         },
         enabled: props.enabled,

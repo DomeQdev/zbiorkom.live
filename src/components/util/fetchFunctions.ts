@@ -4,7 +4,7 @@ export const getFromAPI = async <T>(
     city: string,
     endpoint: string,
     query: Record<string, any>,
-    signal?: AbortSignal
+    signal?: AbortSignal,
 ): Promise<T> => {
     const url = new URL(`${Gay.base}/${version}/${city}/${endpoint}`);
     Object.entries(query).forEach(([key, value]) => {
@@ -17,7 +17,7 @@ export const getFromAPI = async <T>(
 export const getFromCloudAPI = async <T>(
     endpoint: string,
     query: Record<string, any>,
-    signal?: AbortSignal
+    signal?: AbortSignal,
 ): Promise<T> => {
     const url = new URL(`${Gay.cloudBase}/${endpoint}`);
     Object.entries(query).forEach(([key, value]) => {

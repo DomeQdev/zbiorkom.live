@@ -23,7 +23,7 @@ export default () => {
                 ColorRole.OnSurface,
                 ColorRole.InverseOnSurface,
             ]),
-        [color]
+        [color],
     );
 
     const theme = createTheme({

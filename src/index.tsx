@@ -27,5 +27,5 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <CssBaseline />
             <App />
         </ErrorBoundary>
-    </QueryClientProvider>
+    </QueryClientProvider>,
 );

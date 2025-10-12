@@ -24,7 +24,7 @@ export default () => {
             state.setSearch,
             state.setInitialPosition,
             state.applyChanges,
-        ])
+        ]),
     );
 
     const { data } = useQueryMarkers({

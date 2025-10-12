@@ -5,7 +5,7 @@ import Map from "react-map-gl";
 import { useLocation } from "react-router-dom";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
-    const [ error, setError ] = useState<string | undefined>();
+    const [error, setError] = useState<string | undefined>();
     const { pathname } = useLocation();
 
     const initialViewState = useMemo(() => {
@@ -31,7 +31,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
         }
     }, []);
 
-    if (error) return (<span>{error}</span>)
+    if (error) return <span>{error}</span>;
 
     return (
         <Map

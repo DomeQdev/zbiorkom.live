@@ -84,7 +84,6 @@ export const polylineToGeoJson = (polyline: string) => {
     return geoJson;
 };
 
-
 export const share = (url: string) => {
     if (navigator.share !== undefined) {
         navigator.share({

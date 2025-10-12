@@ -55,7 +55,7 @@ interface OpenMeteoResponse {
 
 export const analyzeWeatherData = async ([lng, lat]: Location) => {
     const data = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current_weather=true&hourly=precipitation,cloudcover`
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current_weather=true&hourly=precipitation,cloudcover`,
     )
         .then((res) => res.json() as Promise<OpenMeteoResponse>)
         .catch(() => null);
@@ -139,26 +139,28 @@ export const analyzeWeatherData = async ([lng, lat]: Location) => {
     return result;
 };
 
-export default (
+export default () =>
     // { weatherData }: { weatherData: CyclingAnalysisResult | null }
-) => {
-    const { data: weatherData } = useQuery({
-        queryKey: ["bike-comfort", "weather"],
-        queryFn: () => analyzeWeatherData([21.011889, 52.229837]),
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-    });
+    {
+        const { data: weatherData } = useQuery({
+            queryKey: ["bike-comfort", "weather"],
+            queryFn: () => analyzeWeatherData([21.011889, 52.229837]),
+            refetchOnMount: false,
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+        });
 
-    if (!weatherData) return null;
+        if (!weatherData) return null;
 
-    return (
-        <div>
-            <h2>Bike Comfort Analysis</h2>
-            <p>Conditions: {CyclingConditions[weatherData.conditions]}</p>
-            <p>Temperature: {weatherData.temperature}°C</p>
-            <p>Wind: {WindStrength[weatherData.windStrength]} at {weatherData.windDirection}°</p>
-            <p>Features: {weatherData.features.map((f) => WeatherFeature[f]).join(", ")}</p>
-        </div>
-    );
-};
+        return (
+            <div>
+                <h2>Bike Comfort Analysis</h2>
+                <p>Conditions: {CyclingConditions[weatherData.conditions]}</p>
+                <p>Temperature: {weatherData.temperature}°C</p>
+                <p>
+                    Wind: {WindStrength[weatherData.windStrength]} at {weatherData.windDirection}°
+                </p>
+                <p>Features: {weatherData.features.map((f) => WeatherFeature[f]).join(", ")}</p>
+            </div>
+        );
+    };

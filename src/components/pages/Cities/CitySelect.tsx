@@ -22,7 +22,7 @@ export default ({ cities, onCityClick }: Props) => {
     const { t } = useTranslation("Settings");
 
     const [starredCities, setStarredCities] = useState<string[]>(
-        JSON.parse(localStorage.getItem("starredCities") || "[]")
+        JSON.parse(localStorage.getItem("starredCities") || "[]"),
     );
     const [filteredCities, setCities] = useState<City[]>(cities);
     const [search, setSearch] = useState("");
@@ -45,7 +45,7 @@ export default ({ cities, onCityClick }: Props) => {
                         (city) =>
                             city.name.toLowerCase().includes(query) ||
                             city.description?.toLowerCase().includes(query) ||
-                            city.id.includes(query)
+                            city.id.includes(query),
                     );
 
                     setCities(newFilteredCities);

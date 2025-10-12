@@ -5,16 +5,7 @@ import { useTranslation } from "react-i18next";
 import useThemeStore from "@/hooks/useThemeStore";
 import { useShallow } from "zustand/react/shallow";
 
-const colors = [
-    "#ff3c36",
-    "#ffd336",
-    "#94ff36",
-    "#276b2b",
-    "#36f9ff",
-    "#3662ff",
-    "#720546",
-    "#ff36c7"
-];
+const colors = ["#ff3c36", "#ffd336", "#94ff36", "#276b2b", "#36f9ff", "#3662ff", "#720546", "#ff36c7"];
 
 export default () => {
     const [selectedColor, setColor] = useThemeStore(useShallow((state) => [state.color, state.setColor]));

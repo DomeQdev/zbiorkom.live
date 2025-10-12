@@ -14,7 +14,7 @@ import { ColorRole, generateDarkScheme } from "material-color-lite";
 export default () => {
     const { t } = useTranslation("Vehicle");
     const [vehicle, trip, sequence, stops, fresh] = useVehicleStore(
-        useShallow((state) => [state.vehicle, state.trip, state.sequence, state.stops, state.fresh])
+        useShallow((state) => [state.vehicle, state.trip, state.sequence, state.stops, state.fresh]),
     );
 
     const color: [string, string, string] = useMemo(() => {

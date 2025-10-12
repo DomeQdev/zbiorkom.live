@@ -184,9 +184,7 @@ export default memo(() => {
                             </ListItemButton>
                         ))}
 
-                    {displayBrigades && !brigades?.length && (
-                        <Alert Icon={Dangerous} title={t("noDuty")} />
-                    )}
+                    {displayBrigades && !brigades?.length && <Alert Icon={Dangerous} title={t("noDuty")} />}
 
                     {!displayBrigades &&
                         new Array(5).fill(0).map((_, i) => (

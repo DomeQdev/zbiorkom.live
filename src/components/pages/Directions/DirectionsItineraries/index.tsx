@@ -15,7 +15,7 @@ export default () => {
     const { city } = useParams();
 
     const [itineraries, updateDepartures, lastRefresh] = useTripPlannerStore(
-        useShallow((state) => [state.itineraries, state.updateDepartures, state.lastRefresh])
+        useShallow((state) => [state.itineraries, state.updateDepartures, state.lastRefresh]),
     );
 
     useEffect(() => {

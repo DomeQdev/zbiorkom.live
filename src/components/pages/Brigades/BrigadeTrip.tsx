@@ -19,7 +19,7 @@ export default ({ trip, isActive, showRoute }: Props) => {
 
     const background = useMemo(
         () => generateDarkScheme(trip[EBrigadeTrip.route][ERoute.color], [ColorRole.SecondaryContainer]),
-        [trip]
+        [trip],
     ).secondaryContainer;
 
     return (

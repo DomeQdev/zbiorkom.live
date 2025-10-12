@@ -18,7 +18,7 @@ export default () => {
     const { city } = useParams();
 
     const [{ from, to }, time, reset] = useTripPlannerStore(
-        useShallow((state) => [state.places, state.time, state.reset])
+        useShallow((state) => [state.places, state.time, state.reset]),
     );
 
     const {

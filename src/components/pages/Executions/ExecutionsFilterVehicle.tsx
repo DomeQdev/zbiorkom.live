@@ -11,7 +11,7 @@ export default ({ vehicle: [vehicle, setVehicle] }: { vehicle: SearchState }) =>
 
     const [vehicleId, setVehicleId] = useState<string>(initialValue[1] ?? "");
     const [vehicleType, setVehicleType] = useState<VehicleType>(
-        Number.isNaN(+initialValue[0]) ? 3 : (+initialValue[0] as VehicleType)
+        Number.isNaN(+initialValue[0]) ? 3 : (+initialValue[0] as VehicleType),
     );
 
     useEffect(() => {

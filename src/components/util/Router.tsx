@@ -296,7 +296,7 @@ export default () => {
                                             return redirect(`/${params.city}/routes`);
                                         } else {
                                             return redirect(
-                                                `/${params.city}/route/${splitted[0]}/brigades/${splitted[1]}`
+                                                `/${params.city}/route/${splitted[0]}/brigades/${splitted[1]}`,
                                             );
                                         }
                                     },

@@ -22,7 +22,7 @@ export const WebSocketProvider = ({ children }: { children: ReactNode }) => {
         new Map<EventType, Set<Callback>>([
             ["refresh", new Set()],
             ["trainRefresh", new Set()],
-        ])
+        ]),
     );
 
     const connect = useCallback(() => {
