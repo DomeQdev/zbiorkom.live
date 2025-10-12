@@ -35,7 +35,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
 
     return (
         <Map
-            mapboxAccessToken="pk.eyJ1Ijoibm93aWNraWFkYW0wMDAxMSIsImEiOiJjbWZzcHl3NDIwbmRqMm1xeTAzaWlicjN0In0.HZEkTowgQ-iDuXOwyxr2Jg"
+            mapboxAccessToken="pk.eyJ1IjoiZG9tZXE3ODkiLCJhIjoiY21nbnNkazc4MWo2aTJzcXFyam1ra2J4bCJ9.KQRWgAuXhlaeKp4781CX7Q"
             mapStyle="mapbox://styles/zbiorkomlive/cmfsptjzn00ic01qr7whp2thi"
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}
