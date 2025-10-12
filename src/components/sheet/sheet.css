@@ -17,7 +17,9 @@
 }
 
 [data-rsbs-is-blocking="false"] [data-rsbs-overlay] {
-    box-shadow: 0 -5px 60px 0 rgba(38, 89, 115, 0.11), 0 -1px 0 rgba(38, 89, 115, 0.05);
+    box-shadow:
+        0 -5px 60px 0 rgba(38, 89, 115, 0.11),
+        0 -1px 0 rgba(38, 89, 115, 0.05);
 }
 
 [data-rsbs-overlay],
@@ -88,7 +90,9 @@
     z-index: 1;
     padding-top: calc(20px + env(safe-area-inset-top));
     padding-bottom: 8px;
-    box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        0 1px 10px 0 rgba(0, 0, 0, 0.12),
+        0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
 [data-rsbs-header]:before {

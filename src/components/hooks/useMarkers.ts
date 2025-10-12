@@ -16,7 +16,7 @@ export default ({ city, moveBadge }: Props) => {
     const { current: map } = useMap();
 
     const [routes, tempRoutes, models, tempModels] = useFilterStore(
-        useShallow((state) => [state.routes, state.tempRoutes, state.models, state.tempModels])
+        useShallow((state) => [state.routes, state.tempRoutes, state.models, state.tempModels]),
     );
 
     const [vehicles, setVehicles] = useState<MapData["positions"]>([]);
@@ -50,7 +50,7 @@ export default ({ city, moveBadge }: Props) => {
                 filterRoutes: routes.length ? routes.map((route) => route[ERoute.id]) : undefined,
                 filterModels: models.length ? models : undefined,
             },
-            newAbortController.signal
+            newAbortController.signal,
         ).then((data) => {
             if (newAbortController.signal.aborted) return;
 

@@ -11,7 +11,7 @@ import { useQuerySearchRoutesOrModels } from "@/hooks/useQuerySearch";
 
 export default () => {
     const [search, tempRoutes, tempModels] = useFilterStore(
-        useShallow((state) => [state.search, state.tempRoutes, state.tempModels])
+        useShallow((state) => [state.search, state.tempRoutes, state.tempModels]),
     );
     const { city } = useParams();
 
@@ -31,7 +31,7 @@ export default () => {
     return (
         <Virtuoso
             style={{ height: "calc(var(--rsbs-overlay-h) - 68px)" }}
-            totalCount={search ? searchResults?.length ?? 0 : items.length}
+            totalCount={search ? (searchResults?.length ?? 0) : items.length}
             itemContent={(index) => {
                 if (search) {
                     const item = searchResults?.[index];

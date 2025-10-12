@@ -73,7 +73,7 @@ export default ({ city, route, brigade }: Props) => {
             currentTripIndex = filteredTrips.findIndex(
                 (trip) =>
                     trip[EBrigadeTrip.end] > Date.now() &&
-                    trip[EBrigadeTrip.start] <= Date.now() + 2 * 60 * 60 * 1000
+                    trip[EBrigadeTrip.start] <= Date.now() + 2 * 60 * 60 * 1000,
             );
         }
 
@@ -143,9 +143,7 @@ export default ({ city, route, brigade }: Props) => {
                                 </Trans>
                             </span>
                         </div>
-                        <IconButton
-                            onClick={() => share(window.location.href)}
-                        >
+                        <IconButton onClick={() => share(window.location.href)}>
                             <Share />
                         </IconButton>
                     </DialogTitle>
@@ -238,7 +236,7 @@ export default ({ city, route, brigade }: Props) => {
                                 const nextTrip = filteredTrips[i + 1];
                                 if (nextTrip) {
                                     breakTime = msToTime(
-                                        nextTrip[EBrigadeTrip.start] - trip[EBrigadeTrip.end]
+                                        nextTrip[EBrigadeTrip.start] - trip[EBrigadeTrip.end],
                                     );
 
                                     if (
@@ -289,7 +287,9 @@ export default ({ city, route, brigade }: Props) => {
                             curr,
                         ])}
 
-                {trips && !trips.length && <Alert Icon={Dangerous} title={t("noDuty", { ns: "Brigades" })} color="error" />}
+                {trips && !trips.length && (
+                    <Alert Icon={Dangerous} title={t("noDuty", { ns: "Brigades" })} color="error" />
+                )}
 
                 <ScrollButton
                     scrollType={showScroll}

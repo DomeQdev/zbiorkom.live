@@ -15,7 +15,7 @@ export default () => {
             state.vehicle,
             state.lastPing,
             state.stops?.some((stop) => stop[EStopUpdate.alerts]?.length > 0),
-        ])
+        ]),
     );
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -48,9 +48,7 @@ export default () => {
                     </MenuItem>
                 )}
 
-                <MenuItem
-                    onClick={() => share(window.location.href)}
-                >
+                <MenuItem onClick={() => share(window.location.href)}>
                     <ListItemIcon>
                         <Share fontSize="small" />
                     </ListItemIcon>

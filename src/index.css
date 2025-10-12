@@ -44,7 +44,9 @@ h6 {
     display: flex;
     align-items: center;
     color: hsla(0, 0%, 100%, 0.8);
-    box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        0 1px 10px 0 rgba(0, 0, 0, 0.12),
+        0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
 .vehicle .emoji {
@@ -163,7 +165,9 @@ h6 {
     width: 80px;
     gap: 4px;
     user-select: none;
-    transition: color 0.2s, background-color 0.2s;
+    transition:
+        color 0.2s,
+        background-color 0.2s;
 }
 
 @media screen and (min-width: 600px) {

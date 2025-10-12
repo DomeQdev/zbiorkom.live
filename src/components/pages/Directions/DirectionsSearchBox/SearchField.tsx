@@ -9,7 +9,7 @@ import { useState } from "react";
 
 export default ({ type }: { type: "from" | "to" }) => {
     const [place, setPlace] = useTripPlannerStore(
-        useShallow((state) => [state.places[type], state.setPlace])
+        useShallow((state) => [state.places[type], state.setPlace]),
     );
     const [anchorEl, setAnchorEl] = useState<HTMLInputElement | null>(null);
     const { city } = useParams();

@@ -9,7 +9,7 @@ import { useQueryRoute } from "@/hooks/useQueryRoutes";
 
 export default () => {
     const [direction, setDirection] = useDirectionStore(
-        useShallow((state) => [state.direction, state.setDirection])
+        useShallow((state) => [state.direction, state.setDirection]),
     );
 
     const { city, route } = useParams();

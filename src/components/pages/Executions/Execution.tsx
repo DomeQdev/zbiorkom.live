@@ -12,7 +12,10 @@ export default ({ execution }: { execution: Execution }) => {
     const color = useThemeStore((state) => state.color);
     const { t } = useTranslation("Executions");
 
-    const inversePrimary = useMemo(() => generateDarkScheme(color, [ColorRole.InversePrimary]).inversePrimary, [color]);
+    const inversePrimary = useMemo(
+        () => generateDarkScheme(color, [ColorRole.InversePrimary]).inversePrimary,
+        [color],
+    );
 
     return (
         <Box

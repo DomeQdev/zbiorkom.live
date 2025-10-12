@@ -12,7 +12,7 @@ type Props = {
 export default ({ scrollType, color, onClick }: Props) => {
     const { primaryContainer, onPrimaryContainer } = useMemo(
         () => generateDarkScheme(color, [ColorRole.PrimaryContainer, ColorRole.OnPrimaryContainer]),
-        [color]
+        [color],
     );
 
     return (

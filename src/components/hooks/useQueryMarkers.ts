@@ -31,7 +31,7 @@ const fetchData = (city: Props["city"], options: Props["options"], signal: Abort
             filterRoutes: options.filterRoutes?.join(","),
             filterDirection: options.filterDirection?.toString(),
         },
-        signal
+        signal,
     );
 };
 

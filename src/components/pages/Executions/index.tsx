@@ -89,13 +89,7 @@ export default () => {
             />
 
             <DialogContent sx={{ padding: 0 }}>
-                {!enabled && (
-                    <Alert
-                        title={t("noFilter")}
-                        Icon={History}
-                        color="error"
-                    />
-                )}
+                {!enabled && <Alert title={t("noFilter")} Icon={History} color="error" />}
 
                 {enabled && !loading && !executions?.length && (
                     <Alert

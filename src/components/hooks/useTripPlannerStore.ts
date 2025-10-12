@@ -83,7 +83,7 @@ export default create<TripPlannerState>()((set, get) => ({
         const newDeparturesData = await getFromAPI<Record<string, StopDeparture[]>>(
             city,
             "tripPlanner/updateStopDepartures",
-            { tokens: Array.from(tokens).join(",") }
+            { tokens: Array.from(tokens).join(",") },
         );
 
         set({
@@ -121,7 +121,7 @@ const findBestDeparture = (
     legIndex: number,
     currentTime: number,
     arriveBy: boolean,
-    previousSelectedTrips?: SelectedTrip[]
+    previousSelectedTrips?: SelectedTrip[],
 ) => {
     const previousSelection = previousSelectedTrips?.find((s) => s.legIndex === legIndex);
 
@@ -158,7 +158,7 @@ const findBestDeparture = (
         return bestDeparture;
     } else {
         const availableDepartures = leg.departures.filter(
-            (departure) => departure[EStopDeparture.departure][EStopTime.estimated] >= currentTime
+            (departure) => departure[EStopDeparture.departure][EStopTime.estimated] >= currentTime,
         );
         if (availableDepartures.length === 0) return undefined;
 
@@ -168,7 +168,7 @@ const findBestDeparture = (
 
             for (const departure of availableDepartures) {
                 const diff = Math.abs(
-                    departure[EStopDeparture.departure][EStopTime.scheduled] - previousSelection.scheduled
+                    departure[EStopDeparture.departure][EStopTime.scheduled] - previousSelection.scheduled,
                 );
 
                 if (diff < closestDiff) {
@@ -187,7 +187,7 @@ const findBestDeparture = (
 const calculateItineraryMetadata = (
     itinerary: PlannerItinerary,
     { timestamp, arriveBy }: TripPlannerTime,
-    previousSelectedTrips?: SelectedTrip[]
+    previousSelectedTrips?: SelectedTrip[],
 ) => {
     const startTime = timestamp === "now" ? Date.now() : timestamp;
     const selectedTrips: SelectedTrip[] = [];
@@ -205,7 +205,7 @@ const calculateItineraryMetadata = (
                     legIndex,
                     currentTime,
                     true,
-                    previousSelectedTrips
+                    previousSelectedTrips,
                 );
 
                 if (!selectedDeparture) return itinerary;
@@ -243,7 +243,7 @@ const calculateItineraryMetadata = (
                     legIndex,
                     currentTime,
                     false,
-                    previousSelectedTrips
+                    previousSelectedTrips,
                 );
 
                 if (!selectedDeparture) return itinerary;
@@ -270,7 +270,7 @@ const calculateItineraryMetadata = (
             const firstLegDepartures = (itinerary.legs[firstTrip.legIndex] as TransitLeg).departures;
 
             departureTime = firstLegDepartures.find(
-                (departure) => departure[EStopDeparture.id] === firstTrip.tripId
+                (departure) => departure[EStopDeparture.id] === firstTrip.tripId,
             )![EStopDeparture.departure][EStopTime.estimated];
 
             for (let i = 0; i < firstTrip.legIndex; i++) {
