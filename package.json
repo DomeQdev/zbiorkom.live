@@ -44,9 +44,20 @@
         "@types/react": "^19.1.15",
         "@types/react-dom": "^19.1.9",
         "@vitejs/plugin-react": "^4.7.0",
+        "prettier": "^3.6.2",
+        "pretty-quick": "^4.2.2",
+        "simple-git-hooks": "^2.13.1",
         "typescript": "^5.9.2",
         "vite": "^7.1.7",
         "vite-tsconfig-paths": "^5.1.4",
         "workbox-cli": "^7.3.0"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "useTabs": false,
+        "printWidth": 110
+    },
+    "simple-git-hooks": {
+        "pre-commit": "npx pretty-quick --staged"
     }
 }
