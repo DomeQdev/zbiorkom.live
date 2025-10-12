@@ -1,10 +1,11 @@
-import { memo, ReactElement, useMemo } from "react";
+import { memo, ReactElement, useMemo, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import cities from "cities";
 import Map from "react-map-gl";
 import { useLocation } from "react-router-dom";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
+    const [ error, setError ] = useState<string | undefined>();
     const { pathname } = useLocation();
 
     const initialViewState = useMemo(() => {
@@ -30,6 +31,8 @@ export default memo(({ children }: { children: ReactElement[] }) => {
         }
     }, []);
 
+    if (error) return (<span>{error}</span>)
+
     return (
         <Map
             mapboxAccessToken="pk.eyJ1Ijoibm93aWNraWFkYW0wMDAxMSIsImEiOiJjbWZzcHl3NDIwbmRqMm1xeTAzaWlicjN0In0.HZEkTowgQ-iDuXOwyxr2Jg"
@@ -49,6 +52,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
                     }
                 });
             }}
+            onError={(e) => setError(e.error.message)}
             style={{ position: "absolute" }}
             initialViewState={initialViewState}
             dragRotate={false}
