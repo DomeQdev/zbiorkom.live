@@ -16,7 +16,7 @@ import { useWebSocket } from "@/hooks/useWebSocket";
 
 export default () => {
     const [direction, setDirection] = useDirectionStore(
-        useShallow((state) => [state.direction, state.setDirection])
+        useShallow((state) => [state.direction, state.setDirection]),
     );
     const { subscribe } = useWebSocket();
     const { city, route } = useParams();
@@ -48,7 +48,7 @@ export default () => {
         map?.fitBounds(
             data[ERouteInfo.directions][direction][ERouteDirection.shape].geometry.coordinates.reduce(
                 (bounds, coord) => bounds.extend(coord as Location),
-                new LngLatBounds()
+                new LngLatBounds(),
             ),
             {
                 padding: {
@@ -58,7 +58,7 @@ export default () => {
                     bottom: getSheetHeight(),
                 },
                 maxDuration: 1000,
-            }
+            },
         );
     }, [data, direction]);
 

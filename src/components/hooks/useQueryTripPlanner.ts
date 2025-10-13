@@ -25,7 +25,7 @@ export const useQuerySearchPlaces = (city: string, query: string) => {
                     longitude,
                     latitude,
                 },
-                signal
+                signal,
             );
         },
         refetchOnMount: false,
@@ -38,7 +38,7 @@ export const useQueryPlannerItineraries = (
     city: string,
     from: Place,
     to: Place,
-    { timestamp, arriveBy }: TripPlannerTime
+    { timestamp, arriveBy }: TripPlannerTime,
 ) => {
     const setResult = useTripPlannerStore(useShallow((state) => state.setResult));
 
@@ -62,7 +62,7 @@ export const useQueryPlannerItineraries = (
                     time: timestamp === "now" ? Date.now() : timestamp,
                     arriveBy,
                 },
-                signal
+                signal,
             );
 
             setResult(result);

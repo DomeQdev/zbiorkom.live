@@ -38,7 +38,7 @@ export const useQueryStopDepartures = (props: StopDeparturesQueryProps) => {
                     time,
                     destinations,
                 },
-                signal
+                signal,
             );
         },
         refetchOnWindowFocus: true,

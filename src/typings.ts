@@ -29,7 +29,7 @@ export type Route = [
     agency: string,
     type: VehicleType,
     color: string,
-    longName?: string
+    longName?: string,
 ];
 
 export enum ERoute {
@@ -51,7 +51,7 @@ export type Vehicle = [
     bearing: number,
     lastPing: number,
     trip: string,
-    percentTraveled: number
+    percentTraveled: number,
 ];
 
 export enum EVehicle {
@@ -84,7 +84,7 @@ export type Stop = [
     routes: Route[],
     direction?: string,
     code?: string,
-    exits?: StopExit[]
+    exits?: StopExit[],
 ];
 
 export enum EStop {
@@ -135,7 +135,7 @@ export type Trip = [
     description: string,
     stops: TripStop[],
     shape: Shape,
-    platforms: Platforms
+    platforms: Platforms,
 ];
 
 export enum ETrip {
@@ -189,7 +189,7 @@ export type StopDeparture = [
     destination: StopTime | null,
     platform?: string,
     track?: string,
-    alert?: { type: any; text: string }
+    alert?: { type: any; text: string },
 ];
 
 export enum EStopDeparture {
@@ -220,7 +220,7 @@ export type StopUpdate = [
     departure: StopTime,
     platform: string,
     track: string,
-    alerts: string[]
+    alerts: string[],
 ];
 
 export enum EStopUpdate {
@@ -236,7 +236,7 @@ export type Brigade = [
     numberOfTrips: string,
     runningHours: string,
     combined: string[],
-    vehicleId: string
+    vehicleId: string,
 ];
 
 export enum EBrigade {
@@ -256,7 +256,7 @@ export type BrigadeTrip = [
     end: number,
     distance: number,
     vehicle?: string,
-    percentTraveled?: number
+    percentTraveled?: number,
 ];
 
 export enum EBrigadeTrip {
@@ -293,7 +293,7 @@ export type VehicleInfo = [
     prodYear: string,
     depot: string,
     carrier: string,
-    imageHash: string
+    imageHash: string,
 ];
 
 export enum EVehicleInfo {
@@ -344,7 +344,7 @@ export type StopDirection = [
     name: string,
     code: string | null,
     direction: string | null,
-    routes: string | null
+    routes: string | null,
 ];
 
 export enum EStopDirection {
@@ -377,7 +377,7 @@ export type ExecutionVehicles = [
     date: string,
     route: string,
     brigade: string | null,
-    vehicles: ExecutionVehicle[]
+    vehicles: ExecutionVehicle[],
 ];
 
 export enum EExecutionVehicles {
@@ -404,7 +404,7 @@ export type Execution = [
     scheduledEndTime: number,
     endDelay: number | null,
     startStopName: string,
-    endStopName: string
+    endStopName: string,
 ];
 
 export enum EExecution {

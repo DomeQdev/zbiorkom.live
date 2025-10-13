@@ -2,7 +2,13 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import cities from "cities";
 
-export default ({ variable, dictionary }: { variable: string; dictionary?: Record<string, string | undefined> }) => {
+export default ({
+    variable,
+    dictionary,
+}: {
+    variable: string;
+    dictionary?: Record<string, string | undefined>;
+}) => {
     const { t } = useTranslation("Seo");
     const city = useParams().city;
     const cityData = cities[city!];

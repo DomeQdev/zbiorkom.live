@@ -27,7 +27,7 @@ export default ({ city }: { city: string }) => {
                 {
                     duration: 550,
                     iterations: 1,
-                }
+                },
             );
         },
     });
@@ -51,7 +51,7 @@ export default ({ city }: { city: string }) => {
                         onClick={() =>
                             navigate(
                                 `/${city}/vehicle/${encodeURIComponent(vehicle[EVehicle.id])}` +
-                                    (vehicle[EVehicle.city] === "pkp" ? "?pkp" : "")
+                                    (vehicle[EVehicle.city] === "pkp" ? "?pkp" : ""),
                             )
                         }
                     />

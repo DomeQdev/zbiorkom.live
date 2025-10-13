@@ -28,7 +28,7 @@ export const useQueryTrip = ({ city, trip, vehicle }: TripQueryProps) => {
                     vehicle,
                     currentTrip: vehicleStore.trip?.[ETrip.id],
                 },
-                signal
+                signal,
             );
 
             if (response.trip?.[ETrip.shape]) {

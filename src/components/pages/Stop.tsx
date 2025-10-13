@@ -153,7 +153,7 @@ export default memo(() => {
                         navigate(
                             `/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.vehicleId])}` +
                                 (isStation ? "?pkp" : ""),
-                            { state: -2 }
+                            { state: -2 },
                         );
                     }}
                 />

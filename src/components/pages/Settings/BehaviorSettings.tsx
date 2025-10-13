@@ -6,13 +6,13 @@ export default memo(() => {
     const { t } = useTranslation("Settings");
 
     const [moveToLastLocation, setMove] = useState<boolean>(
-        JSON.parse(localStorage.getItem("moveToLastLocation") || "false")
+        JSON.parse(localStorage.getItem("moveToLastLocation") || "false"),
     );
     const [useLocationSorting, setSorting] = useState<boolean>(
-        JSON.parse(localStorage.getItem("useLocationSorting") || "false")
+        JSON.parse(localStorage.getItem("useLocationSorting") || "false"),
     );
     const [useStopCodeAsIcon, setStopCodeAsIcon] = useState<boolean>(
-        JSON.parse(localStorage.getItem("useStopCodeAsIcon") || "false")
+        JSON.parse(localStorage.getItem("useStopCodeAsIcon") || "false"),
     );
 
     const settings = [

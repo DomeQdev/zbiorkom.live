@@ -25,7 +25,7 @@ export default ({ shape, stops, color }: Props) => {
                 },
             })),
         }),
-        [stops]
+        [stops],
     );
 
     return (

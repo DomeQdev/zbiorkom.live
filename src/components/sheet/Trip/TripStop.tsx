@@ -79,8 +79,8 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                         sequence === 0 && index === 1
                             ? 0
                             : sequence === index
-                            ? vehicle?.[EVehicle.percentTraveled]
-                            : undefined
+                              ? vehicle?.[EVehicle.percentTraveled]
+                              : undefined
                     }
                     lineMargin={41}
                 />

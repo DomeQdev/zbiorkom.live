@@ -21,7 +21,7 @@ export default memo(() => {
             state.sequence ?? state.stops?.length! - 1,
             state.fresh,
             state.setFresh,
-        ])
+        ]),
     );
     const { subscribe } = useWebSocket();
     const { city, trip, vehicle } = useParams();

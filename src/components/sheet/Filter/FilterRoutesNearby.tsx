@@ -14,7 +14,7 @@ type Props = {
 
 export default ({ routesNearby, filteredRoutes }: Props) => {
     const [addRoute, removeRoute] = useFilterStore(
-        useShallow((state) => [state.addRoute, state.removeRoute])
+        useShallow((state) => [state.addRoute, state.removeRoute]),
     );
     const { t } = useTranslation("Filter");
 

@@ -17,7 +17,7 @@ export default ({ vehicles }: { vehicles: DotVehicle[] }) => {
                 },
             })),
         }),
-        [vehicles]
+        [vehicles],
     );
 
     const layerStyle: LayerProps = {

@@ -11,7 +11,7 @@ import Trip from "./BrigadeTrip";
 import MultilineAlert from "./MultilineAlert";
 import Helm from "@/util/Helm";
 import ScrollButton from "./ScrollButton";
-import { msToTime } from "@/util/tools";
+import { share, msToTime } from "@/util/tools";
 import DayPicker from "@/ui/DayPicker";
 import useSearchState from "@/hooks/useSearchState";
 import { getBrigadeDays, useQueryBrigade } from "@/hooks/useQueryBrigades";
@@ -73,7 +73,7 @@ export default ({ city, route, brigade }: Props) => {
             currentTripIndex = filteredTrips.findIndex(
                 (trip) =>
                     trip[EBrigadeTrip.end] > Date.now() &&
-                    trip[EBrigadeTrip.start] <= Date.now() + 2 * 60 * 60 * 1000
+                    trip[EBrigadeTrip.start] <= Date.now() + 2 * 60 * 60 * 1000,
             );
         }
 
@@ -143,13 +143,7 @@ export default ({ city, route, brigade }: Props) => {
                                 </Trans>
                             </span>
                         </div>
-                        <IconButton
-                            onClick={() =>
-                                navigator.share({
-                                    url: window.location.pathname,
-                                })
-                            }
-                        >
+                        <IconButton onClick={() => share(window.location.href)}>
                             <Share />
                         </IconButton>
                     </DialogTitle>
@@ -242,7 +236,7 @@ export default ({ city, route, brigade }: Props) => {
                                 const nextTrip = filteredTrips[i + 1];
                                 if (nextTrip) {
                                     breakTime = msToTime(
-                                        nextTrip[EBrigadeTrip.start] - trip[EBrigadeTrip.end]
+                                        nextTrip[EBrigadeTrip.start] - trip[EBrigadeTrip.end],
                                     );
 
                                     if (
@@ -293,7 +287,9 @@ export default ({ city, route, brigade }: Props) => {
                             curr,
                         ])}
 
-                {trips && !trips.length && <Alert Icon={Dangerous} title={t("noDuty", { ns: "Brigades" })} color="error" />}
+                {trips && !trips.length && (
+                    <Alert Icon={Dangerous} title={t("noDuty", { ns: "Brigades" })} color="error" />
+                )}
 
                 <ScrollButton
                     scrollType={showScroll}

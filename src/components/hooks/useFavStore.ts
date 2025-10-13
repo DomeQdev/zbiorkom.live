@@ -7,7 +7,7 @@ interface FavState {
         id: string,
         location: Location,
         isStation: boolean,
-        direction: [string, string]
+        direction: [string, string],
     ) => void;
     removeFavoriteDirection: (id: string, directionIndex: number) => void;
     removeFavoriteStop: (id: string) => void;
@@ -25,7 +25,7 @@ export default create<FavState>()((set) => ({
             if (favorite) {
                 const directions = [...favorite.directions, direction];
                 const favorites = state.favorites.map((fav) =>
-                    fav.id === id ? { ...fav, directions } : fav
+                    fav.id === id ? { ...fav, directions } : fav,
                 );
                 localStorage.setItem(key, JSON.stringify(favorites));
 

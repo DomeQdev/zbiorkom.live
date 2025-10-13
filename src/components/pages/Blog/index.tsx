@@ -6,12 +6,16 @@ import "./blog.css";
 
 export default memo(() => {
     return (
-        <Dialog open fullScreen sx={{
-            "& .MuiDialog-paper": {
-                backgroundColor: "#141314",
-                color: "#fff",
-            },
-        }}>
+        <Dialog
+            open
+            fullScreen
+            sx={{
+                "& .MuiDialog-paper": {
+                    backgroundColor: "#141314",
+                    color: "#fff",
+                },
+            }}
+        >
             <Outlet />
         </Dialog>
     );

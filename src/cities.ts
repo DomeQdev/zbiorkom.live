@@ -164,7 +164,7 @@ const cities: Record<string, City> = {
         location: [21.01173, 52.22983],
         zoom: 10,
     },
-}
+};
 
 export const cityList = Object.values(cities);
 

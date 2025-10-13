@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import useGoBack from "@/hooks/useGoBack";
 import Sticky from "@/ui/Sticky";
 import Helm from "@/util/Helm";
+import { share } from "@/util/tools";
 
 export default memo(() => {
     const scrollContainer = useRef<HTMLDivElement | null>(null);
@@ -60,13 +61,7 @@ export default memo(() => {
                                 {data?.title}
                             </span>
                         </Box>
-                        <IconButton
-                            onClick={() =>
-                                navigator.share({
-                                    url: window.location.href,
-                                })
-                            }
-                        >
+                        <IconButton onClick={() => share(window.location.href)}>
                             <Share />
                         </IconButton>
                     </DialogTitle>
