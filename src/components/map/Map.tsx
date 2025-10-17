@@ -3,6 +3,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import cities from "cities";
 import Map from "react-map-gl";
 import { useLocation } from "react-router-dom";
+import Error from "@/pages/Error";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
     const [error, setError] = useState<string | undefined>();
@@ -31,7 +32,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
         }
     }, []);
 
-    if (error) return (setTimeout(() => location.reload(), 1000), <span>Mapbox Error: {error}</span>);
+    if (error) return <Error message={error} />;
 
     return (
         <Map
