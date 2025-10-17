@@ -31,7 +31,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
         }
     }, []);
 
-    if (error) return <span>{error}</span>;
+    if (error) return (setTimeout(() => location.reload(), 1000), <span>Mapbox Error: {error}</span>);
 
     return (
         <Map
