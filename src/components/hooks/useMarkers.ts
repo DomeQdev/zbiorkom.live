@@ -67,7 +67,7 @@ export default ({ city, moveBadge }: Props) => {
     };
 
     const onMove = (e: any) => {
-        if (e.originalEvent?.type !== "resize") refreshMarkers(true);
+        if (e.originalEvent) refreshMarkers(true);
     };
 
     const onVisibilityChange = () => {

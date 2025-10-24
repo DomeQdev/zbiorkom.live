@@ -1,7 +1,8 @@
 import { memo, ReactElement, useMemo, useState } from "react";
-import cities from "cities";
 import { Map } from "@vis.gl/react-maplibre";
 import { useLocation } from "react-router-dom";
+import mapStyle from "./mapStyle";
+import cities from "cities";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
@@ -36,8 +37,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
 
     return (
         <Map
-            // mapStyle="/style.json"
-            mapStyle="https://tiles.openfreemap.org/styles/liberty"
+            mapStyle={mapStyle}
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}
             onLoad={({ target }: { target: any }) => {

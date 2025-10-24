@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default ({ shape, stops, color }: Props) => {
-    const stopsGeoJSON = useMemo(
+    const stopsGeoJSON: GeoJSON.GeoJSON = useMemo(
         () => ({
             type: "FeatureCollection",
             features: stops.map((stop) => ({

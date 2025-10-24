@@ -71,7 +71,7 @@ export default memo(() => {
         return uniqueTrips;
     }, [data]);
 
-    const stopExits = useMemo(() => {
+    const stopExits: GeoJSON.GeoJSON | null = useMemo(() => {
         if (!stopData?.[EStop.exits]?.length) return null;
 
         return {
