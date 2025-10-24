@@ -44,7 +44,9 @@ h6 {
     display: flex;
     align-items: center;
     color: hsla(0, 0%, 100%, 0.8);
-    box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        0 1px 10px 0 rgba(0, 0, 0, 0.12),
+        0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
 .vehicle .emoji {
@@ -163,7 +165,9 @@ h6 {
     width: 80px;
     gap: 4px;
     user-select: none;
-    transition: color 0.2s, background-color 0.2s;
+    transition:
+        color 0.2s,
+        background-color 0.2s;
 }
 
 @media screen and (min-width: 600px) {
@@ -209,10 +213,17 @@ h6 {
     }
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+@keyframes draw-path {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes highlight-node {
+    to {
+        fill: #e2e8f0;
+        transform: scale(1.33);
+    }
 }
 
 @keyframes spin {
@@ -222,4 +233,10 @@ input[type="number"]::-webkit-outer-spin-button {
     100% {
         transform: rotate(360deg);
     }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

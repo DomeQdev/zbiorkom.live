@@ -27,7 +27,7 @@ export default ({ city }: { city: string }) => {
                 {
                     duration: 550,
                     iterations: 1,
-                }
+                },
             );
         },
     });
@@ -51,7 +51,7 @@ export default ({ city }: { city: string }) => {
                         onClick={() =>
                             navigate(
                                 `/${city}/vehicle/${encodeURIComponent(vehicle[EVehicle.id])}` +
-                                    (vehicle[EVehicle.city] === "pkp" ? "?pkp" : "")
+                                    (vehicle[EVehicle.city] === "pkp" ? "?pkp" : ""),
                             )
                         }
                     />
@@ -66,10 +66,7 @@ export default ({ city }: { city: string }) => {
                     latitude={stop[EStop.location][1]}
                     style={{ zIndex: 2 }}
                     onClick={() => {
-                        const stopType =
-                            stop[EStop.station] && stop[EStop.type] === 2 && stop[EStop.city] === "pkp"
-                                ? "station"
-                                : "stop";
+                        const stopType = stop[EStop.city] === "pkp" ? "station" : "stop";
 
                         navigate(`/${city}/${stopType}/${encodeURIComponent(stop[EStop.id])}`);
                     }}
@@ -133,7 +130,10 @@ export default ({ city }: { city: string }) => {
                         size="small"
                         sx={{ fontWeight: "bold" }}
                         color="primary"
-                        onClick={() => navigate(`/${suggestedCity}`, { replace: true })}
+                        onClick={() => {
+                            navigate(`/${suggestedCity}`, { replace: true });
+                            localStorage.setItem("city", suggestedCity);
+                        }}
                     >
                         {t("yes")}
                     </Button>

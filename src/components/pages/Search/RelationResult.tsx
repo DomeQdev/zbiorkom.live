@@ -41,7 +41,7 @@ export default ({ relation, borderTop, borderBottom }: Props) => {
                 secondary={[
                     new Date(relation[ESearchRelation.start]).toLocaleDateString(),
                     [getTime(relation[ESearchRelation.start]), getTime(relation[ESearchRelation.end])].join(
-                        " - "
+                        " - ",
                     ),
                 ].join(", ")}
                 secondaryTypographyProps={{

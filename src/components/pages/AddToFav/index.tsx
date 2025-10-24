@@ -19,11 +19,11 @@ export default () => {
     const goBack = useGoBack();
 
     const [favorites, add, remove] = useFavStore(
-        useShallow((state) => [state.favorites, state.addFavoriteDirection, state.removeFavoriteDirection])
+        useShallow((state) => [state.favorites, state.addFavoriteDirection, state.removeFavoriteDirection]),
     );
     const addedDirections = useMemo(
         () => favorites.find((fav) => fav.id === stop!)?.directions || [],
-        [favorites]
+        [favorites],
     );
 
     const data = useData(isStation ? "pkp" : city!, stop!);
@@ -44,7 +44,7 @@ export default () => {
                 {addedDirections.length < 5 && (
                     <StopSelector
                         directions={data.directions?.filter(
-                            (direction) => !addedDirections.some((fav) => fav[0] === direction[0])
+                            (direction) => !addedDirections.some((fav) => fav[0] === direction[0]),
                         )}
                         onAdd={(direction) => {
                             if (addedDirections.some((fav) => fav[0] === direction[0])) return;

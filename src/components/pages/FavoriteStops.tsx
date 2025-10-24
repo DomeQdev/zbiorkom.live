@@ -1,11 +1,10 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
-import { Socket } from "socket.io-client";
+import { useWebSocket } from "@/hooks/useWebSocket";
 
 export default () => {
     const queryClient = useQueryClient();
-    const socket = useOutletContext<Socket>();
+    const { subscribe } = useWebSocket();
 
     const invalidateStations = () => {
         if (document.visibilityState !== "visible") return;
@@ -20,19 +19,17 @@ export default () => {
     };
 
     useEffect(() => {
-        if (!socket) return;
-
-        socket.on("trainRefresh", invalidateStations);
-        socket.on("refresh", invalidateStops);
+        const unsubscribeTrain = subscribe("trainRefresh", invalidateStations);
+        const unsubscribeRefresh = subscribe("refresh", invalidateStops);
 
         return () => {
-            socket.off("trainRefresh", invalidateStations);
-            socket.off("refresh", invalidateStops);
+            unsubscribeTrain();
+            unsubscribeRefresh();
 
             queryClient.removeQueries({ queryKey: ["station"] });
             queryClient.removeQueries({ queryKey: ["stop"] });
         };
-    }, [socket, queryClient]);
+    }, [subscribe, queryClient]);
 
     return null;
 };

@@ -17,7 +17,7 @@ export default () => {
             state.initialPosition,
             state.setSearch,
             state.reset,
-        ])
+        ]),
     );
     const searchInput = useRef<HTMLInputElement>(null);
     const { t } = useTranslation("Filter");

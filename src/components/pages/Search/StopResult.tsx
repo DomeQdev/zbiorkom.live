@@ -1,6 +1,6 @@
 import { Box, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { EStop, SearchItem } from "typings";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { KeyboardArrowDown } from "@mui/icons-material";
 import StopMarker from "@/map/StopMarker";
 import { useTranslation } from "react-i18next";
@@ -16,18 +16,17 @@ type Props = {
 
 export default ({ stop, borderTop, borderBottom, isExpanded, setExpandedStop }: Props) => {
     const { t } = useTranslation("Vehicle");
-    const { city } = useParams();
 
     const { data: stops } = useQueryStopGroup({
-        city: city!,
-        stop,
+        city: stop[EStop.city],
+        stop: stop[EStop.id],
         enabled: isExpanded,
     });
 
     return (
         <>
             <ListItemButton
-                onClick={() => setExpandedStop(isExpanded ? undefined : stop)}
+                onClick={() => setExpandedStop(isExpanded ? undefined : stop[EStop.id])}
                 sx={{
                     mx: 1,
                     borderRadius: 0.4,
@@ -42,7 +41,7 @@ export default ({ stop, borderTop, borderBottom, isExpanded, setExpandedStop }: 
                     },
                 }}
             >
-                <ListItemText primary={stop} />
+                <ListItemText primary={stop[EStop.name]} />
                 <KeyboardArrowDown
                     sx={{
                         transform: isExpanded ? "rotate(180deg)" : undefined,
@@ -63,7 +62,7 @@ export default ({ stop, borderTop, borderBottom, isExpanded, setExpandedStop }: 
                     transition: "height 0.2s ease-in-out",
                     borderBottomLeftRadius: borderBottom ? 16 : undefined,
                     borderBottomRightRadius: borderBottom ? 16 : undefined,
-                    zIndex: 9999999999999,
+                    zIndex: 1e6,
                 }}
             >
                 {stops?.map((expandedStop, i) => {

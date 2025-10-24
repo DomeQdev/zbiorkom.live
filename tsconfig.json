@@ -11,24 +11,12 @@
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
         "module": "esnext",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
         "jsx": "react-jsx",
-        "baseUrl": "./src",
-        "paths": {
-            "@root": ["."],
-            "@/*": ["components/*"],
-            "@hooks/*": ["components/hooks/*"],
-            "@map/*": ["components/map/*"],
-            "@pages/*": ["components/pages/*"],
-            "@redux/*": ["components/redux/*"],
-            "@sheet/*": ["components/sheet/*"],
-            "@translations/*": ["components/translations/*"],
-            "@ui/*": ["components/ui/*"],
-            "@util/*": ["components/util/*"]
-        }
+        "paths": { "@/*": ["./src/components/*"] }
     },
     "include": ["src"]
 }

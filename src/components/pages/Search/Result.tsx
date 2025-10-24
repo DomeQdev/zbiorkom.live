@@ -1,21 +1,18 @@
-import { SearchItem } from "typings";
+import { EStop, SearchItem } from "typings";
 import RouteResult from "./RouteResult";
 import StopResult from "./StopResult";
 import VehicleResult from "./VehicleResult";
 import RelationResult from "./RelationResult";
 import StationResult from "./StationResult";
 
-export default ({
-    item,
-    lastItem,
-    expandedStop,
-    setExpandedStop,
-}: {
+type Props = {
     item: SearchItem;
     lastItem?: boolean;
     expandedStop?: string;
     setExpandedStop: (name?: string) => void;
-}) => {
+};
+
+export default ({ item, lastItem, expandedStop, setExpandedStop }: Props) => {
     return (
         <div style={{ paddingBottom: lastItem ? 10 : 2 }}>
             <Result item={item} expandedStop={expandedStop} setExpandedStop={setExpandedStop} />
@@ -23,15 +20,7 @@ export default ({
     );
 };
 
-const Result = ({
-    item,
-    expandedStop,
-    setExpandedStop,
-}: {
-    item: SearchItem;
-    expandedStop?: string;
-    setExpandedStop: (name?: string) => void;
-}) => {
+const Result = ({ item, expandedStop, setExpandedStop }: Props) => {
     switch (true) {
         case !!item.route:
             return (
@@ -43,7 +32,7 @@ const Result = ({
                     stop={item.stop}
                     borderTop={item.borderTop}
                     borderBottom={item.borderBottom}
-                    isExpanded={expandedStop === item.stop}
+                    isExpanded={expandedStop === item.stop[EStop.id]}
                     setExpandedStop={setExpandedStop}
                 />
             );

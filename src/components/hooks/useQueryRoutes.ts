@@ -39,7 +39,7 @@ export const useQueryRoutesNearby = ({ city }: { city: string }) => {
                     lat: userLocation[1],
                     lng: userLocation[0],
                 },
-                signal
+                signal,
             );
         },
         enabled: !!userLocation,

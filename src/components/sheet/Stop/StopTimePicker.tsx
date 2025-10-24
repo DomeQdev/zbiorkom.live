@@ -1,6 +1,6 @@
 import { useState } from "react";
-import TimePicker from "@ui/TimePicker";
 import useStopStore from "@/hooks/useStopStore";
+import TimePicker from "@/ui/TimePicker";
 
 export default () => {
     const stopStore = useStopStore((state) => state);

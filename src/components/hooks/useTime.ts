@@ -15,7 +15,7 @@ export default (time: number, useSeconds: boolean = false): number => {
             () => {
                 setTimeValue(getTime());
             },
-            useSeconds ? 500 : 7500
+            useSeconds ? 500 : 7500,
         );
 
         return () => clearInterval(interval);

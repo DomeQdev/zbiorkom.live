@@ -25,10 +25,10 @@ export default () => {
                 transition: forwardRef(
                     (
                         props: TransitionProps & { children: React.ReactElement<any, any> },
-                        ref: React.Ref<unknown>
+                        ref: React.Ref<unknown>,
                     ) => {
                         return <Fade style={{ transitionDelay: "50ms" }} ref={ref} {...props} />;
-                    }
+                    },
                 ),
             }}
             sx={{

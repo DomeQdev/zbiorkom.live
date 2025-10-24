@@ -1,6 +1,6 @@
 import { City } from "./typings";
 
-const cities = {
+const cities: Record<string, City> = {
     // bialaPodlaska: {
     //     id: "bialaPodlaska",
     //     name: "Biała Podlaska",
@@ -10,20 +10,17 @@ const cities = {
     bialystok: {
         id: "bialystok",
         name: "Białystok",
-        showNewTag: true,
         description: "+ Wschód Express, Turośń Kościelna",
         location: [23.16319, 53.13488],
     },
     elblag: {
         id: "elblag",
         name: "Elbląg",
-        showNewTag: true,
         location: [19.414848, 54.152099],
     },
     elk: {
         id: "elk",
         name: "Ełk",
-        showNewTag: true,
         location: [22.361029, 53.82471],
     },
     gzm: {
@@ -42,23 +39,27 @@ const cities = {
         name: "Kraków",
         location: [19.94781, 50.06865],
     },
+    kielce: {
+        id: "kielce",
+        name: "Kielce",
+        showNewTag: true,
+        location: [20.618886, 50.874126],
+    },
     kutno: {
         id: "kutno",
         name: "Kutno",
-        showNewTag: true,
         location: [19.348265, 52.226985],
     },
-    // legnica: {
-    //     id: "legnica",
-    //     name: "Legnica",
-    //     showNewTag: true,
-    //     location: [16.15638, 51.21006],
-    // },
+    legnica: {
+        id: "legnica",
+        name: "Legnica",
+        showNewTag: true,
+        location: [16.16768, 51.212859],
+    },
     lodz: {
         id: "lodz",
         name: "Łódź",
         location: [19.46563, 51.77025],
-        showNewTag: true,
     },
     // lowicz: {
     //     id: "lowicz",
@@ -75,14 +76,12 @@ const cities = {
     olsztyn: {
         id: "olsztyn",
         name: "Olsztyn",
-        showNewTag: true,
         description: "+ Piecki, powiat olsztyński",
         location: [20.48221, 53.77792],
     },
     opole: {
         id: "opole",
         name: "Opole",
-        showNewTag: true,
         location: [17.926775, 50.662761],
     },
     // ostroleka: {
@@ -91,15 +90,26 @@ const cities = {
     //     showNewTag: true,
     //     location: [21.58325, 53.08781],
     // },
+    pksnova: {
+        id: "pksnova",
+        name: "PKS Nova",
+        description: "Autobusy dalekobieżne",
+        location: [17.992183, 53.134703],
+    },
     poznan: {
         id: "poznan",
         name: "Poznań",
         location: [16.91249, 52.40777],
     },
+    przemysl: {
+        id: "przemysl",
+        name: "Przemyśl",
+        location: [22.775302, 49.784097],
+        showNewTag: true,
+    },
     radom: {
         id: "radom",
         name: "Radom",
-        showNewTag: true,
         location: [21.14714, 51.40253],
     },
     rzeszow: {
@@ -111,7 +121,6 @@ const cities = {
         id: "rybnik",
         name: "Rybnik",
         description: "+ Jastrzębie-Zdrój",
-        showNewTag: true,
         location: [18.548055, 50.092947],
     },
     // siedlce: {
@@ -120,6 +129,12 @@ const cities = {
     //     showNewTag: true,
     //     location: [22.26820, 52.16778],
     // },
+    suwalki: {
+        id: "suwalki",
+        name: "Suwałki",
+        location: [22.932619, 54.100809],
+        showNewTag: true,
+    },
     szczecin: {
         id: "szczecin",
         name: "Szczecin",
@@ -149,8 +164,6 @@ const cities = {
         location: [21.01173, 52.22983],
         zoom: 10,
     },
-} as {
-    [key: string]: City;
 };
 
 export const cityList = Object.values(cities);

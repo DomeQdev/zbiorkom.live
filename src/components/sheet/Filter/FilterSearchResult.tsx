@@ -13,7 +13,7 @@ export default ({ result }: { result: string | Route }) => {
             state.removeModel,
             state.addRoute,
             state.removeRoute,
-        ])
+        ]),
     );
 
     const onClick = () => {

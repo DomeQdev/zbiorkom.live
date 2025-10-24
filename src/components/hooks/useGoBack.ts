@@ -12,7 +12,7 @@ export default () => {
     return ({ ignoreState = false }: { ignoreState?: boolean } = {}) => {
         if (!key || key === "default" || (Math.abs(state) > currentHistory && !ignoreState)) {
             navigate(`/${city}/`);
-            
+
             if (map && map.getZoom() < 15) map.flyTo({ zoom: 15 });
         } else {
             navigate(ignoreState ? -1 : state || -1);

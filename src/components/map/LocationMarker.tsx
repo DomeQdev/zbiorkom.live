@@ -8,15 +8,20 @@ import { Location } from "typings";
 
 export default memo(() => {
     const [userLocation, setUserLocation] = useLocationStore(
-        useShallow((state) => [state.userLocation, state.setUserLocation])
+        useShallow((state) => [state.userLocation, state.setUserLocation]),
     );
     const [userPermitted, setUserPermitted] = useState<boolean>(false);
     const [bearing, setBearing] = useState<number>();
     const map = useMap()?.current;
 
     useEffect(() => {
-        if (!navigator.permissions?.query || !navigator.geolocation)
-            return alert("Twoja przeglądarka nie obsługuje geolokalizacji.");
+        if (!navigator.permissions?.query || !navigator.geolocation) {
+            if (userPermitted) {
+                alert("Twoja przeglądarka nie obsługuje geolokalizacji.");
+            }
+            setUserPermitted(false);
+            return;
+        }
 
         navigator.permissions
             .query({ name: "geolocation" })
@@ -52,7 +57,7 @@ export default memo(() => {
             JSON.stringify({
                 location,
                 lastUpdate: Date.now(),
-            })
+            }),
         );
     };
 
@@ -104,7 +109,7 @@ export default memo(() => {
                 (e) => {
                     console.error(e);
                     alert("Nie można określić Twojej lokalizacji.");
-                }
+                },
             );
         } else if (userLocation?.[0]) {
             moveToLocation(userLocation);

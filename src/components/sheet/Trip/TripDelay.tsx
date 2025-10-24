@@ -19,17 +19,16 @@ export default ({ delay, showGPS }: { delay: DelayType; showGPS?: boolean }) => 
             {delay === "departed"
                 ? t("departed")
                 : delay === "departure"
-                ? t("departure")
-                : delay === "cancelled"
-                ? t("cancelled")
-                : delay === "live"
-                ? t("live")
-                : delay === "scheduled"
-                ? t("scheduled")
-                : delayTime
-                ? t(delay > 0 ? "delayed" : "early", { time: delayTime })
-                : t("onTime")}
+                  ? t("departure")
+                  : delay === "cancelled"
+                    ? t("cancelled")
+                    : delay === "live"
+                      ? t("live")
+                      : delay === "scheduled"
+                        ? t("scheduled")
+                        : delayTime
+                          ? t(delay > 0 ? "delayed" : "early", { time: delayTime })
+                          : t("onTime")}
         </span>
     );
 };
-

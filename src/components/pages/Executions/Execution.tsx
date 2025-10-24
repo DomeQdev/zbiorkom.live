@@ -1,15 +1,21 @@
-import useTheme from "@/hooks/useTheme";
+import useThemeStore from "@/hooks/useThemeStore";
 import RouteTag from "@/map/RouteTag";
-import { hexFromArgb } from "@/util/getColors";
 import { getTime } from "@/util/tools";
 import { Box } from "@mui/material";
+import { ColorRole, generateDarkScheme } from "material-color-lite";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { EExecution, Execution, VehicleType } from "typings";
 
 export default ({ execution }: { execution: Execution }) => {
     const type = +execution[EExecution.vehicleId].split("/")[0] as VehicleType;
-    const color = hexFromArgb(useTheme().inversePrimary);
+    const color = useThemeStore((state) => state.color);
     const { t } = useTranslation("Executions");
+
+    const inversePrimary = useMemo(
+        () => generateDarkScheme(color, [ColorRole.InversePrimary]).inversePrimary,
+        [color],
+    );
 
     return (
         <Box
@@ -26,7 +32,7 @@ export default ({ execution }: { execution: Execution }) => {
             <span
                 className="vehicleStopIconLine executionLine"
                 style={{
-                    backgroundColor: color,
+                    backgroundColor: inversePrimary,
                 }}
             />
             <span className="tripRow">
@@ -37,12 +43,12 @@ export default ({ execution }: { execution: Execution }) => {
                 <span
                     className="vehicleStopIcon"
                     style={{
-                        border: `3px solid ${color}`,
+                        border: `3px solid ${inversePrimary}`,
                     }}
                 />
                 <span className="tripHeadsign">
                     <RouteTag
-                        route={["", "", execution[EExecution.route], "", type, color]}
+                        route={["", "", execution[EExecution.route], "", type, inversePrimary]}
                         brigade={execution[EExecution.brigade] ?? undefined}
                     />
                     {execution[EExecution.startStopName]}
@@ -66,7 +72,7 @@ export default ({ execution }: { execution: Execution }) => {
                 <span
                     className="vehicleStopIcon"
                     style={{
-                        border: `3px solid ${color}`,
+                        border: `3px solid ${inversePrimary}`,
                     }}
                 />
                 <span className="tripHeadsign">{execution[EExecution.endStopName]}</span>

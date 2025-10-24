@@ -20,10 +20,9 @@ const useLocalhost = location.protocol === "http:" && true;
 window.Gay = {
     base: useLocalhost ? "http://localhost:8005" : "https://api.zbiorkom.live",
     cloudBase: "https://4.zbiorkom.live",
-    ws: "https://ws.zbiorkom.live",
 };
 
 console.log(
     "%czbiorkom.live",
-    "font-size: 64px; color: #276b2b; font-weight: bold; text-shadow: 0 0 10px #276b2b;"
+    "font-size: 64px; color: #276b2b; font-weight: bold; text-shadow: 0 0 10px #276b2b;",
 );

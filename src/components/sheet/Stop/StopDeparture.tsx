@@ -40,7 +40,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
             ].join("/") + (isStation ? "?pkp" : ""),
             {
                 state: -2,
-            }
+            },
         );
     };
 

@@ -1,30 +1,40 @@
+import { useQueryPlannerItineraries } from "@/hooks/useQueryTripPlanner";
+import useTripPlannerStore from "@/hooks/useTripPlannerStore";
+import DirectionsItineraries from "./DirectionsItineraries";
 import { useNavigate, useParams } from "react-router-dom";
 import DirectionsSearchBox from "./DirectionsSearchBox";
+import { useShallow } from "zustand/react/shallow";
+import { useTranslation } from "react-i18next";
+import { Sick } from "@mui/icons-material";
+import { lazy, Suspense } from "react";
 import { Dialog } from "@mui/material";
-import DirectionsItineraries from "./DirectionsItineraries";
-import usePlacesStore from "@/hooks/usePlacesStore";
-import { useQueryPlannerItineraries } from "@/hooks/useQueryTripPlanner";
+import Alert from "@/ui/Alert";
 
-const now = Date.now();
+const RoutingAnimation = lazy(() => import("./RoutingAnimation"));
 
 export default () => {
-    const { from, to } = usePlacesStore((state) => state.places);
+    const { t } = useTranslation("Directions");
     const navigate = useNavigate();
     const { city } = useParams();
 
+    const [{ from, to }, time, reset] = useTripPlannerStore(
+        useShallow((state) => [state.places, state.time, state.reset]),
+    );
+
     const {
-        data: itineraries,
+        data: showItineraries,
+        error,
         refetch,
         isLoading,
         isRefetching,
-    } = useQueryPlannerItineraries(city!, from, to, now, false);
+    } = useQueryPlannerItineraries(city!, from, to, time);
 
-    const onClose = () => navigate(`/${city}`);
+    const onClose = () => {
+        navigate(`/${city}`);
+        reset();
+    };
 
-    const isAllowed =
-        localStorage.getItem("themeColor") === "#720546" &&
-        localStorage.getItem("brigade") === "true" &&
-        localStorage.getItem("language") === "en";
+    const loading = isLoading || isRefetching;
 
     return (
         <Dialog
@@ -40,44 +50,24 @@ export default () => {
                 },
             })}
         >
-            {isAllowed ? (
-                <>
-                    <DirectionsSearchBox
-                        isLoading={isLoading || isRefetching}
-                        refresh={refetch}
-                        onClose={onClose}
-                    />
+            <DirectionsSearchBox isLoading={loading} refresh={refetch} onClose={onClose} />
 
-                    {itineraries && <DirectionsItineraries itineraries={itineraries} />}
-                </>
+            {loading ? (
+                <Suspense>
+                    <RoutingAnimation />
+                </Suspense>
             ) : (
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        height: "100%",
-                        width: "100%",
-                        fontSize: "1.5rem",
-                        color: "#720546",
-                        padding: "20px",
-                    }}
-                >
-                    <button
-                        onClick={onClose}
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            backgroundColor: "#720546",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "8px",
-                        }}
-                    >
-                        Zamknij to okno 🤫🤫
-                    </button>
-                </div>
+                <>
+                    {showItineraries === true && <DirectionsItineraries />}
+                    {(showItineraries === false || error) && (
+                        <Alert
+                            Icon={Sick}
+                            title={t("noResultsFound")}
+                            description={t("noResultsFoundDescription")}
+                            color="error"
+                        />
+                    )}
+                </>
             )}
         </Dialog>
     );

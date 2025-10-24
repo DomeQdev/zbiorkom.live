@@ -1,6 +1,6 @@
 {
     "name": "zbiorkom",
-    "version": "4.7.0",
+    "version": "4.8.0",
     "type": "module",
     "dependencies": {
         "@emotion/react": "^11.14.0",
@@ -8,19 +8,19 @@
         "@mui/icons-material": "^7.2.0",
         "@mui/material": "^7.2.0",
         "@tanstack/react-query": "^5.83.0",
-        "@vis.gl/react-maplibre": "^8.0.4",
         "body-scroll-lock-upgrade": "^1.1.0",
-        "i18next": "^25.3.2",
-        "maplibre-gl": "^4.7.1",
-        "react": "^19.1.0",
-        "react-dom": "^19.1.0",
-        "react-i18next": "^15.6.1",
-        "react-router-dom": "^7.7.1",
-        "react-spring": "^10.0.1",
+        "i18next": "^25.5.2",
+        "mapbox-gl": "^3.15.0",
+        "material-color-lite": "^1.0.1",
+        "react": "^19.1.1",
+        "react-dom": "^19.1.1",
+        "react-i18next": "^15.7.3",
+        "react-map-gl": "^7.1.9",
+        "react-router-dom": "^7.9.3",
+        "react-spring": "^10.0.3",
         "react-spring-bottom-sheet-updated": "github:DomeQdev/react-bottom-sheet",
-        "react-virtuoso": "^4.13.0",
-        "socket.io-client": "^4.8.1",
-        "zustand": "^5.0.6"
+        "react-virtuoso": "^4.14.1",
+        "zustand": "^5.0.8"
     },
     "browserslist": [
         ">0.2%",
@@ -40,13 +40,25 @@
     },
     "devDependencies": {
         "@tanstack/eslint-plugin-query": "^5.81.2",
-        "@types/node": "^24.0.7",
+        "@types/mapbox-gl": "^3.4.1",
+        "@types/node": "^24.1.0",
         "@types/react": "^19.1.8",
         "@types/react-dom": "^19.1.6",
         "@vitejs/plugin-react": "^4.7.0",
-        "typescript": "^5.8.3",
-        "vite": "^7.0.6",
+        "prettier": "^3.6.2",
+        "pretty-quick": "^4.2.2",
+        "simple-git-hooks": "^2.13.1",
+        "typescript": "^5.9.2",
+        "vite": "^7.1.7",
         "vite-tsconfig-paths": "^5.1.4",
         "workbox-cli": "^7.3.0"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "useTabs": false,
+        "printWidth": 110
+    },
+    "simple-git-hooks": {
+        "pre-commit": "npx pretty-quick --staged"
     }
 }
