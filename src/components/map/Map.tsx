@@ -1,13 +1,14 @@
 import { memo, ReactElement, useMemo, useState } from "react";
 import { Map } from "@vis.gl/react-maplibre";
 import { useLocation } from "react-router-dom";
+import Error from "@/pages/Error";
 import mapStyle from "./mapStyle";
 import cities from "cities";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
-    const [error, setError] = useState<string | undefined>();
+    const [error, setError] = useState("");
     const { pathname } = useLocation();
 
     const initialViewState = useMemo(() => {
@@ -33,7 +34,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
         }
     }, []);
 
-    if (error) return <span>{error}</span>;
+    if (error) return <Error message={error} />;
 
     return (
         <Map
