@@ -16,17 +16,20 @@ export default ({ message }: { message?: string }) => {
             >
                 <Typography variant="h4">Ups!</Typography>
                 <Typography variant="body1">Coś poszło nie tak.</Typography>
+
                 {message && (
                     <Typography
                         variant="body2"
                         sx={(theme) => ({
+                            textDecoration: "underline",
                             textDecorationColor: theme.palette.primary.contrastText,
                             textUnderlineOffset: 4,
                         })}
                     >
-                        <u>{message}</u>
+                        {message}
                     </Typography>
                 )}
+
                 <Button
                     variant="contained"
                     sx={(theme) => ({

@@ -8,7 +8,7 @@ import cities from "cities";
 import "maplibre-gl/dist/maplibre-gl.css";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
-    const [error, setError] = useState("");
+    const [error, setError] = useState<string>();
     const { pathname } = useLocation();
 
     const initialViewState = useMemo(() => {
@@ -41,22 +41,17 @@ export default memo(({ children }: { children: ReactElement[] }) => {
             mapStyle={mapStyle}
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}
-            onLoad={({ target }: { target: any }) => {
+            onLoad={({ target }) => {
                 target.touchZoomRotate.disableRotation();
 
                 target.getCanvas().addEventListener("webglcontextlost", () => {
-                    if (!document.hidden) {
-                        window.location.reload();
-                    } else {
-                        window.addEventListener("focus", () => {
-                            window.location.reload();
-                        });
-                    }
+                    setError("WebGL context lost");
                 });
             }}
             onError={(e) => setError(e.error.message)}
             style={{ position: "absolute" }}
             initialViewState={initialViewState}
+            attributionControl={false}
             dragRotate={false}
             minZoom={5}
             maxPitch={0}

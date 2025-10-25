@@ -33,10 +33,6 @@ h6 {
     background-image: none !important;
 }
 
-.maplibregl-ctrl-attrib {
-    display: none !important;
-}
-
 .vehicle {
     cursor: pointer;
     border-radius: 8px;
