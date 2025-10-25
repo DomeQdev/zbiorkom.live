@@ -1,6 +1,6 @@
 import { ArrowUpward } from "@mui/icons-material";
 import Icon from "@/ui/Icon";
-import { Marker } from "react-map-gl";
+import { Marker } from "@vis.gl/react-maplibre";
 import { ERoute, EVehicle, Vehicle } from "typings";
 
 type Props = {

@@ -1,4 +1,4 @@
-import { Layer, Source } from "react-map-gl";
+import { Layer, Source } from "@vis.gl/react-maplibre";
 import { useMemo } from "react";
 import { ETripStop, Shape, TripStop } from "typings";
 
@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default ({ shape, stops, color }: Props) => {
-    const stopsGeoJSON = useMemo(
+    const stopsGeoJSON: GeoJSON.GeoJSON = useMemo(
         () => ({
             type: "FeatureCollection",
             features: stops.map((stop) => ({
@@ -62,7 +62,7 @@ export default ({ shape, stops, color }: Props) => {
                     layout={{
                         "text-field": ["get", "title"],
                         "text-size": 12,
-                        "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
+                        "text-font": ["Noto Sans Bold"],
                         "text-offset": [0, 1.5],
                         "text-anchor": "top",
                         "text-allow-overlap": false,

@@ -1,12 +1,14 @@
 import { memo, ReactElement, useMemo, useState } from "react";
-import "mapbox-gl/dist/mapbox-gl.css";
-import cities from "cities";
-import Map from "react-map-gl";
+import { Map } from "@vis.gl/react-maplibre";
 import { useLocation } from "react-router-dom";
 import Error from "@/pages/Error";
+import mapStyle from "./mapStyle";
+import cities from "cities";
+
+import "maplibre-gl/dist/maplibre-gl.css";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
-    const [error, setError] = useState<string | undefined>();
+    const [error, setError] = useState("");
     const { pathname } = useLocation();
 
     const initialViewState = useMemo(() => {
@@ -36,8 +38,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
 
     return (
         <Map
-            mapboxAccessToken="pk.eyJ1IjoiZG9tZXE3ODkiLCJhIjoiY21nbnNkazc4MWo2aTJzcXFyam1ra2J4bCJ9.KQRWgAuXhlaeKp4781CX7Q"
-            mapStyle="mapbox://styles/zbiorkomlive/cmfsptjzn00ic01qr7whp2thi"
+            mapStyle={mapStyle}
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}
             onLoad={({ target }: { target: any }) => {
@@ -57,6 +58,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
             style={{ position: "absolute" }}
             initialViewState={initialViewState}
             dragRotate={false}
+            minZoom={5}
             maxPitch={0}
             reuseMaps
         >

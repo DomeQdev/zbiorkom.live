@@ -6,7 +6,7 @@ import { forwardRef, useState } from "react";
 import { TransitionProps } from "@mui/material/transitions";
 import { useTranslation } from "react-i18next";
 import CitySelect from "./CitySelect";
-import { useMap } from "react-map-gl";
+import { useMap } from "@vis.gl/react-maplibre";
 import { useNavigate } from "react-router-dom";
 
 const color = "#cdeda3";

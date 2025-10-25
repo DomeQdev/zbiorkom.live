@@ -1,4 +1,4 @@
-import { Layer, Marker, Source, useMap } from "react-map-gl";
+import { Layer, Marker, Source, useMap } from "@vis.gl/react-maplibre";
 import { memo, useEffect, useMemo, useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import StopMarker from "@/map/StopMarker";
@@ -71,7 +71,7 @@ export default memo(() => {
         return uniqueTrips;
     }, [data]);
 
-    const stopExits = useMemo(() => {
+    const stopExits: GeoJSON.GeoJSON | null = useMemo(() => {
         if (!stopData?.[EStop.exits]?.length) return null;
 
         return {
@@ -116,7 +116,7 @@ export default memo(() => {
                         type="symbol"
                         layout={{
                             "icon-image": "entrance",
-                            "icon-size": 1.3,
+                            "icon-size": 1,
                             "icon-allow-overlap": true,
                         }}
                         filter={[">=", ["zoom"], 16]}
@@ -127,7 +127,7 @@ export default memo(() => {
                         layout={{
                             "text-field": ["get", "name"],
                             "text-size": 14,
-                            "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
+                            "text-font": ["Noto Sans Bold"],
                             "text-anchor": "top",
                             "text-justify": "center",
                             "text-offset": [0, 0.8],

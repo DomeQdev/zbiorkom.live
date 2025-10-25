@@ -1,4 +1,4 @@
-import { Layer, Source } from "react-map-gl";
+import { Layer, Source } from "@vis.gl/react-maplibre";
 import { Platforms } from "typings";
 
 export default ({ platforms, color }: { platforms: Platforms; color: string }) => {
@@ -21,7 +21,7 @@ export default ({ platforms, color }: { platforms: Platforms; color: string }) =
                 layout={{
                     "text-field": ["concat", "peron ", ["get", "name"]],
                     "text-size": 12,
-                    "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
+                    "text-font": ["Noto Sans Bold"],
                     "text-anchor": "center",
                     "text-justify": "center",
                     "text-offset": [0, 0.5],
