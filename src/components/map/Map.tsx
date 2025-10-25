@@ -57,6 +57,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
             style={{ position: "absolute" }}
             initialViewState={initialViewState}
             dragRotate={false}
+            minZoom={5}
             maxPitch={0}
             reuseMaps
         >

@@ -116,7 +116,7 @@ export default memo(() => {
                         type="symbol"
                         layout={{
                             "icon-image": "entrance",
-                            "icon-size": 1.3,
+                            "icon-size": 1,
                             "icon-allow-overlap": true,
                         }}
                         filter={[">=", ["zoom"], 16]}
@@ -127,7 +127,7 @@ export default memo(() => {
                         layout={{
                             "text-field": ["get", "name"],
                             "text-size": 14,
-                            "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
+                            "text-font": ["Noto Sans Bold"],
                             "text-anchor": "top",
                             "text-justify": "center",
                             "text-offset": [0, 0.8],

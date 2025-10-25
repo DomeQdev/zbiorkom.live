@@ -133,11 +133,15 @@ export default {
             type: "fill",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 16,
-            filter: ["all", ["in", "class", "path", "pedestrian"], ["==", "$type", "Polygon"]],
+            filter: [
+                "all",
+                ["==", "$type", "Polygon"],
+                ["==", "class", "path"],
+                ["in", "subclass", "footway", "platform"],
+            ],
             paint: {
-                "fill-pattern": "pedestrian_polygon",
                 "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16, 0, 17, 1],
+                "fill-color": "#f0f0f0",
             },
         },
         {
@@ -145,7 +149,6 @@ export default {
             type: "fill",
             source: "openfreemap",
             "source-layer": "building",
-            minzoom: 15,
             paint: {
                 "fill-color": "#d3d7de",
                 "fill-outline-color": "rgba(171, 183, 201, 0.8)",
@@ -156,7 +159,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 15,
             filter: ["all", ["==", "brunnel", "tunnel"], ["==", "subclass", "steps"]],
             paint: {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 15, 1, 18, 4],
@@ -170,7 +172,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 15,
             filter: [
                 "all",
                 ["==", "brunnel", "tunnel"],
@@ -189,7 +190,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: ["all", ["==", "brunnel", "tunnel"], ["in", "class", "track", "service", "minor"]],
             layout: {
                 "line-join": "round",
@@ -197,7 +197,7 @@ export default {
             paint: {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1.5, 22, 4],
                 "line-color": "rgb(220, 220, 220)",
-                "line-gap-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1, 18, 10, 22, 100],
+                "line-gap-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1.5, 18, 15, 22, 150],
                 "line-dasharray": [3, 3],
                 "line-opacity": 0.7,
             },
@@ -207,7 +207,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: ["all", ["==", "brunnel", "tunnel"], ["in", "class", "street", "street_limited"]],
             layout: {
                 "line-join": "round",
@@ -225,7 +224,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 9,
             filter: ["all", ["==", "brunnel", "tunnel"], ["in", "class", "secondary", "tertiary"]],
             layout: {
                 "line-join": "round",
@@ -253,7 +251,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 6,
             filter: ["all", ["==", "brunnel", "tunnel"], ["==", "class", "primary"]],
             layout: {
                 "line-join": "round",
@@ -281,7 +278,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 3,
             filter: ["all", ["==", "brunnel", "tunnel"], ["in", "class", "motorway", "trunk"]],
             layout: {
                 "line-join": "round",
@@ -309,13 +305,12 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: ["all", ["==", "brunnel", "tunnel"], ["in", "class", "track", "service", "minor"]],
             layout: {
                 "line-join": "round",
             },
             paint: {
-                "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1, 18, 10, 22, 100],
+                "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1.5, 18, 15, 22, 150],
                 "line-color": "#c2cbd6",
                 "line-opacity": 0.7,
             },
@@ -325,7 +320,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: ["all", ["==", "brunnel", "tunnel"], ["in", "class", "street", "street_limited"]],
             layout: {
                 "line-join": "round",
@@ -341,7 +335,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 9,
             filter: ["all", ["==", "brunnel", "tunnel"], ["in", "class", "secondary", "tertiary"]],
             layout: {
                 "line-join": "round",
@@ -367,7 +360,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 6,
             filter: ["all", ["==", "brunnel", "tunnel"], ["==", "class", "primary"]],
             layout: {
                 "line-join": "round",
@@ -393,7 +385,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 3,
             filter: ["all", ["==", "brunnel", "tunnel"], ["in", "class", "motorway", "trunk"]],
             layout: {
                 "line-join": "round",
@@ -425,7 +416,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: [
                 "all",
                 ["==", "brunnel", "tunnel"],
@@ -442,7 +432,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: [
                 "all",
                 ["==", "brunnel", "tunnel"],
@@ -460,7 +449,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: ["all", ["==", "brunnel", "tunnel"], ["==", "subclass", "tram"]],
             paint: {
                 "line-color": "#a3a9b4",
@@ -473,7 +461,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: [
                 "all",
                 ["!in", "brunnel", "bridge", "tunnel"],
@@ -486,7 +473,7 @@ export default {
             paint: {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1.2, 22, 4],
                 "line-color": "#dfe3e8",
-                "line-gap-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1, 18, 10, 22, 100],
+                "line-gap-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1.5, 18, 15, 22, 150],
             },
         },
         {
@@ -494,7 +481,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: [
                 "all",
                 ["in", "class", "street", "street_limited"],
@@ -516,7 +502,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 9,
             filter: ["all", ["in", "class", "secondary", "tertiary"], ["!in", "brunnel", "bridge", "tunnel"]],
             layout: {
                 "line-cap": "round",
@@ -543,7 +528,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 6,
             filter: ["all", ["==", "class", "primary"], ["!in", "brunnel", "bridge", "tunnel"]],
             layout: {
                 "line-cap": "round",
@@ -570,7 +554,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 3,
             filter: ["all", ["in", "class", "motorway", "trunk"], ["!in", "brunnel", "bridge", "tunnel"]],
             layout: {
                 "line-cap": "round",
@@ -598,7 +581,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 14,
             filter: ["all", ["==", "subclass", "steps"], ["!in", "brunnel", "bridge", "tunnel"]],
             layout: {
                 "line-join": "round",
@@ -614,9 +596,9 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 11,
             filter: [
                 "all",
+                ["==", "$type", "LineString"],
                 ["in", "class", "path", "footway", "pedestrian"],
                 ["!in", "subclass", "cycleway", "steps"],
                 ["!in", "brunnel", "bridge", "tunnel"],
@@ -635,7 +617,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 11,
             filter: ["all", ["==", "subclass", "cycleway"], ["!in", "brunnel", "bridge", "tunnel"]],
             layout: {
                 "line-join": "round",
@@ -651,7 +632,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: [
                 "all",
                 ["in", "class", "track", "service", "minor"],
@@ -663,7 +643,7 @@ export default {
                 "line-join": "round",
             },
             paint: {
-                "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1, 18, 10, 22, 100],
+                "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1.5, 18, 15, 22, 150],
                 "line-color": "#c2cbd6",
             },
         },
@@ -672,7 +652,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: [
                 "all",
                 ["in", "class", "street", "street_limited"],
@@ -694,7 +673,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 9,
             filter: ["all", ["in", "class", "secondary", "tertiary"], ["!in", "brunnel", "bridge", "tunnel"]],
             layout: {
                 "line-cap": "round",
@@ -720,7 +698,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 6,
             filter: ["all", ["==", "class", "primary"], ["!in", "brunnel", "bridge", "tunnel"]],
             layout: {
                 "line-cap": "round",
@@ -746,7 +723,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 3,
             filter: ["all", ["in", "class", "motorway", "trunk"], ["!in", "brunnel", "bridge", "tunnel"]],
             layout: {
                 "line-cap": "round",
@@ -829,7 +805,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: ["all", ["==", "brunnel", "bridge"], ["in", "class", "track", "service", "minor"]],
             layout: {
                 "line-join": "round",
@@ -845,7 +820,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: ["all", ["==", "brunnel", "bridge"], ["in", "class", "street", "street_limited"]],
             layout: {
                 "line-join": "round",
@@ -862,7 +836,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 14,
             filter: ["all", ["==", "brunnel", "bridge"], ["==", "subclass", "steps"]],
             layout: {
                 "line-join": "round",
@@ -877,7 +850,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 11,
             filter: [
                 "all",
                 ["==", "brunnel", "bridge"],
@@ -897,7 +869,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 11,
             filter: ["all", ["==", "brunnel", "bridge"], ["==", "subclass", "cycleway"]],
             layout: {
                 "line-join": "round",
@@ -912,7 +883,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 9,
             filter: ["all", ["==", "brunnel", "bridge"], ["in", "class", "secondary", "tertiary"]],
             layout: {
                 "line-join": "round",
@@ -939,7 +909,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 6,
             filter: ["all", ["==", "brunnel", "bridge"], ["==", "class", "primary"]],
             layout: {
                 "line-join": "round",
@@ -966,7 +935,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 3,
             filter: ["all", ["==", "brunnel", "bridge"], ["in", "class", "motorway", "trunk"]],
             layout: {
                 "line-join": "round",
@@ -992,7 +960,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: ["all", ["==", "brunnel", "bridge"], ["in", "class", "track", "service", "minor"]],
             layout: {
                 "line-cap": "round",
@@ -1007,7 +974,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: ["all", ["==", "brunnel", "bridge"], ["in", "class", "street", "street_limited"]],
             layout: {
                 "line-cap": "round",
@@ -1023,7 +989,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 14,
             filter: ["all", ["==", "brunnel", "bridge"], ["==", "subclass", "steps"]],
             layout: {
                 "line-join": "round",
@@ -1039,9 +1004,9 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 11,
             filter: [
                 "all",
+                ["==", "$type", "LineString"],
                 ["==", "brunnel", "bridge"],
                 ["in", "class", "path", "footway", "pedestrian"],
                 ["!in", "subclass", "cycleway", "steps"],
@@ -1060,7 +1025,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 11,
             filter: ["all", ["==", "brunnel", "bridge"], ["==", "subclass", "cycleway"]],
             layout: {
                 "line-join": "round",
@@ -1076,7 +1040,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 9,
             filter: ["all", ["==", "brunnel", "bridge"], ["in", "class", "secondary", "tertiary"]],
             layout: {
                 "line-cap": "round",
@@ -1101,7 +1064,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 6,
             filter: ["all", ["==", "brunnel", "bridge"], ["==", "class", "primary"]],
             layout: {
                 "line-cap": "round",
@@ -1126,7 +1088,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 3,
             filter: ["all", ["==", "brunnel", "bridge"], ["in", "class", "motorway", "trunk"]],
             layout: {
                 "line-cap": "round",
@@ -1157,7 +1118,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: [
                 "all",
                 ["==", "brunnel", "bridge"],
@@ -1173,7 +1133,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: [
                 "all",
                 ["==", "brunnel", "bridge"],
@@ -1190,7 +1149,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "transportation",
-            minzoom: 13,
             filter: ["all", ["==", "brunnel", "bridge"], ["==", "subclass", "tram"]],
             paint: {
                 "line-color": "#a3a9b4",
@@ -1202,7 +1160,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "boundary",
-            minzoom: 2,
             filter: ["all", ["==", "admin_level", 1], ["==", "maritime", 0]],
             paint: {
                 "line-dasharray": [2, 2],
@@ -1216,7 +1173,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "boundary",
-            minzoom: 1,
             filter: ["all", ["==", "admin_level", 0], ["==", "disputed", 0], ["==", "maritime", 0]],
             paint: {
                 "line-color": "#b0b8c1",
@@ -1229,7 +1185,6 @@ export default {
             type: "line",
             source: "openfreemap",
             "source-layer": "boundary",
-            minzoom: 1,
             filter: ["all", ["==", "disputed", 1], ["==", "admin_level", 0], ["==", "maritime", 0]],
             paint: {
                 "line-color": "#b0b8c1",
@@ -1242,7 +1197,7 @@ export default {
             type: "symbol",
             source: "openfreemap",
             "source-layer": "housenumber",
-            minzoom: 17,
+            minzoom: 16,
             layout: {
                 "text-field": ["get", "housenumber"],
                 "text-font": ["Noto Sans Regular"],
@@ -1261,7 +1216,6 @@ export default {
             type: "symbol",
             source: "openfreemap",
             "source-layer": "transportation_name",
-            minzoom: 10,
             filter: ["has", "name"],
             layout: {
                 "text-size": [
@@ -1312,8 +1266,6 @@ export default {
             type: "symbol",
             source: "openfreemap",
             "source-layer": "place",
-            minzoom: 10,
-            maxzoom: 15,
             filter: ["==", "class", "suburb"],
             layout: {
                 "text-field": ["get", "name"],
@@ -1336,8 +1288,6 @@ export default {
             type: "symbol",
             source: "openfreemap",
             "source-layer": "place",
-            minzoom: 2,
-            maxzoom: 13,
             filter: ["in", "class", "hamlet", "village", "town"],
             layout: {
                 "text-line-height": 1.1,
@@ -1346,13 +1296,13 @@ export default {
                     ["cubic-bezier", 0.2, 0, 0.9, 1],
                     ["zoom"],
                     3,
-                    10,
-                    6,
-                    12,
                     8,
-                    14,
+                    6,
+                    10,
+                    8,
+                    11,
                     13,
-                    18,
+                    14,
                 ],
                 "text-font": ["Noto Sans Regular"],
                 "text-justify": "auto",
@@ -1372,9 +1322,35 @@ export default {
             type: "symbol",
             source: "openfreemap",
             "source-layer": "place",
-            minzoom: 2,
-            maxzoom: 15,
-            filter: ["==", "class", "city"],
+            filter: [
+                "all",
+                ["==", "class", "city"],
+                [
+                    "in",
+                    "name",
+                    "Warszawa",
+                    "Kraków",
+                    "Łódź",
+                    "Wrocław",
+                    "Poznań",
+                    "Gdańsk",
+                    "Szczecin",
+                    "Bydgoszcz",
+                    "Lublin",
+                    "Białystok",
+                    "Katowice",
+                    "Gdynia",
+                    "Częstochowa",
+                    "Radom",
+                    "Toruń",
+                    "Kielce",
+                    "Rzeszów",
+                    "Olsztyn",
+                    "Zielona Góra",
+                    "Gorzów Wielkopolski",
+                    "Opole",
+                ],
+            ],
             layout: {
                 "text-line-height": 1.1,
                 "text-size": [
@@ -1408,8 +1384,6 @@ export default {
             type: "symbol",
             source: "openfreemap",
             "source-layer": "place",
-            minzoom: 1,
-            maxzoom: 10,
             filter: ["==", "class", "country"],
             layout: {
                 "text-field": ["get", "name"],
