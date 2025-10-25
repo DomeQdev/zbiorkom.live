@@ -96,7 +96,7 @@ export default {
             type: "fill",
             source: "openfreemap",
             "source-layer": "landuse",
-            filter: ["==", "class", "scrub", "playground"],
+            filter: ["in", "class", "scrub", "playground"],
             paint: {
                 "fill-color": "rgba(197, 226, 206, 0.6)",
             },
