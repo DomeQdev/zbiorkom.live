@@ -32,6 +32,26 @@ export default {
             },
         },
         {
+            id: "landcover-scrub",
+            type: "fill",
+            source: "openfreemap",
+            "source-layer": "landcover",
+            filter: ["all", ["==", "class", "grass"], ["==", "subclass", "scrub"]],
+            paint: {
+                "fill-color": "rgb(208, 228, 219)",
+            },
+        },
+        {
+            id: "landcover-park",
+            type: "fill",
+            source: "openfreemap",
+            "source-layer": "landcover",
+            filter: ["all", ["==", "class", "grass"], ["==", "subclass", "park"]],
+            paint: {
+                "fill-color": "#d0ead7",
+            },
+        },
+        {
             id: "landcover-wood",
             type: "fill",
             source: "openfreemap",
@@ -42,13 +62,13 @@ export default {
             },
         },
         {
-            id: "landcover-grass-scrub",
+            id: "landcover-other-grass",
             type: "fill",
             source: "openfreemap",
             "source-layer": "landcover",
-            filter: ["in", "class", "grass", "scrub"],
+            filter: ["all", ["==", "class", "grass"], ["!in", "subclass", "park"]],
             paint: {
-                "fill-color": "rgb(191, 227, 202)",
+                "fill-color": "#dcebe5",
             },
         },
         {
@@ -62,11 +82,21 @@ export default {
             },
         },
         {
-            id: "landuse-scrub",
+            id: "landuse-heath",
+            type: "fill",
+            source: "openfreemap",
+            "source-layer": "landcover",
+            filter: ["==", "subclass", "heath"],
+            paint: {
+                "fill-color": "rgb(206, 229, 215)",
+            },
+        },
+        {
+            id: "landuse-scrub-playground",
             type: "fill",
             source: "openfreemap",
             "source-layer": "landuse",
-            filter: ["==", "class", "scrub"],
+            filter: ["==", "class", "scrub", "playground"],
             paint: {
                 "fill-color": "rgba(197, 226, 206, 0.6)",
             },
@@ -137,7 +167,7 @@ export default {
                 "all",
                 ["==", "$type", "Polygon"],
                 ["==", "class", "path"],
-                ["in", "subclass", "footway", "platform"],
+                ["in", "subclass", "footway", "pedestrian", "platform"],
             ],
             paint: {
                 "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16, 0, 17, 1],
