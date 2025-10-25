@@ -19,7 +19,17 @@ export default {
             id: "background",
             type: "background",
             paint: {
-                "background-color": ["step", ["zoom"], "#d0e9da", 11, "#e2e8f0"],
+                "background-color": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    10,
+                    "#d0e9da",
+                    13,
+                    "#d9e7e8",
+                    16,
+                    "#e2e8f0",
+                ],
             },
         },
         {
@@ -593,6 +603,38 @@ export default {
             paint: {
                 "line-color": "#a3a9b4",
                 "line-width": ["interpolate", ["exponential", 1.4], ["zoom"], 14, 0.5, 20, 1],
+            },
+        },
+        {
+            id: "road-construction",
+            type: "line",
+            source: "openfreemap",
+            "source-layer": "transportation",
+            filter: [
+                "all",
+                [
+                    "in",
+                    "class",
+                    "minor_construction",
+                    "track_construction",
+                    "service_construction",
+                    "street_construction",
+                    "secondary_construction",
+                    "tertiary_construction",
+                    "primary_construction",
+                    "motorway_construction",
+                    "trunk_construction",
+                ],
+                ["!in", "brunnel", "bridge", "tunnel"],
+            ],
+            layout: {
+                "line-cap": "butt",
+                "line-join": "round",
+            },
+            paint: {
+                "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1.5, 18, 15, 22, 150],
+                "line-color": "#c2cbd6",
+                "line-dasharray": [0.5, 0.5],
             },
         },
         {
