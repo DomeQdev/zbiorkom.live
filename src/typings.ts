@@ -278,13 +278,25 @@ export enum ERouteInfo {
     directions = 1,
 }
 
-export type RouteDirection = [direction: 0 | 1, headsign: string, stops: TripStop[], shape: Shape];
+export type RouteDirection = {
+    stops: RouteDirectionStop[];
+    shapes: Shape[];
+};
 
-export enum ERouteDirection {
-    direction = 0,
-    headsign = 1,
-    stops = 2,
-    shape = 3,
+export type RouteDirectionStop = [stop: string, beadType: EBeadType];
+
+export enum ERouteDirectionStop {
+    stop = 0,
+    beadType = 1,
+}
+
+export enum EBeadType {
+    MAIN_PATH = "MAIN_PATH",
+    MAIN_PATH_SKIPPED_BY_SIDE_PATH = "MAIN_PATH_SKIPPED_BY_SIDE_PATH",
+
+    SIDE_PATH_START = "SIDE_PATH_START",
+    SIDE_PATH = "SIDE_PATH",
+    SIDE_PATH_END = "SIDE_PATH_END",
 }
 
 export type VehicleInfo = [
