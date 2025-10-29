@@ -93,7 +93,10 @@ const TripTime = ({ scheduled, delay = -1 }: { scheduled: number; delay?: number
                     "delay-" +
                     (delayExists ? (delayMinutes ? (delay > 0 ? "delayed" : "early") : "none") : "unknown")
                 }
-                style={{ fontWeight: delayExists ? "bold" : "normal" }}
+                style={{
+                    fontWeight: delayExists ? "bold" : "normal",
+                    marginLeft: delayExists ? 0 : 0.5,
+                }}
             >
                 {getTime(scheduled + delay)}
             </span>
