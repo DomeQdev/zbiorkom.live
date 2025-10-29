@@ -11,9 +11,6 @@ const FavoriteStopsContent = lazy(() => import("./FavoriteStops/FavoriteStopsCon
 const FilterHeader = lazy(() => import("./Filter/FilterHeader"));
 const FilterContent = lazy(() => import("./Filter/FilterContent"));
 
-const RouteHeader = lazy(() => import("./Route/RouteHeader"));
-const RouteContent = lazy(() => import("./Route/RouteContent"));
-
 const StopHeader = lazy(() => import("./Stop/StopHeader"));
 const StopContent = lazy(() => import("./Stop/StopContent"));
 
@@ -25,7 +22,6 @@ const getType = () => {
 
     if (pathname.includes("favoriteStops")) return "FavoriteStops";
     else if (pathname.includes("filter")) return "Filter";
-    else if (pathname.includes("route/")) return "Route";
     else if (pathname.includes("stop/") || pathname.includes("station/")) return "Stop";
     else if (pathname.includes("vehicle/") || pathname.includes("trip/")) return "Trip";
     else return null;
@@ -88,7 +84,6 @@ export default () => {
 const renderHeader = (type: SheetContentTypes) => {
     if (type === "FavoriteStops") return <FavoriteStopsHeader />;
     else if (type === "Filter") return <FilterHeader />;
-    else if (type === "Route") return <RouteHeader />;
     else if (type === "Stop") return <StopHeader />;
     else if (type === "Trip") return <TripHeader />;
 };
@@ -96,7 +91,6 @@ const renderHeader = (type: SheetContentTypes) => {
 const renderContent = (type: SheetContentTypes) => {
     if (type === "FavoriteStops") return <FavoriteStopsContent />;
     else if (type === "Filter") return <FilterContent />;
-    else if (type === "Route") return <RouteContent />;
     else if (type === "Stop") return <StopContent />;
     else if (type === "Trip") return <TripContent />;
     else return <p />;

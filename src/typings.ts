@@ -283,11 +283,13 @@ export type RouteDirection = {
     shapes: Shape[];
 };
 
-export type RouteDirectionStop = [stop: string, beadType: EBeadType];
+export type RouteDirectionStop = [id: string, name: string, location: Location, beadType: EBeadType];
 
 export enum ERouteDirectionStop {
-    stop = 0,
-    beadType = 1,
+    id = 0,
+    name = 1,
+    location = 2,
+    beadType = 3,
 }
 
 export enum EBeadType {
