@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { useParams } from "react-router-dom";
 import useFilterStore from "@/hooks/useFilterStore";
 import { useShallow } from "zustand/react/shallow";
-import { useMap } from "react-map-gl";
+import { useMap } from "@vis.gl/react-maplibre";
 import { useQuerySearchRoutesOrModels } from "@/hooks/useQuerySearch";
 
 export default () => {

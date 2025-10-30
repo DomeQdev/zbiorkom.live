@@ -1,8 +1,8 @@
 import { ERoute, ERouteDirection, ERouteInfo, EVehicle, Location, Vehicle } from "typings";
 import { useEffect } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { useMap } from "react-map-gl";
-import { LngLatBounds } from "mapbox-gl";
+import { useMap } from "@vis.gl/react-maplibre";
+import { LngLatBounds } from "maplibre-gl";
 import useGoBack from "@/hooks/useGoBack";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";

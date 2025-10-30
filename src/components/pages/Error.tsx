@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 
-export default () => {
+export default ({ message }: { message?: string }) => {
     return (
         <>
             <meta name="robots" content="noindex" />
@@ -16,6 +16,20 @@ export default () => {
             >
                 <Typography variant="h4">Ups!</Typography>
                 <Typography variant="body1">Coś poszło nie tak.</Typography>
+
+                {message && (
+                    <Typography
+                        variant="body2"
+                        sx={(theme) => ({
+                            textDecoration: "underline",
+                            textDecorationColor: theme.palette.primary.contrastText,
+                            textUnderlineOffset: 4,
+                        })}
+                    >
+                        {message}
+                    </Typography>
+                )}
+
                 <Button
                     variant="contained"
                     sx={(theme) => ({

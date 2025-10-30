@@ -1,11 +1,14 @@
+import { basicStyle } from "./mapStyle";
 import { memo, ReactElement, useMemo, useState } from "react";
-import "mapbox-gl/dist/mapbox-gl.css";
-import cities from "cities";
-import Map from "react-map-gl";
+import { Map } from "@vis.gl/react-maplibre";
 import { useLocation } from "react-router-dom";
+import Error from "@/pages/Error";
+import cities from "cities";
+
+import "maplibre-gl/dist/maplibre-gl.css";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
-    const [error, setError] = useState<string | undefined>();
+    const [error, setError] = useState<string>();
     const { pathname } = useLocation();
 
     const initialViewState = useMemo(() => {
@@ -31,31 +34,26 @@ export default memo(({ children }: { children: ReactElement[] }) => {
         }
     }, []);
 
-    if (error) return <span>{error}</span>;
+    if (error) return <Error message={error} />;
 
     return (
         <Map
-            mapboxAccessToken="pk.eyJ1IjoiZG9tZXE3ODkiLCJhIjoiY21nbnNkazc4MWo2aTJzcXFyam1ra2J4bCJ9.KQRWgAuXhlaeKp4781CX7Q"
-            mapStyle="mapbox://styles/zbiorkomlive/cmfsptjzn00ic01qr7whp2thi"
+            mapStyle={basicStyle}
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}
-            onLoad={({ target }: { target: any }) => {
+            onLoad={({ target }) => {
                 target.touchZoomRotate.disableRotation();
 
                 target.getCanvas().addEventListener("webglcontextlost", () => {
-                    if (!document.hidden) {
-                        window.location.reload();
-                    } else {
-                        window.addEventListener("focus", () => {
-                            window.location.reload();
-                        });
-                    }
+                    setError("WebGL context lost");
                 });
             }}
             onError={(e) => setError(e.error.message)}
             style={{ position: "absolute" }}
             initialViewState={initialViewState}
+            attributionControl={false}
             dragRotate={false}
+            minZoom={5}
             maxPitch={0}
             reuseMaps
         >

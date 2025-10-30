@@ -1,20 +1,20 @@
-.mapboxgl-canvas-container {
+.maplibregl-canvas-container {
     transition: all 0.2s ease-in-out;
 }
 
-.dark .mapboxgl-map {
+.dark .maplibregl-map {
     background-color: #1a1f26;
 }
 
-.dark .mapboxgl-canvas-container {
+.dark .maplibregl-canvas-container {
     filter: invert(1) hue-rotate(180deg) contrast(90%) brightness(90%);
 }
 
-.mapboxgl-marker * {
+.maplibregl-marker * {
     font-family: Roboto, "Helvetica Neue", sans-serif !important;
 }
 
-*:not(.mapboxgl-marker *) {
+*:not(.maplibregl-marker *) {
     font-family: "Roboto Flex", sans-serif !important;
     font-optical-sizing: auto !important;
 }
@@ -31,10 +31,6 @@ h6 {
 
 .MuiPaper-root {
     background-image: none !important;
-}
-
-.mapboxgl-ctrl-attrib {
-    display: none !important;
 }
 
 .vehicle {
@@ -82,11 +78,11 @@ h6 {
     font-size: 16px;
 }
 
-.moving .mapboxgl-marker:has(.vehicle) {
+.moving .maplibregl-marker:has(.vehicle) {
     transition: none;
 }
 
-.mapboxgl-marker:has(.vehicle) {
+.maplibregl-marker:has(.vehicle) {
     transition: all 0.5s ease-in-out;
     animation: fadeIn 0.1s ease-in;
 }

@@ -1,9 +1,9 @@
-import { Layer, LayerProps, Source } from "react-map-gl";
+import { Layer, LayerProps, Source } from "@vis.gl/react-maplibre";
 import { useMemo } from "react";
 import { DotVehicle, EDotVehicle } from "typings";
 
 export default ({ vehicles }: { vehicles: DotVehicle[] }) => {
-    const geojsonData = useMemo(
+    const geojsonData: GeoJSON.GeoJSON = useMemo(
         () => ({
             type: "FeatureCollection",
             features: vehicles.map((vehicle) => ({

@@ -1,7 +1,7 @@
 import useFilterStore from "./useFilterStore";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect, useState, useRef } from "react";
-import { useMap } from "react-map-gl";
+import { useMap } from "@vis.gl/react-maplibre";
 import { fetchMarkers } from "./useQueryMarkers";
 import { ERoute, MapData, Stop } from "typings";
 import { useWebSocket } from "./useWebSocket";
@@ -67,7 +67,7 @@ export default ({ city, moveBadge }: Props) => {
     };
 
     const onMove = (e: any) => {
-        if (e.originalEvent?.type !== "resize") refreshMarkers(true);
+        if (e.originalEvent) refreshMarkers(true);
     };
 
     const onVisibilityChange = () => {
