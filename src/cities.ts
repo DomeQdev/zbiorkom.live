@@ -23,12 +23,6 @@ const cities: Record<string, City> = {
         name: "Ełk",
         location: [22.361029, 53.82471],
     },
-    gorzow: {
-        id: "gorzow",
-        name: "Gorzów Wielkopolski",
-        showNewTag: true,
-        location: [15.229073, 52.728479],
-    },
     gzm: {
         id: "gzm",
         name: "Metropolia GZM",
@@ -45,12 +39,12 @@ const cities: Record<string, City> = {
         name: "Kraków",
         location: [19.94781, 50.06865],
     },
-    // kielce: {
-    //     id: "kielce",
-    //     name: "Kielce",
-    //     showNewTag: true,
-    //     location: [20.618886, 50.874126],
-    // },
+    kielce: {
+        id: "kielce",
+        name: "Kielce",
+        showNewTag: true,
+        location: [20.618886, 50.874126],
+    },
     kutno: {
         id: "kutno",
         name: "Kutno",
@@ -61,12 +55,6 @@ const cities: Record<string, City> = {
         name: "Legnica",
         showNewTag: true,
         location: [16.16768, 51.212859],
-    },
-    leszno: {
-        id: "leszno",
-        name: "Leszno",
-        showNewTag: true,
-        location: [16.565264, 51.845187],
     },
     lodz: {
         id: "lodz",
@@ -88,7 +76,7 @@ const cities: Record<string, City> = {
     olsztyn: {
         id: "olsztyn",
         name: "Olsztyn",
-        description: "+ Mrągowo, powiat olsztyński",
+        description: "+ Piecki, powiat olsztyński",
         location: [20.48221, 53.77792],
     },
     opole: {
@@ -111,7 +99,6 @@ const cities: Record<string, City> = {
     poznan: {
         id: "poznan",
         name: "Poznań",
-        description: "+ PKS Poznań, Kombus, Środa Wlkp.",
         location: [16.91249, 52.40777],
     },
     przemysl: {
@@ -162,7 +149,7 @@ const cities: Record<string, City> = {
     warsaw: {
         id: "warsaw",
         name: "Warszawa",
-        description: "+ GPA, Otwock, Sochaczew, Radzymin",
+        description: "+ GPA, Otwock, Sochaczew, Żyrardów",
         location: [21.01173, 52.22983],
     },
     wroclaw: {

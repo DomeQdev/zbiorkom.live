@@ -12,15 +12,6 @@ export default memo(({ children }: { children: ReactElement[] }) => {
     const { pathname } = useLocation();
 
     const initialViewState = useMemo(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has("lat") && urlParams.has("lon")) {
-            return {
-                longitude: +urlParams.get("lon")!,
-                latitude: +urlParams.get("lat")!,
-                zoom: urlParams.has("zoom") ? +urlParams.get("zoom")! : 16,
-            };
-        }
-
         const lastUserLocation = JSON.parse(localStorage.getItem("userLocation") || "{}");
         const moveToLastLocation = localStorage.getItem("moveToLastLocation") === "true";
 
