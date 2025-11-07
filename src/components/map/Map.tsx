@@ -60,7 +60,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
 
     return (
         <Map
-            mapStyle={mapStyles[selectedStyle].style}
+            mapStyle={(mapStyles[selectedStyle] || mapStyles.basic).style}
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}
             onLoad={({ target }) => {
