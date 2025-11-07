@@ -31,7 +31,9 @@ const rasterStyle = (tiles: string): StyleSpecification => ({
 
 export const openStreetMapStyle = rasterStyle("https://tile.openstreetmap.org/{z}/{x}/{y}.png");
 
-export const googleSatelliteStyle = rasterStyle("http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}");
+export const mapboxSatelliteStyle = rasterStyle(
+    "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiemJpb3Jrb21saXZlIiwiYSI6ImNtZnNwbTVpZDA3YmEya3F2MTJkaW90eDAifQ.erqF5nTfk6StoSOU6wEsoQ",
+);
 export interface MapStyleDefinition {
     name: string;
     style: string | StyleSpecification;
@@ -59,8 +61,8 @@ export const mapStyles = {
         supportsDark: true,
     },
     googleSatellite: {
-        name: "Google Satellite",
-        style: googleSatelliteStyle,
-        attribution: ["Map data &copy; Google"],
+        name: "Mapbox Satellite",
+        style: mapboxSatelliteStyle,
+        attribution: ['&copy; <a href="https://www.mapbox.com/about/maps/" target="_blank">Mapbox</a>'],
     },
 } as Record<string, MapStyleDefinition>;
