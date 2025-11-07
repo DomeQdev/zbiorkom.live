@@ -11,14 +11,6 @@
     will-change: height;
 }
 
-@supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
-    [data-rsbs-overlay] {
-        background: #0009;
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-    }
-}
-
 [data-rsbs-overlay]:focus {
     outline: none;
 }
@@ -72,8 +64,7 @@
 [data-rsbs-root]:after {
     content: "";
     pointer-events: none;
-    background: #fff;
-    background: var(--rsbs-bg, #fff);
+    background: #1a1c19;
     height: 1px;
     transform-origin: bottom;
     transform: scale3d(1, 0, 1);
@@ -185,4 +176,13 @@
 [data-rsbs-state="closing"] {
     /* Allows interactions on the rest of the page before the close transition is finished */
     pointer-events: none;
+}
+
+@supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+    body:not(.disable-liquid-glass) [data-rsbs-overlay],
+    body:not(.disable-liquid-glass) [data-rsbs-root]:after {
+        background: #0009 !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        backdrop-filter: blur(10px) !important;
+    }
 }
