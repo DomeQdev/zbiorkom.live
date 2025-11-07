@@ -215,5 +215,9 @@
         "lastUpdated": "Last updated",
         "leave": "Leave at",
         "arrive": "Arrive by"
+    },
+    "Layers": {
+        "layers": "Layers",
+        "darkMode": "Dark mode"
     }
 }

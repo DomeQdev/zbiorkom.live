@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl">
     <head>
         <meta charset="utf-8" />
@@ -38,10 +38,6 @@
             document
                 .querySelector("meta[name=theme-color]")
                 .setAttribute("content", localStorage.getItem("themeColor") || "#276b2b");
-
-            if (localStorage.getItem("dark") === "true") {
-                document.body.classList.add("dark");
-            }
         </script>
     </body>
 </html>

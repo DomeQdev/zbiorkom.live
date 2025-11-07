@@ -102,6 +102,10 @@ export default () => {
                                     ),
                                 },
                                 {
+                                    path: "layers",
+                                    element: <></>,
+                                },
+                                {
                                     path: "executions",
                                     element: (
                                         <Suspense>

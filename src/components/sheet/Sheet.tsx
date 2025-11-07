@@ -20,10 +20,14 @@ const StopContent = lazy(() => import("./Stop/StopContent"));
 const TripHeader = lazy(() => import("./Trip/TripHeader"));
 const TripContent = lazy(() => import("./Trip/TripContent"));
 
+const MapStyleHeader = lazy(() => import("./MapStyle/MapStyleHeader"));
+const MapStyleContent = lazy(() => import("./MapStyle/MapStyleContent"));
+
 const getType = () => {
     const { pathname } = useLocation();
 
-    if (pathname.includes("favoriteStops")) return "FavoriteStops";
+    if (pathname.includes("layers")) return "MapStyle";
+    else if (pathname.includes("favoriteStops")) return "FavoriteStops";
     else if (pathname.includes("filter")) return "Filter";
     else if (pathname.includes("route/")) return "Route";
     else if (pathname.includes("stop/") || pathname.includes("station/")) return "Stop";
@@ -37,7 +41,7 @@ export default () => {
     const goBack = useGoBack();
 
     const type = getType();
-    const blocking = type === "Filter" || type === "FavoriteStops";
+    const blocking = type === "Filter" || type === "FavoriteStops" || type === "MapStyle";
 
     useEffect(() => {
         sheetRef.current?.snapTo(0);
@@ -48,7 +52,6 @@ export default () => {
             open={!!type}
             style={
                 {
-                    "--rsbs-bg": "var(--mui-palette-background-default)",
                     "--rsbs-handle-bg": "hsla(0, 0%, 100%, 0.6)",
                     color: "hsla(0, 0%, 100%, 0.9)",
                     position: "absolute",
@@ -91,6 +94,7 @@ const renderHeader = (type: SheetContentTypes) => {
     else if (type === "Route") return <RouteHeader />;
     else if (type === "Stop") return <StopHeader />;
     else if (type === "Trip") return <TripHeader />;
+    else if (type === "MapStyle") return <MapStyleHeader />;
 };
 
 const renderContent = (type: SheetContentTypes) => {
@@ -99,5 +103,6 @@ const renderContent = (type: SheetContentTypes) => {
     else if (type === "Route") return <RouteContent />;
     else if (type === "Stop") return <StopContent />;
     else if (type === "Trip") return <TripContent />;
+    else if (type === "MapStyle") return <MapStyleContent />;
     else return <p />;
 };

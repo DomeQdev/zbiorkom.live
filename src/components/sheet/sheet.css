@@ -2,14 +2,21 @@
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     display: flex;
-    background: #fff;
-    background: var(--rsbs-bg, #fff);
+    background: #1a1c19;
     flex-direction: column;
     height: 0px;
     height: var(--rsbs-overlay-h, 0px);
     transform: translate3d(0, 0px, 0);
     transform: translate3d(0, var(--rsbs-overlay-translate-y, 0px), 0);
     will-change: height;
+}
+
+@supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+    [data-rsbs-overlay] {
+        background: #0009;
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
 }
 
 [data-rsbs-overlay]:focus {

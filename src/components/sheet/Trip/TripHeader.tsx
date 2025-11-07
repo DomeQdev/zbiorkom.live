@@ -1,14 +1,16 @@
 import { Box, IconButton, Skeleton } from "@mui/material";
 import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
-import { Close } from "@mui/icons-material";
+import { Close, GpsFixed, GpsNotFixed } from "@mui/icons-material";
 import useGoBack from "@/hooks/useGoBack";
 import { ETrip, EVehicle } from "typings";
 import useVehicleStore from "@/hooks/useVehicleStore";
 import TripMenu from "./TripMenu";
 import { useShallow } from "zustand/react/shallow";
+import { useFollowStore } from "@/hooks/useFollowStore";
 
 export default () => {
     const [trip, vehicle] = useVehicleStore(useShallow((state) => [state.trip, state.vehicle]));
+    const { isFollowing, setIsFollowing } = useFollowStore();
     const goBack = useGoBack();
 
     return (
@@ -59,6 +61,12 @@ export default () => {
                     },
                 }}
             >
+                {vehicle?.[EVehicle.location] && (
+                    <IconButton size="small" onClick={() => setIsFollowing(true)}>
+                        {isFollowing ? <GpsFixed fontSize="small" /> : <GpsNotFixed fontSize="small" />}
+                    </IconButton>
+                )}
+
                 <TripMenu />
 
                 <IconButton size="small" onClick={() => goBack()}>

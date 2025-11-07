@@ -217,5 +217,9 @@
         "lastUpdated": "Ostatnio zaktualizowano",
         "leave": "Wyjdź o",
         "arrive": "Przyjazd o"
+    },
+    "Layers": {
+        "layers": "Warstwy",
+        "darkMode": "Ciemny motyw"
     }
 }

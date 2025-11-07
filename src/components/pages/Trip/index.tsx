@@ -12,6 +12,7 @@ import { useShallow } from "zustand/react/shallow";
 import { useQueryTrip } from "@/hooks/useQueryTrip";
 import { getSheetHeight } from "@/util/tools";
 import { useWebSocket } from "@/hooks/useWebSocket";
+import { useFollowStore } from "@/hooks/useFollowStore";
 
 export default memo(() => {
     const [vehicleData, tripData, sequence, fresh, setFresh] = useVehicleStore(
@@ -23,6 +24,7 @@ export default memo(() => {
             state.setFresh,
         ]),
     );
+    const { isFollowing, setIsFollowing, reset } = useFollowStore();
     const { subscribe } = useWebSocket();
     const { city, trip, vehicle } = useParams();
     const { current: map } = useMap();
@@ -33,6 +35,20 @@ export default memo(() => {
         trip: trip!,
         vehicle: vehicle!,
     });
+
+    useEffect(() => {
+        reset();
+
+        const onMoveStart = (e: any) => {
+            if (e.originalEvent) setIsFollowing(false);
+        };
+
+        map?.on("movestart", onMoveStart);
+
+        return () => {
+            map?.off("movestart", onMoveStart);
+        };
+    }, []);
 
     useEffect(() => {
         if (!tripData) return;
@@ -51,14 +67,15 @@ export default memo(() => {
     }, [tripData, cityId, refetch, subscribe]);
 
     useEffect(() => {
-        if (!fresh || isLoading || (!tripData && !vehicleData)) return;
+        if (isLoading || (!tripData && !vehicleData)) return;
+        if (!isFollowing && !fresh) return;
 
         if (vehicleData?.[EVehicle.location]) {
             map?.flyTo({
                 center: vehicleData[EVehicle.location],
                 zoom: map.getZoom() > 15 ? map.getZoom() : 15,
             });
-        } else if (tripData) {
+        } else if (tripData && fresh) {
             const bounds = tripData[ETrip.stops]
                 .slice(sequence, sequence === undefined || sequence === -1 ? undefined : sequence + 3)
                 .reduce((bounds, stop) => bounds.extend(stop[ETripStop.location]), new LngLatBounds());
@@ -74,8 +91,8 @@ export default memo(() => {
             });
         }
 
-        setFresh(false);
-    }, [tripData, vehicleData, isLoading, fresh]);
+        if (fresh) setFresh(false);
+    }, [tripData, vehicleData, isLoading, fresh, isFollowing]);
 
     return (
         <>
