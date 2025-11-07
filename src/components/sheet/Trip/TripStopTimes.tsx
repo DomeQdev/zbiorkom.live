@@ -39,7 +39,7 @@ export default ({ isTrain, update, hasDeparted }: Props) => {
                     textAlign: "right",
                     fontWeight: "inherit",
                 },
-                opacity: hasDeparted ? 0.8 : undefined,
+                opacity: hasDeparted ? 0.7 : undefined,
             }}
         >
             {isSingleTimeButDelayed ? (

@@ -31,13 +31,17 @@ export default () => {
         return [trip[ETrip.route][ERoute.color], primary, onPrimary];
     }, [trip]);
 
-    const stopScrollIndex = sequence === undefined || sequence < 1 ? 0 : sequence - 1;
+    const stopScrollIndex =
+        sequence === undefined || sequence < 1
+            ? 0
+            : sequence - (sequence + 1 === trip?.[ETrip.stops].length ? 0 : 1);
 
     useEffect(() => {
         if (!isFollowing) return;
 
         virtuosoRef.current?.scrollToIndex({
             index: stopScrollIndex,
+            align: "end",
             behavior: "smooth",
         });
     }, [sequence, isFollowing]);

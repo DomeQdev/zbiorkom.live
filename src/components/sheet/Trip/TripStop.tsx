@@ -141,11 +141,13 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                         display: "flex",
                         alignItems: "center",
                         fontSize: 15,
+                        fontWeight: sequence === index ? 700 : undefined,
+                        transition: "font-weight .3s",
                     },
                     "& .MuiListItemText-secondary": {
                         fontSize: 12,
                     },
-                    opacity: hasDeparted ? 0.5 : 1,
+                    opacity: hasDeparted ? 0.7 : 1,
                 }}
             />
             {!hasDeparted && (
