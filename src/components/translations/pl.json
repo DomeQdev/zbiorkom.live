@@ -9,7 +9,8 @@
         "executions": "Co wyjechało?",
         "privacyPolicy": "Polityka prywatności",
         "switchTo": "Przełączyć na",
-        "yes": "Tak"
+        "yes": "Tak",
+        "supportingRegulations": "Regulamin wspierania"
     },
     "Vehicle": {
         "onTime": "Planowo",

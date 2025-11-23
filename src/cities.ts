@@ -45,12 +45,12 @@ const cities: Record<string, City> = {
         name: "Kraków",
         location: [19.94781, 50.06865],
     },
-    // kielce: {
-    //     id: "kielce",
-    //     name: "Kielce",
-    //     showNewTag: true,
-    //     location: [20.618886, 50.874126],
-    // },
+    kielce: {
+        id: "kielce",
+        name: "Kielce",
+        showNewTag: true,
+        location: [20.618886, 50.874126],
+    },
     kutno: {
         id: "kutno",
         name: "Kutno",
@@ -59,7 +59,6 @@ const cities: Record<string, City> = {
     legnica: {
         id: "legnica",
         name: "Legnica",
-        showNewTag: true,
         location: [16.16768, 51.212859],
     },
     leszno: {
@@ -71,6 +70,7 @@ const cities: Record<string, City> = {
     lodz: {
         id: "lodz",
         name: "Łódź",
+        description: "+ Autobusy ŁKA",
         location: [19.46563, 51.77025],
     },
     // lowicz: {
@@ -88,7 +88,7 @@ const cities: Record<string, City> = {
     olsztyn: {
         id: "olsztyn",
         name: "Olsztyn",
-        description: "+ Mrągowo, powiat olsztyński",
+        description: "+ TRIBUS",
         location: [20.48221, 53.77792],
     },
     opole: {
@@ -105,8 +105,8 @@ const cities: Record<string, City> = {
     pksnova: {
         id: "pksnova",
         name: "PKS Nova",
-        description: "Autobusy dalekobieżne",
-        location: [17.992183, 53.134703],
+        location: [23.163191, 53.134882],
+        zoom: 11,
     },
     poznan: {
         id: "poznan",
@@ -118,7 +118,6 @@ const cities: Record<string, City> = {
         id: "przemysl",
         name: "Przemyśl",
         location: [22.775302, 49.784097],
-        showNewTag: true,
     },
     radom: {
         id: "radom",
@@ -146,7 +145,6 @@ const cities: Record<string, City> = {
         id: "suwalki",
         name: "Suwałki",
         location: [22.932619, 54.100809],
-        showNewTag: true,
     },
     szczecin: {
         id: "szczecin",

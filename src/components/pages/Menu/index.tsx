@@ -186,6 +186,19 @@ export default ({
                 >
                     {t("privacyPolicy")}
                 </a>
+                <a
+                    style={{
+                        fontSize: "0.75rem",
+                        cursor: "pointer",
+                        textDecoration: "none",
+                        color: "inherit",
+                    }}
+                    href="/regulamin-wspierania.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {t("supportingRegulations")}
+                </a>
                 <span
                     style={{ fontSize: "0.75rem", cursor: "pointer" }}
                     onClick={() => window.open("https://www.openstreetmap.org/copyright", "_blank")}

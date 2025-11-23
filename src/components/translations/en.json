@@ -9,7 +9,8 @@
         "executions": "Dispatches",
         "privacyPolicy": "Privacy policy",
         "switchTo": "Switch to",
-        "yes": "Yes"
+        "yes": "Yes",
+        "supportingRegulations": "Supporting regulations"
     },
     "Vehicle": {
         "onTime": "On time",
