@@ -223,5 +223,16 @@
     "Layers": {
         "layers": "Warstwy",
         "darkMode": "Ciemny motyw"
+    },
+    "Christmas": {
+        "title": "Pojazdy świąteczne",
+        "header": "Świąteczne pojazdy",
+        "description": "Specjalnie udekorowane pojazdy, które możesz spotkać na trasach w okresie świątecznym!",
+        "active": "W trasie",
+        "inactive": "Niedostępny",
+        "prodYear": "Rok produkcji",
+        "noVehicles": "Brak świątecznych pojazdów w tym mieście",
+        "christmasVehicle": "Pojazd świąteczny",
+        "onRoute": "Na linii"
     }
 }

@@ -221,5 +221,16 @@
     "Layers": {
         "layers": "Layers",
         "darkMode": "Dark mode"
+    },
+    "Christmas": {
+        "title": "Christmas vehicles",
+        "header": "Christmas vehicles",
+        "description": "Specially decorated vehicles that you can find on routes during the holiday season!",
+        "active": "On route",
+        "inactive": "Unavailable",
+        "prodYear": "Production year",
+        "noVehicles": "No Christmas vehicles in this city",
+        "christmasVehicle": "Christmas vehicle",
+        "onRoute": "On route"
     }
 }

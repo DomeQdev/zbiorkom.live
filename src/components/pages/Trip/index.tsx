@@ -13,6 +13,8 @@ import { useQueryTrip } from "@/hooks/useQueryTrip";
 import { getSheetHeight } from "@/util/tools";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { useFollowStore } from "@/hooks/useFollowStore";
+import { useChristmasStore } from "@/hooks/useChristmasVehicles";
+import { SnowEffect } from "@/ui/ChristmasDecorations";
 
 export default memo(() => {
     const [vehicleData, tripData, sequence, fresh, setFresh] = useVehicleStore(
@@ -94,8 +96,16 @@ export default memo(() => {
         if (fresh) setFresh(false);
     }, [tripData, vehicleData, isLoading, fresh, isFollowing]);
 
+    // Sprawdź czy to świąteczny pojazd
+    const isChristmasVehicle = useChristmasStore((state) =>
+        vehicleData ? state.isChristmasVehicle(vehicleData[EVehicle.id]) : false,
+    );
+
     return (
         <>
+            {/* Efekt śniegu dla świątecznych pojazdów */}
+            {isChristmasVehicle && <SnowEffect intensity={35} />}
+
             {(vehicleData || tripData) && (
                 <Helm
                     variable={vehicle ? "vehicle" : "trip"}
