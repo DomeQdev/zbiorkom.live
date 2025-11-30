@@ -20,7 +20,6 @@ import { useQueryChristmasVehicles, ChristmasVehicle } from "@/hooks/useChristma
 import { EVehicleInfo, ERoute, APIVehicle, ETrip, EVehicle } from "typings";
 import useGoBack from "@/hooks/useGoBack";
 import { SnowEffect } from "@/ui/ChristmasDecorations";
-import "./christmas.css";
 
 // Typ dla danych o aktualnym kursie pojazdu
 type VehicleTrip = {
