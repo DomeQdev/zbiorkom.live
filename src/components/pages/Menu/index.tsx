@@ -127,6 +127,23 @@ export default ({
                     onClick={() => navigate(`/${city}/settings`, { state: undefined })}
                 />
             </List>
+            
+            {localStorage.getItem("themeColor") === "#720546" && (
+                <img
+                    src="/zandbi.jpg"
+                    style={{
+                        width: "100%",
+                        height: "auto",
+                        position: "absolute",
+                        bottom: 0,
+                        opacity: 0.7,
+                        pointerEvents: "none",
+                        touchAction: "none",
+                        maskImage: "linear-gradient(to top, rgba(0,0,0,1) 60%, rgba(0,0,0,0))",
+                        WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 60%, rgba(0,0,0,0))",
+                    }}
+                />
+            )}
 
             <div
                 style={{
