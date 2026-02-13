@@ -18,7 +18,7 @@ i18n.use(initReactI18next).init({
 const useLocalhost = location.protocol === "http:" && false;
 
 window.Gay = {
-    base: useLocalhost ? "http://localhost:8005" : "https://api.zbiorkom.live",
+    base: useLocalhost ? "http://localhost:8005" : "https://next.zbiorkom.live",
     cloudBase: "https://4.zbiorkom.live",
 };
 
