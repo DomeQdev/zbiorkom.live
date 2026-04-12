@@ -27,20 +27,20 @@ export type Route = [
     id: string,
     city: string,
     name: string,
+    longName: string,
     agency: string,
     type: VehicleType,
     color: string,
-    longName?: string,
 ];
 
 export enum ERoute {
     id = 0,
     city = 1,
     name = 2,
-    agency = 3,
-    type = 4,
-    color = 5,
-    longName = 6,
+    longName = 3,
+    agency = 4,
+    type = 5,
+    color = 6,
 }
 
 export type Vehicle = [
@@ -78,28 +78,24 @@ export type Stop = [
     id: string,
     city: string,
     name: string,
+    code: string,
     location: Location,
-    type: VehicleType,
-    station: boolean,
+    types: VehicleType[],
     bearing: number,
+    direction: string,
     routes: Route[],
-    direction?: string,
-    code?: string,
-    exits?: StopExit[],
 ];
 
 export enum EStop {
     id = 0,
     city = 1,
     name = 2,
-    location = 3,
-    type = 4,
-    station = 5,
+    code = 3,
+    location = 4,
+    types = 5,
     bearing = 6,
-    routes = 7,
-    direction = 8,
-    code = 9,
-    exits = 10,
+    direction = 7,
+    routes = 8,
 }
 
 export type StopExit = [name: string, location: Location];

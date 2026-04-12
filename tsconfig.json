@@ -17,7 +17,8 @@
         "noEmit": true,
         "jsx": "react-jsx",
         "baseUrl": "./src",
-        "paths": { "@/*": ["./components/*"] }
+        "paths": { "@/*": ["./components/*"] },
+        "ignoreDeprecations": "6.0"
     },
     "include": ["src"]
 }
