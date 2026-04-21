@@ -37,10 +37,14 @@ export const msToTime = (ms: number, withSeconds?: boolean) => {
     return formattedTime.join(" ");
 };
 
-export const polylineToGeoJson = (polyline: string) => {
-    const factor = Math.pow(10, +polyline[1]);
-    polyline = polyline.slice(3);
+export const getDaysSince2020 = (timestamp: number) => {
+    const offsetMs = new Date(timestamp).getTimezoneOffset() * 60000;
 
+    return Math.floor((timestamp - offsetMs) / 86400000) - 18262;
+};
+
+export const polylineToGeoJson = (polyline: string) => {
+    const factor = 1e6;
     let index = 0;
     let lat = 0;
     let lng = 0;

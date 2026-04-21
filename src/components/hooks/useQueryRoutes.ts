@@ -7,7 +7,7 @@ import { polylineToGeoJson } from "@/util/tools";
 export const useQueryRoutes = ({ city }: { city: string }) => {
     return useQuery({
         queryKey: ["routes", city],
-        queryFn: async ({ signal }) => getFromAPI<Route[]>(city, "routes/getAllRoutes", {}, signal),
+        queryFn: async ({ signal }) => getFromAPI<Route[]>(city, "routes", {}, signal),
     });
 };
 
@@ -15,7 +15,7 @@ export const useQueryRoute = ({ city, route }: { city: string; route: string }) 
     return useQuery({
         queryKey: ["route", city, route],
         queryFn: async ({ signal }) => {
-            const routeInfo = await getFromAPI<RouteInfo>(city, "routes/getRoute", { id: route }, signal);
+            const routeInfo = await getFromAPI<RouteInfo>(city, `routes/${route}`, {}, signal);
 
             routeInfo[ERouteInfo.directions].forEach((direction) => {
                 direction[ERouteDirection.shape] = polylineToGeoJson(direction[ERouteDirection.shape] as any);

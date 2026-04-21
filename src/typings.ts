@@ -115,6 +115,22 @@ export type MapData = {
     }[];
 } & ({ useDots: false; positions: Vehicle[] } | { useDots: true; positions: DotVehicle[] });
 
+export type ItineraryStop = [stop: Stop, alight: number, distance: number, platform?: string];
+
+export enum EItineraryStop {
+    stop = 0,
+    alight = 1,
+    distance = 2,
+    platform = 3,
+}
+
+export type Itinerary = [stops: ItineraryStop[], shape: string];
+
+export enum EItinerary {
+    stops = 0,
+    shape = 1,
+}
+
 export type APIVehicle = {
     sequence?: number;
     vehicle?: Vehicle;
@@ -126,25 +142,25 @@ export type APIVehicle = {
 export type Trip = [
     id: string,
     city: string,
-    headsign: string,
     route: Route,
+    headsign: string,
+    brigade: string,
     shortName: string,
-    description: string,
-    stops: TripStop[],
-    shape: Shape,
-    platforms: Platforms,
+    firstStop: [stopName: string, arrival: number],
+    lastStop: [stopName: string, arrival: number],
+    distance: number,
 ];
 
 export enum ETrip {
     id = 0,
     city = 1,
-    headsign = 2,
-    route = 3,
-    shortName = 4,
-    description = 5,
-    stops = 6,
-    shape = 7,
-    platforms = 8,
+    route = 2,
+    headsign = 3,
+    brigade = 4,
+    shortName = 5,
+    firstStop = 6,
+    lastStop = 7,
+    distance = 8,
 }
 
 export type TripStop = [id: string, name: string, location: Location, type: ETripStopType];
@@ -175,41 +191,26 @@ export enum EStopDepartures {
 }
 
 export type StopDeparture = [
-    id: string,
-    headsign: string,
-    route: Route,
-    shortName: string,
-    brigade: string,
-    vehicleId: string,
+    trip: Trip,
     vehicle: Vehicle | null,
     departure: StopTime,
-    destination: StopTime | null,
-    platform?: string,
-    track?: string,
-    alert?: { type: any; text: string },
+    destination?: StopTime,
 ];
 
 export enum EStopDeparture {
-    id = 0,
-    headsign = 1,
-    route = 2,
-    shortName = 3,
-    brigade = 4,
-    vehicleId = 5,
-    vehicle = 6,
-    departure = 7,
-    destination = 8,
-    platform = 9,
-    track = 10,
-    alert = 11,
+    trip = 0,
+    vehicle = 1,
+    departure = 2,
+    destination = 3,
 }
 
-export type StopTime = [scheduled: number, estimated: number, delay: DelayType];
+export type StopTime = [scheduled: number, delay: number, status: EStopDepartureStatus, platform?: string];
 
 export enum EStopTime {
     scheduled = 0,
-    estimated = 1,
-    delay = 2,
+    delay = 1,
+    status = 2,
+    platform = 3,
 }
 
 export type StopUpdate = [
@@ -482,4 +483,11 @@ declare global {
     }
 
     var Gay: Gay;
+}
+
+export enum EStopDepartureStatus {
+    Scheduled,
+    OnTrip,
+    OnPreviousTrip,
+    Cancelled,
 }

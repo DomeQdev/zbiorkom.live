@@ -20,9 +20,10 @@ import useVehicleStore from "@/hooks/useVehicleStore";
 import Alert from "@/ui/Alert";
 import Loading from "@/ui/Loading";
 import Sticky from "@/ui/Sticky";
+import { useShallow } from "zustand/react/shallow";
 
 export default () => {
-    const vehicle = useVehicleStore((state) => state.vehicle);
+    const vehicle = useVehicleStore(useShallow((state) => state.vehicle));
     const scrollContainer = useRef<HTMLDivElement>(null);
     const elementRef = useRef<HTMLDivElement>(null);
     const { t } = useTranslation("VehicleInfo");

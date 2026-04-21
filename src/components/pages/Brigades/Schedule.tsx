@@ -5,17 +5,17 @@ import { ArrowBack, Dangerous, Share } from "@mui/icons-material";
 import { Trans, useTranslation } from "react-i18next";
 import RouteTag from "@/map/RouteTag";
 import useGoBack from "@/hooks/useGoBack";
-import { BrigadeTrip, EBrigadeTrip, ERoute, Route } from "typings";
+import { ETrip, ERoute, Route } from "typings";
 import RouteChip from "@/ui/RouteChip";
-import Trip from "./BrigadeTrip";
+import TripComponent from "./BrigadeTrip";
 import MultilineAlert from "./MultilineAlert";
 import Helm from "@/util/Helm";
 import ScrollButton from "./ScrollButton";
+import Alert from "@/ui/Alert";
 import { share, msToTime } from "@/util/tools";
 import DayPicker from "@/ui/DayPicker";
 import useSearchState from "@/hooks/useSearchState";
 import { getBrigadeDays, useQueryBrigade } from "@/hooks/useQueryBrigades";
-import Alert from "@/ui/Alert";
 
 type Props = {
     city: string;
@@ -42,11 +42,11 @@ export default ({ city, route, brigade }: Props) => {
         const routes: Route[] = [];
 
         for (const trip of trips || []) {
-            const route = trip[EBrigadeTrip.route];
+            const r = trip[ETrip.route];
 
-            if (!routeKeys.has(route[ERoute.id])) {
-                routeKeys.add(route[ERoute.id]);
-                routes.push(route);
+            if (!routeKeys.has(r[ERoute.id])) {
+                routeKeys.add(r[ERoute.id]);
+                routes.push(r);
             }
         }
 
@@ -54,26 +54,22 @@ export default ({ city, route, brigade }: Props) => {
     }, [trips]);
 
     const [filteredTrips, currentTripIndex, actualFilteredRoutes] = useMemo(() => {
-        const filteredTrips: BrigadeTrip[] = [];
+        const filteredTrips = [];
         let currentTripIndex = -1;
 
         for (const trip of trips || []) {
-            if (filteredRoutes.length && !filteredRoutes.includes(trip[EBrigadeTrip.route][ERoute.id])) {
+            if (filteredRoutes.length && !filteredRoutes.includes(trip[ETrip.route][ERoute.id])) {
                 continue;
             }
 
             filteredTrips.push(trip);
-
-            if (trip[EBrigadeTrip.vehicle] !== null) {
-                currentTripIndex = filteredTrips.length - 1;
-            }
         }
 
         if (currentTripIndex === -1 && filteredTrips.length) {
             currentTripIndex = filteredTrips.findIndex(
                 (trip) =>
-                    trip[EBrigadeTrip.end] > Date.now() &&
-                    trip[EBrigadeTrip.start] <= Date.now() + 2 * 60 * 60 * 1000,
+                    trip[ETrip.lastStop][1] > Date.now() &&
+                    trip[ETrip.firstStop][1] <= Date.now() + 2 * 60 * 60 * 1000,
             );
         }
 
@@ -236,20 +232,17 @@ export default ({ city, route, brigade }: Props) => {
                                 const nextTrip = filteredTrips[i + 1];
                                 if (nextTrip) {
                                     breakTime = msToTime(
-                                        nextTrip[EBrigadeTrip.start] - trip[EBrigadeTrip.end],
+                                        nextTrip[ETrip.firstStop][1] - trip[ETrip.lastStop][1],
                                     );
 
-                                    if (
-                                        trip[EBrigadeTrip.route][ERoute.id] !==
-                                        nextTrip[EBrigadeTrip.route][ERoute.id]
-                                    ) {
-                                        routeChange = nextTrip[EBrigadeTrip.route][ERoute.name];
+                                    if (trip[ETrip.route][ERoute.id] !== nextTrip[ETrip.route][ERoute.id]) {
+                                        routeChange = nextTrip[ETrip.route][ERoute.name];
                                     }
                                 }
 
                                 return (
-                                    <div key={trip[EBrigadeTrip.id]}>
-                                        <Trip
+                                    <div key={trip[ETrip.id]}>
+                                        <TripComponent
                                             trip={trip}
                                             isActive={currentTripIndex === i}
                                             showRoute={routeKeys.length > 1}

@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { ERoute, ERouteDirection, ERouteInfo } from "typings";
 import { Virtuoso } from "react-virtuoso";
@@ -7,6 +7,10 @@ import RouteActions from "./RouteActions";
 import useDirectionStore from "@/hooks/useDirectionStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryRoute } from "@/hooks/useQueryRoutes";
+
+const VirtuosoComponents = {
+    Header: RouteActions,
+};
 
 export default memo(() => {
     const direction = useDirectionStore(useShallow((state) => state.direction));
@@ -26,9 +30,7 @@ export default memo(() => {
             itemContent={(index, stop) => (
                 <RouteStop stop={stop} color={data[ERouteInfo.route][ERoute.color]} index={index} />
             )}
-            components={{
-                Header: RouteActions,
-            }}
+            components={VirtuosoComponents}
         />
     );
 });

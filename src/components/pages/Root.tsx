@@ -5,7 +5,6 @@ import cities from "cities";
 import useGoBack from "@/hooks/useGoBack";
 import Menu from "./Menu";
 import WelcomeAlert from "./WelcomeAlert";
-import { WebSocketProvider } from "@/hooks/useWebSocket";
 import { useEffect } from "react";
 
 export default () => {
@@ -24,7 +23,7 @@ export default () => {
     }, [city]);
 
     return (
-        <WebSocketProvider>
+        <>
             <Fab
                 sx={{ position: "absolute", left: 16, top: 16 }}
                 color="primary"
@@ -49,6 +48,6 @@ export default () => {
             <WelcomeAlert />
 
             <Outlet />
-        </WebSocketProvider>
+        </>
     );
 };

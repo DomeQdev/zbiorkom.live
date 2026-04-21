@@ -81,7 +81,7 @@ export default () => {
                     </MenuItem>
                 )}
 
-                {vehicle && !vehicle[EVehicle.id].split("/")[1].startsWith("_") && (
+                {vehicle && !vehicle[EVehicle.id].split(":")[1].startsWith("_") && (
                     <MenuItem
                         onClick={() => navigate(window.location.pathname + "/info" + window.location.search)}
                     >

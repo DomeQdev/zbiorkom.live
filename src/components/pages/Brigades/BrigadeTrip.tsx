@@ -1,6 +1,6 @@
 import { ColorRole, generateDarkScheme } from "material-color-lite";
 import { ListItemButton } from "@mui/material";
-import { BrigadeTrip, EBrigadeTrip, ERoute } from "typings";
+import { ETrip, ERoute, Trip } from "typings";
 import { Link, useParams } from "react-router-dom";
 import { getTime, msToTime } from "@/util/tools";
 import { useTranslation } from "react-i18next";
@@ -8,7 +8,7 @@ import RouteTag from "@/map/RouteTag";
 import { useMemo } from "react";
 
 type Props = {
-    trip: BrigadeTrip;
+    trip: Trip;
     isActive: boolean;
     showRoute: boolean;
 };
@@ -18,7 +18,7 @@ export default ({ trip, isActive, showRoute }: Props) => {
     const { city } = useParams();
 
     const background = useMemo(
-        () => generateDarkScheme(trip[EBrigadeTrip.route][ERoute.color], [ColorRole.SecondaryContainer]),
+        () => generateDarkScheme(trip[ETrip.route][ERoute.color], [ColorRole.SecondaryContainer]),
         [trip],
     ).secondaryContainer;
 
@@ -26,63 +26,63 @@ export default ({ trip, isActive, showRoute }: Props) => {
         <ListItemButton
             component={Link}
             to={
-                trip[EBrigadeTrip.vehicle]
-                    ? `/${city}/vehicle/${encodeURIComponent(trip[EBrigadeTrip.vehicle])}`
-                    : `/${city}/trip/${trip[EBrigadeTrip.id]}`
+                (trip as any).vehicle
+                    ? `/${city}/vehicle/${encodeURIComponent((trip as any).vehicle)}`
+                    : `/${city}/trip/${trip[ETrip.id]}`
             }
             state={-3}
             sx={{
                 display: "block",
                 borderRadius: 1.5,
-                backgroundColor: isActive || trip[EBrigadeTrip.vehicle] ? background : "background.paper",
+                backgroundColor: isActive || (trip as any).vehicle ? background : "background.paper",
                 "&:hover": {
-                    backgroundColor: isActive || trip[EBrigadeTrip.vehicle] ? background : "background.paper",
+                    backgroundColor: isActive || (trip as any).vehicle ? background : "background.paper",
                 },
             }}
         >
             <span
                 className="vehicleStopIconLine tripLine"
                 style={{
-                    backgroundColor: trip[EBrigadeTrip.route][ERoute.color],
+                    backgroundColor: trip[ETrip.route][ERoute.color],
                 }}
             />
             <span className="tripRow">
-                <span className="tripTime">{getTime(trip[EBrigadeTrip.start])}</span>
+                <span className="tripTime">{getTime(trip[ETrip.firstStop][1])}</span>
                 <span
                     className="vehicleStopIcon"
                     style={{
-                        border: `3px solid ${trip[EBrigadeTrip.route][ERoute.color]}`,
+                        border: `3px solid ${trip[ETrip.route][ERoute.color]}`,
                     }}
                 />
                 <span className="tripHeadsign">
-                    {showRoute && <RouteTag route={trip[EBrigadeTrip.route]} />}
-                    {trip[EBrigadeTrip.startStop]}
+                    {showRoute && <RouteTag route={trip[ETrip.route]} />}
+                    {trip[ETrip.firstStop][0]}
                 </span>
             </span>
             <div className="tripInfo">
                 <span>
                     {[
                         t("travelTime", {
-                            time: msToTime(trip[EBrigadeTrip.end] - trip[EBrigadeTrip.start]),
+                            time: msToTime(trip[ETrip.lastStop][1] - trip[ETrip.firstStop][1]),
                         }),
-                        `${trip[EBrigadeTrip.distance].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} m`,
+                        `${trip[ETrip.distance].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} m`,
                     ].join(" · ")}
                 </span>
                 <span>
-                    {trip[EBrigadeTrip.vehicle]
-                        ? t("operatedBy", { vehicle: trip[EBrigadeTrip.vehicle].split("/")[1] })
+                    {(trip as any).vehicle
+                        ? t("operatedBy", { vehicle: (trip as any).vehicle.split(":")[1] })
                         : t("clickForTrip")}
                 </span>
             </div>
             <span className="tripRow">
-                <span className="tripTime">{getTime(trip[EBrigadeTrip.end])}</span>
+                <span className="tripTime">{getTime(trip[ETrip.lastStop][1])}</span>
                 <span
                     className="vehicleStopIcon"
                     style={{
-                        border: `3px solid ${trip[EBrigadeTrip.route][ERoute.color]}`,
+                        border: `3px solid ${trip[ETrip.route][ERoute.color]}`,
                     }}
                 />
-                <span className="tripHeadsign">{trip[EBrigadeTrip.endStop]}</span>
+                <span className="tripHeadsign">{trip[ETrip.lastStop][0]}</span>
             </span>
         </ListItemButton>
     );

@@ -12,13 +12,11 @@ import useDirectionStore from "@/hooks/useDirectionStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryRoute } from "@/hooks/useQueryRoutes";
 import { getSheetHeight } from "@/util/tools";
-import { useWebSocket } from "@/hooks/useWebSocket";
 
 export default () => {
     const [direction, setDirection] = useDirectionStore(
         useShallow((state) => [state.direction, state.setDirection]),
     );
-    const { subscribe } = useWebSocket();
     const { city, route } = useParams();
     const { current: map } = useMap();
     const navigate = useNavigate();
@@ -63,18 +61,16 @@ export default () => {
     }, [data, direction]);
 
     useEffect(() => {
-        const onRefresh = () => {
+        const interval = setInterval(() => {
             if (document.visibilityState !== "visible") return;
 
             refetch();
-        };
-
-        const unsubscribe = subscribe("refresh", onRefresh);
+        }, 15000);
 
         return () => {
-            unsubscribe();
+            clearInterval(interval);
         };
-    }, [subscribe, refetch]);
+    }, [refetch]);
 
     useEffect(() => {
         return () => {

@@ -4,13 +4,14 @@ import {
     EStopTime,
     StopUpdate,
     Trip,
-    TripStop,
     Vehicle,
-    ETripStop,
+    EStop,
     ETrip,
     ERoute,
     EVehicle,
-    ETripStopType,
+    ItineraryStop,
+    EItineraryStop,
+    EStopDepartureStatus,
 } from "typings";
 import { RemoveCircleOutline, WavingHand } from "@mui/icons-material";
 import { useMap } from "@vis.gl/react-maplibre";
@@ -23,7 +24,7 @@ import TripStopTimes from "./TripStopTimes";
 type Props = {
     vehicle?: Vehicle;
     trip: Trip;
-    stop: TripStop;
+    stop: ItineraryStop;
     index: number;
     color: [color: string, text: string, background: string];
     update: StopUpdate;
@@ -35,23 +36,27 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
     const { t } = useTranslation("Vehicle");
 
     const departure = update[EStopUpdate.departure];
-    const estimatedDeparture = departure[EStopTime.estimated];
+    const scheduled = departure[EStopTime.scheduled];
     const delay = departure[EStopTime.delay];
+    const estimatedDeparture = scheduled + delay;
+    const status = departure[EStopTime.status];
 
     const shouldUseSeconds = index === 0 && estimatedDeparture - Date.now() < 100000;
     const hasDeparted =
-        delay === "cancelled" ||
-        (sequence === undefined ? estimatedDeparture < Date.now() : sequence! > index);
+        status === EStopDepartureStatus.Cancelled ||
+        (sequence === undefined ? estimatedDeparture < Date.now() : sequence > index);
     const toDeparture = useTime(estimatedDeparture, shouldUseSeconds);
 
-    const platform = update[EStopUpdate.platform];
+    const platform = stop[EItineraryStop.platform];
     const track = update[EStopUpdate.track];
+    const stopData = stop[EItineraryStop.stop];
+    const alight = stop[EItineraryStop.alight];
 
     return (
         <ListItemButton
             onClick={() =>
                 map?.flyTo({
-                    center: stop[ETripStop.location],
+                    center: stopData[EStop.location],
                     zoom: map.getZoom() > 15 ? map.getZoom() : 15,
                 })
             }
@@ -89,7 +94,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
             <ListItemText
                 primary={
                     <>
-                        {stop[ETripStop.type] === ETripStopType.notBoardable && (
+                        {alight === 0 && (
                             <RemoveCircleOutline
                                 sx={{
                                     fontSize: 18,
@@ -99,7 +104,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                             />
                         )}
 
-                        {stop[ETripStop.type] === ETripStopType.onDemand && (
+                        {alight === 2 && (
                             <WavingHand
                                 sx={{
                                     fontSize: 16,
@@ -109,7 +114,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                             />
                         )}
 
-                        {stop[ETripStop.name]}
+                        {stopData[EStop.name]}
                     </>
                 }
                 secondary={
@@ -121,7 +126,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                         }}
                         component="span"
                     >
-                        <VehicleDelay delay={delay} />
+                        <VehicleDelay delay={delay} status={status} />
 
                         {platform && (
                             <span>

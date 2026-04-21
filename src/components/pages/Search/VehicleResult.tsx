@@ -38,7 +38,7 @@ export default ({ vehicle, borderTop, borderBottom }: Props) => {
                     />
                 }
                 secondary={
-                    vehicle[ESearchVehicle.id].split("/")[1] +
+                    vehicle[ESearchVehicle.id].split(":")[1] +
                     (vehicle[ESearchVehicle.model] ? `, ${vehicle[ESearchVehicle.model]}` : "")
                 }
                 secondaryTypographyProps={{

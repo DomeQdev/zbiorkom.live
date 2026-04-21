@@ -19,7 +19,7 @@ export default ({ city }: { city: string }) => {
     const { t } = useTranslation("Menu");
     const navigate = useNavigate();
 
-    const { vehicles, stops, useDots, geoJson, suggestedCity } = useMarkers({
+    const { vehicles, dots, stops, useDots, suggestedCity } = useMarkers({
         city,
         moveBadge: () => {
             badgeRef.current?.animate(
@@ -39,7 +39,7 @@ export default ({ city }: { city: string }) => {
 
     return (
         <>
-            {useDots && <DotMarkers vehicles={vehicles as DotVehicle[]} />}
+            {useDots && <DotMarkers vehicles={dots as DotVehicle[]} />}
 
             {!useDots &&
                 vehicles.map((vehicle) => (
@@ -73,14 +73,6 @@ export default ({ city }: { city: string }) => {
                 >
                     <StopMarker stop={stop} useStopCodeAsIcon={useStopCodeAsIcon} />
                 </Marker>
-            ))}
-
-            {geoJson?.map(({ source, layers }, i) => (
-                <Source key={"" + i} type="geojson" data={source}>
-                    {layers.map((layer, j) => (
-                        <Layer key={"" + i + j} {...layer} />
-                    ))}
-                </Source>
             ))}
 
             <Badge

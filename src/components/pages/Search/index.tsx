@@ -10,7 +10,7 @@ import {
     TextField,
 } from "@mui/material";
 import { ArrowBack, HighlightOff } from "@mui/icons-material";
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import { GroupedVirtuoso } from "react-virtuoso";
 import { useParams } from "react-router-dom";
 import Result from "./Result";
@@ -19,6 +19,20 @@ import useGoBack from "@/hooks/useGoBack";
 import SearchInfo from "./SearchInfo";
 import useSearchState from "@/hooks/useSearchState";
 import { useQuerySearch } from "@/hooks/useQuerySearch";
+
+const VirtuosoComponents = {
+    TopItemList: (props: any) => (
+        <div
+            {...props}
+            style={{
+                ...props.style,
+                position: "unset",
+            }}
+        >
+            {props.children}
+        </div>
+    ),
+};
 
 export default () => {
     const [expandedStop, setExpandedStop] = useState<string | undefined>();
@@ -126,19 +140,7 @@ export default () => {
                                 setExpandedStop={setExpandedStop}
                             />
                         )}
-                        components={{
-                            TopItemList: (props) => (
-                                <div
-                                    {...props}
-                                    style={{
-                                        ...props.style,
-                                        position: "unset",
-                                    }}
-                                >
-                                    {props.children}
-                                </div>
-                            ),
-                        }}
+                        components={VirtuosoComponents}
                     />
                 )}
             </DialogContent>

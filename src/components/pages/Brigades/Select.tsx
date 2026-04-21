@@ -160,24 +160,11 @@ export default memo(() => {
                 >
                     {displayBrigades &&
                         brigades?.map((brigade) => (
-                            <ListItemButton
-                                key={brigade[EBrigade.brigade]}
-                                component={Link}
-                                to={brigade[EBrigade.brigade] + `?date=${date}`}
-                            >
+                            <ListItemButton key={brigade} component={Link} to={brigade + `?date=${date}`}>
                                 <ListItemText
                                     primary={
                                         <>
-                                            <span>{brigade[EBrigade.brigade]}</span>
-
-                                            <Typography>
-                                                {[
-                                                    t("trips", {
-                                                        tripsLength: brigade[EBrigade.numberOfTrips],
-                                                    }),
-                                                    brigade[2],
-                                                ].join(" · ")}
-                                            </Typography>
+                                            <span>{brigade}</span>
                                         </>
                                     }
                                 />

@@ -1,10 +1,10 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getFromAPI } from "@/util/fetchFunctions";
 import { useShallow } from "zustand/react/shallow";
 import useVehicleStore from "./useVehicleStore";
-import { APIVehicle, ETrip } from "typings";
-import { useEffect } from "react";
+import { Itinerary, Trip, Vehicle } from "typings";
+import { useEffect, useMemo } from "react";
 import { polylineToGeoJson } from "@/util/tools";
+import { useEventQuery } from "./useEventQuery";
+import { StopUpdate } from "typings";
 
 type TripQueryProps = {
     city: string;
@@ -12,49 +12,84 @@ type TripQueryProps = {
     vehicle?: string;
 };
 
+type StreamInitial = {
+    trip: Trip;
+    itinerary: Itinerary;
+};
+
+type StreamMessage = {
+    position: Vehicle;
+    sequence: number;
+    stops: [arrival: any, departure: any][]; // StopUpdate maps back to this essentially, but we need to format it to StopUpdate style if needed
+};
+
 export const useQueryTrip = ({ city, trip, vehicle }: TripQueryProps) => {
-    const vehicleStore = useVehicleStore(useShallow((state) => state));
-    const queryClient = useQueryClient();
-    const queryKey = ["trip", city, trip || vehicle];
+    const setFresh = useVehicleStore((state) => state.setFresh);
+    const setItinerary = useVehicleStore((state) => state.setItinerary);
+    const setTrip = useVehicleStore((state) => state.setTrip);
+    const setVehicle = useVehicleStore((state) => state.setVehicle);
+    const setLastPing = useVehicleStore((state) => state.setLastPing);
+    const setStops = useVehicleStore((state) => state.setStops);
+    const setSequence = useVehicleStore((state) => state.setSequence);
+    const reset = useVehicleStore((state) => state.reset);
+    const getFresh = useVehicleStore((state) => state.fresh);
 
-    const query = useQuery({
-        queryKey,
-        queryFn: async ({ signal }) => {
-            const response = await getFromAPI<APIVehicle>(
-                city,
-                trip ? "trips/getTripUpdate" : "trips/getTripByVehicle",
-                {
-                    trip,
-                    vehicle,
-                    currentTrip: vehicleStore.trip?.[ETrip.id],
-                },
-                signal,
-            );
+    const endpoint = useMemo(() => {
+        if (trip) return `trips/${encodeURIComponent(trip)}/stream`;
+        if (vehicle) return `positions/${encodeURIComponent(vehicle)}/stream`;
+        return "";
+    }, [trip, vehicle]);
 
-            if (response.trip?.[ETrip.shape]) {
-                response.trip[ETrip.shape] = polylineToGeoJson(response.trip[ETrip.shape] as any);
-            }
-
-            return response;
-        },
-        refetchOnWindowFocus: true,
+    const {
+        data: rawData,
+        initialData: rawInitial,
+        loadingState,
+    } = useEventQuery<StreamMessage, StreamInitial>(city, endpoint, {
+        enabled: !!endpoint,
+        resetKey: trip || vehicle,
     });
 
     useEffect(() => {
-        if (vehicleStore.fresh === undefined) vehicleStore.setFresh(true);
-        if (query.data?.vehicle) vehicleStore.setVehicle(query.data.vehicle);
-        if (query.data?.trip) vehicleStore.setTrip(query.data.trip);
-        if (query.data?.stops?.length) vehicleStore.setStops(query.data.stops);
-        if (query.data?.sequence !== undefined) vehicleStore.setSequence(query.data.sequence);
-        if (query.data?.lastPing !== undefined) vehicleStore.setLastPing(query.data.lastPing);
-    }, [query.data, vehicleStore]);
+        if (getFresh === undefined) setFresh(true);
+
+        if (rawInitial) {
+            let newItinerary: Itinerary = [...rawInitial.itinerary] as Itinerary;
+            if (newItinerary[1] && typeof newItinerary[1] === "string") {
+                newItinerary[1] = polylineToGeoJson(newItinerary[1] as any) as any;
+            }
+            setItinerary(newItinerary);
+            setTrip(rawInitial.trip);
+            setFresh(false);
+        }
+
+        if (rawData) {
+            if (rawData.position) {
+                setVehicle(rawData.position);
+                setLastPing(rawData.position[6]); // EVehicle.lastPing
+            }
+            if (rawData.stops) {
+                const updates = rawData.stops.map((stop: any) => {
+                    return [stop[0], stop[1], "", "", []] as unknown as StopUpdate;
+                });
+                setStops(updates);
+            }
+            if (rawData.sequence !== undefined) {
+                setSequence(rawData.sequence);
+            }
+        }
+    }, [rawInitial, rawData]);
 
     useEffect(() => {
         return () => {
-            vehicleStore.reset();
-            queryClient.removeQueries({ queryKey });
+            reset();
         };
     }, [city, trip, vehicle]);
 
-    return query;
+    return {
+        data: rawData,
+        initialData: rawInitial,
+        isLoading: loadingState?.loading,
+        refetch: () => {},
+        error: loadingState?.error,
+    };
 };

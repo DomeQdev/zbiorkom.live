@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default ({ vehicle, showBrigade, showFleet, onClick }: Props) => {
-    const fleetId = vehicle[EVehicle.id].split("/")[1];
+    const fleetId = vehicle[EVehicle.id].split(":")[1];
 
     return (
         <Marker

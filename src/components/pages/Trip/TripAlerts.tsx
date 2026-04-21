@@ -2,14 +2,14 @@ import { Box, Dialog, DialogContent, DialogTitle, Divider, IconButton, Typograph
 import { ArrowBack } from "@mui/icons-material";
 import { ReactNode, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { EStopUpdate, ETrip, ETripStop } from "typings";
+import { EStopUpdate, ETrip, EItinerary, EItineraryStop, EStop } from "typings";
 import useGoBack from "@/hooks/useGoBack";
 import Sticky from "@/ui/Sticky";
 import useVehicleStore from "@/hooks/useVehicleStore";
 import { useShallow } from "zustand/react/shallow";
 
 export default () => {
-    const [tripData, stops] = useVehicleStore(useShallow((state) => [state.trip, state.stops]));
+    const [stops, itinerary] = useVehicleStore(useShallow((state) => [state.stops, state.itinerary]));
     const { t } = useTranslation("Vehicle");
     const goBack = useGoBack();
 
@@ -17,7 +17,7 @@ export default () => {
     const elementRef = useRef<HTMLDivElement | null>(null);
 
     const alerts = useMemo(() => {
-        if (!tripData || !stops) return [];
+        if (!itinerary || !stops) return [];
 
         const alerts: [string, string[]][] = [];
 
@@ -25,14 +25,14 @@ export default () => {
             const stop = stops[i];
             const stopAlerts = stop[EStopUpdate.alerts];
 
-            if (!stopAlerts?.length) continue;
+            if (!stopAlerts?.length || !itinerary[EItinerary.stops][i]) continue;
 
-            const stopName = tripData[ETrip.stops][i][ETripStop.name];
+            const stopName = itinerary[EItinerary.stops][i][EItineraryStop.stop][EStop.name];
             alerts.push([stopName, stopAlerts]);
         }
 
         return alerts;
-    }, [tripData, stops]);
+    }, [itinerary, stops]);
 
     return (
         <Dialog open onClose={goBack} fullWidth>

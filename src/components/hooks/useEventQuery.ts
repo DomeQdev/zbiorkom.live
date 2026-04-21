@@ -8,6 +8,7 @@ type QueryLoadingState = {
 type EventQueryOptions = {
     enabled?: boolean;
     resetDataOnKeyChange?: boolean;
+    resetKey?: any;
 };
 
 type EventQueryResult<T, I> = {
@@ -19,14 +20,22 @@ type EventQueryResult<T, I> = {
 export function useEventQuery<T = any, I = T>(
     city: string | undefined,
     endpoint: string,
-    { enabled = true, resetDataOnKeyChange = false }: EventQueryOptions = {},
+    { enabled = true, resetDataOnKeyChange = false, resetKey }: EventQueryOptions = {},
 ): EventQueryResult<T, I> {
     const [data, setData] = useState<T>();
     const [initialData, setInitialData] = useState<I>();
     const [isLoading, setIsLoading] = useState<boolean>(enabled);
     const [error, setError] = useState<string>();
-    const [retryCount, setRetryCount] = useState(0);
 
+    const [prevResetKey, setPrevResetKey] = useState(resetKey);
+    if (resetKey !== prevResetKey) {
+        setPrevResetKey(resetKey);
+        setData(undefined);
+        setInitialData(undefined);
+    }
+
+    // Use ref instead of state to prevent recreational loop of the connect function
+    const retryCount = useRef(0);
     const esRef = useRef<EventSource | null>(null);
 
     const connect = useCallback(() => {
@@ -51,44 +60,42 @@ export function useEventQuery<T = any, I = T>(
         esRef.current = es;
 
         es.addEventListener("open", () => {
-            setRetryCount(0); // Reset retry count after successful connection
+            retryCount.current = 0;
         });
 
-        es.addEventListener("initial", (event) => {
+        es.addEventListener("initial", (event: any) => {
             setInitialData(JSON.parse(event.data) as I);
         });
 
-        es.addEventListener("message", (event) => {
+        es.addEventListener("message", (event: any) => {
             setData(JSON.parse(event.data) as T);
             setIsLoading(false);
         });
 
-        es.addEventListener("errorCode", (event) => {
+        es.addEventListener("errorCode", (event: any) => {
             setError(JSON.parse(event.data));
             setIsLoading(false);
             es.close();
         });
 
         es.addEventListener("error", () => {
-            if (retryCount < 5) {
-                setRetryCount((prev) => prev + 1);
+            if (retryCount.current < 5) {
+                retryCount.current++;
             } else {
                 setError("NETWORK_ERROR");
                 setIsLoading(false);
             }
             es.close();
 
-            // Allow retry if not hidden and enabled, using retry count for backoff if you want later
             if (!document.hidden && enabled) {
                 setTimeout(() => {
                     if (!document.hidden && enabled && esRef.current !== es) {
-                        // Simple guard
                         connect();
                     }
                 }, 2000);
             }
         });
-    }, [city, endpoint, enabled, retryCount]);
+    }, [city, endpoint, enabled]);
 
     useEffect(() => {
         connect();
@@ -98,10 +105,13 @@ export function useEventQuery<T = any, I = T>(
                 esRef.current.close();
                 esRef.current = null;
             }
+            // Temporarily removed clear data if endpoint/params change to avoid flickering
+            if (resetDataOnKeyChange) {
+                // Keep this only for specific cases, usually we rely on resetKey
+            }
         };
-    }, [connect]);
+    }, [connect, resetDataOnKeyChange]);
 
-    // Handle visibility changes to suspend connection when app is backgrounded
     useEffect(() => {
         const handleVisibilityChange = () => {
             if (document.hidden) {
@@ -115,7 +125,7 @@ export function useEventQuery<T = any, I = T>(
         };
 
         const handleFocus = () => {
-            if (!esRef.current) connect();
+            if (!esRef.current && !document.hidden) connect();
         };
 
         const handleBlur = () => {
@@ -136,7 +146,6 @@ export function useEventQuery<T = any, I = T>(
         };
     }, [connect]);
 
-    // Cleanup keys and data if component parameters changed and reset requested
     useEffect(() => {
         if (enabled) return;
 

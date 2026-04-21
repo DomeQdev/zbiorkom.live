@@ -7,7 +7,7 @@ import Icon from "@/ui/Icon";
 
 export default ({ vehicle: [vehicle, setVehicle] }: { vehicle: SearchState }) => {
     const { t } = useTranslation("Executions");
-    const [initialValue] = useState(vehicle.split("/"));
+    const [initialValue] = useState(vehicle.split(":"));
 
     const [vehicleId, setVehicleId] = useState<string>(initialValue[1] ?? "");
     const [vehicleType, setVehicleType] = useState<VehicleType>(

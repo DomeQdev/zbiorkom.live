@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { memo, useState } from "react";
+import { memo, useState, useMemo } from "react";
 import { Virtuoso } from "react-virtuoso";
 import Departure from "./StopDeparture";
 import useStopStore from "@/hooks/useStopStore";
@@ -9,6 +9,13 @@ import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 import { useTranslation } from "react-i18next";
 import Alert from "@/ui/Alert";
 import { Bedtime } from "@mui/icons-material";
+
+const VirtuosoComponents = {
+    Footer: ({ context: { hasMore } }: any) => {
+        if (!hasMore) return null;
+        return <Loading height={60} />;
+    },
+};
 
 export default memo(() => {
     const { city, stop } = useParams();
@@ -21,6 +28,11 @@ export default memo(() => {
         city: isStation ? "pkp" : city!,
         stop: stop!,
     });
+
+    const virtuosoContext = useMemo(
+        () => ({ hasMore: data?.[EStopDepartures.hasMore] }),
+        [data?.[EStopDepartures.hasMore]],
+    );
 
     if (!data) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
 
@@ -35,15 +47,12 @@ export default memo(() => {
             endReached={() => {
                 if (!data[EStopDepartures.hasMore] || Date.now() - firstContact < 150) return;
 
-                expandLimit(20);
+                setTimeout(() => {
+                    expandLimit(20);
+                }, 0);
             }}
-            components={{
-                Footer: () => {
-                    if (!data[EStopDepartures.hasMore]) return null;
-
-                    return <Loading height={60} />;
-                },
-            }}
+            components={VirtuosoComponents}
+            context={virtuosoContext}
         />
     );
 });

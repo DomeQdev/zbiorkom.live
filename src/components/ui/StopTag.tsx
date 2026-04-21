@@ -19,14 +19,14 @@ export default ({ stop, fontSize = 16 }: { stop: Stop; fontSize?: number }) => {
         >
             <SvgIcon
                 sx={{
-                    backgroundColor: defaultColors[stop[EStop.type]],
+                    backgroundColor: defaultColors[stop[EStop.types][0]],
                     borderRadius: 0.5,
                     padding: 0.5,
                     width: fontSize * 1.8,
                     height: fontSize * 1.8,
                 }}
             >
-                <Icon type={stop[EStop.type]} />
+                <Icon type={stop[EStop.types][0]} />
             </SvgIcon>
 
             <Box
@@ -37,7 +37,7 @@ export default ({ stop, fontSize = 16 }: { stop: Stop; fontSize?: number }) => {
                     whiteSpace: "nowrap",
                 }}
             >
-                {stop[EStop.name]}
+                {stop[EStop.name]} {stop[EStop.code] || ""}
             </Box>
         </Typography>
     );

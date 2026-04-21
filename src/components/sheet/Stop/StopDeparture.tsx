@@ -1,14 +1,13 @@
 import { Box, ListItemButton, ListItemText } from "@mui/material";
 import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
 import VehicleDelay from "@/sheet/Trip/TripDelay";
-import { StopDeparture, EStopTime, EStopDeparture, EVehicle } from "typings";
+import { StopDeparture, EStopDeparture, EVehicle, ETrip, EStopDepartureStatus, EStopTime } from "typings";
 import useTime from "@/hooks/useTime";
 import { getTime } from "@/util/tools";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMap } from "@vis.gl/react-maplibre";
 import StopDepartureActions from "./StopDepartureActions";
-import SmallAlert from "@/ui/SmallAlert";
 import { useTranslation } from "react-i18next";
 
 export default ({ departure, isStation }: { departure: StopDeparture; isStation: boolean }) => {
@@ -19,16 +18,24 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
     const navigate = useNavigate();
     const { city } = useParams();
 
+    const trip = departure[EStopDeparture.trip];
     const vehicle = departure[EStopDeparture.vehicle];
-    const scheduled = departure[EStopDeparture.departure][EStopTime.scheduled];
-    const estimated = departure[EStopDeparture.departure][EStopTime.estimated];
-    const delay = departure[EStopDeparture.departure][EStopTime.delay];
-    const alert = departure[EStopDeparture.alert];
+    const departureData = departure[EStopDeparture.departure];
+    const scheduled = departureData[EStopTime.scheduled];
+    const delay = departureData[EStopTime.delay];
+    const status = departureData[EStopTime.status];
+    const platform = departureData[EStopTime.platform];
 
-    const hasDelay = typeof delay === "number" && !!Math.floor(Math.abs(delay) / 60000);
+    const route = trip[ETrip.route];
+    const headsign = trip[ETrip.headsign];
+    const shortName = trip[ETrip.shortName];
+    const brigade = trip[ETrip.brigade];
+
+    const estimated = scheduled + delay;
+    const hasDelay = Math.abs(delay) >= 59000;
     const minutesToDeparture = useTime(estimated);
 
-    const isCancelled = delay === "cancelled";
+    const isCancelled = status === EStopDepartureStatus.Cancelled;
     const showCountdown = !isCancelled && estimated > Date.now();
 
     const onSuperClick = () => {
@@ -36,7 +43,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
             [
                 city,
                 vehicle ? "vehicle" : "trip",
-                encodeURIComponent(vehicle ? vehicle[EVehicle.id] : departure[EStopDeparture.id]),
+                encodeURIComponent(vehicle ? vehicle[EVehicle.id] : trip[ETrip.id]),
             ].join("/") + (isStation ? "?pkp" : ""),
             {
                 state: -2,
@@ -65,7 +72,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                 backgroundColor: isExpanded ? "background.paper" : "transparent",
                 margin: isExpanded ? 1 : 0,
                 transition: "background-color 0.2s, margin 0.2s, max-height 0.2s",
-                maxHeight: (isExpanded ? 125 : 70) + (alert ? 30 : 0),
+                maxHeight: isExpanded ? 125 : 70,
                 "& > *": {
                     width: "100%",
                 },
@@ -79,10 +86,10 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                 primary={
                     <>
                         <VehicleHeadsign
-                            route={departure[EStopDeparture.route]}
-                            headsign={departure[EStopDeparture.headsign]}
-                            shortName={departure[EStopDeparture.shortName]}
-                            brigade={departure[EStopDeparture.brigade]}
+                            route={route}
+                            headsign={headsign}
+                            shortName={shortName}
+                            brigade={brigade}
                         />
 
                         {showCountdown && <span>{minutesToDeparture > 0 ? minutesToDeparture : "<1"}</span>}
@@ -99,9 +106,8 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                         >
                             <VehicleDelay
                                 delay={delay}
-                                showGPS={
-                                    !!departure[EStopDeparture.vehicleId] || (isStation ? undefined : false)
-                                }
+                                status={status}
+                                showGPS={!!vehicle || (isStation ? undefined : false)}
                             />
                             ·
                             {hasDelay || isCancelled ? (
@@ -110,14 +116,9 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                                 <span>{getTime(estimated)}</span>
                             )}
                             {hasDelay && <span>{getTime(estimated)}</span>}
-                            {departure[EStopDeparture.platform] && (
+                            {platform && (
                                 <span>
-                                    · {t("platform")} <b>{departure[EStopDeparture.platform]}</b>
-                                </span>
-                            )}
-                            {departure[EStopDeparture.track] && (
-                                <span>
-                                    · {t("track")} <b>{departure[EStopDeparture.track]}</b>
+                                    · {t("platform")} <b>{platform}</b>
                                 </span>
                             )}
                         </Box>
@@ -143,8 +144,6 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                     },
                 }}
             />
-
-            {alert && <SmallAlert type={alert.type} text={alert.text} />}
 
             {isExpanded && <StopDepartureActions departure={departure} />}
         </ListItemButton>

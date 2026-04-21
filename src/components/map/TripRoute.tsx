@@ -1,10 +1,10 @@
 import { Layer, Source } from "@vis.gl/react-maplibre";
 import { useMemo } from "react";
-import { ETripStop, Shape, TripStop } from "typings";
+import { Shape, ItineraryStop, EItineraryStop, EStop } from "typings";
 
 type Props = {
     shape: Shape;
-    stops: TripStop[];
+    stops: ItineraryStop[];
     color: string;
 };
 
@@ -16,12 +16,12 @@ export default ({ shape, stops, color }: Props) => {
                 type: "Feature",
                 geometry: {
                     type: "Point",
-                    coordinates: stop[ETripStop.location],
+                    coordinates: stop[EItineraryStop.stop][EStop.location],
                 },
                 properties: {
-                    id: stop[ETripStop.id],
+                    id: stop[EItineraryStop.stop][EStop.id],
                     color,
-                    title: stop[ETripStop.name],
+                    title: stop[EItineraryStop.stop][EStop.name],
                 },
             })),
         }),

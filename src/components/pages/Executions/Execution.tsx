@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { EExecution, Execution, VehicleType } from "typings";
 
 export default ({ execution }: { execution: Execution }) => {
-    const type = +execution[EExecution.vehicleId].split("/")[0] as VehicleType;
+    const type = +execution[EExecution.vehicleId].split(":")[0] as VehicleType;
     const color = useThemeStore((state) => state.color);
     const { t } = useTranslation("Executions");
 
@@ -57,7 +57,7 @@ export default ({ execution }: { execution: Execution }) => {
 
             <div className="executionTripInfo">
                 <span>
-                    {t("vehicle")}: #{execution[EExecution.vehicleId].split("/")[1]}
+                    {t("vehicle")}: #{execution[EExecution.vehicleId].split(":")[1]}
                 </span>
                 <span>
                     {t("trip")}: {execution[EExecution.gtfsTripId]}

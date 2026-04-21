@@ -1,10 +1,9 @@
 import useFilterStore from "./useFilterStore";
 import { useShallow } from "zustand/react/shallow";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useMap } from "@vis.gl/react-maplibre";
-import { fetchMarkers } from "./useQueryMarkers";
 import { ERoute, MapData, Stop } from "typings";
-import { useWebSocket } from "./useWebSocket";
+import { useEventQuery } from "./useEventQuery";
 
 type Props = {
     city: string;
@@ -12,68 +11,24 @@ type Props = {
 };
 
 export default ({ city, moveBadge }: Props) => {
-    const { subscribe } = useWebSocket();
     const { current: map } = useMap();
 
     const [routes, tempRoutes, models, tempModels] = useFilterStore(
         useShallow((state) => [state.routes, state.tempRoutes, state.models, state.tempModels]),
     );
 
-    const [vehicles, setVehicles] = useState<MapData["positions"]>([]);
-    const [stops, setStops] = useState<Stop[]>([]);
-    const [useDots, setUseDots] = useState<MapData["useDots"]>(false);
-    const [geoJson, setGeoJson] = useState<MapData["geoJson"]>();
-    const [suggestedCity, setSuggestedCity] = useState<string | undefined>(undefined);
+    const [mapState, setMapState] = useState<{ bounds: string; zoom: number }>();
 
-    const abortControllerRef = useRef<AbortController | null>(null);
-
-    const refreshMarkers = (fetchStops?: boolean) => {
-        if (!map || (!fetchStops && document.visibilityState !== "visible")) return;
-
-        abortControllerRef.current?.abort();
-
-        const newAbortController = new AbortController();
-        abortControllerRef.current = newAbortController;
-
-        const bounds = map.getBounds()!;
+    const updateMapState = () => {
+        if (!map) return;
+        const bounds = map.getBounds();
         const zoom = map.getZoom();
-        const zoomAllowed = zoom >= 14.5;
-
-        if (!zoomAllowed) setStops([]);
-
-        fetchMarkers(
-            city,
-            {
-                bounds: bounds.toArray(),
-                zoom,
-                fetchStops: fetchStops && zoomAllowed,
-                filterRoutes: routes.length ? routes.map((route) => route[ERoute.id]) : undefined,
-                filterModels: models.length ? models : undefined,
-            },
-            newAbortController.signal,
-        ).then((data) => {
-            if (newAbortController.signal.aborted) return;
-
-            setVehicles(data.positions);
-            setUseDots(data.useDots || false);
-            if (data.stops) setStops(data.stops);
-            setGeoJson(data.geoJson);
-            setSuggestedCity(data.suggestedCity);
-
-            if ((routes.length || models.length) && !data.positions.length) {
-                moveBadge();
-            }
-        });
-    };
-
-    const onMove = (e: any) => {
-        if (e.originalEvent) refreshMarkers(true);
-    };
-
-    const onVisibilityChange = () => {
-        if (document.visibilityState !== "visible") return;
-
-        refreshMarkers();
+        if (bounds) {
+            const boundsStr = [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()].join(
+                ",",
+            );
+            setMapState({ bounds: boundsStr, zoom });
+        }
     };
 
     useEffect(() => {
@@ -87,29 +42,56 @@ export default ({ city, moveBadge }: Props) => {
                     bottom: 0,
                     left: 0,
                 },
+                duration: 0,
             });
         } else {
             window.skipPadding = false;
         }
 
-        refreshMarkers(true);
+        updateMapState();
 
-        document.addEventListener("visibilitychange", onVisibilityChange);
-        const unsubscribe = subscribe("refresh", refreshMarkers);
+        const onMove = (e: any) => {
+            if (e.originalEvent) updateMapState();
+        };
+
         map.on("moveend", onMove);
 
         return () => {
-            document.removeEventListener("visibilitychange", onVisibilityChange);
-            unsubscribe();
             map.off("moveend", onMove);
         };
-    }, [map, subscribe, city, routes, tempRoutes, models, tempModels]);
+    }, [map, tempRoutes, tempModels]);
+
+    const endpoint = useMemo(() => {
+        if (!mapState) return null;
+        const params = new URLSearchParams();
+        const filterRoutes = routes.map((r) => r[ERoute.id]).join(",");
+        const filterModels = models.join(",");
+
+        if (filterRoutes) params.set("routes", filterRoutes);
+        if (filterModels) params.set("models", filterModels);
+
+        const query = params.toString();
+        return `mapFeatures/${mapState.zoom}/${mapState.bounds}/stream${query ? `?${query}` : ""}`;
+    }, [mapState, routes, models]);
+
+    const { data, initialData } = useEventQuery<{ positions: any[]; dots: any[] }, { stops: Stop[] }>(
+        city,
+        endpoint || "",
+        { enabled: !!endpoint && !tempRoutes.length && !tempModels.length, resetKey: city },
+    );
+
+    useEffect(() => {
+        if (data?.positions && data.positions.length === 0 && (routes.length || models.length)) {
+            moveBadge();
+        }
+    }, [data, routes.length, models.length]);
 
     return {
-        useDots,
-        vehicles,
-        stops,
-        geoJson,
-        suggestedCity,
+        useDots: data?.dots ? data.dots.length > 0 : false,
+        vehicles: data?.positions || [],
+        dots: data?.dots || [],
+        stops: initialData?.stops || [],
+        geoJson: undefined,
+        suggestedCity: undefined,
     };
 };

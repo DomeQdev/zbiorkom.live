@@ -5,27 +5,31 @@ import { LngLatBounds } from "maplibre-gl";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";
 import TripRoute from "@/map/TripRoute";
-import TripPlatforms from "@/map/TripPlatforms";
-import { ERoute, ETrip, ETripStop, EVehicle } from "typings";
+import { ERoute, ETrip, EItinerary, EItineraryStop, EStop, EVehicle } from "typings";
 import useVehicleStore from "@/hooks/useVehicleStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryTrip } from "@/hooks/useQueryTrip";
 import { getSheetHeight } from "@/util/tools";
-import { useWebSocket } from "@/hooks/useWebSocket";
 import { useFollowStore } from "@/hooks/useFollowStore";
 
 export default memo(() => {
-    const [vehicleData, tripData, sequence, fresh, setFresh] = useVehicleStore(
+    const [vehicleData, tripData, sequence, fresh, itinerary, setFresh] = useVehicleStore(
         useShallow((state) => [
             state.vehicle,
             state.trip,
             state.sequence ?? state.stops?.length! - 1,
             state.fresh,
+            state.itinerary,
             state.setFresh,
         ]),
     );
-    const { isFollowing, setIsFollowing, reset } = useFollowStore();
-    const { subscribe } = useWebSocket();
+    const { isFollowing, setIsFollowing, reset } = useFollowStore(
+        useShallow((state) => ({
+            isFollowing: state.isFollowing,
+            setIsFollowing: state.setIsFollowing,
+            reset: state.reset,
+        })),
+    );
     const { city, trip, vehicle } = useParams();
     const { current: map } = useMap();
     const cityId = window.location.search.includes("pkp") ? "pkp" : city!;
@@ -53,18 +57,16 @@ export default memo(() => {
     useEffect(() => {
         if (!tripData) return;
 
-        const onRefresh = () => {
+        const interval = setInterval(() => {
             if (document.visibilityState !== "visible") return;
 
             refetch();
-        };
-
-        const unsubscribe = subscribe(cityId === "pkp" ? "trainRefresh" : "refresh", onRefresh);
+        }, 15000);
 
         return () => {
-            unsubscribe();
+            clearInterval(interval);
         };
-    }, [tripData, cityId, refetch, subscribe]);
+    }, [tripData, cityId, refetch]);
 
     useEffect(() => {
         if (isLoading || (!tripData && !vehicleData)) return;
@@ -75,10 +77,13 @@ export default memo(() => {
                 center: vehicleData[EVehicle.location],
                 zoom: map.getZoom() > 15 ? map.getZoom() : 15,
             });
-        } else if (tripData && fresh) {
-            const bounds = tripData[ETrip.stops]
+        } else if (tripData && itinerary && fresh) {
+            const bounds = itinerary[EItinerary.stops]
                 .slice(sequence, sequence === undefined || sequence === -1 ? undefined : sequence + 3)
-                .reduce((bounds, stop) => bounds.extend(stop[ETripStop.location]), new LngLatBounds());
+                .reduce(
+                    (bounds, stop) => bounds.extend(stop[EItineraryStop.stop][EStop.location]),
+                    new LngLatBounds(),
+                );
 
             map?.fitBounds(bounds, {
                 padding: {
@@ -92,7 +97,7 @@ export default memo(() => {
         }
 
         if (fresh) setFresh(false);
-    }, [tripData, vehicleData, isLoading, fresh, isFollowing]);
+    }, [tripData, vehicleData, itinerary, isLoading, fresh, isFollowing]);
 
     return (
         <>
@@ -101,26 +106,19 @@ export default memo(() => {
                     variable={vehicle ? "vehicle" : "trip"}
                     dictionary={{
                         route: (vehicleData?.[EVehicle.route] || tripData?.[ETrip.route])?.[ERoute.name],
-                        vehicle: vehicleData?.[EVehicle.id]?.split("/")[1] || "",
+                        vehicle: vehicleData?.[EVehicle.id]?.split(":")[1] || "",
                         headsign: tripData?.[ETrip.headsign],
                     }}
                 />
             )}
 
-            {tripData && (
+            {tripData && itinerary && (
                 <>
                     <TripRoute
-                        shape={tripData[ETrip.shape]}
-                        stops={tripData[ETrip.stops]}
+                        shape={itinerary[EItinerary.shape] as any}
+                        stops={itinerary[EItinerary.stops]}
                         color={tripData[ETrip.route][ERoute.color]}
                     />
-
-                    {tripData[ETrip.platforms] && (
-                        <TripPlatforms
-                            platforms={tripData[ETrip.platforms]}
-                            color={tripData[ETrip.route][ERoute.color]}
-                        />
-                    )}
                 </>
             )}
 

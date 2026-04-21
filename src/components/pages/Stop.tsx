@@ -4,13 +4,11 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import StopMarker from "@/map/StopMarker";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";
-import { EStop, EStopDeparture, EStopDepartures, EStopExit } from "typings";
+import { EStop, EStopDeparture, EStopDepartures, EStopExit, ETrip, EVehicle } from "typings";
 import { useQueryStopDepartures } from "@/hooks/useQueryStops";
-import { useWebSocket } from "@/hooks/useWebSocket";
 
 export default memo(() => {
     const [hasDataFetched, setHasDataFetched] = useState<boolean>(false);
-    const { subscribe } = useWebSocket();
     const { city, stop } = useParams();
     const { current: map } = useMap();
     const navigate = useNavigate();
@@ -19,7 +17,7 @@ export default memo(() => {
     const showBrigade = localStorage.getItem("brigade") === "true";
     const showFleet = localStorage.getItem("fleet") === "true";
 
-    const { data, refetch } = useQueryStopDepartures({
+    const { data } = useQueryStopDepartures({
         city: isStation ? "pkp" : city!,
         stop: stop!,
         isMainComponent: true,
@@ -39,32 +37,24 @@ export default memo(() => {
 
             setHasDataFetched(true);
         }
-
-        const onRefresh = () => {
-            if (document.visibilityState !== "visible") return;
-
-            refetch();
-        };
-
-        const unsubscribe = subscribe(isStation ? "trainRefresh" : "refresh", onRefresh);
-
-        return () => {
-            unsubscribe();
-        };
-    }, [data, subscribe, refetch]);
+    }, [data, stopData, map, hasDataFetched]);
 
     const liveDepartures = useMemo(() => {
         if (!data) return [];
 
         const uniqueTrips = [];
-        const map = new Set<string>();
+        const seenVehicles = new Set<string>();
 
         for (const departure of data?.[EStopDepartures.departures] ?? []) {
-            if (!departure[EStopDeparture.vehicle] || map.has(departure[EStopDeparture.vehicleId])) {
+            const vehicle = departure[EStopDeparture.vehicle];
+            if (!vehicle) continue;
+
+            const vehicleId = vehicle[EVehicle.id];
+            if (seenVehicles.has(vehicleId)) {
                 continue;
             }
 
-            map.add(departure[EStopDeparture.vehicleId]);
+            seenVehicles.add(vehicleId);
             uniqueTrips.push(departure);
         }
 
@@ -145,13 +135,13 @@ export default memo(() => {
 
             {liveDepartures.map((departure) => (
                 <VehicleMarker
-                    key={departure[EStopDeparture.vehicleId]}
+                    key={departure[EStopDeparture.trip][ETrip.id]}
                     vehicle={departure[EStopDeparture.vehicle]!}
                     showBrigade={showBrigade}
                     showFleet={showFleet}
                     onClick={() => {
                         navigate(
-                            `/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.vehicleId])}` +
+                            `/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.trip][ETrip.id])}` +
                                 (isStation ? "?pkp" : ""),
                             { state: -2 },
                         );
