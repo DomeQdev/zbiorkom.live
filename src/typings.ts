@@ -1,5 +1,4 @@
 export type VehicleType = 0 | 1 | 2 | 3 | 4 | 11 | 20;
-export type DelayType = number | "departure" | "departed" | "cancelled" | "live" | "scheduled";
 export type Location = [number, number];
 export type SheetContentTypes =
     | "Cities"
@@ -13,6 +12,14 @@ export type SheetContentTypes =
     | "MapStyle"
     | null;
 
+export interface CityAgency {
+    id: string;
+    name: string;
+    icon?: string;
+    faresUrl?: string;
+    dataSources?: { text: string; url: string }[];
+}
+
 export interface City {
     id: string;
     name: string;
@@ -21,6 +28,8 @@ export interface City {
     description?: string;
     showNewTag?: boolean;
     disableBrigades?: boolean;
+    virtual?: boolean;
+    agencies?: Record<string, CityAgency>;
 }
 
 export type Route = [
@@ -285,22 +294,14 @@ export enum ERouteDirection {
     shape = 3,
 }
 
-export type VehicleInfo = [
-    id: string,
-    model: string,
-    prodYear: string,
-    depot: string,
-    carrier: string,
-    imageHash: string,
-];
+export type VehicleInfo = [id: string, model: string, prodYear: number, carrier: string, imageHash: string];
 
 export enum EVehicleInfo {
     id = 0,
     model = 1,
     prodYear = 2,
-    depot = 3,
-    carrier = 4,
-    imageHash = 5,
+    carrier = 3,
+    imageHash = 4,
 }
 
 export type APISearch = {
