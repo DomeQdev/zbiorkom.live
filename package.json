@@ -3,6 +3,12 @@
     "version": "4.8.0",
     "type": "module",
     "dependencies": {
+        "@capacitor/app": "^7.0.2",
+        "@capacitor/core": "^7.4.3",
+        "@capacitor/geolocation": "^7.1.0",
+        "@capacitor/push-notifications": "^7.0.3",
+        "@capacitor/splash-screen": "^7.0.3",
+        "@capacitor/status-bar": "^7.0.3",
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.1",
         "@mui/icons-material": "^7.3.2",
@@ -30,8 +36,12 @@
     ],
     "scripts": {
         "start": "vite",
-        "build": "vite build && npx workbox-cli generateSW workbox-config.cjs",
-        "preview": "vite preview"
+        "build:web": "vite build && npx workbox-cli generateSW workbox-config.cjs",
+        "build": "npm run build:web",
+        "preview": "vite preview",
+        "cap:add:ios": "npx cap add ios",
+        "cap:sync:ios": "npm run build:web && npx cap sync ios",
+        "ios:assets": "npx @capacitor/assets generate --ios"
     },
     "eslintConfig": {
         "extends": [
@@ -40,6 +50,9 @@
         ]
     },
     "devDependencies": {
+        "@capacitor/assets": "^3.0.5",
+        "@capacitor/cli": "^7.4.3",
+        "@capacitor/ios": "^7.4.3",
         "@types/node": "^24.5.2",
         "@types/react": "^19.1.15",
         "@types/react-dom": "^19.1.9",

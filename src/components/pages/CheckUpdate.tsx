@@ -1,4 +1,5 @@
 import { Box, LinearProgress, ListItemText, Slide } from "@mui/material";
+import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
 import { Update } from "@mui/icons-material";
 import { useEffect, useState } from "react";
@@ -8,6 +9,7 @@ export default () => {
     const { t } = useTranslation("Updates");
 
     useEffect(() => {
+        if (Capacitor.isNativePlatform()) return;
         if (window.location.hostname === "localhost" || !("serviceWorker" in navigator)) return;
 
         let refreshing = false;

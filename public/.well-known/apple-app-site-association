@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appIDs": ["__APPLE_TEAM_ID__.live.zbiorkom.app"],
+                "components": [{ "/": "/*" }]
+            }
+        ]
+    }
+}

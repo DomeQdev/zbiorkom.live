@@ -1,0 +1,300 @@
+name: iOS IPA (Sideload/KravaSign)
+
+on:
+    push:
+        branches: ["main"]
+    workflow_dispatch:
+        inputs:
+            signing_mode:
+                description: "Signing mode"
+                required: true
+                default: "auto"
+                type: choice
+                options:
+                    - auto
+                    - signed
+                    - unsigned
+            export_method:
+                description: "xcodebuild export method (signed mode)"
+                required: true
+                default: "ad-hoc"
+                type: choice
+                options:
+                    - development
+                    - ad-hoc
+                    - enterprise
+                    - app-store
+            aps_environment:
+                description: "APNs entitlement environment for signed builds"
+                required: true
+                default: "production"
+                type: choice
+                options:
+                    - development
+                    - production
+            upload_testflight:
+                description: "Upload to TestFlight (requires official App Store flow)"
+                required: true
+                default: false
+                type: boolean
+
+jobs:
+    build:
+        runs-on: macos-14
+        timeout-minutes: 60
+        env:
+            APP_BUNDLE_ID: live.zbiorkom.app
+            APP_SCHEME: App
+            APP_WORKSPACE: ios/App/App.xcworkspace
+            SIGNING_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.signing_mode || 'auto' }}
+            EXPORT_METHOD: ${{ github.event_name == 'workflow_dispatch' && inputs.export_method || 'ad-hoc' }}
+            APS_ENVIRONMENT_INPUT: ${{ github.event_name == 'workflow_dispatch' && inputs.aps_environment || 'production' }}
+            UPLOAD_TESTFLIGHT: ${{ github.event_name == 'workflow_dispatch' && inputs.upload_testflight || false }}
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: npm
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Determine signing path
+              env:
+                  BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+                  P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+                  BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+                  KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+              run: |
+                  set -euo pipefail
+                  HAS_SIGNING=false
+                  if [ -n "${BUILD_CERTIFICATE_BASE64:-}" ] && [ -n "${P12_PASSWORD:-}" ] && [ -n "${BUILD_PROVISION_PROFILE_BASE64:-}" ] && [ -n "${KEYCHAIN_PASSWORD:-}" ]; then
+                    HAS_SIGNING=true
+                  fi
+
+                  EFFECTIVE="$SIGNING_MODE"
+                  if [ "$SIGNING_MODE" = "auto" ]; then
+                    if [ "$HAS_SIGNING" = "true" ]; then
+                      EFFECTIVE="signed"
+                    else
+                      EFFECTIVE="unsigned"
+                    fi
+                  fi
+
+                  if [ "$EFFECTIVE" = "signed" ] && [ "$HAS_SIGNING" != "true" ]; then
+                    echo "Signed mode requested but signing secrets are missing." >&2
+                    exit 1
+                  fi
+
+                  echo "HAS_SIGNING=$HAS_SIGNING" >> "$GITHUB_ENV"
+                  echo "EFFECTIVE_SIGNING_MODE=$EFFECTIVE" >> "$GITHUB_ENV"
+                  echo "Using signing mode: $EFFECTIVE"
+
+            - name: Inject Team ID into AASA (optional)
+              env:
+                  APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+              run: |
+                  set -euo pipefail
+                  if [ -n "${APPLE_TEAM_ID:-}" ]; then
+                    sed -i.bak "s/__APPLE_TEAM_ID__/${APPLE_TEAM_ID}/g" public/.well-known/apple-app-site-association
+                    rm -f public/.well-known/apple-app-site-association.bak
+                  fi
+
+            - name: Build web app
+              run: npm run build:web
+
+            - name: Prepare Capacitor iOS project
+              run: |
+                  if [ ! -d "ios/App" ]; then
+                    npx cap add ios
+                  fi
+                  npx cap sync ios
+
+            - name: Install signing assets
+              if: env.EFFECTIVE_SIGNING_MODE == 'signed'
+              env:
+                  BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+                  P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+                  BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+                  KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+                  APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+                  SIGNING_IDENTITY: ${{ secrets.SIGNING_IDENTITY }}
+              run: |
+                  set -euo pipefail
+                  CERTIFICATE_PATH="$RUNNER_TEMP/build_certificate.p12"
+                  PP_PATH="$RUNNER_TEMP/build_pp.mobileprovision"
+                  KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain-db"
+                  PP_PLIST="$RUNNER_TEMP/profile.plist"
+
+                  echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o "$CERTIFICATE_PATH"
+                  echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o "$PP_PATH"
+
+                  security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+                  security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+                  security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+                  security import "$CERTIFICATE_PATH" -P "$P12_PASSWORD" -A -f pkcs12 -k "$KEYCHAIN_PATH"
+                  security list-keychain -d user -s "$KEYCHAIN_PATH"
+
+                  mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+                  cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/"
+
+                  security cms -D -i "$PP_PATH" -o "$PP_PLIST"
+                  PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" "$PP_PLIST")
+                  PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" "$PP_PLIST")
+                  PROFILE_TEAM_ID=$(/usr/libexec/PlistBuddy -c "Print :TeamIdentifier:0" "$PP_PLIST")
+
+                  if [ -n "${APPLE_TEAM_ID:-}" ]; then
+                    EFFECTIVE_TEAM_ID="$APPLE_TEAM_ID"
+                  else
+                    EFFECTIVE_TEAM_ID="$PROFILE_TEAM_ID"
+                  fi
+
+                  if [ -n "${SIGNING_IDENTITY:-}" ]; then
+                    EFFECTIVE_SIGNING_IDENTITY="$SIGNING_IDENTITY"
+                  else
+                    EFFECTIVE_SIGNING_IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | awk -F\" '/"/ {print $2; exit}')
+                  fi
+
+                  if [ -z "${EFFECTIVE_SIGNING_IDENTITY:-}" ]; then
+                    echo "No signing identity found in imported certificate." >&2
+                    exit 1
+                  fi
+
+                  echo "PROFILE_NAME=$PROFILE_NAME" >> "$GITHUB_ENV"
+                  echo "PROFILE_UUID=$PROFILE_UUID" >> "$GITHUB_ENV"
+                  echo "EFFECTIVE_TEAM_ID=$EFFECTIVE_TEAM_ID" >> "$GITHUB_ENV"
+                  echo "EFFECTIVE_SIGNING_IDENTITY=$EFFECTIVE_SIGNING_IDENTITY" >> "$GITHUB_ENV"
+
+            - name: Build unsigned IPA
+              if: env.EFFECTIVE_SIGNING_MODE == 'unsigned'
+              run: |
+                  set -euo pipefail
+                  DERIVED_DATA="$RUNNER_TEMP/DerivedDataUnsigned"
+                  BUILD_DIR="$RUNNER_TEMP/UnsignedBuild"
+                  mkdir -p "$BUILD_DIR"
+
+                  xcodebuild \
+                    -workspace "$APP_WORKSPACE" \
+                    -scheme "$APP_SCHEME" \
+                    -configuration Release \
+                    -sdk iphoneos \
+                    -derivedDataPath "$DERIVED_DATA" \
+                    CODE_SIGNING_ALLOWED=NO \
+                    CODE_SIGNING_REQUIRED=NO \
+                    CODE_SIGN_IDENTITY="" \
+                    build
+
+                  APP_PATH="$(find "$DERIVED_DATA" -type d -path '*Release-iphoneos/App.app' | head -n 1)"
+                  if [ -z "$APP_PATH" ]; then
+                    echo "Unsigned .app not found." >&2
+                    exit 1
+                  fi
+
+                  mkdir -p build_output/Payload
+                  cp -R "$APP_PATH" build_output/Payload/App.app
+                  (cd build_output && zip -qry unsigned.ipa Payload)
+                  (cd build_output && zip -qry unsigned-app.zip Payload/App.app)
+
+            - name: Archive signed app
+              if: env.EFFECTIVE_SIGNING_MODE == 'signed'
+              run: |
+                  set -euo pipefail
+                  xcodebuild \
+                    -workspace "$APP_WORKSPACE" \
+                    -scheme "$APP_SCHEME" \
+                    -configuration Release \
+                    -destination generic/platform=iOS \
+                    -archivePath "$RUNNER_TEMP/App.xcarchive" \
+                    CODE_SIGN_STYLE=Manual \
+                    CODE_SIGN_IDENTITY="$EFFECTIVE_SIGNING_IDENTITY" \
+                    DEVELOPMENT_TEAM="$EFFECTIVE_TEAM_ID" \
+                    PRODUCT_BUNDLE_IDENTIFIER="$APP_BUNDLE_ID" \
+                    PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
+                    APS_ENVIRONMENT="$APS_ENVIRONMENT_INPUT" \
+                    clean archive
+
+            - name: Create export options (signed)
+              if: env.EFFECTIVE_SIGNING_MODE == 'signed'
+              run: |
+                  set -euo pipefail
+                  cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+                  <?xml version="1.0" encoding="UTF-8"?>
+                  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+                  <plist version="1.0">
+                  <dict>
+                    <key>method</key>
+                    <string>${EXPORT_METHOD}</string>
+                    <key>teamID</key>
+                    <string>${EFFECTIVE_TEAM_ID}</string>
+                    <key>signingStyle</key>
+                    <string>manual</string>
+                    <key>provisioningProfiles</key>
+                    <dict>
+                      <key>${APP_BUNDLE_ID}</key>
+                      <string>${PROFILE_NAME}</string>
+                    </dict>
+                    <key>signingCertificate</key>
+                    <string>${EFFECTIVE_SIGNING_IDENTITY}</string>
+                    <key>destination</key>
+                    <string>export</string>
+                    <key>stripSwiftSymbols</key>
+                    <true/>
+                    <key>compileBitcode</key>
+                    <false/>
+                  </dict>
+                  </plist>
+                  EOF
+
+            - name: Export signed IPA
+              if: env.EFFECTIVE_SIGNING_MODE == 'signed'
+              run: |
+                  set -euo pipefail
+                  mkdir -p build_output
+                  xcodebuild -exportArchive \
+                    -archivePath "$RUNNER_TEMP/App.xcarchive" \
+                    -exportPath build_output \
+                    -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist"
+
+            - name: Create external signing instructions
+              run: |
+                  mkdir -p build_output
+                  cat > build_output/external-signing.txt <<'EOF'
+                  External signing flow:
+                  1. Use unsigned.ipa (or unsigned-app.zip) artifact.
+                  2. Sign with your external signer (KravaSign / equivalent) using your provisioning profile and certificate.
+                  3. Install resulting IPA via AltStore/Sideloadly or MDM.
+                  Note: Push notifications and Universal Links require matching entitlements in the final signed binary/profile.
+                  EOF
+
+            - name: Upload artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: ios-build-output
+                  path: build_output/*
+
+            - name: Setup App Store Connect API key
+              if: env.EFFECTIVE_SIGNING_MODE == 'signed' && env.EXPORT_METHOD == 'app-store' && env.UPLOAD_TESTFLIGHT == 'true' && secrets.APP_STORE_CONNECT_PRIVATE_KEY != ''
+              env:
+                  APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+                  APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+              run: |
+                  mkdir -p ~/.appstoreconnect/private_keys
+                  printf "%s" "$APP_STORE_CONNECT_PRIVATE_KEY" > ~/.appstoreconnect/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
+
+            - name: Upload to TestFlight
+              if: env.EFFECTIVE_SIGNING_MODE == 'signed' && env.EXPORT_METHOD == 'app-store' && env.UPLOAD_TESTFLIGHT == 'true' && secrets.APP_STORE_CONNECT_PRIVATE_KEY != ''
+              env:
+                  APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+                  APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+              run: |
+                  IPA_PATH="$(ls build_output/*.ipa | head -n 1)"
+                  xcrun altool --upload-app \
+                    --type ios \
+                    --file "$IPA_PATH" \
+                    --apiKey "$APP_STORE_CONNECT_KEY_ID" \
+                    --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID"
