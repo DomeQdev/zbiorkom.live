@@ -50,6 +50,9 @@ jobs:
             EXPORT_METHOD: ${{ github.event_name == 'workflow_dispatch' && inputs.export_method || 'ad-hoc' }}
             APS_ENVIRONMENT_INPUT: ${{ github.event_name == 'workflow_dispatch' && inputs.aps_environment || 'production' }}
             UPLOAD_TESTFLIGHT: ${{ github.event_name == 'workflow_dispatch' && inputs.upload_testflight || false }}
+            APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+            APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+            APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
 
         steps:
             - name: Checkout
@@ -278,19 +281,13 @@ jobs:
                   path: build_output/*
 
             - name: Setup App Store Connect API key
-              if: env.EFFECTIVE_SIGNING_MODE == 'signed' && env.EXPORT_METHOD == 'app-store' && env.UPLOAD_TESTFLIGHT == 'true' && secrets.APP_STORE_CONNECT_PRIVATE_KEY != ''
-              env:
-                  APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
-                  APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+              if: env.EFFECTIVE_SIGNING_MODE == 'signed' && env.EXPORT_METHOD == 'app-store' && env.UPLOAD_TESTFLIGHT == 'true' && env.APP_STORE_CONNECT_PRIVATE_KEY != ''
               run: |
                   mkdir -p ~/.appstoreconnect/private_keys
                   printf "%s" "$APP_STORE_CONNECT_PRIVATE_KEY" > ~/.appstoreconnect/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
 
             - name: Upload to TestFlight
-              if: env.EFFECTIVE_SIGNING_MODE == 'signed' && env.EXPORT_METHOD == 'app-store' && env.UPLOAD_TESTFLIGHT == 'true' && secrets.APP_STORE_CONNECT_PRIVATE_KEY != ''
-              env:
-                  APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
-                  APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+              if: env.EFFECTIVE_SIGNING_MODE == 'signed' && env.EXPORT_METHOD == 'app-store' && env.UPLOAD_TESTFLIGHT == 'true' && env.APP_STORE_CONNECT_PRIVATE_KEY != ''
               run: |
                   IPA_PATH="$(ls build_output/*.ipa | head -n 1)"
                   xcrun altool --upload-app \
