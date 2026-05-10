@@ -8,7 +8,7 @@ import { EStopDepartures } from "typings";
 import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 import { useTranslation } from "react-i18next";
 import Alert from "@/ui/Alert";
-import { Bedtime } from "@mui/icons-material";
+import { Bedtime, Report } from "@mui/icons-material";
 
 const VirtuosoComponents = {
     Footer: ({ context: { hasMore } }: any) => {
@@ -24,9 +24,10 @@ export default memo(() => {
     const isStation = window.location.pathname.includes("/station");
 
     const expandLimit = useStopStore((state) => state.expandLimit);
-    const { data } = useQueryStopDepartures({
+    const { data, isLoading, error } = useQueryStopDepartures({
         city: isStation ? "pkp" : city!,
         stop: stop!,
+        expectStream: true,
     });
 
     const virtuosoContext = useMemo(
@@ -34,7 +35,17 @@ export default memo(() => {
         [data?.[EStopDepartures.hasMore]],
     );
 
-    if (!data) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
+    if (!data && error)
+        return (
+            <Alert
+                title={t("loadError", { ns: "Shared" })}
+                description={String(error)}
+                Icon={Report}
+                color="error"
+            />
+        );
+    if (!data && isLoading) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
+    if (!data) return <Alert title={t("loadError", { ns: "Shared" })} Icon={Report} color="error" />;
 
     const departures = data?.[EStopDepartures.departures];
     if (!departures?.length) return <Alert title={t("noDepartures")} Icon={Bedtime} color="error" />;

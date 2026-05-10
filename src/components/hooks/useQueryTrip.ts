@@ -31,6 +31,7 @@ export const useQueryTrip = ({ city, trip, vehicle }: TripQueryProps) => {
     const setLastPing = useVehicleStore((state) => state.setLastPing);
     const setStops = useVehicleStore((state) => state.setStops);
     const setSequence = useVehicleStore((state) => state.setSequence);
+    const setStreamStatus = useVehicleStore((state) => state.setStreamStatus);
     const reset = useVehicleStore((state) => state.reset);
     const getFresh = useVehicleStore((state) => state.fresh);
 
@@ -77,6 +78,13 @@ export const useQueryTrip = ({ city, trip, vehicle }: TripQueryProps) => {
             }
         }
     }, [rawInitial, rawData]);
+
+    useEffect(() => {
+        setStreamStatus({
+            loading: loadingState?.loading,
+            error: loadingState?.error,
+        });
+    }, [loadingState?.loading, loadingState?.error]);
 
     useEffect(() => {
         return () => {

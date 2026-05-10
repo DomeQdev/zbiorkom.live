@@ -14,6 +14,7 @@ type StopDeparturesQueryProps = {
     destinations?: string[];
     wait?: number;
     isMainComponent?: boolean;
+    expectStream?: boolean;
 };
 
 export const useQueryStopDepartures = (props: StopDeparturesQueryProps) => {
@@ -30,6 +31,7 @@ export const useQueryStopDepartures = (props: StopDeparturesQueryProps) => {
     const destinations = props.destinations?.join(",") || storeDest;
 
     const queryKey = useMemo(() => ["stop", props.stop, destinations], [props.stop, destinations]);
+    const stateKey = useMemo(() => ["stopState", props.stop, destinations], [props.stop, destinations]);
 
     const endpoint = useMemo(() => {
         const query = new URLSearchParams();
@@ -65,11 +67,26 @@ export const useQueryStopDepartures = (props: StopDeparturesQueryProps) => {
         }
     }, [props.isMainComponent, eventData, queryClient, queryKey]);
 
+    useEffect(() => {
+        if (!props.isMainComponent) return;
+        queryClient.setQueryData(stateKey, {
+            loading: loadingState?.loading,
+            error: loadingState?.error,
+        });
+    }, [props.isMainComponent, loadingState?.loading, loadingState?.error, queryClient, stateKey]);
+
     const query = useQuery({
         queryKey,
         queryFn: () => eventData as StopDepartures,
         enabled: false,
         initialData: props.isMainComponent ? eventData : undefined,
+    });
+
+    const stateQuery = useQuery<{ loading?: boolean; error?: string }>({
+        queryKey: stateKey,
+        queryFn: () => ({}),
+        enabled: false,
+        initialData: { loading: !props.isMainComponent && !!props.expectStream },
     });
 
     useEffect(() => {
@@ -78,14 +95,17 @@ export const useQueryStopDepartures = (props: StopDeparturesQueryProps) => {
         return () => {
             reset();
             queryClient.removeQueries({ queryKey });
+            queryClient.removeQueries({ queryKey: stateKey });
         };
-    }, [props.isMainComponent, props.stop, reset, queryClient, queryKey]); // Proper dependencies
+    }, [props.isMainComponent, props.stop, reset, queryClient, queryKey, stateKey]);
+
+    const sharedState = stateQuery.data;
 
     return {
         ...query,
         data: props.isMainComponent ? eventData : query.data,
-        isLoading: props.isMainComponent ? loadingState?.loading : query.isLoading,
-        error: props.isMainComponent ? loadingState?.error : query.error,
+        isLoading: props.isMainComponent ? loadingState?.loading : sharedState?.loading,
+        error: props.isMainComponent ? loadingState?.error : sharedState?.error,
         refetch: () => {},
     };
 };

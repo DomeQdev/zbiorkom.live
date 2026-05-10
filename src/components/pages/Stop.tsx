@@ -100,7 +100,7 @@ export default memo(() => {
                     showFleet={showFleet}
                     onClick={() => {
                         navigate(
-                            `/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.trip][ETrip.id])}` +
+                            `/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.vehicle]![EVehicle.id])}` +
                                 (isStation ? "?pkp" : ""),
                             { state: -2 },
                         );

@@ -59,26 +59,58 @@ export function useEventQuery<T = any, I = T>(
         const es = new EventSource(url);
         esRef.current = es;
 
+        let terminalError = false;
+
+        const parseErrorData = (raw: string): string => {
+            try {
+                const parsed = JSON.parse(raw);
+                return typeof parsed === "string" ? parsed : JSON.stringify(parsed);
+            } catch {
+                return raw;
+            }
+        };
+
         es.addEventListener("open", () => {
             retryCount.current = 0;
         });
 
         es.addEventListener("initial", (event: any) => {
-            setInitialData(JSON.parse(event.data) as I);
+            try {
+                setInitialData(JSON.parse(event.data) as I);
+                setIsLoading(false);
+            } catch {
+                terminalError = true;
+                setError("PARSE_ERROR");
+                setIsLoading(false);
+                es.close();
+            }
         });
 
         es.addEventListener("message", (event: any) => {
-            setData(JSON.parse(event.data) as T);
-            setIsLoading(false);
+            try {
+                setData(JSON.parse(event.data) as T);
+                setIsLoading(false);
+            } catch {
+                terminalError = true;
+                setError("PARSE_ERROR");
+                setIsLoading(false);
+                es.close();
+            }
         });
 
         es.addEventListener("errorCode", (event: any) => {
-            setError(JSON.parse(event.data));
+            terminalError = true;
+            setError(parseErrorData(event.data));
             setIsLoading(false);
             es.close();
         });
 
         es.addEventListener("error", () => {
+            if (terminalError) {
+                es.close();
+                return;
+            }
+
             if (retryCount.current < 5) {
                 retryCount.current++;
             } else {
@@ -87,7 +119,7 @@ export function useEventQuery<T = any, I = T>(
             }
             es.close();
 
-            if (!document.hidden && enabled) {
+            if (!document.hidden && enabled && retryCount.current < 5) {
                 setTimeout(() => {
                     if (!document.hidden && enabled && esRef.current !== es) {
                         connect();

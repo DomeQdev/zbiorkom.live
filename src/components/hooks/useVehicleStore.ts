@@ -5,6 +5,8 @@ import { create } from "zustand";
 interface VehicleState extends APIVehicle {
     fresh?: boolean;
     itinerary?: Itinerary;
+    streamError?: string;
+    streamLoading?: boolean;
     setFresh: (fresh: boolean) => void;
     setVehicle: (vehicle: APIVehicle["vehicle"]) => void;
     setTrip: (trip: APIVehicle["trip"]) => void;
@@ -12,6 +14,7 @@ interface VehicleState extends APIVehicle {
     setSequence: (sequence: APIVehicle["sequence"]) => void;
     setLastPing: (lastPing: APIVehicle["lastPing"]) => void;
     setItinerary: (itinerary: Itinerary) => void;
+    setStreamStatus: (status: { error?: string; loading?: boolean }) => void;
     reset: () => void;
 }
 
@@ -23,6 +26,7 @@ export default create<VehicleState>()((set) => ({
     setSequence: (sequence) => set({ sequence }),
     setLastPing: (lastPing) => set({ lastPing }),
     setItinerary: (itinerary) => set({ itinerary }),
+    setStreamStatus: ({ error, loading }) => set({ streamError: error, streamLoading: loading }),
     reset: () => {
         set({
             vehicle: undefined,
@@ -32,6 +36,8 @@ export default create<VehicleState>()((set) => ({
             sequence: undefined,
             lastPing: undefined,
             itinerary: undefined,
+            streamError: undefined,
+            streamLoading: undefined,
         });
     },
 }));

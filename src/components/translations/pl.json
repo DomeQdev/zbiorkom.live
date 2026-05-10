@@ -67,7 +67,10 @@
     },
     "Shared": {
         "share": "Udostępnij",
-        "ago": "temu"
+        "ago": "temu",
+        "loadError": "Wystąpił błąd ładowania",
+        "networkError": "Brak połączenia z serwerem",
+        "retry": "Spróbuj ponownie"
     },
     "Favorites": {
         "selectDirection": "Wybierz kierunek",

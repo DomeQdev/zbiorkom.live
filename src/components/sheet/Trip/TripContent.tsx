@@ -19,7 +19,7 @@ const VirtuosoComponents = {
 export default () => {
     const { t } = useTranslation("Vehicle");
     const virtuosoRef = useRef<VirtuosoHandle>(null);
-    const [vehicle, trip, sequence, stops, itinerary, fresh] = useVehicleStore(
+    const [vehicle, trip, sequence, stops, itinerary, fresh, streamError, streamLoading] = useVehicleStore(
         useShallow((state) => [
             state.vehicle,
             state.trip,
@@ -27,6 +27,8 @@ export default () => {
             state.stops,
             state.itinerary,
             state.fresh,
+            state.streamError,
+            state.streamLoading,
         ]),
     );
     const { isFollowing, setIsFollowing } = useFollowStore();
@@ -65,10 +67,23 @@ export default () => {
 
     const virtuosoContext = useMemo(() => ({ trip }), [trip]);
 
-    if (!vehicle && !trip && fresh) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
-    if (!vehicle && !trip) return <Alert Icon={Report} title={t("vehicleNotFound")} color="error" />;
-    if (!trip || !stops || !itinerary)
-        return <Alert Icon={Warning} title={t("tripNotFound")} color="warning" />;
+    if (!trip && !itinerary) {
+        if (streamError)
+            return (
+                <Alert
+                    Icon={Report}
+                    title={t("loadError", { ns: "Shared" })}
+                    description={String(streamError)}
+                    color="error"
+                />
+            );
+        if (streamLoading || fresh) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
+        return <Alert Icon={Report} title={t("vehicleNotFound")} color="error" />;
+    }
+
+    if (!trip || !itinerary) return <Alert Icon={Warning} title={t("tripNotFound")} color="warning" />;
+
+    if (!stops) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
 
     return (
         <div onWheel={disableFollowing} onTouchMove={disableFollowing}>

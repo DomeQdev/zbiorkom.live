@@ -2,7 +2,7 @@ import { AltRoute, DirectionsBus } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, ButtonBase } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { ETrip, EVehicle, EStopDeparture, EStopDepartureStatus, EStopTime, StopDeparture } from "typings";
+import { ETrip, EVehicle, EStopDeparture, StopDeparture } from "typings";
 
 export default ({ departure }: { departure: StopDeparture }) => {
     const { t } = useTranslation("Vehicle");
@@ -11,8 +11,7 @@ export default ({ departure }: { departure: StopDeparture }) => {
 
     const tripId = departure[EStopDeparture.trip][ETrip.id];
     const vehicleId = departure[EStopDeparture.vehicle]?.[EVehicle.id];
-    const status = departure[EStopDeparture.departure][EStopTime.status];
-    const showVehicle = !!vehicleId && status !== EStopDepartureStatus.OnPreviousTrip;
+    const showVehicle = !!vehicleId;
 
     const buttons = [
         {

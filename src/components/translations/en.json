@@ -67,7 +67,10 @@
     },
     "Shared": {
         "share": "Share",
-        "ago": "ago"
+        "ago": "ago",
+        "loadError": "Failed to load",
+        "networkError": "No connection to the server",
+        "retry": "Try again"
     },
     "Favorites": {
         "selectDirection": "Select direction",

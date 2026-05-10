@@ -29,7 +29,7 @@ export default () => {
     const { t } = useTranslation("VehicleInfo");
     const goBack = useGoBack();
 
-    const { data, isLoading } = useQueryVehicleInfo({
+    const { data, isLoading, error } = useQueryVehicleInfo({
         city: vehicle?.[EVehicle.city],
         vehicle: vehicle?.[EVehicle.id],
     });
@@ -218,7 +218,16 @@ export default () => {
                     </>
                 )}
 
-                {!data?.[EVehicle.id] && !isLoading && (
+                {error && !isLoading && (
+                    <Alert
+                        Icon={Dangerous}
+                        title={t("loadError", { ns: "Shared" })}
+                        description={String((error as Error).message ?? error)}
+                        color="error"
+                        sx={{ paddingBottom: 6 }}
+                    />
+                )}
+                {!error && !data?.[EVehicleInfo.id] && !isLoading && (
                     <Alert Icon={Dangerous} title={t("noData")} sx={{ paddingBottom: 6 }} />
                 )}
                 {isLoading && <Loading />}

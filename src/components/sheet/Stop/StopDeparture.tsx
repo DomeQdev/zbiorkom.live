@@ -38,9 +38,12 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
     const isCancelled = status === EStopDepartureStatus.Cancelled;
     const showCountdown = !isCancelled && estimated > Date.now();
 
-    const useVehicleRoute = !!vehicle && status !== EStopDepartureStatus.OnPreviousTrip;
+    const isLive = status === EStopDepartureStatus.OnPreviousTrip;
+    const useVehicleRoute = !!vehicle && !isLive;
 
     const onSuperClick = () => {
+        if (isLive) return setExpanded(true);
+
         navigate(
             [
                 city,
@@ -56,6 +59,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
     return (
         <ListItemButton
             onClick={() => {
+                if (isLive) return setExpanded(!isExpanded);
                 if (isStation) return onSuperClick();
 
                 if (vehicle) {

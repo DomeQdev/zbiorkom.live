@@ -25,7 +25,11 @@ export default () => {
 
     const [filterLoading, setFilterLoading] = useState(false);
 
-    const { data: executions, isLoading } = useQueryExecutions({
+    const {
+        data: executions,
+        isLoading,
+        error,
+    } = useQueryExecutions({
         city: city!,
         date,
         route,
@@ -35,6 +39,7 @@ export default () => {
     });
 
     const loading = filterLoading || isLoading;
+    const { t: tShared } = useTranslation("Shared");
 
     return (
         <Dialog
@@ -91,7 +96,16 @@ export default () => {
             <DialogContent sx={{ padding: 0 }}>
                 {!enabled && <Alert title={t("noFilter")} Icon={History} color="error" />}
 
-                {enabled && !loading && !executions?.length && (
+                {enabled && !loading && error && (
+                    <Alert
+                        title={tShared("loadError")}
+                        description={String((error as Error).message ?? error)}
+                        Icon={Dangerous}
+                        color="error"
+                    />
+                )}
+
+                {enabled && !loading && !error && !executions?.length && (
                     <Alert
                         title={t("noResults")}
                         description={t("noResultsDescription")}
