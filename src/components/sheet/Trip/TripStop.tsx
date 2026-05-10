@@ -36,17 +36,19 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
     const { current: map } = useMap();
     const { t } = useTranslation("Vehicle");
 
-    const departure = update[EStopUpdate.departure];
-    const scheduled = departure[EStopTime.scheduled];
-    const delay = departure[EStopTime.delay];
+    const departure = update?.[EStopUpdate.departure];
+    const scheduled = departure?.[EStopTime.scheduled] ?? 0;
+    const delay = departure?.[EStopTime.delay] ?? 0;
     const estimatedDeparture = scheduled + delay;
-    const status = departure[EStopTime.status];
+    const status = departure?.[EStopTime.status];
 
     const shouldUseSeconds = index === 0 && estimatedDeparture - Date.now() < 100000;
     const hasDeparted =
         status === EStopDepartureStatus.Cancelled ||
         (sequence === undefined ? estimatedDeparture < Date.now() : sequence > index);
     const toDeparture = useTime(estimatedDeparture, shouldUseSeconds);
+
+    if (!update || !stop || !departure) return null;
 
     const platform = stop[EItineraryStop.platform];
     const track = update[EStopUpdate.track];
