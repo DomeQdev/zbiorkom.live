@@ -20,8 +20,14 @@ export default ({
         (showGPS === true && status !== EStopDepartureStatus.Scheduled);
     const showOffGPS = status === EStopDepartureStatus.Scheduled || showGPS === false;
 
+    const isLiveStatus =
+        status !== EStopDepartureStatus.Cancelled &&
+        status !== EStopDepartureStatus.OnPreviousTrip &&
+        status !== EStopDepartureStatus.Scheduled;
+    const visualClass = isLiveStatus ? delayClass : "unknown";
+
     return (
-        <span className={`delay delay-${delayClass}`}>
+        <span className={`delay delay-${visualClass}`}>
             {showFixedGPS && <GpsFixed fontSize="small" />}
             {showOffGPS && <GpsOff fontSize="small" />}
 

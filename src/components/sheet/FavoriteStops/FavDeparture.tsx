@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { StopDeparture, EStopTime, EStopDeparture, ETrip } from "typings";
+import { StopDeparture, EStopTime, EStopDeparture, EStopDepartureStatus, ETrip } from "typings";
 import VehicleHeadsign from "../Trip/TripHeadsign";
 import useTime from "@/hooks/useTime";
 import { getDelay, getTime } from "@/util/tools";
@@ -15,8 +15,17 @@ export default ({ departure }: { departure: StopDeparture }) => {
 
     const minutesToDeparture = useTime(departureEstimated);
 
-    const [departureClass] = getDelay(departureTime[EStopTime.delay]);
-    const [destinationClass] = getDelay(destination?.[EStopTime.delay]);
+    const isLive = (status: EStopDepartureStatus) =>
+        status !== EStopDepartureStatus.Cancelled &&
+        status !== EStopDepartureStatus.OnPreviousTrip &&
+        status !== EStopDepartureStatus.Scheduled;
+
+    const [rawDepartureClass] = getDelay(departureTime[EStopTime.delay]);
+    const [rawDestinationClass] = getDelay(destination?.[EStopTime.delay]);
+
+    const departureClass = isLive(departureTime[EStopTime.status]) ? rawDepartureClass : "unknown";
+    const destinationClass =
+        destination && isLive(destination[EStopTime.status]) ? rawDestinationClass : "unknown";
 
     const trip = departure[EStopDeparture.trip];
 

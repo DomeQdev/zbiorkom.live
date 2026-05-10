@@ -141,7 +141,9 @@ export default memo(() => {
                         shape={itinerary[EItinerary.shape] as any}
                         stops={itinerary[EItinerary.stops].map((iStop) => {
                             const s = iStop[EItineraryStop.stop];
-                            return [s[EStop.id], s[EStop.name], s[EStop.location], 1];
+                            const code = s[EStop.code];
+                            const label = code ? `${s[EStop.name]} ${code}` : s[EStop.name];
+                            return [s[EStop.id], label, s[EStop.location], 1];
                         })}
                         color={tripData[ETrip.route][ERoute.color]}
                     />

@@ -10,11 +10,12 @@ type Props = {
 };
 
 export default ({ isTrain, update, hasDeparted }: Props) => {
-    const [departureTime, isSingleTimeButDelayed, delayType, times] = useMemo(() => {
+    const [departureTime, isSingleTimeButDelayed, delayType, times, isLiveStatus] = useMemo(() => {
         const arrScheduled = update[EStopUpdate.arrival][EStopTime.scheduled];
         const arrDelay = update[EStopUpdate.arrival][EStopTime.delay];
         const depScheduled = update[EStopUpdate.departure][EStopTime.scheduled];
         const depDelay = update[EStopUpdate.departure][EStopTime.delay];
+        const depStatus = update[EStopUpdate.departure][EStopTime.status];
 
         const arrEstimated = arrScheduled + arrDelay;
         const depEstimated = depScheduled + depDelay;
@@ -23,6 +24,11 @@ export default ({ isTrain, update, hasDeparted }: Props) => {
         const departureTimeStr = getTime(depEstimated);
         const isSingleTime = arrivalTimeStr === departureTimeStr;
 
+        const liveStatus =
+            depStatus !== EStopDepartureStatus.Cancelled &&
+            depStatus !== EStopDepartureStatus.OnPreviousTrip &&
+            depStatus !== EStopDepartureStatus.Scheduled;
+
         return [
             departureTimeStr,
             !isTrain && isSingleTime && Math.abs(depDelay) >= 60000,
@@ -30,6 +36,7 @@ export default ({ isTrain, update, hasDeparted }: Props) => {
             isSingleTime
                 ? [update[EStopUpdate.departure]]
                 : [update[EStopUpdate.arrival], update[EStopUpdate.departure]],
+            liveStatus,
         ];
     }, [update, isTrain]);
 
@@ -59,7 +66,9 @@ export default ({ isTrain, update, hasDeparted }: Props) => {
                         {getTime(update[EStopUpdate.departure][EStopTime.scheduled])}
                     </Typography>
 
-                    <Typography className={`delay delay-${delayType}`}>{departureTime}</Typography>
+                    <Typography className={`delay delay-${isLiveStatus ? delayType : "unknown"}`}>
+                        {departureTime}
+                    </Typography>
                 </>
             ) : (
                 times.map((time, i) => {
@@ -70,7 +79,11 @@ export default ({ isTrain, update, hasDeparted }: Props) => {
                     const isNumber = typeof delay === "number";
                     const delayMinutes = isNumber && Math.floor(Math.abs(delay) / 60000);
                     const delayClass =
-                        isNumber && delayMinutes ? (delay > 0 ? "delayed" : "early") : "unknown";
+                        isLiveStatus && isNumber && delayMinutes
+                            ? delay > 0
+                                ? "delayed"
+                                : "early"
+                            : "unknown";
 
                     return (
                         <Typography key={`${estimated}${i}`} className={`delay delay-${delayClass}`}>
