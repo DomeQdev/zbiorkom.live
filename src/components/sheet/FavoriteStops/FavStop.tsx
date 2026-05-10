@@ -1,7 +1,7 @@
 import StopTag from "@/ui/StopTag";
 import { ButtonBase, IconButton } from "@mui/material";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { EStopDeparture, EStopDepartures, FavoriteStop } from "typings";
+import { EStopDeparture, EStopDepartures, ETrip, FavoriteStop } from "typings";
 import Loading from "@/ui/Loading";
 import { Edit } from "@mui/icons-material";
 import FavDeparture from "./FavDeparture";
@@ -99,7 +99,10 @@ export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
                 {!data?.[EStopDepartures.departures]?.length && t("noDepartures")}
 
                 {data?.[EStopDepartures.departures]?.map((departure) => (
-                    <FavDeparture key={`${stop.id}${departure[EStopDeparture.id]}`} departure={departure} />
+                    <FavDeparture
+                        key={`${stop.id}${departure[EStopDeparture.trip][ETrip.id]}`}
+                        departure={departure}
+                    />
                 ))}
             </ButtonBase>
         </ButtonBase>

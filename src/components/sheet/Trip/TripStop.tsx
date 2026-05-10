@@ -20,6 +20,7 @@ import VehicleStopIcon from "@/sheet/Trip/TripStopIcon";
 import VehicleDelay from "@/sheet/Trip/TripDelay";
 import { useTranslation } from "react-i18next";
 import TripStopTimes from "./TripStopTimes";
+import { AlightType } from "@/util/tools";
 
 type Props = {
     vehicle?: Vehicle;
@@ -51,6 +52,9 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
     const track = update[EStopUpdate.track];
     const stopData = stop[EItineraryStop.stop];
     const alight = stop[EItineraryStop.alight];
+    const isForbidden = (alight & AlightType.Forbidden) !== 0;
+    const isOnDemand = (alight & AlightType.OnDemand) !== 0;
+    const stopCode = stopData[EStop.code];
 
     return (
         <ListItemButton
@@ -94,7 +98,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
             <ListItemText
                 primary={
                     <>
-                        {alight === 0 && (
+                        {isForbidden && (
                             <RemoveCircleOutline
                                 sx={{
                                     fontSize: 18,
@@ -104,7 +108,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                             />
                         )}
 
-                        {alight === 2 && (
+                        {isOnDemand && (
                             <WavingHand
                                 sx={{
                                     fontSize: 16,
@@ -115,6 +119,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                         )}
 
                         {stopData[EStop.name]}
+                        {stopCode ? ` ${stopCode}` : ""}
                     </>
                 }
                 secondary={

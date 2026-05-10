@@ -2,6 +2,7 @@ import { ArrowUpward } from "@mui/icons-material";
 import Icon from "@/ui/Icon";
 import { Marker } from "@vis.gl/react-maplibre";
 import { ERoute, EVehicle, Vehicle } from "typings";
+import { parseVehicleId } from "@/util/tools";
 
 type Props = {
     vehicle: Vehicle;
@@ -11,7 +12,8 @@ type Props = {
 };
 
 export default ({ vehicle, showBrigade, showFleet, onClick }: Props) => {
-    const fleetId = vehicle[EVehicle.id].split(":")[1];
+    const { vehicleNumber } = parseVehicleId(vehicle[EVehicle.id]);
+    const showFleetId = showFleet && !vehicleNumber.startsWith("_");
 
     return (
         <Marker
@@ -47,7 +49,7 @@ export default ({ vehicle, showBrigade, showFleet, onClick }: Props) => {
                 <b>{vehicle[EVehicle.route][ERoute.name]}</b>
                 <span>
                     {showBrigade && vehicle[EVehicle.brigade] ? `/${vehicle[EVehicle.brigade]}` : ""}
-                    {showFleet && !fleetId.startsWith("_") ? `/${fleetId}` : ""}
+                    {showFleetId ? `/${vehicleNumber}` : ""}
                 </span>
             </div>
         </Marker>

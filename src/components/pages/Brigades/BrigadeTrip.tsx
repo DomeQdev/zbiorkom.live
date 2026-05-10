@@ -2,7 +2,7 @@ import { ColorRole, generateDarkScheme } from "material-color-lite";
 import { ListItemButton } from "@mui/material";
 import { ETrip, ERoute, Trip } from "typings";
 import { Link, useParams } from "react-router-dom";
-import { getTime, msToTime } from "@/util/tools";
+import { getTime, msToTime, parseVehicleId } from "@/util/tools";
 import { useTranslation } from "react-i18next";
 import RouteTag from "@/map/RouteTag";
 import { useMemo } from "react";
@@ -69,9 +69,13 @@ export default ({ trip, isActive, showRoute }: Props) => {
                     ].join(" · ")}
                 </span>
                 <span>
-                    {(trip as any).vehicle
-                        ? t("operatedBy", { vehicle: (trip as any).vehicle.split(":")[1] })
-                        : t("clickForTrip")}
+                    {(() => {
+                        const tripVehicle = (trip as any).vehicle as string | undefined;
+                        if (!tripVehicle) return t("clickForTrip");
+                        const { vehicleNumber } = parseVehicleId(tripVehicle);
+                        if (vehicleNumber.startsWith("_")) return t("clickForTrip");
+                        return t("operatedBy", { vehicle: vehicleNumber });
+                    })()}
                 </span>
             </div>
             <span className="tripRow">

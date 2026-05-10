@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { DelayType, EStopDepartureStatus } from "typings";
+import { EStopDepartureStatus } from "typings";
 import { GpsFixed, GpsOff } from "@mui/icons-material";
 import { getDelay } from "@/util/tools";
 
@@ -25,19 +25,15 @@ export default ({
             {showFixedGPS && <GpsFixed fontSize="small" />}
             {showOffGPS && <GpsOff fontSize="small" />}
 
-            {delay === "departed"
-                ? t("departed")
-                : delay === "departure"
-                  ? t("departure")
-                  : status === EStopDepartureStatus.Cancelled
-                    ? t("cancelled")
-                    : status === EStopDepartureStatus.OnPreviousTrip
-                      ? t("live")
-                      : status === EStopDepartureStatus.Scheduled
-                        ? t("scheduled")
-                        : delayTime
-                          ? t(delay > 0 ? "delayed" : "early", { time: delayTime })
-                          : t("onTime")}
+            {status === EStopDepartureStatus.Cancelled
+                ? t("cancelled")
+                : status === EStopDepartureStatus.OnPreviousTrip
+                  ? t("live")
+                  : status === EStopDepartureStatus.Scheduled
+                    ? t("scheduled")
+                    : delayTime
+                      ? t(delay > 0 ? "delayed" : "early", { time: delayTime })
+                      : t("onTime")}
         </span>
     );
 };

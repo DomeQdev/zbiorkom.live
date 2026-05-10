@@ -20,6 +20,7 @@ import Alert from "@/ui/Alert";
 import Loading from "@/ui/Loading";
 import Sticky from "@/ui/Sticky";
 import { useShallow } from "zustand/react/shallow";
+import { parseVehicleId } from "@/util/tools";
 
 export default () => {
     const vehicle = useVehicleStore(useShallow((state) => state.vehicle));
@@ -63,7 +64,14 @@ export default () => {
     //         });
     // }, [data]);
 
-    const name = vehicle ? `#${vehicle[EVehicle.id].split("/")[1]} ${data?.[EVehicleInfo.model] || ""}` : "";
+    const name = vehicle
+        ? (() => {
+              const { vehicleNumber } = parseVehicleId(vehicle[EVehicle.id]);
+              const numberPart = vehicleNumber.startsWith("_") ? "" : `#${vehicleNumber}`;
+              const modelPart = data?.[EVehicleInfo.model] || "";
+              return [numberPart, modelPart].filter(Boolean).join(" ");
+          })()
+        : "";
 
     return (
         <Dialog

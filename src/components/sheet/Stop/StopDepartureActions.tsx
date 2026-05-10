@@ -2,12 +2,15 @@ import { AltRoute, DirectionsBus } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, ButtonBase } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { EStopDeparture, StopDeparture } from "typings";
+import { ETrip, EVehicle, EStopDeparture, StopDeparture } from "typings";
 
 export default ({ departure }: { departure: StopDeparture }) => {
     const { t } = useTranslation("Vehicle");
     const navigate = useNavigate();
     const { city } = useParams();
+
+    const tripId = departure[EStopDeparture.trip][ETrip.id];
+    const vehicleId = departure[EStopDeparture.vehicle]?.[EVehicle.id];
 
     const buttons = [
         {
@@ -16,7 +19,7 @@ export default ({ departure }: { departure: StopDeparture }) => {
             enabled: true,
             onClick: () => {
                 navigate(
-                    `/${city}/trip/${encodeURIComponent(departure[EStopDeparture.id])}` +
+                    `/${city}/trip/${encodeURIComponent(tripId)}` +
                         (window.location.pathname.includes("/station") ? "?pkp" : ""),
                     { state: -2 },
                 );
@@ -25,10 +28,11 @@ export default ({ departure }: { departure: StopDeparture }) => {
         {
             icon: <DirectionsBus />,
             label: "showVehicle",
-            enabled: !!departure[EStopDeparture.vehicleId],
+            enabled: !!vehicleId,
             onClick: () => {
+                if (!vehicleId) return;
                 navigate(
-                    `/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.vehicleId])}` +
+                    `/${city}/vehicle/${encodeURIComponent(vehicleId)}` +
                         (window.location.pathname.includes("/station") ? "?pkp" : ""),
                     { state: -2 },
                 );

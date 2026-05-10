@@ -1,5 +1,5 @@
 import { Box, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { EStop, SearchItem } from "typings";
+import { ERoute, EStop, SearchItem } from "typings";
 import { Link } from "react-router-dom";
 import { KeyboardArrowDown } from "@mui/icons-material";
 import StopMarker from "@/map/StopMarker";
@@ -88,10 +88,13 @@ export default ({ stop, borderTop, borderBottom, isExpanded, setExpandedStop }: 
                             <ListItemText
                                 primary={expandedStop[EStop.name]}
                                 secondary={
-                                    expandedStop[EStop.direction] || expandedStop[EStop.station]
+                                    expandedStop[EStop.direction] || expandedStop[EStop.routes]?.length
                                         ? (expandedStop[EStop.direction]
                                               ? `» ${expandedStop[EStop.direction]}, `
-                                              : "") + expandedStop[EStop.routes].join(", ")
+                                              : "") +
+                                          expandedStop[EStop.routes]
+                                              .map((route) => route[ERoute.name])
+                                              .join(", ")
                                         : t("terminus")
                                 }
                                 secondaryTypographyProps={{

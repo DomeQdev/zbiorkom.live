@@ -1,6 +1,6 @@
 import useThemeStore from "@/hooks/useThemeStore";
 import RouteTag from "@/map/RouteTag";
-import { getTime } from "@/util/tools";
+import { getTime, parseVehicleId } from "@/util/tools";
 import { Box } from "@mui/material";
 import { ColorRole, generateDarkScheme } from "material-color-lite";
 import { useMemo } from "react";
@@ -8,7 +8,9 @@ import { useTranslation } from "react-i18next";
 import { EExecution, Execution, VehicleType } from "typings";
 
 export default ({ execution }: { execution: Execution }) => {
-    const type = +execution[EExecution.vehicleId].split(":")[0] as VehicleType;
+    const parsed = parseVehicleId(execution[EExecution.vehicleId]);
+    const type = +parsed.vehicleType as VehicleType;
+    const showVehicleNumber = !parsed.vehicleNumber.startsWith("_");
     const color = useThemeStore((state) => state.color);
     const { t } = useTranslation("Executions");
 
@@ -48,7 +50,7 @@ export default ({ execution }: { execution: Execution }) => {
                 />
                 <span className="tripHeadsign">
                     <RouteTag
-                        route={["", "", execution[EExecution.route], "", type, inversePrimary]}
+                        route={["", "", execution[EExecution.route], "", "", type, inversePrimary]}
                         brigade={execution[EExecution.brigade] ?? undefined}
                     />
                     {execution[EExecution.startStopName]}
@@ -56,9 +58,11 @@ export default ({ execution }: { execution: Execution }) => {
             </span>
 
             <div className="executionTripInfo">
-                <span>
-                    {t("vehicle")}: #{execution[EExecution.vehicleId].split(":")[1]}
-                </span>
+                {showVehicleNumber && (
+                    <span>
+                        {t("vehicle")}: #{parsed.vehicleNumber}
+                    </span>
+                )}
                 <span>
                     {t("trip")}: {execution[EExecution.gtfsTripId]}
                 </span>

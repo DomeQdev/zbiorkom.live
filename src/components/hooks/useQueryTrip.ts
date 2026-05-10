@@ -59,7 +59,6 @@ export const useQueryTrip = ({ city, trip, vehicle }: TripQueryProps) => {
             }
             setItinerary(newItinerary);
             setTrip(rawInitial.trip);
-            setFresh(false);
         }
 
         if (rawData) {

@@ -1,6 +1,6 @@
 import { getFromAPI } from "@/util/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
-import { ETrip } from "typings";
+import { Trip } from "typings";
 import { getDaysSince2020 } from "@/util/tools";
 
 type BrigadeQueryProps = {
@@ -13,8 +13,7 @@ type BrigadeQueryProps = {
 export const useQueryBrigade = ({ city, route, brigade, date }: BrigadeQueryProps) => {
     return useQuery({
         queryKey: ["brigade", city, route, brigade, date],
-        queryFn: ({ signal }) =>
-            getFromAPI<ETrip[]>(city, `brigades/${route}/${brigade}/${date}`, {}, signal),
+        queryFn: ({ signal }) => getFromAPI<Trip[]>(city, `brigades/${route}/${brigade}/${date}`, {}, signal),
         enabled: !!route && !!brigade,
         refetchOnMount: false,
     });
@@ -36,7 +35,7 @@ export const getBrigadeDays = (language: string) => {
         date.setDate(date.getDate() + index - includeYesterday);
 
         return {
-            valueDate: getDaysSince2020(date).toString(),
+            valueDate: getDaysSince2020(date.getTime()).toString(),
             displayDate: date.toLocaleDateString(language, {
                 day: "2-digit",
                 month: "2-digit",

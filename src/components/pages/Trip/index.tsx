@@ -5,24 +5,27 @@ import { LngLatBounds } from "maplibre-gl";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";
 import TripRoute from "@/map/TripRoute";
-import { ERoute, ETrip, EItinerary, EItineraryStop, EStop, EVehicle } from "typings";
+import { ERoute, ETrip, EItinerary, EItineraryStop, EStop, EStopTime, EStopUpdate, EVehicle } from "typings";
 import useVehicleStore from "@/hooks/useVehicleStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryTrip } from "@/hooks/useQueryTrip";
-import { getSheetHeight } from "@/util/tools";
+import { getSheetHeight, parseVehicleId } from "@/util/tools";
 import { useFollowStore } from "@/hooks/useFollowStore";
 
 export default memo(() => {
-    const [vehicleData, tripData, sequence, fresh, itinerary, setFresh] = useVehicleStore(
+    const [vehicleData, tripData, rawSequence, stopUpdates, fresh, itinerary, setFresh] = useVehicleStore(
         useShallow((state) => [
             state.vehicle,
             state.trip,
-            state.sequence ?? state.stops?.length! - 1,
+            state.sequence,
+            state.stops,
             state.fresh,
             state.itinerary,
             state.setFresh,
         ]),
     );
+
+    const sequence = rawSequence ?? (stopUpdates ? stopUpdates.length - 1 : undefined);
     const { isFollowing, setIsFollowing, reset } = useFollowStore(
         useShallow((state) => ({
             isFollowing: state.isFollowing,
@@ -78,26 +81,44 @@ export default memo(() => {
                 zoom: map.getZoom() > 15 ? map.getZoom() : 15,
             });
         } else if (tripData && itinerary && fresh) {
-            const bounds = itinerary[EItinerary.stops]
-                .slice(sequence, sequence === undefined || sequence === -1 ? undefined : sequence + 3)
-                .reduce(
-                    (bounds, stop) => bounds.extend(stop[EItineraryStop.stop][EStop.location]),
-                    new LngLatBounds(),
-                );
+            const stops = itinerary[EItinerary.stops];
+            const now = Date.now();
 
-            map?.fitBounds(bounds, {
-                padding: {
-                    left: 30,
-                    right: 30,
-                    top: 30,
-                    bottom: getSheetHeight(),
-                },
-                maxZoom: 16,
-            });
+            let startIndex: number;
+            if (rawSequence !== undefined && rawSequence !== -1) {
+                startIndex = rawSequence;
+            } else if (stopUpdates?.length) {
+                const upcoming = stopUpdates.findIndex((u) => {
+                    const dep = u[EStopUpdate.departure];
+                    return dep[EStopTime.scheduled] + dep[EStopTime.delay] >= now;
+                });
+                startIndex = upcoming === -1 ? Math.max(0, stops.length - 3) : upcoming;
+            } else {
+                startIndex = 0;
+            }
+
+            const slice = stops.slice(startIndex, startIndex + 3);
+
+            const bounds = (slice.length ? slice : stops).reduce(
+                (bounds, stop) => bounds.extend(stop[EItineraryStop.stop][EStop.location]),
+                new LngLatBounds(),
+            );
+
+            if (!bounds.isEmpty()) {
+                map?.fitBounds(bounds, {
+                    padding: {
+                        left: 30,
+                        right: 30,
+                        top: 30,
+                        bottom: getSheetHeight(),
+                    },
+                    maxZoom: 16,
+                });
+            }
         }
 
         if (fresh) setFresh(false);
-    }, [tripData, vehicleData, itinerary, isLoading, fresh, isFollowing]);
+    }, [tripData, vehicleData, itinerary, isLoading, fresh, isFollowing, rawSequence, stopUpdates]);
 
     return (
         <>
@@ -106,7 +127,9 @@ export default memo(() => {
                     variable={vehicle ? "vehicle" : "trip"}
                     dictionary={{
                         route: (vehicleData?.[EVehicle.route] || tripData?.[ETrip.route])?.[ERoute.name],
-                        vehicle: vehicleData?.[EVehicle.id]?.split(":")[1] || "",
+                        vehicle: vehicleData?.[EVehicle.id]
+                            ? parseVehicleId(vehicleData[EVehicle.id]).vehicleNumber
+                            : "",
                         headsign: tripData?.[ETrip.headsign],
                     }}
                 />
@@ -116,7 +139,10 @@ export default memo(() => {
                 <>
                     <TripRoute
                         shape={itinerary[EItinerary.shape] as any}
-                        stops={itinerary[EItinerary.stops]}
+                        stops={itinerary[EItinerary.stops].map((iStop) => {
+                            const s = iStop[EItineraryStop.stop];
+                            return [s[EStop.id], s[EStop.name], s[EStop.location], 1];
+                        })}
                         color={tripData[ETrip.route][ERoute.color]}
                     />
                 </>

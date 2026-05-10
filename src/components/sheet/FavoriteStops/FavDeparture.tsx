@@ -1,14 +1,24 @@
 import { Box } from "@mui/material";
-import { StopDeparture, EStopTime, EStopDeparture } from "typings";
+import { StopDeparture, EStopTime, EStopDeparture, ETrip } from "typings";
 import VehicleHeadsign from "../Trip/TripHeadsign";
 import useTime from "@/hooks/useTime";
 import { getDelay, getTime } from "@/util/tools";
 
 export default ({ departure }: { departure: StopDeparture }) => {
-    const minutesToDeparture = useTime(departure[EStopDeparture.departure][EStopTime.estimated]);
+    const departureTime = departure[EStopDeparture.departure];
+    const destination = departure[EStopDeparture.destination];
 
-    const [departureClass] = getDelay(departure[EStopDeparture.departure][EStopTime.delay]);
-    const [destinationClass] = getDelay(departure[EStopDeparture.destination]?.[EStopTime.delay]);
+    const departureEstimated = departureTime[EStopTime.scheduled] + departureTime[EStopTime.delay];
+    const destinationEstimated = destination
+        ? destination[EStopTime.scheduled] + destination[EStopTime.delay]
+        : undefined;
+
+    const minutesToDeparture = useTime(departureEstimated);
+
+    const [departureClass] = getDelay(departureTime[EStopTime.delay]);
+    const [destinationClass] = getDelay(destination?.[EStopTime.delay]);
+
+    const trip = departure[EStopDeparture.trip];
 
     return (
         <Box
@@ -23,21 +33,18 @@ export default ({ departure }: { departure: StopDeparture }) => {
                 },
             }}
         >
-            <VehicleHeadsign
-                route={departure[EStopDeparture.route]}
-                headsign={departure[EStopDeparture.headsign]}
-            />
+            <VehicleHeadsign route={trip[ETrip.route]} headsign={trip[ETrip.headsign]} />
 
             <div className="times">
                 <div className={`delay delay-${departureClass}`}>
                     {minutesToDeparture > 0 ? minutesToDeparture : "<1"} min
                 </div>
 
-                {departure[EStopDeparture.destination] && (
+                {destinationEstimated !== undefined && (
                     <>
                         <span>➜</span>
                         <div className={`delay delay-${destinationClass}`}>
-                            {getTime(departure[EStopDeparture.destination][EStopTime.estimated])}
+                            {getTime(destinationEstimated)}
                         </div>
                     </>
                 )}

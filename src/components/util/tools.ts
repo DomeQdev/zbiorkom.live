@@ -1,5 +1,3 @@
-import { DelayType } from "typings";
-
 export const getTime = (time: number) => {
     return new Date(time).toLocaleTimeString("pl", {
         hour12: false,
@@ -10,7 +8,7 @@ export const getTime = (time: number) => {
 
 export const getSheetHeight = () => window.innerHeight / 3 + 24;
 
-export const getDelay = (delay?: DelayType) => {
+export const getDelay = (delay?: number) => {
     const isNumber = typeof delay === "number";
     const delayTime = msToTime(isNumber ? Math.abs(delay) : 0);
 
@@ -87,6 +85,33 @@ export const polylineToGeoJson = (polyline: string) => {
 
     return geoJson;
 };
+
+export const parseVehicleId = (id: string) => {
+    const colonIdx = id.indexOf(":");
+    const underscoreIdx = id.indexOf("_", colonIdx + 1);
+    const vehicleType = id.slice(0, colonIdx);
+
+    if (underscoreIdx === -1) {
+        return {
+            vehicleType,
+            agency: "default",
+            vehicleNumber: id.slice(colonIdx + 1),
+        };
+    }
+
+    return {
+        vehicleType,
+        agency: id.slice(colonIdx + 1, underscoreIdx),
+        vehicleNumber: id.slice(underscoreIdx + 1),
+    };
+};
+
+export const AlightType = {
+    Regular: 1 << 0,
+    Forbidden: 1 << 1,
+    OnDemand: 1 << 2,
+    IsLastStop: 1 << 3,
+} as const;
 
 export const share = (url: string) => {
     if (navigator.share !== undefined) {
