@@ -38,12 +38,14 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
     const isCancelled = status === EStopDepartureStatus.Cancelled;
     const showCountdown = !isCancelled && estimated > Date.now();
 
+    const useVehicleRoute = !!vehicle && status !== EStopDepartureStatus.OnPreviousTrip;
+
     const onSuperClick = () => {
         navigate(
             [
                 city,
-                vehicle ? "vehicle" : "trip",
-                encodeURIComponent(vehicle ? vehicle[EVehicle.id] : trip[ETrip.id]),
+                useVehicleRoute ? "vehicle" : "trip",
+                encodeURIComponent(useVehicleRoute ? vehicle![EVehicle.id] : trip[ETrip.id]),
             ].join("/") + (isStation ? "?pkp" : ""),
             {
                 state: -2,
