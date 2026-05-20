@@ -1,8 +1,9 @@
 import { getFromAPI } from "@/util/fetchFunctions";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { APISearch, Route } from "typings";
+import { useEffect, useMemo } from "react";
+import { APISearch, ERoute, Route } from "typings";
 import useFilterStore from "./useFilterStore";
+import { useQueryModels, useQueryRoutes } from "./useQueryRoutes";
 
 export const useQuerySearch = ({ city, search }: { city: string; search?: string }) => {
     const queryClient = useQueryClient();
@@ -34,25 +35,27 @@ export type SearchRoutesOrModelsResult = (Route | string)[];
 
 export const useQuerySearchRoutesOrModels = ({ city }: { city: string }) => {
     const search = useFilterStore((state) => state.search);
-    const queryClient = useQueryClient();
-    const queryKey = ["filterSearch", city];
+    const { data: routes, isLoading: routesLoading, error: routesError } = useQueryRoutes({ city });
+    const { data: models, isLoading: modelsLoading, error: modelsError } = useQueryModels({ city });
 
-    const query = useQuery({
-        queryKey,
-        queryFn: async ({ signal }) => {
-            await new Promise((resolve) => setTimeout(resolve, 150));
-            if (signal.aborted) return;
+    const data = useMemo<SearchRoutesOrModelsResult | undefined>(() => {
+        if (!search || !routes || !models) return undefined;
 
-            return getFromAPI<SearchRoutesOrModelsResult>(city, "search/filter", { query: search }, signal);
-        },
-        enabled: !!search,
-    });
+        const q = search.trim().toLowerCase();
+        if (!q) return [];
 
-    useEffect(() => {
-        return () => {
-            queryClient.removeQueries({ queryKey });
-        };
-    }, [search]);
+        const matchedRoutes = routes.filter((r) => {
+            return r[ERoute.name].toLowerCase().includes(q) || r[ERoute.longName]?.toLowerCase().includes(q);
+        });
 
-    return query;
+        const matchedModels = models.filter((m) => m.toLowerCase().includes(q));
+
+        return [...matchedRoutes, ...matchedModels];
+    }, [search, routes, models]);
+
+    return {
+        data,
+        isLoading: !!search && (routesLoading || modelsLoading),
+        error: routesError ?? modelsError,
+    };
 };

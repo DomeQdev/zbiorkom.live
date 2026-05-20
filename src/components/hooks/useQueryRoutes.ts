@@ -26,6 +26,15 @@ export const useQueryRoute = ({ city, route }: { city: string; route: string }) 
     });
 };
 
+export const useQueryModels = ({ city, enabled = true }: { city: string; enabled?: boolean }) => {
+    return useQuery({
+        queryKey: ["models", city],
+        queryFn: async ({ signal }) => getFromAPI<string[]>(city, "vehicles/models", {}, signal),
+        enabled,
+        staleTime: 5 * 60 * 1000,
+    });
+};
+
 export const useQueryRoutesNearby = ({ city }: { city: string }) => {
     const userLocation = useLocationStore((state) => state.userLocation!);
 
