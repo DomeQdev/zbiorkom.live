@@ -31,8 +31,10 @@ export default ({ city, moveBadge }: Props) => {
         }
     };
 
+    const isFiltering = tempRoutes.length > 0 || tempModels.length > 0;
+
     useEffect(() => {
-        if (!map || tempRoutes.length || tempModels.length) return;
+        if (!map) return;
 
         if (!window.skipPadding) {
             map.flyTo({
@@ -59,25 +61,34 @@ export default ({ city, moveBadge }: Props) => {
         return () => {
             map.off("moveend", onMove);
         };
-    }, [map, tempRoutes, tempModels]);
+    }, [map]);
 
     const endpoint = useMemo(() => {
-        if (!mapState) return null;
         const params = new URLSearchParams();
-        const filterRoutes = routes.map((r) => r[ERoute.id]).join(",");
-        const filterModels = models.join(",");
 
-        if (filterRoutes) params.set("routes", filterRoutes);
-        if (filterModels) params.set("models", filterModels);
+        const activeRoutes = isFiltering ? tempRoutes : routes;
+        const activeModels = isFiltering ? tempModels : models;
+
+        const filterRoutes = activeRoutes.map((r) => r[ERoute.id]).join(",");
+        const filterModels = activeModels.join(",");
+
+        if (filterRoutes) params.set("filterRoutes", filterRoutes);
+        if (filterModels) params.set("filterModels", filterModels);
 
         const query = params.toString();
+
+        if (isFiltering) {
+            return `mapFeatures/0/0,0,0,0/stream${query ? `?${query}` : ""}`;
+        }
+
+        if (!mapState) return null;
         return `mapFeatures/${mapState.zoom}/${mapState.bounds}/stream${query ? `?${query}` : ""}`;
-    }, [mapState, routes, models]);
+    }, [isFiltering, mapState, routes, models, tempRoutes, tempModels]);
 
     const { data, initialData } = useEventQuery<{ positions: any[]; dots: any[] }, { stops: Stop[] }>(
         city,
         endpoint || "",
-        { enabled: !!endpoint && !tempRoutes.length && !tempModels.length, resetKey: city },
+        { enabled: !!endpoint, resetKey: city },
     );
 
     useEffect(() => {
