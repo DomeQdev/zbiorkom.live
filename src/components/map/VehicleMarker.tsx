@@ -43,6 +43,7 @@ export default ({ vehicle, showBrigade, showFleet, onClick }: Props) => {
                 <svg viewBox="0 0 24 24" width="1em" fill="currentColor">
                     <Icon
                         type={vehicle[EVehicle.route][ERoute.type]}
+                        city={vehicle[EVehicle.route][ERoute.city]}
                         agency={vehicle[EVehicle.route][ERoute.agency]}
                     />
                 </svg>
