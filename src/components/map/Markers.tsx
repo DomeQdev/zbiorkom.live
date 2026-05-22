@@ -12,6 +12,7 @@ import DotMarkers from "./DotMarkers";
 import { DotVehicle, EStop, EVehicle, Vehicle } from "typings";
 import cities from "cities";
 import { useTranslation } from "react-i18next";
+import { buildCitySuffix } from "@/util/tools";
 
 export default ({ city }: { city: string }) => {
     const [routes, models] = useFilterStore(useShallow((state) => [state.routes, state.models]));
@@ -51,7 +52,7 @@ export default ({ city }: { city: string }) => {
                         onClick={() =>
                             navigate(
                                 `/${city}/vehicle/${encodeURIComponent(vehicle[EVehicle.id])}` +
-                                    (vehicle[EVehicle.city] === "pkp" ? "?pkp" : ""),
+                                    buildCitySuffix(vehicle[EVehicle.city], city),
                             )
                         }
                     />
@@ -68,7 +69,10 @@ export default ({ city }: { city: string }) => {
                     onClick={() => {
                         const stopType = stop[EStop.city] === "pkp" ? "station" : "stop";
 
-                        navigate(`/${city}/${stopType}/${encodeURIComponent(stop[EStop.id])}`);
+                        navigate(
+                            `/${city}/${stopType}/${encodeURIComponent(stop[EStop.id])}` +
+                                buildCitySuffix(stop[EStop.city], city),
+                        );
                     }}
                 >
                     <StopMarker stop={stop} useStopCodeAsIcon={useStopCodeAsIcon} />

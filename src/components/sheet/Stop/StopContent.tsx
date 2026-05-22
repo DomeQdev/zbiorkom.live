@@ -9,6 +9,7 @@ import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 import { useTranslation } from "react-i18next";
 import Alert from "@/ui/Alert";
 import { Bedtime, Report } from "@mui/icons-material";
+import { getCityFromUrl } from "@/util/tools";
 
 const VirtuosoComponents = {
     Footer: ({ context: { hasMore } }: any) => {
@@ -25,7 +26,7 @@ export default memo(() => {
 
     const expandLimit = useStopStore((state) => state.expandLimit);
     const { data, isLoading, error } = useQueryStopDepartures({
-        city: isStation ? "pkp" : city!,
+        city: getCityFromUrl(city),
         stop: stop!,
         expectStream: true,
     });

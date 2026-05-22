@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Box, ButtonBase } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ETrip, EVehicle, EStopDeparture, StopDeparture } from "typings";
+import { buildCitySuffix, getCityFromUrl } from "@/util/tools";
 
 export default ({ departure }: { departure: StopDeparture }) => {
     const { t } = useTranslation("Vehicle");
@@ -10,8 +11,11 @@ export default ({ departure }: { departure: StopDeparture }) => {
     const { city } = useParams();
 
     const tripId = departure[EStopDeparture.trip][ETrip.id];
-    const vehicleId = departure[EStopDeparture.vehicle]?.[EVehicle.id];
+    const vehicle = departure[EStopDeparture.vehicle];
+    const vehicleId = vehicle?.[EVehicle.id];
     const showVehicle = !!vehicleId;
+    const tripSuffix = buildCitySuffix(getCityFromUrl(city), city);
+    const vehicleSuffix = buildCitySuffix(vehicle?.[EVehicle.city], city);
 
     const buttons = [
         {
@@ -19,11 +23,7 @@ export default ({ departure }: { departure: StopDeparture }) => {
             label: "showTrip",
             enabled: true,
             onClick: () => {
-                navigate(
-                    `/${city}/trip/${encodeURIComponent(tripId)}` +
-                        (window.location.pathname.includes("/station") ? "?pkp" : ""),
-                    { state: -2 },
-                );
+                navigate(`/${city}/trip/${encodeURIComponent(tripId)}` + tripSuffix, { state: -2 });
             },
         },
         {
@@ -32,11 +32,7 @@ export default ({ departure }: { departure: StopDeparture }) => {
             enabled: showVehicle,
             onClick: () => {
                 if (!vehicleId) return;
-                navigate(
-                    `/${city}/vehicle/${encodeURIComponent(vehicleId)}` +
-                        (window.location.pathname.includes("/station") ? "?pkp" : ""),
-                    { state: -2 },
-                );
+                navigate(`/${city}/vehicle/${encodeURIComponent(vehicleId)}` + vehicleSuffix, { state: -2 });
             },
         },
     ] as const;

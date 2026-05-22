@@ -9,7 +9,7 @@ import { ERoute, ETrip, EItinerary, EItineraryStop, EStop, EStopTime, EStopUpdat
 import useVehicleStore from "@/hooks/useVehicleStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryTrip } from "@/hooks/useQueryTrip";
-import { getSheetHeight, parseVehicleId } from "@/util/tools";
+import { getCityFromUrl, getSheetHeight, parseVehicleId } from "@/util/tools";
 import { useFollowStore } from "@/hooks/useFollowStore";
 
 export default memo(() => {
@@ -35,10 +35,10 @@ export default memo(() => {
     );
     const { city, trip, vehicle } = useParams();
     const { current: map } = useMap();
-    const cityId = window.location.search.includes("pkp") ? "pkp" : city!;
+    const cityId = getCityFromUrl(city);
 
     const { refetch, isLoading } = useQueryTrip({
-        city: window.location.search.includes("pkp") ? "pkp" : city!,
+        city: cityId,
         trip: trip!,
         vehicle: vehicle!,
     });

@@ -113,6 +113,16 @@ export const AlightType = {
     IsLastStop: 1 << 3,
 } as const;
 
+export const getCityFromUrl = (routeCity?: string): string => {
+    const fromQuery = new URLSearchParams(window.location.search).get("city");
+    return fromQuery || routeCity || "";
+};
+
+export const buildCitySuffix = (entityCity: string | undefined, routeCity: string | undefined): string => {
+    if (!entityCity || entityCity === routeCity) return "";
+    return `?city=${encodeURIComponent(entityCity)}`;
+};
+
 export const share = (url: string) => {
     if (navigator.share !== undefined) {
         navigator.share({

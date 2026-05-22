@@ -1,10 +1,13 @@
 import { Box, IconButton, Skeleton } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { AccessTime, Close, StarOutline } from "@mui/icons-material";
+import { AccessTime, Close, Star, StarOutline } from "@mui/icons-material";
 import useGoBack from "@/hooks/useGoBack";
 import StopTag from "@/ui/StopTag";
-import { EStopDepartures } from "typings";
+import { EStop, EStopDepartures } from "typings";
 import { useQueryStopDepartures } from "@/hooks/useQueryStops";
+import { getCityFromUrl } from "@/util/tools";
+import useFavStore from "@/hooks/useFavStore";
+import { useShallow } from "zustand/react/shallow";
 
 export default () => {
     const { city, stop } = useParams();
@@ -12,9 +15,13 @@ export default () => {
     const goBack = useGoBack();
 
     const { data } = useQueryStopDepartures({
-        city: window.location.pathname.includes("/station") ? "pkp" : city!,
+        city: getCityFromUrl(city),
         stop: stop!,
     });
+
+    const [isFavorite, toggleFavoriteStop] = useFavStore(
+        useShallow((state) => [state.favorites.some((fav) => fav.id === stop), state.toggleFavoriteStop]),
+    );
 
     if (!data?.[EStopDepartures.stop])
         return (
@@ -63,11 +70,24 @@ export default () => {
                     },
                 }}
             >
-                <IconButton size="small" onClick={() => navigate(window.location.pathname + "/addToFav")}>
-                    <StarOutline />
+                <IconButton
+                    size="small"
+                    onClick={() => {
+                        const stopInfo = data[EStopDepartures.stop];
+                        toggleFavoriteStop(
+                            stopInfo[EStop.id],
+                            stopInfo[EStop.location],
+                            stopInfo[EStop.city] === "pkp",
+                        );
+                    }}
+                >
+                    {isFavorite ? <Star sx={{ color: "#FFD700" }} /> : <StarOutline />}
                 </IconButton>
 
-                <IconButton size="small" onClick={() => navigate(window.location.pathname + "/time")}>
+                <IconButton
+                    size="small"
+                    onClick={() => navigate(window.location.pathname + "/time" + window.location.search)}
+                >
                     <AccessTime />
                 </IconButton>
 

@@ -14,7 +14,7 @@ export default ({ relation, borderTop, borderBottom }: Props) => {
     return (
         <ListItemButton
             component={Link}
-            to={`../trip/${encodeURIComponent(relation[ESearchRelation.id])}?pkp`}
+            to={`../trip/${encodeURIComponent(relation[ESearchRelation.id])}?city=pkp`}
             state={-2}
             sx={{
                 mx: 1,

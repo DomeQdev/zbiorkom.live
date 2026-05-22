@@ -14,6 +14,7 @@ import {
     EVehicle,
 } from "typings";
 import { useQueryStopDepartures } from "@/hooks/useQueryStops";
+import { buildCitySuffix, getCityFromUrl } from "@/util/tools";
 
 export default memo(() => {
     const [hasDataFetched, setHasDataFetched] = useState<boolean>(false);
@@ -21,12 +22,12 @@ export default memo(() => {
     const { current: map } = useMap();
     const navigate = useNavigate();
 
-    const isStation = window.location.pathname.includes("/station");
+    const effectiveCity = getCityFromUrl(city);
     const showBrigade = localStorage.getItem("brigade") === "true";
     const showFleet = localStorage.getItem("fleet") === "true";
 
     const { data } = useQueryStopDepartures({
-        city: isStation ? "pkp" : city!,
+        city: effectiveCity,
         stop: stop!,
         isMainComponent: true,
     });
@@ -99,9 +100,10 @@ export default memo(() => {
                     showBrigade={showBrigade}
                     showFleet={showFleet}
                     onClick={() => {
+                        const vehicle = departure[EStopDeparture.vehicle]!;
                         navigate(
-                            `/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.vehicle]![EVehicle.id])}` +
-                                (isStation ? "?pkp" : ""),
+                            `/${city}/vehicle/${encodeURIComponent(vehicle[EVehicle.id])}` +
+                                buildCitySuffix(vehicle[EVehicle.city], city),
                             { state: -2 },
                         );
                     }}

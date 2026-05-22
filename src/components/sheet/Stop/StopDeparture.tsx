@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useMap } from "@vis.gl/react-maplibre";
 import StopDepartureActions from "./StopDepartureActions";
 import { useTranslation } from "react-i18next";
+import { buildCitySuffix, getCityFromUrl } from "@/util/tools";
 
 export default ({ departure, isStation }: { departure: StopDeparture; isStation: boolean }) => {
     const { t } = useTranslation("Vehicle");
@@ -44,12 +45,14 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
     const onSuperClick = () => {
         if (isLive) return setExpanded(true);
 
+        const entityCity = useVehicleRoute ? vehicle![EVehicle.city] : getCityFromUrl(city);
+
         navigate(
             [
                 city,
                 useVehicleRoute ? "vehicle" : "trip",
                 encodeURIComponent(useVehicleRoute ? vehicle![EVehicle.id] : trip[ETrip.id]),
-            ].join("/") + (isStation ? "?pkp" : ""),
+            ].join("/") + buildCitySuffix(entityCity, city),
             {
                 state: -2,
             },
