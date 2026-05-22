@@ -304,31 +304,41 @@ export enum EVehicleInfo {
     imageHash = 4,
 }
 
-export type APISearch = {
-    groupNames: string[];
-    groups: number[];
-    results: SearchItem[];
-};
+export type VehicleSearchTuple = [
+    id: string,
+    route: Route,
+    brigade: string,
+    headsign: string | undefined,
+    model: string | undefined,
+];
+
+export type StopSearchTuple = [id: string, city: string, name: string];
 
 export type SearchItem = {
+    vehicle?: VehicleSearchTuple;
+    stop?: StopSearchTuple;
+    station?: StopSearchTuple;
+    route?: Route;
     borderTop?: boolean;
     borderBottom?: boolean;
-
-    route?: Route;
-    stop?: [id: string, city: string, name: string];
-    station?: [id: string, city: string, name: string];
-    relation?: [id: string, route: Route, shortName: string, start: number, end: number, headsign: string];
-    vehicle?: [id: string, route: Route, brigade: string, headsign?: string, model?: string];
 };
 
-export enum ESearchRelation {
-    id = 0,
-    route = 1,
-    shortName = 2,
-    start = 3,
-    end = 4,
-    headsign = 5,
-}
+export type SearchGroupName = "vehicles" | "stops" | "stations" | "routes";
+
+export type SearchResponse = {
+    results: SearchItem[];
+    groups: number[];
+    groupNames: SearchGroupName[];
+};
+
+export type SearchRawResponse = {
+    positions: VehicleSearchTuple[];
+    stops: StopSearchTuple[];
+    stations: StopSearchTuple[];
+    routes: Route[];
+};
+
+export type SearchErrorResponse = { error: "MISSING_QUERY" | "CITY_NOT_FOUND" };
 
 export enum ESearchVehicle {
     id = 0,

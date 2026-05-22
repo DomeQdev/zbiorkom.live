@@ -83,7 +83,6 @@
         "stops": "Przystanki",
         "vehicles": "Pojazdy",
         "routes": "Linie",
-        "relations": "Relacje",
         "stations": "Stacje",
         "howToUse": "Jak używać wyszukiwarki?",
         "howToVehicles": "Wyszukiwanie pojazdów",
@@ -92,8 +91,6 @@
         "stopsDescription": "Wyszukaj używając nazwy, np. Dworzec Główny.",
         "howToRoutes": "Wyszukiwanie linii",
         "routesDescription": "Wyszukaj używając numeru linii, np. 105.",
-        "howToRelations": "Wyszukiwanie relacji pociągów",
-        "relationsDescription": "Wyszukaj używając numeru relacji, np. 99267.",
         "howToHistory": "Historia wyszukiwania",
         "historyDescription": "Zapisujemy ostatnie wyszukiwania, abyś mógł szybko do nich wrócić."
     },

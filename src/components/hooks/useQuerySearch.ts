@@ -1,13 +1,16 @@
 import { getFromAPI } from "@/util/fetchFunctions";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
-import { APISearch, ERoute, Route } from "typings";
+import { ERoute, Route, SearchErrorResponse, SearchResponse } from "typings";
 import useFilterStore from "./useFilterStore";
 import { useQueryModels, useQueryRoutes } from "./useQueryRoutes";
 
+const isErrorResponse = (data: any): data is SearchErrorResponse =>
+    !!data && typeof data === "object" && typeof data.error === "string";
+
 export const useQuerySearch = ({ city, search }: { city: string; search?: string }) => {
     const queryClient = useQueryClient();
-    const queryKey = ["search", city];
+    const queryKey = ["search", city, search];
 
     const query = useQuery({
         queryKey,
@@ -15,16 +18,23 @@ export const useQuerySearch = ({ city, search }: { city: string; search?: string
             await new Promise((resolve) => setTimeout(resolve, 300));
             if (signal.aborted) return;
 
-            return getFromAPI<APISearch>(city, "search", { query: search }, signal);
+            const data = await getFromAPI<SearchResponse | SearchErrorResponse>(
+                city,
+                "search",
+                { query: search },
+                signal,
+            );
+
+            if (isErrorResponse(data)) throw new Error(data.error);
+
+            return data;
         },
         enabled: !!search,
     });
 
     useEffect(() => {
         return () => {
-            queryClient.removeQueries({
-                queryKey,
-            });
+            queryClient.removeQueries({ queryKey: ["search", city] });
         };
     }, [search]);
 

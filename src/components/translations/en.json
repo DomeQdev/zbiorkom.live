@@ -83,7 +83,6 @@
         "stops": "Stops",
         "vehicles": "Vehicles",
         "routes": "Routes",
-        "relations": "Relations",
         "stations": "Stations",
         "howToUse": "How to use the search?",
         "howToVehicles": "Searching for vehicles",
@@ -92,8 +91,6 @@
         "stopsDescription": "Search using the name, e.g., Main Station.",
         "howToRoutes": "Searching for routes",
         "routesDescription": "Search using the route number, e.g., 105.",
-        "howToRelations": "Searching for train relations",
-        "relationsDescription": "Search using the relation number, e.g., 99267.",
         "howToHistory": "Search history",
         "historyDescription": "We save recent searches so you can quickly return to them."
     },
