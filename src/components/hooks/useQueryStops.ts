@@ -118,19 +118,3 @@ export const useQueryStopDirections = ({ city, stop }: { city: string; stop: str
         },
     });
 };
-
-type StopGroupQueryProps = {
-    city: string;
-    stop: string;
-    enabled: boolean;
-};
-
-export const useQueryStopGroup = ({ city, stop, enabled }: StopGroupQueryProps) => {
-    return useQuery({
-        queryKey: ["stopGroup", city, stop],
-        queryFn: async ({ signal }) => {
-            return getFromAPI<Stop[]>(city, "stops/getStopGroup", { id: stop }, signal);
-        },
-        enabled,
-    });
-};

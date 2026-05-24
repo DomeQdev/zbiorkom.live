@@ -312,7 +312,7 @@ export type VehicleSearchTuple = [
     model: string | undefined,
 ];
 
-export type StopSearchTuple = [id: string, city: string, name: string];
+export type StopSearchTuple = [id: string, city: string, name: string, group: Stop[]];
 
 export type SearchItem = {
     vehicle?: VehicleSearchTuple;

@@ -1,10 +1,10 @@
 import { Box, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { ERoute, EStop, SearchItem } from "typings";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { KeyboardArrowDown } from "@mui/icons-material";
 import StopMarker from "@/map/StopMarker";
 import { useTranslation } from "react-i18next";
-import { useQueryStopGroup } from "@/hooks/useQueryStops";
+import { buildCitySuffix } from "@/util/tools";
 
 type Props = {
     stop: NonNullable<SearchItem["stop"]>;
@@ -16,12 +16,9 @@ type Props = {
 
 export default ({ stop, borderTop, borderBottom, isExpanded, setExpandedStop }: Props) => {
     const { t } = useTranslation("Vehicle");
+    const { city: routeCity } = useParams();
 
-    const { data: stops } = useQueryStopGroup({
-        city: stop[EStop.city],
-        stop: stop[EStop.id],
-        enabled: isExpanded,
-    });
+    const stops = stop[3];
 
     return (
         <>
@@ -67,12 +64,13 @@ export default ({ stop, borderTop, borderBottom, isExpanded, setExpandedStop }: 
             >
                 {stops?.map((expandedStop, i) => {
                     const hasBottomBorder = borderBottom && i === (stops!.length || 0) - 1;
+                    const stopCity = expandedStop[EStop.city];
 
                     return (
                         <ListItemButton
                             key={expandedStop[EStop.id]}
                             component={Link}
-                            to={`../stop/${expandedStop[EStop.id]}`}
+                            to={`../stop/${expandedStop[EStop.id]}` + buildCitySuffix(stopCity, routeCity)}
                             state={-2}
                             sx={{
                                 borderRadius: 0.4,

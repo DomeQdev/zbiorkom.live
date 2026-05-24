@@ -85,11 +85,10 @@ export default ({ city, moveBadge }: Props) => {
         return `mapFeatures/${mapState.zoom}/${mapState.bounds}/stream${query ? `?${query}` : ""}`;
     }, [isFiltering, mapState, routes, models, tempRoutes, tempModels]);
 
-    const { data, initialData } = useEventQuery<{ positions: any[]; dots: any[] }, { stops: Stop[] }>(
-        city,
-        endpoint || "",
-        { enabled: !!endpoint, resetKey: city },
-    );
+    const { data, initialData } = useEventQuery<
+        { positions: any[]; dots: any[] },
+        { stops: Stop[]; suggestedCity?: string }
+    >(city, endpoint || "", { enabled: !!endpoint, resetKey: city });
 
     useEffect(() => {
         if (data?.positions && data.positions.length === 0 && (routes.length || models.length)) {
@@ -103,6 +102,6 @@ export default ({ city, moveBadge }: Props) => {
         dots: data?.dots || [],
         stops: initialData?.stops || [],
         geoJson: undefined,
-        suggestedCity: undefined,
+        suggestedCity: initialData?.suggestedCity,
     };
 };
