@@ -38,7 +38,7 @@ export default ({ stop, borderTop, borderBottom, isExpanded, setExpandedStop }: 
                     },
                 }}
             >
-                <ListItemText primary={stop[EStop.name]} />
+                <ListItemText primary={`${stop[EStop.name]} ${stop[EStop.code] || ""}`} />
                 <KeyboardArrowDown
                     sx={{
                         transform: isExpanded ? "rotate(180deg)" : undefined,
