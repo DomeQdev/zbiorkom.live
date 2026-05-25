@@ -145,36 +145,32 @@ export function useEventQuery<T = any, I = T>(
     }, [connect, resetDataOnKeyChange]);
 
     useEffect(() => {
+        let hideTimeout: ReturnType<typeof setTimeout> | null = null;
+        const HIDE_GRACE_MS = 45_000;
+
         const handleVisibilityChange = () => {
             if (document.hidden) {
-                if (esRef.current) {
-                    esRef.current.close();
-                    esRef.current = null;
-                }
+                if (hideTimeout) clearTimeout(hideTimeout);
+                hideTimeout = setTimeout(() => {
+                    if (document.hidden && esRef.current) {
+                        esRef.current.close();
+                        esRef.current = null;
+                    }
+                }, HIDE_GRACE_MS);
             } else {
-                connect();
-            }
-        };
-
-        const handleFocus = () => {
-            if (!esRef.current && !document.hidden) connect();
-        };
-
-        const handleBlur = () => {
-            if (esRef.current) {
-                esRef.current.close();
-                esRef.current = null;
+                if (hideTimeout) {
+                    clearTimeout(hideTimeout);
+                    hideTimeout = null;
+                }
+                if (!esRef.current) connect();
             }
         };
 
         document.addEventListener("visibilitychange", handleVisibilityChange);
-        window.addEventListener("focus", handleFocus);
-        window.addEventListener("blur", handleBlur);
 
         return () => {
+            if (hideTimeout) clearTimeout(hideTimeout);
             document.removeEventListener("visibilitychange", handleVisibilityChange);
-            window.removeEventListener("focus", handleFocus);
-            window.removeEventListener("blur", handleBlur);
         };
     }, [connect]);
 
