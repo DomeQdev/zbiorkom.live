@@ -36,7 +36,7 @@ export default () => {
         city: city!,
         options: {
             filterRoutes: [route!],
-            filterDirection: direction,
+            filterDirection: data?.[ERouteInfo.directions][direction]?.[ERouteDirection.direction],
         },
     });
 
