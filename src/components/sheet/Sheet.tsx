@@ -45,6 +45,11 @@ export default () => {
 
     useEffect(() => {
         sheetRef.current?.snapTo(0);
+
+        if (type && !blocking) {
+            const overlay = document.querySelector<HTMLElement>("[data-rsbs-overlay]");
+            overlay?.focus({ preventScroll: true });
+        }
     }, [type]);
 
     return (
