@@ -4,8 +4,7 @@ import { Box, IconButton } from "@mui/material";
 import { AllInclusive, Close, ImportExport } from "@mui/icons-material";
 import useDirectionStore from "@/hooks/useDirectionStore";
 import { useShallow } from "zustand/react/shallow";
-import { ERouteDirection, ERouteInfo } from "typings";
-import { useQueryRoute } from "@/hooks/useQueryRoutes";
+import { useQueryRouteGraph } from "@/hooks/useQueryRoutes";
 
 export default () => {
     const [direction, setDirection] = useDirectionStore(
@@ -13,12 +12,14 @@ export default () => {
     );
 
     const { city, route } = useParams();
-    const { data } = useQueryRoute({
+    const { data } = useQueryRouteGraph({
         city: city!,
         route: route!,
     });
 
-    if (!data || !data[ERouteInfo.directions].length) return null;
+    const currentDirection = data?.graph[direction];
+
+    if (!data || !currentDirection) return null;
 
     return (
         <Box
@@ -29,10 +30,7 @@ export default () => {
                 marginTop: -1,
             }}
         >
-            <VehicleHeadsign
-                route={data[ERouteInfo.route]}
-                headsign={data[ERouteInfo.directions][direction][ERouteDirection.headsign]}
-            />
+            <VehicleHeadsign route={data.route} headsign={currentDirection.headsign} />
 
             <Box
                 sx={{
@@ -59,10 +57,10 @@ export default () => {
                         transform: `rotate(${direction === 0 ? 0 : 180}deg)`,
                         transition: "transform 0.3s",
                     }}
-                    onClick={() => setDirection(direction === 0 ? 1 : 0)}
-                    disabled={data[ERouteInfo.directions].length === 1}
+                    onClick={() => setDirection((direction + 1) % data.graph.length)}
+                    disabled={data.graph.length === 1}
                 >
-                    {data[ERouteInfo.directions].length === 1 ? <AllInclusive /> : <ImportExport />}
+                    {data.graph.length === 1 ? <AllInclusive /> : <ImportExport />}
                 </IconButton>
 
                 <IconButton size="small" onClick={() => window.history.back()}>

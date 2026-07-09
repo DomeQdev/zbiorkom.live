@@ -86,6 +86,21 @@ export const polylineToGeoJson = (polyline: string) => {
     return geoJson;
 };
 
+// how much of the route color branch (variant) lines/stops keep — shared by the map and the sheet
+export const BRANCH_COLOR_RATIO = 0.55;
+
+export const fadeColor = (hex: string, ratio: number, background = "#ffffff") => {
+    const color = parseInt(hex.slice(1), 16);
+    const bg = parseInt(background.slice(1), 16);
+
+    const mix = (shift: number) => {
+        const channel = (value: number) => (value >> shift) & 0xff;
+        return Math.round(channel(color) * ratio + channel(bg) * (1 - ratio));
+    };
+
+    return `rgb(${mix(16)}, ${mix(8)}, ${mix(0)})`;
+};
+
 export const parseVehicleId = (id: string) => {
     const colonIdx = id.indexOf(":");
     const underscoreIdx = id.indexOf("_", colonIdx + 1);

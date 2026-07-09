@@ -16,9 +16,9 @@ import RouteTag from "@/map/RouteTag";
 import { Trans, useTranslation } from "react-i18next";
 import Sticky from "@/ui/Sticky";
 import Helm from "@/util/Helm";
-import { EBrigade, ERoute, ERouteInfo } from "typings";
+import { EBrigade, ERoute } from "typings";
 import { getBrigadeDays, useQueryBrigadeList } from "@/hooks/useQueryBrigades";
-import { useQueryRoute } from "@/hooks/useQueryRoutes";
+import { useQueryRouteGraph } from "@/hooks/useQueryRoutes";
 import useSearchState from "@/hooks/useSearchState";
 import DayPicker from "@/ui/DayPicker";
 import Alert from "@/ui/Alert";
@@ -34,7 +34,7 @@ export default memo(() => {
     const next7days = useMemo(() => getBrigadeDays(i18n.language), [i18n.language]);
 
     const { data: brigades } = useQueryBrigadeList({ city: city!, route, date });
-    const { data: routeData } = useQueryRoute({ city: city!, route: route! });
+    const { data: routeData } = useQueryRouteGraph({ city: city!, route: route! });
 
     const displayBrigades = !!(brigades && routeData);
 
@@ -44,7 +44,7 @@ export default memo(() => {
                 <Helm
                     variable="brigadeSelect"
                     dictionary={{
-                        route: routeData[ERouteInfo.route][ERoute.name],
+                        route: routeData.route[ERoute.name],
                     }}
                 />
             )}
@@ -78,7 +78,7 @@ export default memo(() => {
                         >
                             {routeData ? (
                                 <Trans i18nKey="selectBrigade" ns="Brigades">
-                                    <RouteTag route={routeData[ERouteInfo.route]} />
+                                    <RouteTag route={routeData.route} />
                                 </Trans>
                             ) : (
                                 "&nbsp;"
@@ -111,7 +111,7 @@ export default memo(() => {
                 >
                     <Trans i18nKey="selectBrigade" ns="Brigades">
                         {routeData ? (
-                            <RouteTag route={routeData[ERouteInfo.route]} fontSize="0.8em" />
+                            <RouteTag route={routeData.route} fontSize="0.8em" />
                         ) : (
                             <Skeleton variant="rectangular" width={56} height={28} sx={{ borderRadius: 1 }} />
                         )}
@@ -135,7 +135,7 @@ export default memo(() => {
                                 alignItems: "center",
                                 gap: 1,
                                 "& span": {
-                                    backgroundColor: routeData?.[ERouteInfo.route][ERoute.color],
+                                    backgroundColor: routeData?.route[ERoute.color],
                                     color: "hsla(0, 0%, 100%, 0.7)",
                                     fontSize: "1rem",
                                     fontWeight: "bold",

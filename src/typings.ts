@@ -278,21 +278,53 @@ export enum EBrigadeTrip {
     percentTraveled = 8,
 }
 
-export type RouteInfo = [route: Route, directions: RouteDirection[]];
+export type RouteGraphStop = [
+    id: string,
+    city: string,
+    name: string,
+    code: string,
+    location: Location,
+    types: VehicleType[],
+    bearing?: number,
+];
 
-export enum ERouteInfo {
-    route = 0,
-    directions = 1,
+export type RouteGraphRow = [
+    stop: RouteGraphStop,
+    tracks: number[],
+    width: number,
+    paths: [d: string, track: number][],
+    nodes: [x: number, track: number][],
+    main: boolean,
+];
+
+export enum ERouteGraphRow {
+    stop = 0,
+    tracks = 1,
+    width = 2,
+    paths = 3,
+    nodes = 4,
+    main = 5,
 }
 
-export type RouteDirection = [direction: 0 | 1, headsign: string, stops: TripStop[], shape: Shape];
-
-export enum ERouteDirection {
-    direction = 0,
-    headsign = 1,
-    stops = 2,
-    shape = 3,
+export enum RouteGraphTrack {
+    bypass = 0,
+    trunk = 1,
+    branch = 2,
 }
+
+export type RouteGraphDirection = { stops: RouteGraphRow[]; headsign: string };
+
+export type RouteGraphRawResponse = {
+    route: Route;
+    graph: RouteGraphDirection[];
+    shapes: string[][];
+};
+
+export type RouteGraph = {
+    route: Route;
+    graph: RouteGraphDirection[];
+    shapes: Shape[][];
+};
 
 export type VehicleInfo = [id: string, model: string, prodYear: number, carrier: string, imageHash: string];
 

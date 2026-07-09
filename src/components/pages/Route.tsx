@@ -1,5 +1,5 @@
-import { ERoute, ERouteDirection, ERouteInfo, EVehicle, Location, Vehicle } from "typings";
-import { useEffect } from "react";
+import { ERoute, ERouteGraphRow, EStop, ETripStopType, EVehicle, Location, TripStop, Vehicle } from "typings";
+import { useEffect, useMemo } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useMap } from "@vis.gl/react-maplibre";
 import { LngLatBounds } from "maplibre-gl";
@@ -10,7 +10,7 @@ import TripRoute from "@/map/TripRoute";
 import useQueryMarkers from "@/hooks/useQueryMarkers";
 import useDirectionStore from "@/hooks/useDirectionStore";
 import { useShallow } from "zustand/react/shallow";
-import { useQueryRoute } from "@/hooks/useQueryRoutes";
+import { useQueryRouteGraph } from "@/hooks/useQueryRoutes";
 import { getSheetHeight } from "@/util/tools";
 
 export default () => {
@@ -25,7 +25,7 @@ export default () => {
     const showBrigade = localStorage.getItem("brigade") === "true";
     const showFleet = localStorage.getItem("fleet") === "true";
 
-    const { data } = useQueryRoute({
+    const { data, error } = useQueryRouteGraph({
         city: city!,
         route: route!,
     });
@@ -38,14 +38,38 @@ export default () => {
         },
     });
 
-    useEffect(() => {
-        if (!data) return;
+    const shapes = data?.shapes[direction];
+    const stops = useMemo<TripStop[] | undefined>(
+        () =>
+            data?.graph[direction]?.stops.map((row) => {
+                const stop = row[ERouteGraphRow.stop];
+                const code = stop[EStop.code];
+                const label = code ? `${stop[EStop.name]} ${code}` : stop[EStop.name];
+                return [stop[EStop.id], label, stop[EStop.location], ETripStopType.normal];
+            }),
+        [data, direction],
+    );
 
-        if (!data[ERouteInfo.directions].length) return goBack();
+    // stops served only by branches (not on the active line shape[0]) — drawn faded
+    const branchOnlyStops = useMemo(
+        () =>
+            data?.graph[direction]?.stops
+                .filter((row) => !row[ERouteGraphRow.main])
+                .map((row) => row[ERouteGraphRow.stop][EStop.id]),
+        [data, direction],
+    );
+
+    useEffect(() => {
+        if (error || (data && !data.graph.length)) goBack();
+    }, [data, error]);
+
+    useEffect(() => {
+        if (!shapes?.length) return;
 
         map?.fitBounds(
-            data[ERouteInfo.directions][direction][ERouteDirection.shape].geometry.coordinates.reduce(
-                (bounds, coord) => bounds.extend(coord as Location),
+            shapes.reduce(
+                (bounds, shape) =>
+                    shape.geometry.coordinates.reduce((acc, coord) => acc.extend(coord as Location), bounds),
                 new LngLatBounds(),
             ),
             {
@@ -58,7 +82,7 @@ export default () => {
                 maxDuration: 1000,
             },
         );
-    }, [data, direction]);
+    }, [shapes]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -80,13 +104,15 @@ export default () => {
 
     return (
         <>
-            {data && <Helm variable="route" dictionary={{ route: data[ERouteInfo.route][ERoute.name] }} />}
+            {data && <Helm variable="route" dictionary={{ route: data.route[ERoute.name] }} />}
 
-            {data?.[ERouteInfo.directions][direction] && (
+            {!!shapes?.length && stops && (
                 <TripRoute
-                    shape={data[ERouteInfo.directions][direction][ERouteDirection.shape]}
-                    stops={data[ERouteInfo.directions][direction][ERouteDirection.stops]}
-                    color={data[ERouteInfo.route][ERoute.color]}
+                    shape={shapes[0]}
+                    branches={shapes.slice(1)}
+                    stops={stops}
+                    branchOnlyStops={branchOnlyStops}
+                    color={data!.route[ERoute.color]}
                 />
             )}
 

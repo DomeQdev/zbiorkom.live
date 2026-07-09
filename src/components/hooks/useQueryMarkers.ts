@@ -13,7 +13,7 @@ type Options = {
     fetchStops?: boolean;
     filterModels?: string[];
     filterRoutes?: string[];
-    filterDirection?: 0 | 1;
+    filterDirection?: number;
 };
 
 export type MarkersData = {
