@@ -1,7 +1,7 @@
 import { getFromAPI } from "@/util/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
 import { Trip } from "typings";
-import { getDaysSince2020 } from "@/util/tools";
+import { getDaysSince2020, AGENCY_TIMEZONE } from "@/util/tools";
 
 type BrigadeQueryProps = {
     city: string;
@@ -28,22 +28,37 @@ export const useQueryBrigadeList = ({ city, route, date }: BrigadeQueryProps) =>
 };
 
 export const getBrigadeDays = (language: string) => {
-    const includeYesterday = new Date().getHours() < 4 ? 1 : 0;
+    // Anchor the day list to the agency timezone (Warsaw), not the device's, so
+    // the picker matches the backend's service days regardless of device settings.
+    const warsawHour = +new Intl.DateTimeFormat("en-US", {
+        timeZone: AGENCY_TIMEZONE,
+        hour: "numeric",
+        hourCycle: "h23",
+    })
+        .formatToParts(Date.now())
+        .find((part) => part.type === "hour")!.value;
+
+    const includeYesterday = warsawHour < 4 ? 1 : 0;
+    const todayIndex = getDaysSince2020(Date.now());
 
     return Array.from({ length: 7 }, (_, index) => {
-        const date = new Date();
-        date.setDate(date.getDate() + index - includeYesterday);
+        const dayIndex = todayIndex + index - includeYesterday;
+        // UTC midnight of that Warsaw calendar day resolves to 01:00/02:00 local,
+        // safely inside the day, so formatting in the agency timezone yields it back.
+        const timestamp = (dayIndex + 18262) * 86400000;
 
         return {
-            valueDate: getDaysSince2020(date.getTime()).toString(),
-            displayDate: date.toLocaleDateString(language, {
+            valueDate: dayIndex.toString(),
+            displayDate: new Intl.DateTimeFormat(language, {
+                timeZone: AGENCY_TIMEZONE,
                 day: "2-digit",
                 month: "2-digit",
                 year: "numeric",
-            }),
-            dayOfWeek: date.toLocaleDateString(language, {
+            }).format(timestamp),
+            dayOfWeek: new Intl.DateTimeFormat(language, {
+                timeZone: AGENCY_TIMEZONE,
                 weekday: "long",
-            }),
+            }).format(timestamp),
         };
     });
 };

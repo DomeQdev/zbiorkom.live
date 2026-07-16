@@ -35,10 +35,24 @@ export const msToTime = (ms: number, withSeconds?: boolean) => {
     return formattedTime.join(" ");
 };
 
-export const getDaysSince2020 = (timestamp: number) => {
-    const offsetMs = new Date(timestamp).getTimezoneOffset() * 60000;
+// Public transport data is keyed by the agency's local calendar day (Poland).
+export const AGENCY_TIMEZONE = "Europe/Warsaw";
 
-    return Math.floor((timestamp - offsetMs) / 86400000) - 18262;
+// Days since 2020-01-01, matching the backend `date` encoding for brigades
+// (routeBrigades). The backend counts days in the agency timezone, so we derive
+// the day index from the Warsaw calendar day — this makes the value independent
+// of the device's own timezone and correct across DST.
+export const getDaysSince2020 = (timestamp: number) => {
+    const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: AGENCY_TIMEZONE,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    }).formatToParts(timestamp);
+
+    const get = (type: string) => +parts.find((part) => part.type === type)!.value;
+
+    return Math.floor(Date.UTC(get("year"), get("month") - 1, get("day")) / 86400000) - 18262;
 };
 
 export const polylineToGeoJson = (polyline: string) => {
