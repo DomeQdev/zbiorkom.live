@@ -412,54 +412,71 @@ export interface FavoriteStop {
     isStation?: boolean;
 }
 
-export type ExecutionDates = string[];
+// "Co wyjechało?" — retrospective view of dispatches that actually ran, reconstructed
+// from observed segments (v6 API `dispatches/*`). Times are epoch ms (UTC), delays are
+// in SECONDS (positive = late, negative = early). Route badges reuse the shared `Route`
+// tuple (called RouteTuple in the API docs). Data has a 30-day retention window.
 
-export type ExecutionVehicles = [
-    date: string,
-    route: string,
-    brigade: string | null,
-    vehicles: ExecutionVehicle[],
-];
+export type ExecutionAutocomplete = {
+    routes: Route[]; // present in ClickHouse for the city, pre-sorted
+    vehicles: string[]; // unique vehicle numbers, numeric sort
+};
 
-export enum EExecutionVehicles {
-    date = 0,
-    route = 1,
-    brigade = 2,
-    vehicles = 3,
-}
-
-export type ExecutionVehicle = [vehicleId: string, trips: number];
-
-export enum EExecutionVehicle {
-    vehicleId = 0,
-    trips = 1,
-}
+export type ExecutionDates = string[]; // ["2026-07-21", ...] local Warsaw days, descending
 
 export type Execution = [
-    gtfsTripId: string,
-    vehicleId: string,
-    route: string,
-    brigade: string | null,
-    scheduledStartTime: number,
-    startDelay: number,
-    scheduledEndTime: number,
-    endDelay: number | null,
-    startStopName: string,
-    endStopName: string,
+    trip: string,
+    route: string, // routeId — matches Route[ERoute.id] from autocomplete
+    brigade: string,
+    vehicle: string,
+    originStopId: string,
+    originName: string,
+    destStopId: string,
+    destName: string,
+    scheduledStart: number,
+    actualStart: number,
+    startDelay: number, // seconds
+    scheduledEnd: number,
+    actualEnd: number,
+    endDelay: number, // seconds
+    segments: number, // observed segments — completeness indicator
 ];
 
 export enum EExecution {
-    gtfsTripId = 0,
-    vehicleId = 1,
-    route = 2,
-    brigade = 3,
-    scheduledStartTime = 4,
-    startDelay = 5,
-    scheduledEndTime = 6,
-    endDelay = 7,
-    startStopName = 8,
-    endStopName = 9,
+    trip = 0,
+    route = 1,
+    brigade = 2,
+    vehicle = 3,
+    originStopId = 4,
+    originName = 5,
+    destStopId = 6,
+    destName = 7,
+    scheduledStart = 8,
+    actualStart = 9,
+    startDelay = 10,
+    scheduledEnd = 11,
+    actualEnd = 12,
+    endDelay = 13,
+    segments = 14,
 }
+
+export type ExecutionStop = [
+    stopId: string,
+    stopName: string,
+    scheduledArrival: number,
+    actualArrival: number,
+    delay: number, // seconds
+];
+
+export enum EExecutionStop {
+    stopId = 0,
+    stopName = 1,
+    scheduledArrival = 2,
+    actualArrival = 3,
+    delay = 4,
+}
+
+export type ExecutionTrip = { stops: ExecutionStop[] };
 
 export type SearchPlace = [type: "google" | "stop", id: string, name: string, address?: string];
 

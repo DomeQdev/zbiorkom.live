@@ -120,7 +120,7 @@ export const parseVehicleId = (id: string) => {
     const underscoreIdx = id.indexOf("_", colonIdx + 1);
     const vehicleType = id.slice(0, colonIdx);
 
-    if (underscoreIdx === -1) {
+    if (underscoreIdx === -1 || underscoreIdx === colonIdx + 1) {
         return {
             vehicleType,
             agency: "default",

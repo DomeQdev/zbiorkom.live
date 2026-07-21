@@ -1,107 +1,171 @@
-import useThemeStore from "@/hooks/useThemeStore";
+import { useQueryExecutionTrip } from "@/hooks/useQueryExecutions";
 import RouteTag from "@/map/RouteTag";
-import { getTime, parseVehicleId } from "@/util/tools";
-import { Box } from "@mui/material";
-import { ColorRole, generateDarkScheme } from "material-color-lite";
-import { useMemo } from "react";
+import Icon from "@/ui/Icon";
+import { fadeColor, getTime, parseVehicleId } from "@/util/tools";
+import { KeyboardArrowDown } from "@mui/icons-material";
+import { Box, CircularProgress } from "@mui/material";
+import { CSSProperties, ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { EExecution, Execution, VehicleType } from "typings";
+import { EExecution, EExecutionStop, ERoute, Execution, Route, VehicleType } from "typings";
+import useExecutionScheme, { getDelayInfo } from "./useExecutionScheme";
 
-export default ({ execution }: { execution: Execution }) => {
-    const parsed = parseVehicleId(execution[EExecution.vehicleId]);
-    const type = +parsed.vehicleType as VehicleType;
-    const showVehicleNumber = !parsed.vehicleNumber.startsWith("_");
-    const color = useThemeStore((state) => state.color);
+type Props = {
+    execution: Execution;
+    route?: Route;
+    city: string;
+    date: string;
+};
+
+export default ({ execution, route, city, date }: Props) => {
+    const scheme = useExecutionScheme();
     const { t } = useTranslation("Executions");
+    const [expanded, setExpanded] = useState(false);
 
-    const inversePrimary = useMemo(
-        () => generateDarkScheme(color, [ColorRole.InversePrimary]).inversePrimary,
-        [color],
-    );
+    // Kurs carries only routeId; resolve the badge from the autocomplete routes map,
+    // falling back to a synthetic bus-coloured tuple when the line is unknown.
+    const routeTag: Route = route ?? ["", "", execution[EExecution.route], "", "", 3, scheme.inversePrimary];
+    const lineColor = route?.[ERoute.color] || scheme.inversePrimary;
+
+    // vehicle is a fleet id that may carry an agency prefix (e.g. "GPA_502"); parse it so
+    // we show only the number and can pick the agency icon when one exists.
+    const rawVehicle = execution[EExecution.vehicle];
+    const vehicle = rawVehicle ? parseVehicleId(`${routeTag[ERoute.type]}:${rawVehicle}`) : null;
+
+    // surfaceVariant alone reads too bright on the dark dialog — sink it toward the
+    // background for a subtler, lower-elevation card.
+    const cardSurface = fadeColor(scheme.surfaceVariant, 0.45, scheme.background);
+
+    const { data, isLoading } = useQueryExecutionTrip({
+        city,
+        trip: execution[EExecution.trip],
+        date,
+        vehicle: rawVehicle || undefined,
+        enabled: expanded,
+    });
+
+    // The trip endpoint returns every stop; the first/last are the origin/destination we
+    // already render as the head/tail rows, so only the ones in between are new.
+    const intermediate = data?.stops.slice(1, -1) ?? [];
 
     return (
         <Box
-            key={execution[EExecution.gtfsTripId]}
-            sx={{
-                gap: 1,
-                padding: 1,
-                margin: 1,
-                borderRadius: 1,
-                backgroundColor: "background.paper",
-                position: "relative",
-            }}
+            className="execCard"
+            onClick={() => setExpanded((value) => !value)}
+            style={
+                {
+                    "--exec-surface": cardSurface,
+                    "--exec-line": lineColor,
+                } as CSSProperties
+            }
         >
-            <span
-                className="vehicleStopIconLine executionLine"
-                style={{
-                    backgroundColor: inversePrimary,
-                }}
+            <TimelineRow
+                rail="first"
+                time={execution[EExecution.scheduledStart]}
+                delay={execution[EExecution.startDelay]}
+                name={execution[EExecution.originName]}
+                trailing={
+                    vehicle && (
+                        <span
+                            className="execVehicleChip"
+                            style={{
+                                backgroundColor: scheme.secondaryContainer,
+                                color: scheme.onSecondaryContainer,
+                            }}
+                        >
+                            <svg viewBox="0 0 24 24">
+                                <Icon
+                                    type={+vehicle.vehicleType as VehicleType}
+                                    city={city}
+                                    agency={vehicle.agency}
+                                />
+                            </svg>
+                            {vehicle.vehicleNumber}
+                        </span>
+                    )
+                }
             />
-            <span className="tripRow">
-                <TripTime
-                    scheduled={execution[EExecution.scheduledStartTime]}
-                    delay={execution[EExecution.startDelay]}
-                />
-                <span
-                    className="vehicleStopIcon"
-                    style={{
-                        border: `3px solid ${inversePrimary}`,
-                    }}
-                />
-                <span className="tripHeadsign">
-                    <RouteTag
-                        route={["", "", execution[EExecution.route], "", "", type, inversePrimary]}
-                        brigade={execution[EExecution.brigade] ?? undefined}
-                    />
-                    {execution[EExecution.startStopName]}
-                </span>
-            </span>
 
-            <div className="executionTripInfo">
-                {showVehicleNumber && (
-                    <span>
-                        {t("vehicle")}: #{parsed.vehicleNumber}
-                    </span>
-                )}
-                <span>
-                    {t("trip")}: {execution[EExecution.gtfsTripId]}
+            <div className="execRow">
+                <span />
+                <span className="execRail" />
+                <span
+                    className={"execStop execExpand" + (expanded ? " open" : "")}
+                    style={{ color: scheme.onSurfaceVariant }}
+                >
+                    {expanded && isLoading ? (
+                        <CircularProgress size={15} sx={{ color: scheme.onSurfaceVariant }} />
+                    ) : (
+                        <KeyboardArrowDown fontSize="small" />
+                    )}
+                    {expanded ? t("hideStops") : t("expandStops")}
                 </span>
             </div>
 
-            <span className="tripRow">
-                <TripTime
-                    scheduled={execution[EExecution.scheduledEndTime]}
-                    delay={execution[EExecution.endDelay] ?? undefined}
-                />
-                <span
-                    className="vehicleStopIcon"
-                    style={{
-                        border: `3px solid ${inversePrimary}`,
-                    }}
-                />
-                <span className="tripHeadsign">{execution[EExecution.endStopName]}</span>
-            </span>
+            <div className={"execCollapse" + (expanded && !isLoading ? " open" : "")}>
+                <div className="execStops">
+                    {intermediate.map((stop, index) => (
+                        <TimelineRow
+                            key={`${stop[EExecutionStop.stopId]}-${index}`}
+                            rail=""
+                            mid
+                            time={stop[EExecutionStop.scheduledArrival]}
+                            delay={stop[EExecutionStop.delay]}
+                            name={stop[EExecutionStop.stopName]}
+                        />
+                    ))}
+                </div>
+            </div>
+
+            <TimelineRow
+                rail="last"
+                time={execution[EExecution.scheduledEnd]}
+                delay={execution[EExecution.endDelay]}
+                name={execution[EExecution.destName]}
+                leading={<RouteTag route={routeTag} brigade={execution[EExecution.brigade] || undefined} />}
+            />
         </Box>
     );
 };
 
-const TripTime = ({ scheduled, delay = -1 }: { scheduled: number; delay?: number }) => {
-    const delayExists = delay !== -1;
-    const delayMinutes = delayExists ? Math.floor(Math.abs(delay) / 60000) : null;
+type RowProps = {
+    rail: "first" | "last" | "";
+    mid?: boolean;
+    time: number;
+    delay: number;
+    name: string;
+    leading?: ReactNode;
+    trailing?: ReactNode;
+};
+
+const TimelineRow = ({ rail, mid, time, delay, name, leading, trailing }: RowProps) => {
+    const { status, minutes, color } = getDelayInfo(delay);
+
+    const label = status === "onTime" ? "0′" : `${status === "delayed" ? "+" : "−"}${minutes}′`;
 
     return (
-        <span className="tripTime">
-            {getTime(scheduled)} (
-            <span
-                className={
-                    "delay-" +
-                    (delayExists ? (delayMinutes ? (delay > 0 ? "delayed" : "early") : "none") : "unknown")
-                }
-                style={{ fontWeight: delayExists ? "bold" : "normal" }}
-            >
-                {getTime(scheduled + delay)}
-            </span>
-            )
-        </span>
+        <div className="execRow">
+            <div className="execTime">
+                <span
+                    className="execDelayPill"
+                    style={{ backgroundColor: color.replace("hsl(", "hsla(").replace(")", ", 0.2)"), color }}
+                >
+                    {label}
+                </span>
+                <span className="execTimeValue">{getTime(time)}</span>
+            </div>
+            <div className={"execRail " + rail}>
+                <span className={"execDot" + (mid ? " mid" : "")} />
+            </div>
+            <div className="execStop">
+                {leading}
+                <span className={"execStopName" + (mid ? " mid" : "")}>{name}</span>
+                {trailing && (
+                    <>
+                        <span className="execStopSpacer" />
+                        {trailing}
+                    </>
+                )}
+            </div>
+        </div>
     );
 };

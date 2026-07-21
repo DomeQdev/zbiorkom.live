@@ -209,6 +209,8 @@
         "trip": "Kurs",
         "route": "Linia",
         "brigade": "Brygada",
+        "expandStops": "Pokaż przystanki",
+        "hideStops": "Ukryj przystanki",
         "noResults": "Brak wyników...",
         "noResultsDescription": "Spróbuj wyszukać coś innego.",
         "noFilter": "Wyszukaj coś..."

@@ -1,0 +1,160 @@
+/* "Co wyjechało?" — dispatch card. Colours come in as CSS custom properties
+   (--exec-*) set per element so everything tracks the active theme. */
+
+.execCard {
+    margin: 8px 12px;
+    padding: 12px 16px;
+    border-radius: 26px;
+    background-color: var(--exec-surface);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.2s;
+}
+
+/* Pure-CSS collapse (grid-template-rows 0fr→1fr) so the reveal/hide animates both ways
+   without JS height measuring — which would otherwise fight react-virtuoso. */
+.execCollapse {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+.execCollapse.open {
+    grid-template-rows: 1fr;
+}
+.execStops {
+    overflow: hidden;
+    min-height: 0;
+}
+
+.execVehicleChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    padding: 5px 12px 5px 9px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    background-color: var(--exec-vehicle-bg);
+    color: var(--exec-vehicle-fg);
+}
+.execVehicleChip svg {
+    width: 17px;
+    height: 17px;
+    fill: currentColor;
+}
+
+/* ---------- Timeline ---------- */
+
+.execRow {
+    display: grid;
+    grid-template-columns: 84px 22px 1fr;
+    column-gap: 10px;
+    align-items: stretch;
+    min-height: 30px;
+}
+
+.execTime {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    padding: 3px 0;
+}
+.execTimeValue {
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.05;
+    font-variant-numeric: tabular-nums;
+}
+.execDelayPill {
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 800;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.execRail {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+.execRail::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    border-radius: 2px;
+    background-color: var(--exec-line);
+}
+.execRail.first::before {
+    top: 50%;
+}
+.execRail.last::before {
+    bottom: 50%;
+}
+.execDot {
+    position: relative;
+    z-index: 1;
+    align-self: center;
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--exec-surface);
+    border: 4px solid var(--exec-line);
+}
+.execDot.mid {
+    width: 11px;
+    height: 11px;
+    border-width: 3px;
+}
+
+.execStop {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 4px 0;
+}
+.execStopName {
+    flex: 0 1 auto;
+    min-width: 0;
+    font-size: 15px;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.execStopName.mid {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.92;
+}
+.execStopSpacer {
+    flex: 1 1 auto;
+    min-width: 4px;
+}
+
+.execExpand {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 3px 0;
+    opacity: 0.85;
+}
+.execExpand svg {
+    transition: transform 0.25s ease;
+}
+.execExpand.open svg {
+    transform: rotate(180deg);
+}

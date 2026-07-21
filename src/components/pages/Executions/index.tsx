@@ -3,17 +3,19 @@ import useSearchState from "@/hooks/useSearchState";
 import { useNavigate, useParams } from "react-router-dom";
 import ExecutionsFilter from "./ExecutionsFilter";
 import { ArrowBack, Dangerous, History } from "@mui/icons-material";
-import { useState } from "react";
-import { useQueryExecutions } from "@/hooks/useQueryExecutions";
+import { useMemo, useState } from "react";
+import { useQueryExecutionAutocomplete, useQueryExecutions } from "@/hooks/useQueryExecutions";
 import { useTranslation } from "react-i18next";
 import { Virtuoso } from "react-virtuoso";
+import { EExecution, ERoute } from "typings";
 import Execution from "./Execution";
-
-import "../Brigades/brigades.css";
 import Alert from "@/ui/Alert";
+
+import "./executions.css";
 
 export default () => {
     const { t } = useTranslation("Executions");
+    const { t: tShared } = useTranslation("Shared");
     const navigate = useNavigate();
     const { city } = useParams();
 
@@ -21,9 +23,15 @@ export default () => {
     const [route, setRoute] = useSearchState("route", "");
     const [brigade, setBrigade] = useSearchState("brigade", "");
     const [vehicle, setVehicle] = useSearchState("vehicle", "");
-    const enabled = !!route || !!(route && brigade) || !!vehicle;
+    const enabled = !!route || !!vehicle;
 
     const [filterLoading, setFilterLoading] = useState(false);
+
+    const { data: autocomplete } = useQueryExecutionAutocomplete(city!);
+    const routesMap = useMemo(
+        () => new Map((autocomplete?.routes ?? []).map((r) => [r[ERoute.id], r])),
+        [autocomplete],
+    );
 
     const {
         data: executions,
@@ -39,7 +47,6 @@ export default () => {
     });
 
     const loading = filterLoading || isLoading;
-    const { t: tShared } = useTranslation("Shared");
 
     return (
         <Dialog
@@ -118,7 +125,14 @@ export default () => {
                     <Virtuoso
                         style={{ height: "100%" }}
                         totalCount={executions.length}
-                        itemContent={(index) => <Execution execution={executions[index]} />}
+                        itemContent={(index) => (
+                            <Execution
+                                execution={executions[index]}
+                                route={routesMap.get(executions[index][EExecution.route])}
+                                city={city!}
+                                date={date}
+                            />
+                        )}
                     />
                 )}
             </DialogContent>
