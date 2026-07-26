@@ -1,7 +1,15 @@
 import { Box, ListItemButton, ListItemText } from "@mui/material";
 import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
 import VehicleDelay from "@/sheet/Trip/TripDelay";
-import { StopDeparture, EStopDeparture, EVehicle, ETrip, EStopDepartureStatus, EStopTime } from "typings";
+import {
+    StopDeparture,
+    EStopDeparture,
+    EVehicle,
+    ETrip,
+    ERoute,
+    EStopDepartureStatus,
+    EStopTime,
+} from "typings";
 import useTime from "@/hooks/useTime";
 import { getTime } from "@/util/tools";
 import { useState } from "react";
@@ -113,7 +121,12 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                                 gap: 0.5,
                             }}
                         >
-                            <VehicleDelay delay={delay} status={status} showGPS={!!vehicle} />·
+                            <VehicleDelay
+                                delay={delay}
+                                status={status}
+                                showGPS={!!vehicle && route[ERoute.type] === 2}
+                            />
+                            ·
                             {hasDelay || isCancelled ? (
                                 <span style={{ textDecoration: "line-through" }}>{getTime(scheduled)}</span>
                             ) : (
