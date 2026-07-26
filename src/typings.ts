@@ -1,4 +1,14 @@
-export type VehicleType = 0 | 1 | 2 | 3 | 4 | 11 | 20;
+export enum VehicleType {
+    Tram = 0,
+    Subway = 1,
+    Train = 2,
+    Bus = 3,
+    Ferry = 4,
+    AerialLift = 6,
+    Funicular = 7,
+    Trolleybus = 11,
+    Monorail = 12,
+}
 export type Location = [number, number];
 export type SheetContentTypes =
     | "Cities"

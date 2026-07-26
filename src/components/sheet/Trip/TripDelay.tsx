@@ -15,15 +15,11 @@ export default ({
     const [delayClass, delayTime] = getDelay(delay);
     const { t } = useTranslation("Vehicle");
 
-    const showFixedGPS =
-        (showGPS !== false && status === EStopDepartureStatus.OnPreviousTrip) ||
-        (showGPS === true && status !== EStopDepartureStatus.Scheduled);
-    const showOffGPS = status === EStopDepartureStatus.Scheduled || showGPS === false;
+    const showFixedGPS = showGPS === true && status !== EStopDepartureStatus.Scheduled;
+    const showOffGPS = status === EStopDepartureStatus.Scheduled;
 
     const isLiveStatus =
-        status !== EStopDepartureStatus.Cancelled &&
-        status !== EStopDepartureStatus.OnPreviousTrip &&
-        status !== EStopDepartureStatus.Scheduled;
+        status !== EStopDepartureStatus.Cancelled && status !== EStopDepartureStatus.Scheduled;
     const visualClass = isLiveStatus ? delayClass : "unknown";
 
     return (
@@ -33,13 +29,11 @@ export default ({
 
             {status === EStopDepartureStatus.Cancelled
                 ? t("cancelled")
-                : status === EStopDepartureStatus.OnPreviousTrip
-                  ? t("live")
-                  : status === EStopDepartureStatus.Scheduled
-                    ? t("scheduled")
-                    : delayTime
-                      ? t(delay > 0 ? "delayed" : "early", { time: delayTime })
-                      : t("onTime")}
+                : status === EStopDepartureStatus.Scheduled
+                  ? t("scheduled")
+                  : delayTime
+                    ? t(delay > 0 ? "delayed" : "early", { time: delayTime })
+                    : t("onTime")}
         </span>
     );
 };

@@ -19,7 +19,7 @@
         "departure": "Oczekiwanie na odjazd",
         "departed": "Odjechał",
         "cancelled": "Odwołany",
-        "live": "Na bieżąco",
+        "onPreviousTrip": "Pojazd znajduje się jeszcze na poprzednim kursie",
         "scheduled": "Brak danych o opóźnieniu",
         "tripNotFound": "Nie znaleźliśmy tej trasy...",
         "vehicleSchedule": "Rozkład jazdy pojazdu",

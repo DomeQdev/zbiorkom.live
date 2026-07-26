@@ -25,9 +25,7 @@ export default ({ isTrain, update, hasDeparted }: Props) => {
         const isSingleTime = arrivalTimeStr === departureTimeStr;
 
         const liveStatus =
-            depStatus !== EStopDepartureStatus.Cancelled &&
-            depStatus !== EStopDepartureStatus.OnPreviousTrip &&
-            depStatus !== EStopDepartureStatus.Scheduled;
+            depStatus !== EStopDepartureStatus.Cancelled && depStatus !== EStopDepartureStatus.Scheduled;
 
         return [
             departureTimeStr,

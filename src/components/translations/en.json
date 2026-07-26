@@ -19,7 +19,7 @@
         "departure": "Waiting for departure",
         "departed": "Departed",
         "cancelled": "Cancelled",
-        "live": "Live",
+        "onPreviousTrip": "The vehicle is still on its previous trip",
         "scheduled": "Scheduled",
         "tripNotFound": "We couldn't find this route...",
         "vehicleSchedule": "Vehicle schedule",

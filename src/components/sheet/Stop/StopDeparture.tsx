@@ -81,7 +81,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                 backgroundColor: isExpanded ? "background.paper" : "transparent",
                 margin: isExpanded ? 1 : 0,
                 transition: "background-color 0.2s, margin 0.2s, max-height 0.2s",
-                maxHeight: isExpanded ? 125 : 70,
+                maxHeight: isExpanded ? (isLive ? 155 : 125) : 70,
                 "& > *": {
                     width: "100%",
                 },
@@ -113,12 +113,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                                 gap: 0.5,
                             }}
                         >
-                            <VehicleDelay
-                                delay={delay}
-                                status={status}
-                                showGPS={!!vehicle || (isStation ? undefined : false)}
-                            />
-                            ·
+                            <VehicleDelay delay={delay} status={status} showGPS={!!vehicle} />·
                             {hasDelay || isCancelled ? (
                                 <span style={{ textDecoration: "line-through" }}>{getTime(scheduled)}</span>
                             ) : (
@@ -154,7 +149,23 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                 }}
             />
 
-            {isExpanded && <StopDepartureActions departure={departure} />}
+            {isExpanded && (
+                <>
+                    {isLive && (
+                        <Box
+                            component="span"
+                            sx={{
+                                fontSize: 12.5,
+                                color: "text.secondary",
+                                textAlign: "center",
+                            }}
+                        >
+                            {t("onPreviousTrip")}
+                        </Box>
+                    )}
+                    <StopDepartureActions departure={departure} />
+                </>
+            )}
         </ListItemButton>
     );
 };

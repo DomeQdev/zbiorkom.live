@@ -12,9 +12,7 @@ export default ({ departure }: { departure: StopDeparture }) => {
     const minutesToDeparture = useTime(departureEstimated);
 
     const isLive = (status: EStopDepartureStatus) =>
-        status !== EStopDepartureStatus.Cancelled &&
-        status !== EStopDepartureStatus.OnPreviousTrip &&
-        status !== EStopDepartureStatus.Scheduled;
+        status !== EStopDepartureStatus.Cancelled && status !== EStopDepartureStatus.Scheduled;
 
     const [rawDepartureClass] = getDelay(departureTime[EStopTime.delay]);
 
