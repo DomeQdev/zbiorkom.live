@@ -22,7 +22,6 @@ export default memo(() => {
     const { city, stop } = useParams();
     const { t } = useTranslation("Schedules");
     const [firstContact] = useState(Date.now());
-    const isStation = window.location.pathname.includes("/station");
 
     const expandLimit = useStopStore((state) => state.expandLimit);
     const { data, isLoading, error } = useQueryStopDepartures({
@@ -55,7 +54,7 @@ export default memo(() => {
         <Virtuoso
             totalCount={departures.length}
             style={{ height: "calc(var(--rsbs-overlay-h) - 55px)" }}
-            itemContent={(index) => <Departure departure={departures[index]} isStation={isStation} />}
+            itemContent={(index) => <Departure departure={departures[index]} />}
             endReached={() => {
                 if (!data[EStopDepartures.hasMore] || Date.now() - firstContact < 150) return;
 

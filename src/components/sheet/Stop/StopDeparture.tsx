@@ -1,29 +1,16 @@
 import { Box, ListItemButton, ListItemText } from "@mui/material";
 import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
 import VehicleDelay from "@/sheet/Trip/TripDelay";
-import {
-    StopDeparture,
-    EStopDeparture,
-    EVehicle,
-    ETrip,
-    ERoute,
-    EStopDepartureStatus,
-    EStopTime,
-} from "typings";
+import { StopDeparture, EStopDeparture, ETrip, ERoute, EStopDepartureStatus, EStopTime } from "typings";
 import useTime from "@/hooks/useTime";
 import { getTime } from "@/util/tools";
-import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useMap } from "@vis.gl/react-maplibre";
-import StopDepartureActions from "./StopDepartureActions";
 import { useTranslation } from "react-i18next";
 import { buildCitySuffix, getCityFromUrl } from "@/util/tools";
 
-export default ({ departure, isStation }: { departure: StopDeparture; isStation: boolean }) => {
+export default ({ departure }: { departure: StopDeparture }) => {
     const { t } = useTranslation("Vehicle");
-    const [isExpanded, setExpanded] = useState(false);
 
-    const { current: map } = useMap();
     const navigate = useNavigate();
     const { city } = useParams();
 
@@ -47,54 +34,24 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
     const isCancelled = status === EStopDepartureStatus.Cancelled;
     const showCountdown = !isCancelled && estimated > Date.now();
 
-    const isLive = status === EStopDepartureStatus.OnPreviousTrip;
-    const useVehicleRoute = !!vehicle && !isLive;
-
-    const onSuperClick = () => {
-        if (isLive) return setExpanded(true);
-
-        const entityCity = useVehicleRoute ? vehicle![EVehicle.city] : getCityFromUrl(city);
-
+    const onClick = () =>
         navigate(
-            [
-                city,
-                useVehicleRoute ? "vehicle" : "trip",
-                encodeURIComponent(useVehicleRoute ? vehicle![EVehicle.id] : trip[ETrip.id]),
-            ].join("/") + buildCitySuffix(entityCity, city),
+            `/${city}/trip/${encodeURIComponent(trip[ETrip.id])}` +
+                buildCitySuffix(getCityFromUrl(city), city),
             {
                 state: -2,
             },
         );
-    };
 
     return (
         <ListItemButton
-            onClick={() => {
-                if (isLive) return setExpanded(!isExpanded);
-                if (isStation) return onSuperClick();
-
-                if (vehicle) {
-                    map?.flyTo({
-                        center: vehicle[EVehicle.location],
-                        zoom: map.getZoom() > 15 ? map.getZoom() : 15,
-                    });
-                } else {
-                    setExpanded(!isExpanded);
-                }
-            }}
-            onDoubleClick={onSuperClick}
+            onClick={onClick}
             sx={{
                 display: "flex",
                 flexDirection: "column",
-                backgroundColor: isExpanded ? "background.paper" : "transparent",
-                margin: isExpanded ? 1 : 0,
-                transition: "background-color 0.2s, margin 0.2s, max-height 0.2s",
-                maxHeight: isExpanded ? (isLive ? 155 : 125) : 70,
+                maxHeight: 70,
                 "& > *": {
                     width: "100%",
-                },
-                "&:hover, &:focus": {
-                    backgroundColor: isExpanded ? "background.paper" : "transparent",
                 },
                 opacity: isCancelled ? 0.7 : undefined,
             }}
@@ -161,24 +118,6 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                     },
                 }}
             />
-
-            {isExpanded && (
-                <>
-                    {isLive && (
-                        <Box
-                            component="span"
-                            sx={{
-                                fontSize: 12.5,
-                                color: "text.secondary",
-                                textAlign: "center",
-                            }}
-                        >
-                            {t("onPreviousTrip")}
-                        </Box>
-                    )}
-                    <StopDepartureActions departure={departure} />
-                </>
-            )}
         </ListItemButton>
     );
 };
