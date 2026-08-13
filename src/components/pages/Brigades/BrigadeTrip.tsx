@@ -17,6 +17,10 @@ export default ({ trip, isActive, showRoute }: Props) => {
     const { t } = useTranslation("Brigades");
     const { city } = useParams();
 
+    const firstStop = trip[ETrip.firstStop];
+    const lastStop = trip[ETrip.lastStop];
+    const distance = trip[ETrip.distance];
+
     const background = useMemo(
         () => generateDarkScheme(trip[ETrip.route][ERoute.color], [ColorRole.SecondaryContainer]),
         [trip],
@@ -47,7 +51,7 @@ export default ({ trip, isActive, showRoute }: Props) => {
                 }}
             />
             <span className="tripRow">
-                <span className="tripTime">{getTime(trip[ETrip.firstStop][1])}</span>
+                <span className="tripTime">{firstStop && getTime(firstStop[1])}</span>
                 <span
                     className="vehicleStopIcon"
                     style={{
@@ -56,17 +60,22 @@ export default ({ trip, isActive, showRoute }: Props) => {
                 />
                 <span className="tripHeadsign">
                     {showRoute && <RouteTag route={trip[ETrip.route]} />}
-                    {trip[ETrip.firstStop][0]}
+                    {firstStop?.[0]}
                 </span>
             </span>
             <div className="tripInfo">
                 <span>
                     {[
-                        t("travelTime", {
-                            time: msToTime(trip[ETrip.lastStop][1] - trip[ETrip.firstStop][1]),
-                        }),
-                        `${trip[ETrip.distance].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} m`,
-                    ].join(" · ")}
+                        firstStop &&
+                            lastStop &&
+                            t("travelTime", {
+                                time: msToTime(lastStop[1] - firstStop[1]),
+                            }),
+                        distance !== undefined &&
+                            `${distance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} m`,
+                    ]
+                        .filter(Boolean)
+                        .join(" · ")}
                 </span>
                 <span>
                     {(() => {
@@ -79,14 +88,14 @@ export default ({ trip, isActive, showRoute }: Props) => {
                 </span>
             </div>
             <span className="tripRow">
-                <span className="tripTime">{getTime(trip[ETrip.lastStop][1])}</span>
+                <span className="tripTime">{lastStop && getTime(lastStop[1])}</span>
                 <span
                     className="vehicleStopIcon"
                     style={{
                         border: `3px solid ${trip[ETrip.route][ERoute.color]}`,
                     }}
                 />
-                <span className="tripHeadsign">{trip[ETrip.lastStop][0]}</span>
+                <span className="tripHeadsign">{lastStop?.[0]}</span>
             </span>
         </ListItemButton>
     );

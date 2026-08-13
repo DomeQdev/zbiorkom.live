@@ -165,9 +165,10 @@ export type Trip = [
     headsign: string,
     brigade: string,
     shortName: string,
-    firstStop: [stopName: string, arrival: number],
-    lastStop: [stopName: string, arrival: number],
-    distance: number,
+    description: [key: string, value: string][],
+    firstStop?: [stopName: string, arrival: number],
+    lastStop?: [stopName: string, departure: number],
+    distance?: number,
 ];
 
 export enum ETrip {
@@ -177,9 +178,10 @@ export enum ETrip {
     headsign = 3,
     brigade = 4,
     shortName = 5,
-    firstStop = 6,
-    lastStop = 7,
-    distance = 8,
+    description = 6,
+    firstStop = 7,
+    lastStop = 8,
+    distance = 9,
 }
 
 export type TripStop = [id: string, name: string, location: Location, type: ETripStopType];

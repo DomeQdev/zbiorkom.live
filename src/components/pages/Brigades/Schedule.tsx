@@ -68,8 +68,10 @@ export default ({ city, route, brigade }: Props) => {
         if (currentTripIndex === -1 && filteredTrips.length) {
             currentTripIndex = filteredTrips.findIndex(
                 (trip) =>
-                    trip[ETrip.lastStop][1] > Date.now() &&
-                    trip[ETrip.firstStop][1] <= Date.now() + 2 * 60 * 60 * 1000,
+                    !!trip[ETrip.lastStop] &&
+                    !!trip[ETrip.firstStop] &&
+                    trip[ETrip.lastStop]![1] > Date.now() &&
+                    trip[ETrip.firstStop]![1] <= Date.now() + 2 * 60 * 60 * 1000,
             );
         }
 
@@ -231,9 +233,12 @@ export default ({ city, route, brigade }: Props) => {
 
                                 const nextTrip = filteredTrips[i + 1];
                                 if (nextTrip) {
-                                    breakTime = msToTime(
-                                        nextTrip[ETrip.firstStop][1] - trip[ETrip.lastStop][1],
-                                    );
+                                    const nextFirstStop = nextTrip[ETrip.firstStop];
+                                    const lastStop = trip[ETrip.lastStop];
+
+                                    if (nextFirstStop && lastStop) {
+                                        breakTime = msToTime(nextFirstStop[1] - lastStop[1]);
+                                    }
 
                                     if (trip[ETrip.route][ERoute.id] !== nextTrip[ETrip.route][ERoute.id]) {
                                         routeChange = nextTrip[ETrip.route][ERoute.name];
