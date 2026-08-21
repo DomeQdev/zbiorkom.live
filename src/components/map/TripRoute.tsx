@@ -2,6 +2,7 @@ import { Layer, Source } from "@vis.gl/react-maplibre";
 import { useMemo } from "react";
 import { Shape, TripStop, ETripStop } from "typings";
 import { BRANCH_COLOR_RATIO, fadeColor } from "@/util/tools";
+import { isHidden } from "@/util/hiddenAreas";
 
 type Props = {
     shape: Shape;
@@ -21,23 +22,26 @@ export default ({ shape, stops, color, branches, branchOnlyStops }: Props) => {
 
         return {
             type: "FeatureCollection",
-            features: stops.map((stop) => {
-                const isBranch = branchOnly.has(stop[ETripStop.id]);
+            // stops inside blanked out areas are never drawn — the sheet still lists them
+            features: stops
+                .filter((stop) => !isHidden(stop[ETripStop.location]))
+                .map((stop) => {
+                    const isBranch = branchOnly.has(stop[ETripStop.id]);
 
-                return {
-                    type: "Feature",
-                    geometry: {
-                        type: "Point",
-                        coordinates: stop[ETripStop.location],
-                    },
-                    properties: {
-                        id: stop[ETripStop.id],
-                        branch: isBranch,
-                        color: isBranch ? branchColor : color,
-                        title: stop[ETripStop.name],
-                    },
-                };
-            }),
+                    return {
+                        type: "Feature",
+                        geometry: {
+                            type: "Point",
+                            coordinates: stop[ETripStop.location],
+                        },
+                        properties: {
+                            id: stop[ETripStop.id],
+                            branch: isBranch,
+                            color: isBranch ? branchColor : color,
+                            title: stop[ETripStop.name],
+                        },
+                    };
+                }),
         };
     }, [stops, branchOnlyStops, branchColor]);
 

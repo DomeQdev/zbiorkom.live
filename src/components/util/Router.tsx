@@ -3,6 +3,7 @@ import CityRedirect from "./CityRedirect";
 import { lazy, Suspense } from "react";
 
 import LocationMarker from "@/map/LocationMarker";
+import HiddenAreas from "@/map/HiddenAreas";
 import Sheet from "@/sheet/Sheet";
 import Root from "@/pages/Root";
 import Map from "@/map/Map";
@@ -46,6 +47,7 @@ export default () => {
                 <Map>
                     <Sheet />
                     <LocationMarker />
+                    <HiddenAreas />
                     <Outlet />
                 </Map>
             ),

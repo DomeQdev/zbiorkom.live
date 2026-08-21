@@ -15,6 +15,7 @@ import {
 } from "typings";
 import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 import { buildCitySuffix, getCityFromUrl } from "@/util/tools";
+import { isHidden } from "@/util/hiddenAreas";
 
 export default memo(() => {
     const [hasDataFetched, setHasDataFetched] = useState<boolean>(false);
@@ -79,19 +80,21 @@ export default memo(() => {
         <>
             <Helm variable="stop" dictionary={{ stop: stopData[EStop.name] }} />
 
-            <Marker
-                key={stopData[EStop.id]}
-                longitude={stopData[EStop.location][0]}
-                latitude={stopData[EStop.location][1]}
-                style={{ zIndex: 2 }}
-                pitchAlignment="map"
-                rotationAlignment="map"
-            >
-                <StopMarker
-                    stop={stopData}
-                    useStopCodeAsIcon={localStorage.getItem("useStopCodeAsIcon") === "true"}
-                />
-            </Marker>
+            {!isHidden(stopData[EStop.location]) && (
+                <Marker
+                    key={stopData[EStop.id]}
+                    longitude={stopData[EStop.location][0]}
+                    latitude={stopData[EStop.location][1]}
+                    style={{ zIndex: 2 }}
+                    pitchAlignment="map"
+                    rotationAlignment="map"
+                >
+                    <StopMarker
+                        stop={stopData}
+                        useStopCodeAsIcon={localStorage.getItem("useStopCodeAsIcon") === "true"}
+                    />
+                </Marker>
+            )}
 
             {liveDepartures.map((departure) => (
                 <VehicleMarker
