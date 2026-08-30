@@ -1,7 +1,7 @@
 import { Box, ListItemButton, ListItemText } from "@mui/material";
 import { EStop } from "typings";
 import { useMap } from "@vis.gl/react-maplibre";
-import { GRAPH_WIDTH, RouteRow, routeRowPaths } from "./routeRows";
+import { RouteRow, rowGraphWidth, routeRowPaths } from "./routeRows";
 
 const NODE_RADIUS = 7.5;
 const NODE_BORDER = 3;
@@ -14,11 +14,12 @@ type Props = {
 export default ({ row, color }: Props) => {
     const { current: map } = useMap();
 
+    const width = rowGraphWidth(row);
     const graph = (
         <svg
-            width={GRAPH_WIDTH}
+            width={width}
             height={row.height}
-            viewBox={`0 0 ${GRAPH_WIDTH} ${row.height}`}
+            viewBox={`0 0 ${width} ${row.height}`}
             style={{ flexShrink: 0, display: "block" }}
         >
             {routeRowPaths(row, color).map((path, i) => (

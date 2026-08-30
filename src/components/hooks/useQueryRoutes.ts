@@ -19,7 +19,7 @@ export const useQueryRouteGraph = ({ city, route }: { city: string; route: strin
         queryFn: async ({ signal }) => {
             const data = await getFromAPI<RouteGraphRawResponse | { error: string }>(
                 city,
-                `routes/${route}/graph`,
+                `routes/${route}`,
                 {},
                 signal,
             );

@@ -11,7 +11,7 @@ import useQueryMarkers from "@/hooks/useQueryMarkers";
 import useDirectionStore from "@/hooks/useDirectionStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryRouteGraph } from "@/hooks/useQueryRoutes";
-import { getSheetHeight, variantColor } from "@/util/tools";
+import { getSheetHeight, VARIANT_COLOR } from "@/util/tools";
 
 const toTripStop = (stop: RouteGraphStop): TripStop => {
     const code = stop[EStop.code];
@@ -50,15 +50,15 @@ export default () => {
 
     const stops = useMemo<TripStop[] | undefined>(() => graph?.trunk.map(toTripStop), [graph]);
 
-    // shapes[0] is the trunk and shapes[b + 1] the polyline of branch b, so a variant's polyline, its
-    // stops on the map and its rows in the sheet all take variantColor(b)
+    // shapes[0] is the trunk and shapes[b + 1] the polyline of branch b; variants on the map and in the
+    // sheet share VARIANT_COLOR
     const variants = useMemo<TripRouteVariant[] | undefined>(
         () =>
             graph && shapes && color
                 ? graph.branches.flatMap((branch, b) => {
                       const shape = shapes[b + 1];
                       if (!shape) return [];
-                      return [{ shape, stops: branch.stops.map(toTripStop), color: variantColor(color, b) }];
+                      return [{ shape, stops: branch.stops.map(toTripStop), color: VARIANT_COLOR }];
                   })
                 : undefined,
         [graph, shapes, color],
