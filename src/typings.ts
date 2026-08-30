@@ -301,36 +301,18 @@ export type RouteGraphStop = [
     bearing?: number,
 ];
 
-export type RouteGraphRow = [
-    stop: RouteGraphStop,
-    tracks: number[],
-    width: number,
-    paths: [d: string, track: number][],
-    nodes: [x: number, track: number][],
-    main: boolean,
-];
+export type RouteGraphBranch = {
+    from: number; // trunk position the variant leaves after, -1 = starts off the trunk
+    to: number; // trunk position the variant rejoins at, -1 = ends off the trunk
+    stops: RouteGraphStop[];
+};
 
-export enum ERouteGraphRow {
-    stop = 0,
-    tracks = 1,
-    width = 2,
-    paths = 3,
-    nodes = 4,
-    main = 5,
-}
-
-export enum RouteGraphTrack {
-    bypass = 0,
-    trunk = 1,
-    branch = 2,
-}
-
-export type RouteGraphDirection = { stops: RouteGraphRow[]; headsign: string };
+export type RouteGraphDirection = { headsign: string; trunk: RouteGraphStop[]; branches: RouteGraphBranch[] };
 
 export type RouteGraphRawResponse = {
     route: Route;
     graph: RouteGraphDirection[];
-    shapes: string[][];
+    shapes: string[][]; // per direction: [0] the trunk, then one polyline per branch
 };
 
 export type RouteGraph = {

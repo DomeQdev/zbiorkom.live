@@ -1,54 +1,56 @@
 import { Layer, Source } from "@vis.gl/react-maplibre";
 import { useMemo } from "react";
 import { Shape, TripStop, ETripStop } from "typings";
-import { BRANCH_COLOR_RATIO, fadeColor } from "@/util/tools";
+
+export type TripRouteVariant = { shape: Shape; stops: TripStop[]; color: string };
 
 type Props = {
     shape: Shape;
     stops: TripStop[];
     color: string;
-    branches?: Shape[];
-    branchOnlyStops?: string[];
+    variants?: TripRouteVariant[];
 };
 
-export default ({ shape, stops, color, branches, branchOnlyStops }: Props) => {
-    const branchColor = useMemo(() => fadeColor(color, BRANCH_COLOR_RATIO), [color]);
-
-    // stops on the active line (shape[0]) are full color; stops served only by branches
-    // are faded. same size for all — only the color changes, so nothing looks "random"
+export default ({ shape, stops, color, variants }: Props) => {
+    // every stop carries the colour of the line it sits on — the route colour on the trunk, the variant's
+    // own colour on a variant — which is exactly what the sheet paints, so the two views read alike
     const stopsGeoJSON: GeoJSON.GeoJSON = useMemo(() => {
-        const branchOnly = new Set(branchOnlyStops);
+        const feature = (stop: TripStop, stopColor: string, variant: boolean): GeoJSON.Feature => ({
+            type: "Feature",
+            geometry: {
+                type: "Point",
+                coordinates: stop[ETripStop.location],
+            },
+            properties: {
+                id: stop[ETripStop.id],
+                branch: variant,
+                color: stopColor,
+                title: stop[ETripStop.name],
+            },
+        });
 
         return {
             type: "FeatureCollection",
-            features: stops.map((stop) => {
-                const isBranch = branchOnly.has(stop[ETripStop.id]);
-
-                return {
-                    type: "Feature",
-                    geometry: {
-                        type: "Point",
-                        coordinates: stop[ETripStop.location],
-                    },
-                    properties: {
-                        id: stop[ETripStop.id],
-                        branch: isBranch,
-                        color: isBranch ? branchColor : color,
-                        title: stop[ETripStop.name],
-                    },
-                };
-            }),
+            features: [
+                ...(variants ?? []).flatMap((variant) =>
+                    variant.stops.map((stop) => feature(stop, variant.color, true)),
+                ),
+                ...stops.map((stop) => feature(stop, color, false)),
+            ],
         };
-    }, [stops, branchOnlyStops, branchColor]);
+    }, [stops, variants, color]);
 
-    // always mounted (empty collection when there are no branches) — a conditional
+    // always mounted (empty collection when there are no variants) — a conditional
     // mount would re-add the layer on top of the stop circles when switching directions
-    const branchesGeoJSON: GeoJSON.GeoJSON = useMemo(
+    const variantsGeoJSON: GeoJSON.GeoJSON = useMemo(
         () => ({
             type: "FeatureCollection",
-            features: branches ?? [],
+            features: (variants ?? []).map((variant) => ({
+                ...variant.shape,
+                properties: { ...variant.shape.properties, color: variant.color },
+            })),
         }),
-        [branches],
+        [variants],
     );
 
     return (
@@ -68,8 +70,8 @@ export default ({ shape, stops, color, branches, branchOnlyStops }: Props) => {
                 />
             </Source>
 
-            <Source type="geojson" data={branchesGeoJSON}>
-                {/* beforeId keeps branches below the main line even when sources reload on direction change */}
+            <Source type="geojson" data={variantsGeoJSON}>
+                {/* beforeId keeps variants below the main line even when sources reload on direction change */}
                 <Layer
                     id="route-branches"
                     type="line"
@@ -79,7 +81,7 @@ export default ({ shape, stops, color, branches, branchOnlyStops }: Props) => {
                         "line-cap": "round",
                     }}
                     paint={{
-                        "line-color": branchColor,
+                        "line-color": ["get", "color"],
                         "line-width": 3,
                     }}
                 />

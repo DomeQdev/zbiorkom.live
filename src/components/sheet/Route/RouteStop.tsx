@@ -1,35 +1,74 @@
-import { ListItemButton, ListItemText } from "@mui/material";
-import { ERouteGraphRow, EStop, RouteGraphRow, RouteGraphTrack } from "typings";
+import { Box, ListItemButton, ListItemText } from "@mui/material";
+import { EStop } from "typings";
 import { useMap } from "@vis.gl/react-maplibre";
-import { ROUTE_GRAPH_ROW_HEIGHT } from "@/hooks/useQueryRoutes";
-import { BRANCH_COLOR_RATIO, fadeColor } from "@/util/tools";
-import { useMemo } from "react";
+import { GRAPH_WIDTH, RouteRow, routeRowPaths } from "./routeRows";
 
-const TRUNK_LINE_WIDTH = 6;
-const BRANCH_LINE_WIDTH = 3.5;
 const NODE_RADIUS = 7.5;
 const NODE_BORDER = 3;
 
 type Props = {
-    row: RouteGraphRow;
+    row: RouteRow;
     color: string;
-    box: { x: number; width: number };
 };
 
-export default ({ row, color, box }: Props) => {
+export default ({ row, color }: Props) => {
     const { current: map } = useMap();
-    const stop = row[ERouteGraphRow.stop];
 
-    // same faded route color as the branch lines/stops on the map
-    const branchColor = useMemo(() => fadeColor(color, BRANCH_COLOR_RATIO), [color]);
-
-    const isTrunk = (track: number) => track === RouteGraphTrack.trunk;
-    const trackColor = (track: number) => (isTrunk(track) ? color : branchColor);
-
-    // trunk segments last, so the route color stays on top at junctions
-    const paths = [...row[ERouteGraphRow.paths]].sort(
-        ([, trackA], [, trackB]) => +isTrunk(trackA) - +isTrunk(trackB),
+    const graph = (
+        <svg
+            width={GRAPH_WIDTH}
+            height={row.height}
+            viewBox={`0 0 ${GRAPH_WIDTH} ${row.height}`}
+            style={{ flexShrink: 0, display: "block" }}
+        >
+            {routeRowPaths(row, color).map((path, i) => (
+                <path
+                    key={i}
+                    d={path.d}
+                    stroke={path.color}
+                    strokeWidth={path.width}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    fill="none"
+                />
+            ))}
+            {row.kind === "stop" && (
+                <circle
+                    cx={row.x}
+                    cy={row.height / 2}
+                    r={NODE_RADIUS}
+                    fill="#fff"
+                    stroke={row.color}
+                    strokeWidth={NODE_BORDER}
+                />
+            )}
+        </svg>
     );
+
+    if (row.kind !== "stop") {
+        return (
+            <Box sx={{ display: "flex", alignItems: "center", height: row.height }}>
+                {graph}
+                {row.kind === "label" && (
+                    <Box
+                        component="span"
+                        sx={{
+                            color: row.color,
+                            fontSize: 13,
+                            fontWeight: 600,
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                        }}
+                    >
+                        {row.text}
+                    </Box>
+                )}
+            </Box>
+        );
+    }
+
+    const stop = row.stop;
 
     return (
         <ListItemButton
@@ -39,36 +78,9 @@ export default ({ row, color, box }: Props) => {
                     zoom: map.getZoom() > 15 ? map.getZoom() : 15,
                 })
             }
-            sx={{ padding: 0, height: ROUTE_GRAPH_ROW_HEIGHT }}
+            sx={{ padding: 0, height: row.height }}
         >
-            <svg
-                width={box.width}
-                height={ROUTE_GRAPH_ROW_HEIGHT}
-                viewBox={`${box.x} 0 ${box.width} ${ROUTE_GRAPH_ROW_HEIGHT}`}
-                style={{ flexShrink: 0, display: "block" }}
-            >
-                {paths.map(([d, track], i) => (
-                    <path
-                        key={i}
-                        d={d}
-                        stroke={trackColor(track)}
-                        strokeWidth={isTrunk(track) ? TRUNK_LINE_WIDTH : BRANCH_LINE_WIDTH}
-                        strokeLinejoin="round"
-                        fill="none"
-                    />
-                ))}
-                {row[ERouteGraphRow.nodes].map(([x, track], i) => (
-                    <circle
-                        key={i}
-                        cx={x}
-                        cy={ROUTE_GRAPH_ROW_HEIGHT / 2}
-                        r={NODE_RADIUS}
-                        fill="#fff"
-                        stroke={trackColor(track)}
-                        strokeWidth={NODE_BORDER}
-                    />
-                ))}
-            </svg>
+            {graph}
             <ListItemText
                 primary={`${stop[EStop.name]} ${stop[EStop.code] || ""}`}
                 sx={{

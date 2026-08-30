@@ -20,7 +20,7 @@ export const useQueryRouteGraph = ({ city, route }: { city: string; route: strin
             const data = await getFromAPI<RouteGraphRawResponse | { error: string }>(
                 city,
                 `routes/${route}/graph`,
-                { rowHeight: ROUTE_GRAPH_ROW_HEIGHT },
+                {},
                 signal,
             );
 

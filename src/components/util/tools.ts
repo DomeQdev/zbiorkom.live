@@ -105,8 +105,33 @@ export const polylineToGeoJson = (polyline: string) => {
     return geoJson;
 };
 
-// how much of the route color branch (variant) lines/stops keep — shared by the map and the sheet
-export const BRANCH_COLOR_RATIO = 0.55;
+// Colour of route variant `index`: the route hue turned by a fixed step per variant, kept saturated and
+// light enough for the dark UI. The sheet and the map both derive it from here, so a variant's stops,
+// its line and its polyline always match.
+export const variantColor = (hex: string, index: number) => {
+    const value = parseInt(hex.slice(1), 16);
+    const r = ((value >> 16) & 0xff) / 255;
+    const g = ((value >> 8) & 0xff) / 255;
+    const b = (value & 0xff) / 255;
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const delta = max - min;
+
+    let hue = 0;
+    if (delta > 0) {
+        if (max === r) hue = ((g - b) / delta) % 6;
+        else if (max === g) hue = (b - r) / delta + 2;
+        else hue = (r - g) / delta + 4;
+        hue = (hue * 60 + 360) % 360;
+    }
+    const lightness = (max + min) / 2;
+    const saturation = delta === 0 ? 0 : delta / (1 - Math.abs(2 * lightness - 1));
+
+    const shiftedHue = Math.round((hue + 48 * (index + 1)) % 360);
+    const shownSaturation = Math.round(Math.max(saturation, 0.6) * 100);
+    const shownLightness = Math.round(Math.min(Math.max(lightness, 0.6), 0.75) * 100);
+    return `hsl(${shiftedHue}, ${shownSaturation}%, ${shownLightness}%)`;
+};
 
 export const fadeColor = (hex: string, ratio: number, background = "#ffffff") => {
     const color = parseInt(hex.slice(1), 16);

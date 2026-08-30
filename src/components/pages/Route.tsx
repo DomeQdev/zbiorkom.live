@@ -1,4 +1,4 @@
-import { ERoute, ERouteGraphRow, EStop, ETripStopType, EVehicle, Location, TripStop, Vehicle } from "typings";
+import { ERoute, EStop, ETripStopType, EVehicle, Location, RouteGraphStop, TripStop, Vehicle } from "typings";
 import { useEffect, useMemo } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useMap } from "@vis.gl/react-maplibre";
@@ -6,12 +6,18 @@ import { LngLatBounds } from "maplibre-gl";
 import useGoBack from "@/hooks/useGoBack";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";
-import TripRoute from "@/map/TripRoute";
+import TripRoute, { TripRouteVariant } from "@/map/TripRoute";
 import useQueryMarkers from "@/hooks/useQueryMarkers";
 import useDirectionStore from "@/hooks/useDirectionStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryRouteGraph } from "@/hooks/useQueryRoutes";
-import { getSheetHeight } from "@/util/tools";
+import { getSheetHeight, variantColor } from "@/util/tools";
+
+const toTripStop = (stop: RouteGraphStop): TripStop => {
+    const code = stop[EStop.code];
+    const label = code ? `${stop[EStop.name]} ${code}` : stop[EStop.name];
+    return [stop[EStop.id], label, stop[EStop.location], ETripStopType.normal];
+};
 
 export default () => {
     const [direction, setDirection] = useDirectionStore(
@@ -38,25 +44,24 @@ export default () => {
         },
     });
 
+    const graph = data?.graph[direction];
     const shapes = data?.shapes[direction];
-    const stops = useMemo<TripStop[] | undefined>(
-        () =>
-            data?.graph[direction]?.stops.map((row) => {
-                const stop = row[ERouteGraphRow.stop];
-                const code = stop[EStop.code];
-                const label = code ? `${stop[EStop.name]} ${code}` : stop[EStop.name];
-                return [stop[EStop.id], label, stop[EStop.location], ETripStopType.normal];
-            }),
-        [data, direction],
-    );
+    const color = data?.route[ERoute.color];
 
-    // stops served only by branches (not on the active line shape[0]) — drawn faded
-    const branchOnlyStops = useMemo(
+    const stops = useMemo<TripStop[] | undefined>(() => graph?.trunk.map(toTripStop), [graph]);
+
+    // shapes[0] is the trunk and shapes[b + 1] the polyline of branch b, so a variant's polyline, its
+    // stops on the map and its rows in the sheet all take variantColor(b)
+    const variants = useMemo<TripRouteVariant[] | undefined>(
         () =>
-            data?.graph[direction]?.stops
-                .filter((row) => !row[ERouteGraphRow.main])
-                .map((row) => row[ERouteGraphRow.stop][EStop.id]),
-        [data, direction],
+            graph && shapes && color
+                ? graph.branches.flatMap((branch, b) => {
+                      const shape = shapes[b + 1];
+                      if (!shape) return [];
+                      return [{ shape, stops: branch.stops.map(toTripStop), color: variantColor(color, b) }];
+                  })
+                : undefined,
+        [graph, shapes, color],
     );
 
     useEffect(() => {
@@ -106,14 +111,8 @@ export default () => {
         <>
             {data && <Helm variable="route" dictionary={{ route: data.route[ERoute.name] }} />}
 
-            {!!shapes?.length && stops && (
-                <TripRoute
-                    shape={shapes[0]}
-                    branches={shapes.slice(1)}
-                    stops={stops}
-                    branchOnlyStops={branchOnlyStops}
-                    color={data!.route[ERoute.color]}
-                />
+            {!!shapes?.length && stops && color && (
+                <TripRoute shape={shapes[0]} stops={stops} color={color} variants={variants} />
             )}
 
             {positions?.positions.map((vehicle) => (
