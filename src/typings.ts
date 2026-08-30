@@ -34,6 +34,7 @@ export interface City {
     id: string;
     name: string;
     location: Location;
+    timezone: string;
     zoom?: number;
     description?: string;
     showNewTag?: boolean;

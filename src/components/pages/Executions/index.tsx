@@ -10,6 +10,7 @@ import { Virtuoso } from "react-virtuoso";
 import { EExecution, ERoute } from "typings";
 import Execution from "./Execution";
 import Alert from "@/ui/Alert";
+import { getCityDate, getCityTimezone } from "@/util/tools";
 
 import "./executions.css";
 
@@ -19,7 +20,7 @@ export default () => {
     const navigate = useNavigate();
     const { city } = useParams();
 
-    const [date, setDate] = useSearchState("date", new Date().toISOString().split("T")[0]);
+    const [date, setDate] = useSearchState("date", getCityDate(Date.now(), getCityTimezone(city)));
     const [route, setRoute] = useSearchState("route", "");
     const [brigade, setBrigade] = useSearchState("brigade", "");
     const [vehicle, setVehicle] = useSearchState("vehicle", "");

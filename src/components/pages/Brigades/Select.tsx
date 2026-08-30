@@ -18,6 +18,7 @@ import Sticky from "@/ui/Sticky";
 import Helm from "@/util/Helm";
 import { EBrigade, ERoute } from "typings";
 import { getBrigadeDays, useQueryBrigadeList } from "@/hooks/useQueryBrigades";
+import { getCityTimezone } from "@/util/tools";
 import { useQueryRouteGraph } from "@/hooks/useQueryRoutes";
 import useSearchState from "@/hooks/useSearchState";
 import DayPicker from "@/ui/DayPicker";
@@ -31,7 +32,10 @@ export default memo(() => {
     const { city, route } = useParams();
     const goBack = useGoBack();
 
-    const next7days = useMemo(() => getBrigadeDays(i18n.language), [i18n.language]);
+    const next7days = useMemo(
+        () => getBrigadeDays(i18n.language, getCityTimezone(city)),
+        [i18n.language, city],
+    );
 
     const { data: brigades } = useQueryBrigadeList({ city: city!, route, date });
     const { data: routeData } = useQueryRouteGraph({ city: city!, route: route! });

@@ -1,3 +1,5 @@
+import cities, { DEFAULT_TIMEZONE } from "cities";
+
 export const getTime = (time: number) => {
     return new Date(time).toLocaleTimeString("pl", {
         hour12: false,
@@ -35,24 +37,27 @@ export const msToTime = (ms: number, withSeconds?: boolean) => {
     return formattedTime.join(" ");
 };
 
-// Public transport data is keyed by the agency's local calendar day (Poland).
-export const AGENCY_TIMEZONE = "Europe/Warsaw";
+// Public transport data is keyed by the agency's local calendar day, which is not
+// necessarily the device's one. The backend sends each city's timezone with /api6.
+export const getCityTimezone = (city?: string) => cities[city!]?.timezone || DEFAULT_TIMEZONE;
 
-// Days since 2020-01-01, matching the backend `date` encoding for brigades
-// (routeBrigades). The backend counts days in the agency timezone, so we derive
-// the day index from the Warsaw calendar day — this makes the value independent
-// of the device's own timezone and correct across DST.
-export const getDaysSince2020 = (timestamp: number) => {
-    const parts = new Intl.DateTimeFormat("en-US", {
-        timeZone: AGENCY_TIMEZONE,
+// YYYY-MM-DD of the given instant in the city's timezone — en-CA formats as ISO.
+export const getCityDate = (timestamp: number, timezone: string) =>
+    new Intl.DateTimeFormat("en-CA", {
+        timeZone: timezone,
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
-    }).formatToParts(timestamp);
+    }).format(timestamp);
 
-    const get = (type: string) => +parts.find((part) => part.type === type)!.value;
+// Days since 2020-01-01, matching the backend `date` encoding for brigades
+// (routeBrigades). The backend counts days in the city's timezone, so we derive the
+// day index from that calendar day — this makes the value independent of the device's
+// own timezone and correct across DST.
+export const getDaysSince2020 = (timestamp: number, timezone: string) => {
+    const [year, month, day] = getCityDate(timestamp, timezone).split("-").map(Number);
 
-    return Math.floor(Date.UTC(get("year"), get("month") - 1, get("day")) / 86400000) - 18262;
+    return Math.floor(Date.UTC(year, month - 1, day) / 86400000) - 18262;
 };
 
 export const polylineToGeoJson = (polyline: string) => {

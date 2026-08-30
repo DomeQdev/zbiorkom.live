@@ -12,7 +12,7 @@ import MultilineAlert from "./MultilineAlert";
 import Helm from "@/util/Helm";
 import ScrollButton from "./ScrollButton";
 import Alert from "@/ui/Alert";
-import { share, msToTime } from "@/util/tools";
+import { share, msToTime, getCityTimezone } from "@/util/tools";
 import DayPicker from "@/ui/DayPicker";
 import useSearchState from "@/hooks/useSearchState";
 import { getBrigadeDays, useQueryBrigade } from "@/hooks/useQueryBrigades";
@@ -80,7 +80,10 @@ export default ({ city, route, brigade }: Props) => {
         return [filteredTrips, currentTripIndex, actualFilteredRoutes] as const;
     }, [trips, filteredRoutes, routeKeys]);
 
-    const next7days = useMemo(() => getBrigadeDays(i18n.language), [i18n.language]);
+    const next7days = useMemo(
+        () => getBrigadeDays(i18n.language, getCityTimezone(city)),
+        [i18n.language, city],
+    );
 
     const updateScroll = () => {
         if (!listRef.current?.children.length || currentTripIndex === -1) return setShowScroll(false);

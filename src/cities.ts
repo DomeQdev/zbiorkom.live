@@ -1,5 +1,7 @@
 import { City } from "./typings";
 
+export const DEFAULT_TIMEZONE = "Europe/Warsaw";
+
 const cities: Record<string, City> = {};
 export const cityList: City[] = [];
 
@@ -13,6 +15,7 @@ export const loadCities = async () => {
             name: c.name,
             description: c.description,
             location: c.location,
+            timezone: c.timezone || DEFAULT_TIMEZONE,
             agencies: c.agencies,
             virtual: c.virtual,
         };
