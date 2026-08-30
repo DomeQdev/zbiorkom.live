@@ -1,11 +1,10 @@
 import { memo, useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { ERoute } from "typings";
 import { Virtuoso } from "react-virtuoso";
 import RouteStop from "./RouteStop";
 import RouteActions from "./RouteActions";
-import { buildRouteRows, Translate } from "./routeRows";
+import { buildRouteRows } from "./routeRows";
 import useDirectionStore from "@/hooks/useDirectionStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryRouteGraph } from "@/hooks/useQueryRoutes";
@@ -17,7 +16,6 @@ const VirtuosoComponents = {
 export default memo(() => {
     const direction = useDirectionStore(useShallow((state) => state.direction));
     const { city, route } = useParams();
-    const { t } = useTranslation("Vehicle");
 
     const { data } = useQueryRouteGraph({
         city: city!,
@@ -27,10 +25,7 @@ export default memo(() => {
     const graph = data?.graph[direction];
     const color = data?.route[ERoute.color];
 
-    const rows = useMemo(
-        () => (graph && color ? buildRouteRows(graph, color, t as Translate) : []),
-        [graph, color, t],
-    );
+    const rows = useMemo(() => (graph && color ? buildRouteRows(graph, color) : []), [graph, color]);
 
     if (!graph || !color) return null;
 

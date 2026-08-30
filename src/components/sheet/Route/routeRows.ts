@@ -1,9 +1,8 @@
-import { EStop, RouteGraphBranch, RouteGraphDirection, RouteGraphStop } from "typings";
+import { RouteGraphDirection, RouteGraphStop } from "typings";
 import { ROUTE_GRAPH_ROW_HEIGHT } from "@/hooks/useQueryRoutes";
 import { variantColor } from "@/util/tools";
 
-export const LABEL_ROW_HEIGHT = 30;
-export const REJOIN_ROW_HEIGHT = 22;
+export const CURVE_ROW_HEIGHT = 22;
 export const TRUNK_X = 22;
 export const VARIANT_X = 48;
 export const GRAPH_WIDTH = 66;
@@ -22,21 +21,12 @@ export type RouteRow =
           lineBelow: boolean;
           trunkThrough: boolean;
       }
-    | { kind: "label"; height: number; text: string; color: string; curveIn: boolean; trunkThrough: boolean }
+    | { kind: "leave"; height: number; color: string; trunkThrough: boolean }
     | { kind: "rejoin"; height: number; color: string; trunkThrough: boolean };
-
-export type Translate = (key: string, options?: Record<string, unknown>) => string;
-
-const variantLabel = (branch: RouteGraphBranch, t: Translate) => {
-    if (branch.from >= 0 && branch.to >= 0) return t("variantDetour");
-    if (branch.from >= 0) return t("variantTo", { stop: branch.stops[branch.stops.length - 1][EStop.name] });
-    if (branch.to >= 0) return t("variantFrom", { stop: branch.stops[0][EStop.name] });
-    return t("variantDetached");
-};
 
 // A variant hangs off the trunk stop it leaves after (one joining the trunk sits above the stop it
 // joins), painted in variantColor(index) — the colour the map gives its polyline and stops.
-export const buildRouteRows = (direction: RouteGraphDirection, color: string, t: Translate): RouteRow[] => {
+export const buildRouteRows = (direction: RouteGraphDirection, color: string): RouteRow[] => {
     const { trunk, branches } = direction;
     const blocks = new Map<number, number[]>();
     branches.forEach((branch, b) => {
@@ -55,14 +45,9 @@ export const buildRouteRows = (direction: RouteGraphDirection, color: string, t:
         for (const b of blocks.get(slot) ?? []) {
             const branch = branches[b];
             const branchColor = variantColor(color, b);
-            rows.push({
-                kind: "label",
-                height: LABEL_ROW_HEIGHT,
-                text: variantLabel(branch, t),
-                color: branchColor,
-                curveIn: branch.from >= 0,
-                trunkThrough,
-            });
+            if (branch.from >= 0) {
+                rows.push({ kind: "leave", height: CURVE_ROW_HEIGHT, color: branchColor, trunkThrough });
+            }
             branch.stops.forEach((stop, i) => {
                 rows.push({
                     kind: "stop",
@@ -76,7 +61,7 @@ export const buildRouteRows = (direction: RouteGraphDirection, color: string, t:
                 });
             });
             if (branch.to >= 0) {
-                rows.push({ kind: "rejoin", height: REJOIN_ROW_HEIGHT, color: branchColor, trunkThrough });
+                rows.push({ kind: "rejoin", height: CURVE_ROW_HEIGHT, color: branchColor, trunkThrough });
             }
         }
     };
@@ -114,14 +99,12 @@ export const routeRowPaths = (row: RouteRow, color: string) => {
                 width: row.x === TRUNK_X ? TRUNK_LINE_WIDTH : VARIANT_LINE_WIDTH,
             });
         }
-    } else if (row.kind === "label") {
-        if (row.curveIn) {
-            paths.push({
-                d: `M${TRUNK_X} 0C${TRUNK_X} ${height * 0.6} ${VARIANT_X} ${height * 0.4} ${VARIANT_X} ${height}`,
-                color: row.color,
-                width: VARIANT_LINE_WIDTH,
-            });
-        }
+    } else if (row.kind === "leave") {
+        paths.push({
+            d: `M${TRUNK_X} 0C${TRUNK_X} ${height * 0.6} ${VARIANT_X} ${height * 0.4} ${VARIANT_X} ${height}`,
+            color: row.color,
+            width: VARIANT_LINE_WIDTH,
+        });
     } else {
         paths.push({
             d: `M${VARIANT_X} 0C${VARIANT_X} ${height * 0.6} ${TRUNK_X} ${height * 0.4} ${TRUNK_X} ${height}`,

@@ -46,26 +46,7 @@ export default ({ row, color }: Props) => {
     );
 
     if (row.kind !== "stop") {
-        return (
-            <Box sx={{ display: "flex", alignItems: "center", height: row.height }}>
-                {graph}
-                {row.kind === "label" && (
-                    <Box
-                        component="span"
-                        sx={{
-                            color: row.color,
-                            fontSize: 13,
-                            fontWeight: 600,
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                        }}
-                    >
-                        {row.text}
-                    </Box>
-                )}
-            </Box>
-        );
+        return <Box sx={{ display: "flex", alignItems: "center", height: row.height }}>{graph}</Box>;
     }
 
     const stop = row.stop;
