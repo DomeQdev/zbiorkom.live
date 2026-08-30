@@ -4,9 +4,11 @@ import {
     EStopTime,
     StopUpdate,
     Trip,
+    Vehicle,
     EStop,
     ETrip,
     ERoute,
+    EVehicle,
     ItineraryStop,
     EItineraryStop,
     EStopDepartureStatus,
@@ -21,17 +23,16 @@ import TripStopTimes from "./TripStopTimes";
 import { AlightType } from "@/util/tools";
 
 type Props = {
+    vehicle?: Vehicle;
     trip: Trip;
     stop: ItineraryStop;
     index: number;
     color: [color: string, text: string, background: string];
     update: StopUpdate;
     sequence?: number;
-    // already projected onto this row by TripContent — rows can span skipped stops
-    percentTraveled?: number;
 };
 
-export default ({ trip, stop, index, color, update, sequence, percentTraveled }: Props) => {
+export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) => {
     const { current: map } = useMap();
     const { t } = useTranslation("Vehicle");
 
@@ -85,7 +86,13 @@ export default ({ trip, stop, index, color, update, sequence, percentTraveled }:
                     color={color}
                     index={index}
                     type={trip[ETrip.route][ERoute.type]}
-                    percentTraveled={percentTraveled}
+                    percentTraveled={
+                        sequence === 0 && index === 1
+                            ? 0
+                            : sequence === index
+                              ? vehicle?.[EVehicle.percentTraveled]
+                              : undefined
+                    }
                     lineMargin={41}
                 />
             </ListItemIcon>

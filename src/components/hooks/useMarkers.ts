@@ -2,9 +2,8 @@ import useFilterStore from "./useFilterStore";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect, useState, useMemo } from "react";
 import { useMap } from "@vis.gl/react-maplibre";
-import { ERoute, EStop, MapData, Stop } from "typings";
+import { ERoute, MapData, Stop } from "typings";
 import { useEventQuery } from "./useEventQuery";
-import { isHidden } from "@/util/hiddenAreas";
 
 type Props = {
     city: string;
@@ -97,17 +96,11 @@ export default ({ city, moveBadge }: Props) => {
         }
     }, [data, routes.length, models.length]);
 
-    // no stops inside the blanked out areas, whatever the API returns
-    const stops = useMemo(
-        () => (initialData?.stops || []).filter((stop) => !isHidden(stop[EStop.location])),
-        [initialData],
-    );
-
     return {
         useDots: data?.dots ? data.dots.length > 0 : false,
         vehicles: data?.positions || [],
         dots: data?.dots || [],
-        stops,
+        stops: initialData?.stops || [],
         geoJson: undefined,
         suggestedCity: initialData?.suggestedCity,
     };
