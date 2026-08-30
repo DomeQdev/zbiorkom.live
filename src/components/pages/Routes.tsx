@@ -17,6 +17,28 @@ import Helm from "@/util/Helm";
 import { ERoute } from "typings";
 import { useQueryRoutes } from "@/hooks/useQueryRoutes";
 
+const GridList = forwardRef(({ style, children, ...props }: any, ref: any) => (
+    <div
+        {...props}
+        ref={ref}
+        style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            marginLeft: 8,
+            marginRight: 8,
+            gap: 8,
+            ...style,
+        }}
+    >
+        {children}
+    </div>
+));
+
+const VirtuosoComponents = {
+    List: GridList,
+};
+
 export default () => {
     const { t } = useTranslation("Schedules");
     const [search, setSearch] = useState("");
@@ -83,26 +105,7 @@ export default () => {
                                     />
                                 )}
                                 style={{ height: "calc(100% - 48px)" }}
-                                components={{
-                                    //@ts-ignore
-                                    List: forwardRef(({ style, children, ...props }, ref) => (
-                                        <div
-                                            {...props}
-                                            ref={ref}
-                                            style={{
-                                                display: "flex",
-                                                flexWrap: "wrap",
-                                                justifyContent: "center",
-                                                marginLeft: 8,
-                                                marginRight: 8,
-                                                gap: 8,
-                                                ...style,
-                                            }}
-                                        >
-                                            {children}
-                                        </div>
-                                    )),
-                                }}
+                                components={VirtuosoComponents}
                             />
                         </>
                     ) : (

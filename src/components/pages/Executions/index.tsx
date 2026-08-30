@@ -3,29 +3,42 @@ import useSearchState from "@/hooks/useSearchState";
 import { useNavigate, useParams } from "react-router-dom";
 import ExecutionsFilter from "./ExecutionsFilter";
 import { ArrowBack, Dangerous, History } from "@mui/icons-material";
-import { useState } from "react";
-import { useQueryExecutions } from "@/hooks/useQueryExecutions";
+import { useMemo, useState } from "react";
+import { useQueryExecutionAutocomplete, useQueryExecutions } from "@/hooks/useQueryExecutions";
 import { useTranslation } from "react-i18next";
 import { Virtuoso } from "react-virtuoso";
+import { EExecution, ERoute } from "typings";
 import Execution from "./Execution";
-
-import "../Brigades/brigades.css";
 import Alert from "@/ui/Alert";
+import { getCityDate, getCityTimezone } from "@/util/tools";
+
+import "./executions.css";
 
 export default () => {
     const { t } = useTranslation("Executions");
+    const { t: tShared } = useTranslation("Shared");
     const navigate = useNavigate();
     const { city } = useParams();
 
-    const [date, setDate] = useSearchState("date", new Date().toISOString().split("T")[0]);
+    const [date, setDate] = useSearchState("date", getCityDate(Date.now(), getCityTimezone(city)));
     const [route, setRoute] = useSearchState("route", "");
     const [brigade, setBrigade] = useSearchState("brigade", "");
     const [vehicle, setVehicle] = useSearchState("vehicle", "");
-    const enabled = !!route || !!(route && brigade) || !!vehicle;
+    const enabled = !!route || !!vehicle;
 
     const [filterLoading, setFilterLoading] = useState(false);
 
-    const { data: executions, isLoading } = useQueryExecutions({
+    const { data: autocomplete } = useQueryExecutionAutocomplete(city!);
+    const routesMap = useMemo(
+        () => new Map((autocomplete?.routes ?? []).map((r) => [r[ERoute.id], r])),
+        [autocomplete],
+    );
+
+    const {
+        data: executions,
+        isLoading,
+        error,
+    } = useQueryExecutions({
         city: city!,
         date,
         route,
@@ -91,7 +104,16 @@ export default () => {
             <DialogContent sx={{ padding: 0 }}>
                 {!enabled && <Alert title={t("noFilter")} Icon={History} color="error" />}
 
-                {enabled && !loading && !executions?.length && (
+                {enabled && !loading && error && (
+                    <Alert
+                        title={tShared("loadError")}
+                        description={String((error as Error).message ?? error)}
+                        Icon={Dangerous}
+                        color="error"
+                    />
+                )}
+
+                {enabled && !loading && !error && !executions?.length && (
                     <Alert
                         title={t("noResults")}
                         description={t("noResultsDescription")}
@@ -104,7 +126,14 @@ export default () => {
                     <Virtuoso
                         style={{ height: "100%" }}
                         totalCount={executions.length}
-                        itemContent={(index) => <Execution execution={executions[index]} />}
+                        itemContent={(index) => (
+                            <Execution
+                                execution={executions[index]}
+                                route={routesMap.get(executions[index][EExecution.route])}
+                                city={city!}
+                                date={date}
+                            />
+                        )}
                     />
                 )}
             </DialogContent>

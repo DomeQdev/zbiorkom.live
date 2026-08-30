@@ -9,8 +9,9 @@ import {
     ListSubheader,
     TextField,
 } from "@mui/material";
-import { ArrowBack, HighlightOff } from "@mui/icons-material";
-import { useRef, useState } from "react";
+import { ArrowBack, HighlightOff, Report, SearchOff } from "@mui/icons-material";
+import Alert from "@/ui/Alert";
+import { useRef, useState, useMemo } from "react";
 import { GroupedVirtuoso } from "react-virtuoso";
 import { useParams } from "react-router-dom";
 import Result from "./Result";
@@ -20,6 +21,20 @@ import SearchInfo from "./SearchInfo";
 import useSearchState from "@/hooks/useSearchState";
 import { useQuerySearch } from "@/hooks/useQuerySearch";
 
+const VirtuosoComponents = {
+    TopItemList: (props: any) => (
+        <div
+            {...props}
+            style={{
+                ...props.style,
+                position: "unset",
+            }}
+        >
+            {props.children}
+        </div>
+    ),
+};
+
 export default () => {
     const [expandedStop, setExpandedStop] = useState<string | undefined>();
     const [search, setSearch] = useSearchState("query", "");
@@ -28,7 +43,7 @@ export default () => {
     const { city } = useParams();
     const goBack = useGoBack();
 
-    const { data, isLoading } = useQuerySearch({ city: city!, search });
+    const { data, isLoading, error } = useQuerySearch({ city: city!, search });
 
     return (
         <Dialog
@@ -103,7 +118,18 @@ export default () => {
                 }}
             >
                 {!search.length && <SearchInfo />}
-                {!!search.length && data?.results && (
+                {!!search.length && error && !isLoading && (
+                    <Alert
+                        Icon={Report}
+                        title={t("loadError", { ns: "Shared" })}
+                        description={String((error as Error).message ?? error)}
+                        color="error"
+                    />
+                )}
+                {!!search.length && !error && !isLoading && data && !data.results?.length && (
+                    <Alert Icon={SearchOff} title={t("noResults", { ns: "Executions" })} color="error" />
+                )}
+                {!!search.length && !!data?.results?.length && (
                     <GroupedVirtuoso
                         style={{ height: "100%" }}
                         groupCounts={data.groups}
@@ -126,19 +152,7 @@ export default () => {
                                 setExpandedStop={setExpandedStop}
                             />
                         )}
-                        components={{
-                            TopItemList: (props) => (
-                                <div
-                                    {...props}
-                                    style={{
-                                        ...props.style,
-                                        position: "unset",
-                                    }}
-                                >
-                                    {props.children}
-                                </div>
-                            ),
-                        }}
+                        components={VirtuosoComponents}
                     />
                 )}
             </DialogContent>

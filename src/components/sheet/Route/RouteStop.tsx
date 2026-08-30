@@ -1,46 +1,71 @@
-import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { ETripStop, TripStop } from "typings";
+import { Box, ListItemButton, ListItemText } from "@mui/material";
+import { EStop } from "typings";
 import { useMap } from "@vis.gl/react-maplibre";
+import { RouteRow, rowGraphWidth, routeRowPaths } from "./routeRows";
+
+const NODE_RADIUS = 7.5;
+const NODE_BORDER = 3;
 
 type Props = {
-    stop: TripStop;
+    row: RouteRow;
     color: string;
-    index: number;
 };
 
-export default ({ stop, color, index }: Props) => {
+export default ({ row, color }: Props) => {
     const { current: map } = useMap();
+
+    const width = rowGraphWidth(row);
+    const graph = (
+        <svg
+            width={width}
+            height={row.height}
+            viewBox={`0 0 ${width} ${row.height}`}
+            style={{ flexShrink: 0, display: "block" }}
+        >
+            {routeRowPaths(row, color).map((path, i) => (
+                <path
+                    key={i}
+                    d={path.d}
+                    stroke={path.color}
+                    strokeWidth={path.width}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    fill="none"
+                />
+            ))}
+            {row.kind === "stop" && (
+                <circle
+                    cx={row.x}
+                    cy={row.height / 2}
+                    r={NODE_RADIUS}
+                    fill="#fff"
+                    stroke={row.color}
+                    strokeWidth={NODE_BORDER}
+                />
+            )}
+        </svg>
+    );
+
+    if (row.kind !== "stop") {
+        return <Box sx={{ display: "flex", alignItems: "center", height: row.height }}>{graph}</Box>;
+    }
+
+    const stop = row.stop;
 
     return (
         <ListItemButton
             onClick={() =>
                 map?.flyTo({
-                    center: stop[ETripStop.location],
+                    center: stop[EStop.location],
                     zoom: map.getZoom() > 15 ? map.getZoom() : 15,
                 })
             }
-            sx={{ paddingY: 0.5 }}
+            sx={{ padding: 0, height: row.height }}
         >
-            <ListItemIcon>
-                <span
-                    className="vehicleStopIcon"
-                    style={{
-                        border: `3px solid ${color}`,
-                    }}
-                />
-                {index !== 0 && (
-                    <span
-                        className="vehicleStopIconLine small"
-                        style={{
-                            backgroundColor: color,
-                        }}
-                    ></span>
-                )}
-            </ListItemIcon>
+            {graph}
             <ListItemText
-                primary={stop[ETripStop.name]}
+                primary={`${stop[EStop.name]} ${stop[EStop.code] || ""}`}
                 sx={{
-                    marginLeft: "-15px",
                     "& .MuiListItemText-primary": {
                         display: "flex",
                         alignItems: "center",

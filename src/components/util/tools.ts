@@ -1,4 +1,4 @@
-import { DelayType } from "typings";
+import cities, { DEFAULT_TIMEZONE } from "cities";
 
 export const getTime = (time: number) => {
     return new Date(time).toLocaleTimeString("pl", {
@@ -10,7 +10,7 @@ export const getTime = (time: number) => {
 
 export const getSheetHeight = () => window.innerHeight / 3 + 24;
 
-export const getDelay = (delay?: DelayType) => {
+export const getDelay = (delay?: number) => {
     const isNumber = typeof delay === "number";
     const delayTime = msToTime(isNumber ? Math.abs(delay) : 0);
 
@@ -37,10 +37,31 @@ export const msToTime = (ms: number, withSeconds?: boolean) => {
     return formattedTime.join(" ");
 };
 
-export const polylineToGeoJson = (polyline: string) => {
-    const factor = Math.pow(10, +polyline[1]);
-    polyline = polyline.slice(3);
+// Public transport data is keyed by the agency's local calendar day, which is not
+// necessarily the device's one. The backend sends each city's timezone with /api6.
+export const getCityTimezone = (city?: string) => cities[city!]?.timezone || DEFAULT_TIMEZONE;
 
+// YYYY-MM-DD of the given instant in the city's timezone — en-CA formats as ISO.
+export const getCityDate = (timestamp: number, timezone: string) =>
+    new Intl.DateTimeFormat("en-CA", {
+        timeZone: timezone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    }).format(timestamp);
+
+// Days since 2020-01-01, matching the backend `date` encoding for brigades
+// (routeBrigades). The backend counts days in the city's timezone, so we derive the
+// day index from that calendar day — this makes the value independent of the device's
+// own timezone and correct across DST.
+export const getDaysSince2020 = (timestamp: number, timezone: string) => {
+    const [year, month, day] = getCityDate(timestamp, timezone).split("-").map(Number);
+
+    return Math.floor(Date.UTC(year, month - 1, day) / 86400000) - 18262;
+};
+
+export const polylineToGeoJson = (polyline: string) => {
+    const factor = 1e6;
     let index = 0;
     let lat = 0;
     let lng = 0;
@@ -82,6 +103,59 @@ export const polylineToGeoJson = (polyline: string) => {
     }
 
     return geoJson;
+};
+
+export const fadeColor = (hex: string, ratio: number, background = "#ffffff") => {
+    const color = parseInt(hex.slice(1), 16);
+    const bg = parseInt(background.slice(1), 16);
+
+    const mix = (shift: number) => {
+        const channel = (value: number) => (value >> shift) & 0xff;
+        return Math.round(channel(color) * ratio + channel(bg) * (1 - ratio));
+    };
+
+    return `rgb(${mix(16)}, ${mix(8)}, ${mix(0)})`;
+};
+
+// Route variants on the map and in the sheet: one neutral grey that reads on both map styles and
+// against any route colour, so a variant's stops, its line and its polyline always match.
+export const VARIANT_COLOR = "#9e9e9e";
+
+export const parseVehicleId = (id: string) => {
+    const colonIdx = id.indexOf(":");
+    const underscoreIdx = id.indexOf("_", colonIdx + 1);
+    const vehicleType = id.slice(0, colonIdx);
+
+    if (underscoreIdx === -1 || underscoreIdx === colonIdx + 1) {
+        return {
+            vehicleType,
+            agency: "default",
+            vehicleNumber: id.slice(colonIdx + 1),
+        };
+    }
+
+    return {
+        vehicleType,
+        agency: id.slice(colonIdx + 1, underscoreIdx),
+        vehicleNumber: id.slice(underscoreIdx + 1),
+    };
+};
+
+export const AlightType = {
+    Regular: 1 << 0,
+    Forbidden: 1 << 1,
+    OnDemand: 1 << 2,
+    IsLastStop: 1 << 3,
+} as const;
+
+export const getCityFromUrl = (routeCity?: string): string => {
+    const fromQuery = new URLSearchParams(window.location.search).get("city");
+    return fromQuery || routeCity || "";
+};
+
+export const buildCitySuffix = (entityCity: string | undefined, routeCity: string | undefined): string => {
+    if (!entityCity || entityCity === routeCity) return "";
+    return `?city=${encodeURIComponent(entityCity)}`;
 };
 
 export const share = (url: string) => {

@@ -19,14 +19,11 @@
         "departure": "Oczekiwanie na odjazd",
         "departed": "Odjechał",
         "cancelled": "Odwołany",
-        "live": "Na bieżąco",
         "scheduled": "Brak danych o opóźnieniu",
         "tripNotFound": "Nie znaleźliśmy tej trasy...",
         "vehicleSchedule": "Rozkład jazdy pojazdu",
         "brigadeSchedule": "Rozkład brygady",
         "vehicleInfo": "Informacje o pojeździe",
-        "showTrip": "Pokaż kurs",
-        "showVehicle": "Pokaż pojazd",
         "platform": "Peron",
         "track": "Tor",
         "breakTime": "{{time}} przerwy",
@@ -67,7 +64,10 @@
     },
     "Shared": {
         "share": "Udostępnij",
-        "ago": "temu"
+        "ago": "temu",
+        "loadError": "Wystąpił błąd ładowania",
+        "networkError": "Brak połączenia z serwerem",
+        "retry": "Spróbuj ponownie"
     },
     "Favorites": {
         "selectDirection": "Wybierz kierunek",
@@ -80,7 +80,6 @@
         "stops": "Przystanki",
         "vehicles": "Pojazdy",
         "routes": "Linie",
-        "relations": "Relacje",
         "stations": "Stacje",
         "howToUse": "Jak używać wyszukiwarki?",
         "howToVehicles": "Wyszukiwanie pojazdów",
@@ -89,8 +88,6 @@
         "stopsDescription": "Wyszukaj używając nazwy, np. Dworzec Główny.",
         "howToRoutes": "Wyszukiwanie linii",
         "routesDescription": "Wyszukaj używając numeru linii, np. 105.",
-        "howToRelations": "Wyszukiwanie relacji pociągów",
-        "relationsDescription": "Wyszukaj używając numeru relacji, np. 99267.",
         "howToHistory": "Historia wyszukiwania",
         "historyDescription": "Zapisujemy ostatnie wyszukiwania, abyś mógł szybko do nich wrócić."
     },
@@ -209,6 +206,8 @@
         "trip": "Kurs",
         "route": "Linia",
         "brigade": "Brygada",
+        "expandStops": "Pokaż przystanki",
+        "hideStops": "Ukryj przystanki",
         "noResults": "Brak wyników...",
         "noResultsDescription": "Spróbuj wyszukać coś innego.",
         "noFilter": "Wyszukaj coś..."

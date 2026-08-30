@@ -2,6 +2,7 @@ import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
 import { ListItemButton, ListItemText } from "@mui/material";
 import { ESearchVehicle, SearchItem } from "typings";
 import { Link } from "react-router-dom";
+import { parseVehicleId } from "@/util/tools";
 
 type Props = {
     vehicle: NonNullable<SearchItem["vehicle"]>;
@@ -10,6 +11,13 @@ type Props = {
 };
 
 export default ({ vehicle, borderTop, borderBottom }: Props) => {
+    const { vehicleNumber } = parseVehicleId(vehicle[ESearchVehicle.id]);
+    const showVehicleNumber = !vehicleNumber.startsWith("_");
+    const model = vehicle[ESearchVehicle.model];
+    const secondary = [showVehicleNumber ? `#${vehicleNumber}` : null, model || null]
+        .filter(Boolean)
+        .join(", ");
+
     return (
         <ListItemButton
             component={Link}
@@ -37,10 +45,7 @@ export default ({ vehicle, borderTop, borderBottom }: Props) => {
                         fontSize="0.92em"
                     />
                 }
-                secondary={
-                    vehicle[ESearchVehicle.id].split("/")[1] +
-                    (vehicle[ESearchVehicle.model] ? `, ${vehicle[ESearchVehicle.model]}` : "")
-                }
+                secondary={secondary || undefined}
                 secondaryTypographyProps={{
                     fontSize: "0.8em",
                     mt: 0.3,

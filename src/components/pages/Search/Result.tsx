@@ -2,7 +2,6 @@ import { EStop, SearchItem } from "typings";
 import RouteResult from "./RouteResult";
 import StopResult from "./StopResult";
 import VehicleResult from "./VehicleResult";
-import RelationResult from "./RelationResult";
 import StationResult from "./StationResult";
 
 type Props = {
@@ -48,14 +47,6 @@ const Result = ({ item, expandedStop, setExpandedStop }: Props) => {
             return (
                 <VehicleResult
                     vehicle={item.vehicle}
-                    borderTop={item.borderTop}
-                    borderBottom={item.borderBottom}
-                />
-            );
-        case !!item.relation:
-            return (
-                <RelationResult
-                    relation={item.relation}
                     borderTop={item.borderTop}
                     borderBottom={item.borderBottom}
                 />

@@ -1,26 +1,33 @@
-import { Layer, Marker, Source, useMap } from "@vis.gl/react-maplibre";
+import { Marker, useMap } from "@vis.gl/react-maplibre";
 import { memo, useEffect, useMemo, useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import StopMarker from "@/map/StopMarker";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";
-import { EStop, EStopDeparture, EStopDepartures, EStopExit } from "typings";
+import {
+    EStop,
+    EStopDeparture,
+    EStopDepartures,
+    EStopDepartureStatus,
+    EStopTime,
+    ETrip,
+    EVehicle,
+} from "typings";
 import { useQueryStopDepartures } from "@/hooks/useQueryStops";
-import { useWebSocket } from "@/hooks/useWebSocket";
+import { buildCitySuffix, getCityFromUrl } from "@/util/tools";
 
 export default memo(() => {
     const [hasDataFetched, setHasDataFetched] = useState<boolean>(false);
-    const { subscribe } = useWebSocket();
     const { city, stop } = useParams();
     const { current: map } = useMap();
     const navigate = useNavigate();
 
-    const isStation = window.location.pathname.includes("/station");
+    const effectiveCity = getCityFromUrl(city);
     const showBrigade = localStorage.getItem("brigade") === "true";
     const showFleet = localStorage.getItem("fleet") === "true";
 
-    const { data, refetch } = useQueryStopDepartures({
-        city: isStation ? "pkp" : city!,
+    const { data } = useQueryStopDepartures({
+        city: effectiveCity,
         stop: stop!,
         isMainComponent: true,
     });
@@ -39,55 +46,32 @@ export default memo(() => {
 
             setHasDataFetched(true);
         }
-
-        const onRefresh = () => {
-            if (document.visibilityState !== "visible") return;
-
-            refetch();
-        };
-
-        const unsubscribe = subscribe(isStation ? "trainRefresh" : "refresh", onRefresh);
-
-        return () => {
-            unsubscribe();
-        };
-    }, [data, subscribe, refetch]);
+    }, [data, stopData, map, hasDataFetched]);
 
     const liveDepartures = useMemo(() => {
         if (!data) return [];
 
         const uniqueTrips = [];
-        const map = new Set<string>();
+        const seenVehicles = new Set<string>();
 
         for (const departure of data?.[EStopDepartures.departures] ?? []) {
-            if (!departure[EStopDeparture.vehicle] || map.has(departure[EStopDeparture.vehicleId])) {
+            const vehicle = departure[EStopDeparture.vehicle];
+            if (!vehicle) continue;
+
+            const status = departure[EStopDeparture.departure][EStopTime.status];
+            if (status === EStopDepartureStatus.OnPreviousTrip) continue;
+
+            const vehicleId = vehicle[EVehicle.id];
+            if (seenVehicles.has(vehicleId)) {
                 continue;
             }
 
-            map.add(departure[EStopDeparture.vehicleId]);
+            seenVehicles.add(vehicleId);
             uniqueTrips.push(departure);
         }
 
         return uniqueTrips;
     }, [data]);
-
-    const stopExits: GeoJSON.GeoJSON | null = useMemo(() => {
-        if (!stopData?.[EStop.exits]?.length) return null;
-
-        return {
-            type: "FeatureCollection",
-            features: stopData[EStop.exits].map((exit) => ({
-                type: "Feature",
-                geometry: {
-                    type: "Point",
-                    coordinates: exit[EStopExit.location],
-                },
-                properties: {
-                    name: exit[EStopExit.name],
-                },
-            })),
-        };
-    }, [stopData]);
 
     if (!stopData) return null;
 
@@ -109,50 +93,17 @@ export default memo(() => {
                 />
             </Marker>
 
-            {stopExits && (
-                <Source type="geojson" data={stopExits}>
-                    <Layer
-                        id="stop-exits"
-                        type="symbol"
-                        layout={{
-                            "icon-image": "entrance",
-                            "icon-size": 1,
-                            "icon-allow-overlap": true,
-                        }}
-                        filter={[">=", ["zoom"], 16]}
-                    />
-                    <Layer
-                        id="stop-exit-labels"
-                        type="symbol"
-                        layout={{
-                            "text-field": ["get", "name"],
-                            "text-size": 14,
-                            "text-font": ["Noto Sans Bold"],
-                            "text-anchor": "top",
-                            "text-justify": "center",
-                            "text-offset": [0, 0.8],
-                            "text-allow-overlap": false,
-                        }}
-                        paint={{
-                            "text-color": "#fff",
-                            "text-halo-color": "#5373d4",
-                            "text-halo-width": 1.5,
-                        }}
-                        filter={[">=", ["zoom"], 16]}
-                    />
-                </Source>
-            )}
-
             {liveDepartures.map((departure) => (
                 <VehicleMarker
-                    key={departure[EStopDeparture.vehicleId]}
+                    key={departure[EStopDeparture.trip][ETrip.id]}
                     vehicle={departure[EStopDeparture.vehicle]!}
                     showBrigade={showBrigade}
                     showFleet={showFleet}
                     onClick={() => {
+                        const vehicle = departure[EStopDeparture.vehicle]!;
                         navigate(
-                            `/${city}/vehicle/${encodeURIComponent(departure[EStopDeparture.vehicleId])}` +
-                                (isStation ? "?pkp" : ""),
+                            `/${city}/vehicle/${encodeURIComponent(vehicle[EVehicle.id])}` +
+                                buildCitySuffix(vehicle[EVehicle.city], city),
                             { state: -2 },
                         );
                     }}

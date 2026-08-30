@@ -4,13 +4,14 @@ import {
     EStopTime,
     StopUpdate,
     Trip,
-    TripStop,
     Vehicle,
-    ETripStop,
+    EStop,
     ETrip,
     ERoute,
     EVehicle,
-    ETripStopType,
+    ItineraryStop,
+    EItineraryStop,
+    EStopDepartureStatus,
 } from "typings";
 import { RemoveCircleOutline, WavingHand } from "@mui/icons-material";
 import { useMap } from "@vis.gl/react-maplibre";
@@ -19,11 +20,12 @@ import VehicleStopIcon from "@/sheet/Trip/TripStopIcon";
 import VehicleDelay from "@/sheet/Trip/TripDelay";
 import { useTranslation } from "react-i18next";
 import TripStopTimes from "./TripStopTimes";
+import { AlightType } from "@/util/tools";
 
 type Props = {
     vehicle?: Vehicle;
     trip: Trip;
-    stop: TripStop;
+    stop: ItineraryStop;
     index: number;
     color: [color: string, text: string, background: string];
     update: StopUpdate;
@@ -34,24 +36,33 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
     const { current: map } = useMap();
     const { t } = useTranslation("Vehicle");
 
-    const departure = update[EStopUpdate.departure];
-    const estimatedDeparture = departure[EStopTime.estimated];
-    const delay = departure[EStopTime.delay];
+    const departure = update?.[EStopUpdate.departure];
+    const scheduled = departure?.[EStopTime.scheduled] ?? 0;
+    const delay = departure?.[EStopTime.delay] ?? 0;
+    const estimatedDeparture = scheduled + delay;
+    const status = departure?.[EStopTime.status];
 
     const shouldUseSeconds = index === 0 && estimatedDeparture - Date.now() < 100000;
     const hasDeparted =
-        delay === "cancelled" ||
-        (sequence === undefined ? estimatedDeparture < Date.now() : sequence! > index);
+        status === EStopDepartureStatus.Cancelled ||
+        (sequence === undefined ? estimatedDeparture < Date.now() : sequence > index);
     const toDeparture = useTime(estimatedDeparture, shouldUseSeconds);
 
-    const platform = update[EStopUpdate.platform];
+    if (!update || !stop || !departure) return null;
+
+    const platform = stop[EItineraryStop.platform];
     const track = update[EStopUpdate.track];
+    const stopData = stop[EItineraryStop.stop];
+    const alight = stop[EItineraryStop.alight];
+    const isForbidden = (alight & AlightType.Forbidden) !== 0;
+    const isOnDemand = (alight & AlightType.OnDemand) !== 0;
+    const stopCode = stopData[EStop.code];
 
     return (
         <ListItemButton
             onClick={() =>
                 map?.flyTo({
-                    center: stop[ETripStop.location],
+                    center: stopData[EStop.location],
                     zoom: map.getZoom() > 15 ? map.getZoom() : 15,
                 })
             }
@@ -89,7 +100,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
             <ListItemText
                 primary={
                     <>
-                        {stop[ETripStop.type] === ETripStopType.notBoardable && (
+                        {isForbidden && (
                             <RemoveCircleOutline
                                 sx={{
                                     fontSize: 18,
@@ -99,7 +110,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                             />
                         )}
 
-                        {stop[ETripStop.type] === ETripStopType.onDemand && (
+                        {isOnDemand && (
                             <WavingHand
                                 sx={{
                                     fontSize: 16,
@@ -109,7 +120,8 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                             />
                         )}
 
-                        {stop[ETripStop.name]}
+                        {stopData[EStop.name]}
+                        {stopCode ? ` ${stopCode}` : ""}
                     </>
                 }
                 secondary={
@@ -121,7 +133,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                         }}
                         component="span"
                     >
-                        <VehicleDelay delay={delay} />
+                        <VehicleDelay delay={delay} status={status} />
 
                         {platform && (
                             <span>

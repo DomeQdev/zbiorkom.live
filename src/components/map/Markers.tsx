@@ -12,6 +12,7 @@ import DotMarkers from "./DotMarkers";
 import { DotVehicle, EStop, EVehicle, Vehicle } from "typings";
 import cities from "cities";
 import { useTranslation } from "react-i18next";
+import { buildCitySuffix } from "@/util/tools";
 
 export default ({ city }: { city: string }) => {
     const [routes, models] = useFilterStore(useShallow((state) => [state.routes, state.models]));
@@ -19,7 +20,7 @@ export default ({ city }: { city: string }) => {
     const { t } = useTranslation("Menu");
     const navigate = useNavigate();
 
-    const { vehicles, stops, useDots, geoJson, suggestedCity } = useMarkers({
+    const { vehicles, dots, stops, useDots, suggestedCity } = useMarkers({
         city,
         moveBadge: () => {
             badgeRef.current?.animate(
@@ -39,7 +40,7 @@ export default ({ city }: { city: string }) => {
 
     return (
         <>
-            {useDots && <DotMarkers vehicles={vehicles as DotVehicle[]} />}
+            {useDots && <DotMarkers vehicles={dots as DotVehicle[]} />}
 
             {!useDots &&
                 vehicles.map((vehicle) => (
@@ -51,7 +52,7 @@ export default ({ city }: { city: string }) => {
                         onClick={() =>
                             navigate(
                                 `/${city}/vehicle/${encodeURIComponent(vehicle[EVehicle.id])}` +
-                                    (vehicle[EVehicle.city] === "pkp" ? "?pkp" : ""),
+                                    buildCitySuffix(vehicle[EVehicle.city], city),
                             )
                         }
                     />
@@ -68,19 +69,14 @@ export default ({ city }: { city: string }) => {
                     onClick={() => {
                         const stopType = stop[EStop.city] === "pkp" ? "station" : "stop";
 
-                        navigate(`/${city}/${stopType}/${encodeURIComponent(stop[EStop.id])}`);
+                        navigate(
+                            `/${city}/${stopType}/${encodeURIComponent(stop[EStop.id])}` +
+                                buildCitySuffix(stop[EStop.city], city),
+                        );
                     }}
                 >
                     <StopMarker stop={stop} useStopCodeAsIcon={useStopCodeAsIcon} />
                 </Marker>
-            ))}
-
-            {geoJson?.map(({ source, layers }, i) => (
-                <Source key={"" + i} type="geojson" data={source}>
-                    {layers.map((layer, j) => (
-                        <Layer key={"" + i + j} {...layer} />
-                    ))}
-                </Source>
             ))}
 
             <Badge

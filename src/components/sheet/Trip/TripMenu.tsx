@@ -7,7 +7,7 @@ import { EStopUpdate, EVehicle } from "typings";
 import { useState } from "react";
 import TripLastPing from "./TripLastPing";
 import { useShallow } from "zustand/react/shallow";
-import { share } from "@/util/tools";
+import { parseVehicleId, share } from "@/util/tools";
 
 export default () => {
     const [vehicle, lastPing, hasAlerts] = useVehicleStore(
@@ -81,7 +81,7 @@ export default () => {
                     </MenuItem>
                 )}
 
-                {vehicle && !vehicle[EVehicle.id].split("/")[1].startsWith("_") && (
+                {vehicle && !parseVehicleId(vehicle[EVehicle.id]).vehicleNumber.startsWith("_") && (
                     <MenuItem
                         onClick={() => navigate(window.location.pathname + "/info" + window.location.search)}
                     >

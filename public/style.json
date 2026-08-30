@@ -4,12 +4,7 @@
     "metadata": {},
     "center": [21.011956, 52.230009],
     "zoom": 15.64,
-    "sources": {
-        "openfreemap": {
-            "type": "vector",
-            "url": "https://tiles.openfreemap.org/planet"
-        }
-    },
+    "sources": { "openfreemap": { "type": "vector", "url": "https://tiles.openfreemap.org/planet" } },
     "sprite": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm",
     "glyphs": "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
     "layers": [
@@ -35,9 +30,7 @@
             "type": "fill",
             "source": "openfreemap",
             "source-layer": "park",
-            "paint": {
-                "fill-color": "#c3e6ce"
-            }
+            "paint": { "fill-color": "#c3e6ce" }
         },
         {
             "id": "landcover-scrub",
@@ -45,9 +38,7 @@
             "source": "openfreemap",
             "source-layer": "landcover",
             "filter": ["all", ["==", "class", "grass"], ["==", "subclass", "scrub"]],
-            "paint": {
-                "fill-color": "rgb(208, 228, 219)"
-            }
+            "paint": { "fill-color": "rgb(208, 228, 219)" }
         },
         {
             "id": "landcover-park",
@@ -55,9 +46,7 @@
             "source": "openfreemap",
             "source-layer": "landcover",
             "filter": ["all", ["==", "class", "grass"], ["==", "subclass", "park"]],
-            "paint": {
-                "fill-color": "#d0ead7"
-            }
+            "paint": { "fill-color": "#d0ead7" }
         },
         {
             "id": "landcover-wood",
@@ -65,9 +54,7 @@
             "source": "openfreemap",
             "source-layer": "landcover",
             "filter": ["==", "class", "wood"],
-            "paint": {
-                "fill-color": "rgba(168, 214, 186, 0.8)"
-            }
+            "paint": { "fill-color": "rgba(168, 214, 186, 0.8)" }
         },
         {
             "id": "landcover-other-grass",
@@ -75,9 +62,7 @@
             "source": "openfreemap",
             "source-layer": "landcover",
             "filter": ["all", ["==", "class", "grass"], ["!in", "subclass", "park"]],
-            "paint": {
-                "fill-color": "#dcebe5"
-            }
+            "paint": { "fill-color": "#dcebe5" }
         },
         {
             "id": "landuse-wood",
@@ -85,9 +70,7 @@
             "source": "openfreemap",
             "source-layer": "landuse",
             "filter": ["==", "class", "wood"],
-            "paint": {
-                "fill-color": "rgba(168, 214, 186, 0.8)"
-            }
+            "paint": { "fill-color": "rgba(168, 214, 186, 0.8)" }
         },
         {
             "id": "landuse-heath",
@@ -95,9 +78,7 @@
             "source": "openfreemap",
             "source-layer": "landcover",
             "filter": ["==", "subclass", "heath"],
-            "paint": {
-                "fill-color": "rgb(206, 229, 215)"
-            }
+            "paint": { "fill-color": "rgb(206, 229, 215)" }
         },
         {
             "id": "landuse-scrub-playground",
@@ -105,9 +86,7 @@
             "source": "openfreemap",
             "source-layer": "landuse",
             "filter": ["in", "class", "scrub", "playground"],
-            "paint": {
-                "fill-color": "rgba(197, 226, 206, 0.6)"
-            }
+            "paint": { "fill-color": "rgba(197, 226, 206, 0.6)" }
         },
         {
             "id": "landuse-agriculture-grass",
@@ -115,9 +94,7 @@
             "source": "openfreemap",
             "source-layer": "landuse",
             "filter": ["in", "class", "agriculture", "grass"],
-            "paint": {
-                "fill-color": "rgba(217, 237, 223, 0.6)"
-            }
+            "paint": { "fill-color": "rgba(217, 237, 223, 0.6)" }
         },
         {
             "id": "landuse-cemetery",
@@ -125,9 +102,7 @@
             "source": "openfreemap",
             "source-layer": "landuse",
             "filter": ["==", "class", "cemetery"],
-            "paint": {
-                "fill-color": "rgb(214, 237, 221)"
-            }
+            "paint": { "fill-color": "rgb(214, 237, 221)" }
         },
         {
             "id": "landuse-pitch",
@@ -135,9 +110,7 @@
             "source": "openfreemap",
             "source-layer": "landuse",
             "filter": ["==", "class", "pitch"],
-            "paint": {
-                "fill-color": "rgb(210, 240, 214)"
-            }
+            "paint": { "fill-color": "rgb(210, 240, 214)" }
         },
         {
             "id": "waterway",
@@ -162,9 +135,7 @@
             "type": "fill",
             "source": "openfreemap",
             "source-layer": "water",
-            "paint": {
-                "fill-color": "#d5e8f7"
-            }
+            "paint": { "fill-color": "#d5e8f7" }
         },
         {
             "id": "road-pedestrian-polygon-pattern",
@@ -187,10 +158,7 @@
             "type": "fill",
             "source": "openfreemap",
             "source-layer": "building",
-            "paint": {
-                "fill-color": "#d3d7de",
-                "fill-outline-color": "rgba(171, 183, 201, 0.8)"
-            }
+            "paint": { "fill-color": "#d3d7de", "fill-outline-color": "rgba(171, 183, 201, 0.8)" }
         },
         {
             "id": "tunnel-steps",
@@ -229,9 +197,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "tunnel"], ["in", "class", "track", "service", "minor"]],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1.5, 18, 15, 22, 150],
                 "line-color": "#c2cbd6",
@@ -244,9 +210,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "tunnel"], ["in", "class", "street", "street_limited"]],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 12, 0.5, 18, 20, 22, 200],
                 "line-color": "#c2cbd6",
@@ -259,9 +223,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "tunnel"], ["in", "class", "secondary", "tertiary"]],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": [
                     "interpolate",
@@ -279,14 +241,26 @@
             }
         },
         {
+            "id": "tunnel-busway",
+            "type": "line",
+            "source": "openfreemap",
+            "source-layer": "transportation",
+            "minzoom": 13,
+            "filter": ["all", ["==", "brunnel", "tunnel"], ["==", "class", "busway"]],
+            "layout": { "line-cap": "round", "line-join": "round" },
+            "paint": {
+                "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 13, 0.4, 18, 6, 22, 60],
+                "line-color": "#d99088",
+                "line-opacity": ["interpolate", ["linear"], ["zoom"], 13, 0, 14, 1]
+            }
+        },
+        {
             "id": "tunnel-primary",
             "type": "line",
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "tunnel"], ["==", "class", "primary"]],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": [
                     "interpolate",
@@ -309,9 +283,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "tunnel"], ["in", "class", "motorway", "trunk"]],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": [
                     "interpolate",
@@ -385,9 +357,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "subclass", "steps"], ["!in", "brunnel", "bridge", "tunnel"]],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 15, 1, 18, 6],
                 "line-color": "#a6bcd8",
@@ -406,9 +376,7 @@
                 ["!in", "subclass", "cycleway", "steps"],
                 ["!in", "brunnel", "bridge", "tunnel"]
             ],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 13, 0.5, 18, 4],
                 "line-color": "#a6bcd8",
@@ -421,9 +389,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "subclass", "cycleway"], ["!in", "brunnel", "bridge", "tunnel"]],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 13, 0.5, 18, 4],
                 "line-color": "#8cab98",
@@ -441,10 +407,7 @@
                 ["!=", "ramp", 1],
                 ["!in", "brunnel", "bridge", "tunnel"]
             ],
-            "layout": {
-                "line-cap": "round",
-                "line-join": "round"
-            },
+            "layout": { "line-cap": "round", "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1.5, 18, 15, 22, 150],
                 "line-color": "#c2cbd6"
@@ -461,10 +424,7 @@
                 ["!=", "ramp", 1],
                 ["!in", "brunnel", "bridge", "tunnel"]
             ],
-            "layout": {
-                "line-cap": "round",
-                "line-join": "round"
-            },
+            "layout": { "line-cap": "round", "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 12, 0.5, 18, 20, 22, 200],
                 "line-color": "#c2cbd6",
@@ -481,10 +441,7 @@
                 ["in", "class", "secondary", "tertiary"],
                 ["!in", "brunnel", "bridge", "tunnel"]
             ],
-            "layout": {
-                "line-cap": "round",
-                "line-join": "round"
-            },
+            "layout": { "line-cap": "round", "line-join": "round" },
             "paint": {
                 "line-width": [
                     "interpolate",
@@ -501,15 +458,26 @@
             }
         },
         {
+            "id": "road-busway",
+            "type": "line",
+            "source": "openfreemap",
+            "source-layer": "transportation",
+            "minzoom": 13,
+            "filter": ["all", ["==", "class", "busway"], ["!in", "brunnel", "bridge", "tunnel"]],
+            "layout": { "line-cap": "round", "line-join": "round" },
+            "paint": {
+                "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 13, 0.4, 18, 6, 22, 60],
+                "line-color": "#cb6a61",
+                "line-opacity": ["interpolate", ["linear"], ["zoom"], 13, 0, 14, 1]
+            }
+        },
+        {
             "id": "road-primary",
             "type": "line",
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "class", "primary"], ["!in", "brunnel", "bridge", "tunnel"]],
-            "layout": {
-                "line-cap": "round",
-                "line-join": "round"
-            },
+            "layout": { "line-cap": "round", "line-join": "round" },
             "paint": {
                 "line-width": [
                     "interpolate",
@@ -531,10 +499,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["in", "class", "motorway", "trunk"], ["!in", "brunnel", "bridge", "tunnel"]],
-            "layout": {
-                "line-cap": "round",
-                "line-join": "round"
-            },
+            "layout": { "line-cap": "round", "line-join": "round" },
             "paint": {
                 "line-width": [
                     "interpolate",
@@ -629,10 +594,7 @@
                 ],
                 ["!in", "brunnel", "bridge", "tunnel"]
             ],
-            "layout": {
-                "line-cap": "butt",
-                "line-join": "round"
-            },
+            "layout": { "line-cap": "butt", "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1.5, 18, 15, 22, 150],
                 "line-color": "#c2cbd6",
@@ -645,9 +607,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "bridge"], ["==", "subclass", "steps"]],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 15, 2, 18, 8],
                 "line-color": "#dfe3e8"
@@ -664,9 +624,7 @@
                 ["in", "class", "path", "footway", "pedestrian"],
                 ["!in", "subclass", "cycleway", "steps"]
             ],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 13, 1.5, 18, 6],
                 "line-color": "#dfe3e8"
@@ -678,9 +636,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "bridge"], ["==", "subclass", "cycleway"]],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 13, 1.5, 18, 6],
                 "line-color": "#dfe3e8"
@@ -692,9 +648,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "bridge"], ["in", "class", "track", "service", "minor"]],
-            "layout": {
-                "line-cap": "round"
-            },
+            "layout": { "line-cap": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 14, 1, 18, 10, 22, 100],
                 "line-color": "#c2cbd6"
@@ -706,9 +660,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "bridge"], ["in", "class", "street", "street_limited"]],
-            "layout": {
-                "line-cap": "round"
-            },
+            "layout": { "line-cap": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 12, 0.5, 18, 20, 22, 200],
                 "line-color": "#c2cbd6",
@@ -721,9 +673,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "bridge"], ["==", "subclass", "steps"]],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 15, 1, 18, 6],
                 "line-color": "#a6bcd8",
@@ -742,9 +692,7 @@
                 ["in", "class", "path", "footway", "pedestrian"],
                 ["!in", "subclass", "cycleway", "steps"]
             ],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 13, 0.5, 18, 4],
                 "line-color": "#a6bcd8",
@@ -757,9 +705,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "bridge"], ["==", "subclass", "cycleway"]],
-            "layout": {
-                "line-join": "round"
-            },
+            "layout": { "line-join": "round" },
             "paint": {
                 "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 13, 0.5, 18, 4],
                 "line-color": "#8cab98",
@@ -772,9 +718,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "bridge"], ["in", "class", "secondary", "tertiary"]],
-            "layout": {
-                "line-cap": "round"
-            },
+            "layout": { "line-cap": "round" },
             "paint": {
                 "line-width": [
                     "interpolate",
@@ -791,14 +735,26 @@
             }
         },
         {
+            "id": "bridge-busway",
+            "type": "line",
+            "source": "openfreemap",
+            "source-layer": "transportation",
+            "minzoom": 13,
+            "filter": ["all", ["==", "brunnel", "bridge"], ["==", "class", "busway"]],
+            "layout": { "line-cap": "round", "line-join": "round" },
+            "paint": {
+                "line-width": ["interpolate", ["exponential", 1.5], ["zoom"], 13, 0.4, 18, 6, 22, 60],
+                "line-color": "#cb6a61",
+                "line-opacity": ["interpolate", ["linear"], ["zoom"], 13, 0, 14, 1]
+            }
+        },
+        {
             "id": "bridge-primary",
             "type": "line",
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "bridge"], ["==", "class", "primary"]],
-            "layout": {
-                "line-cap": "round"
-            },
+            "layout": { "line-cap": "round" },
             "paint": {
                 "line-width": [
                     "interpolate",
@@ -820,9 +776,7 @@
             "source": "openfreemap",
             "source-layer": "transportation",
             "filter": ["all", ["==", "brunnel", "bridge"], ["in", "class", "motorway", "trunk"]],
-            "layout": {
-                "line-cap": "round"
-            },
+            "layout": { "line-cap": "round" },
             "paint": {
                 "line-width": [
                     "interpolate",
@@ -953,6 +907,41 @@
                 "line-width": ["interpolate", ["linear"], ["zoom"], 3, 0.5, 12, 2],
                 "line-dasharray": [2, 1.5]
             }
+        },
+        {
+            "id": "road-oneway",
+            "type": "symbol",
+            "source": "openfreemap",
+            "source-layer": "transportation",
+            "minzoom": 16,
+            "filter": ["==", ["get", "oneway"], 1],
+            "layout": {
+                "symbol-placement": "line",
+                "symbol-spacing": 120,
+                "icon-image": "arrow",
+                "icon-size": ["interpolate", ["linear"], ["zoom"], 16, 0.95, 20, 1.4],
+                "icon-rotation-alignment": "map",
+                "icon-padding": 2
+            },
+            "paint": { "icon-opacity": 0.9 }
+        },
+        {
+            "id": "road-oneway-reverse",
+            "type": "symbol",
+            "source": "openfreemap",
+            "source-layer": "transportation",
+            "minzoom": 16,
+            "filter": ["==", ["get", "oneway"], -1],
+            "layout": {
+                "symbol-placement": "line",
+                "symbol-spacing": 120,
+                "icon-image": "arrow",
+                "icon-size": ["interpolate", ["linear"], ["zoom"], 16, 0.95, 20, 1.4],
+                "icon-rotation-alignment": "map",
+                "icon-rotate": 180,
+                "icon-padding": 2
+            },
+            "paint": { "icon-opacity": 0.9 }
         },
         {
             "id": "building-number-label",

@@ -1,4 +1,4 @@
-import { AltRoute, DirectionsBus, PinDrop, Train } from "@mui/icons-material";
+import { AltRoute, DirectionsBus, PinDrop } from "@mui/icons-material";
 import { Box, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
@@ -18,16 +18,6 @@ const items = [
         title: "howToRoutes",
         description: "routesDescription",
     },
-    {
-        icon: <Train style={{ color: "#3a3000", backgroundColor: "#dbc66e" }} />,
-        title: "howToRelations",
-        description: "relationsDescription",
-    },
-    // {
-    //     icon: <History style={{ color: "#3e2459", backgroundColor: "#dabaf9" }} />,
-    //     title: "howToHistory",
-    //     description: "historyDescription",
-    // },
 ];
 
 export default () => {

@@ -1,28 +1,45 @@
 import { getFromAPI } from "@/util/fetchFunctions";
 import useLocationStore from "./useLocationStore";
 import { useQuery } from "@tanstack/react-query";
-import { ERouteDirection, ERouteInfo, Route, RouteInfo } from "typings";
+import { Route, RouteGraph, RouteGraphRawResponse } from "typings";
 import { polylineToGeoJson } from "@/util/tools";
+
+export const ROUTE_GRAPH_ROW_HEIGHT = 48;
 
 export const useQueryRoutes = ({ city }: { city: string }) => {
     return useQuery({
         queryKey: ["routes", city],
-        queryFn: async ({ signal }) => getFromAPI<Route[]>(city, "routes/getAllRoutes", {}, signal),
+        queryFn: async ({ signal }) => getFromAPI<Route[]>(city, "routes", {}, signal),
     });
 };
 
-export const useQueryRoute = ({ city, route }: { city: string; route: string }) => {
+export const useQueryRouteGraph = ({ city, route }: { city: string; route: string }) => {
     return useQuery({
-        queryKey: ["route", city, route],
+        queryKey: ["routeGraph", city, route],
         queryFn: async ({ signal }) => {
-            const routeInfo = await getFromAPI<RouteInfo>(city, "routes/getRoute", { id: route }, signal);
+            const data = await getFromAPI<RouteGraphRawResponse | { error: string }>(
+                city,
+                `routes/${route}`,
+                {},
+                signal,
+            );
 
-            routeInfo[ERouteInfo.directions].forEach((direction) => {
-                direction[ERouteDirection.shape] = polylineToGeoJson(direction[ERouteDirection.shape] as any);
-            });
+            if ("error" in data) throw new Error(data.error);
 
-            return routeInfo;
+            return {
+                ...data,
+                shapes: data.shapes.map((direction) => direction.map(polylineToGeoJson)),
+            } satisfies RouteGraph;
         },
+    });
+};
+
+export const useQueryModels = ({ city, enabled = true }: { city: string; enabled?: boolean }) => {
+    return useQuery({
+        queryKey: ["models", city],
+        queryFn: async ({ signal }) => getFromAPI<string[]>(city, "vehicles/models", {}, signal),
+        enabled,
+        staleTime: 5 * 60 * 1000,
     });
 };
 
