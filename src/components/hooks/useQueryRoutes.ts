@@ -49,10 +49,10 @@ export const useQueryRoutesNearby = ({ city }: { city: string }) => {
         queryFn: async ({ signal }) => {
             return getFromAPI<Route[]>(
                 city,
-                "routes/getNearbyRoutes",
+                "routes/nearby",
                 {
                     lat: userLocation[1],
-                    lng: userLocation[0],
+                    lon: userLocation[0],
                 },
                 signal,
             );

@@ -1,6 +1,6 @@
 import { useShallow } from "zustand/react/shallow";
 import useVehicleStore from "./useVehicleStore";
-import { Itinerary, Trip, Vehicle } from "typings";
+import { Alert, Itinerary, Trip, Vehicle } from "typings";
 import { useEffect, useMemo } from "react";
 import { polylineToGeoJson } from "@/util/tools";
 import { useEventQuery } from "./useEventQuery";
@@ -21,6 +21,7 @@ type StreamMessage = {
     position: Vehicle;
     sequence: number;
     stops: [arrival: any, departure: any][]; // StopUpdate maps back to this essentially, but we need to format it to StopUpdate style if needed
+    alerts?: Alert[]; // sent only when the set changes
 };
 
 export const useQueryTrip = ({ city, trip, vehicle }: TripQueryProps) => {
@@ -31,6 +32,7 @@ export const useQueryTrip = ({ city, trip, vehicle }: TripQueryProps) => {
     const setLastPing = useVehicleStore((state) => state.setLastPing);
     const setStops = useVehicleStore((state) => state.setStops);
     const setSequence = useVehicleStore((state) => state.setSequence);
+    const setAlerts = useVehicleStore((state) => state.setAlerts);
     const setStreamStatus = useVehicleStore((state) => state.setStreamStatus);
     const reset = useVehicleStore((state) => state.reset);
     const getFresh = useVehicleStore((state) => state.fresh);
@@ -77,6 +79,9 @@ export const useQueryTrip = ({ city, trip, vehicle }: TripQueryProps) => {
             }
             if (rawData.sequence !== undefined) {
                 setSequence(rawData.sequence);
+            }
+            if (rawData.alerts) {
+                setAlerts(rawData.alerts);
             }
         }
     }, [rawInitial, rawData]);

@@ -1,4 +1,4 @@
-import { AltRoute, DirectionsBus, PinDrop } from "@mui/icons-material";
+import { AltRoute, DirectionsBus, PinDrop, Train } from "@mui/icons-material";
 import { Box, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
@@ -17,6 +17,11 @@ const items = [
         icon: <AltRoute style={{ color: "#0a305f", backgroundColor: "#aac7ff" }} />,
         title: "howToRoutes",
         description: "routesDescription",
+    },
+    {
+        icon: <Train style={{ color: "#3a3000", backgroundColor: "#dbc66e" }} />,
+        title: "howToRelations",
+        description: "relationsDescription",
     },
 ];
 

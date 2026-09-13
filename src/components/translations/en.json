@@ -39,6 +39,12 @@
         "terminus": "Terminus",
         "operatedBy": "Trip operated by {{value}}",
         "alerts": "Impediments",
+        "alertsFrom": "from {{moment}}",
+        "alertsUntil": "until {{moment}}",
+        "alertsPublished": "published {{moment}}",
+        "alertsDetails": "More information",
+        "alertsEmpty": "No impediments",
+        "alertsEmptyDescription": "There are no reported disruptions right now.",
         "sunPosition": "Where to sit?",
         "sec": "sec",
         "min": "min",
@@ -92,7 +98,10 @@
         "howToRoutes": "Searching for routes",
         "routesDescription": "Search using the route number, e.g., 105.",
         "howToHistory": "Search history",
-        "historyDescription": "We save recent searches so you can quickly return to them."
+        "historyDescription": "We save recent searches so you can quickly return to them.",
+        "relations": "Relations",
+        "howToRelations": "Searching for train relations",
+        "relationsDescription": "Search using the relation number, e.g., 99267."
     },
     "Filter": {
         "filter": "Filter",

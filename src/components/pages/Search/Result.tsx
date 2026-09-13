@@ -3,6 +3,7 @@ import RouteResult from "./RouteResult";
 import StopResult from "./StopResult";
 import VehicleResult from "./VehicleResult";
 import StationResult from "./StationResult";
+import RelationResult from "./RelationResult";
 
 type Props = {
     item: SearchItem;
@@ -47,6 +48,14 @@ const Result = ({ item, expandedStop, setExpandedStop }: Props) => {
             return (
                 <VehicleResult
                     vehicle={item.vehicle}
+                    borderTop={item.borderTop}
+                    borderBottom={item.borderBottom}
+                />
+            );
+        case !!item.relation:
+            return (
+                <RelationResult
+                    relation={item.relation}
                     borderTop={item.borderTop}
                     borderBottom={item.borderBottom}
                 />

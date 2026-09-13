@@ -1,4 +1,4 @@
-import { Marker, useMap } from "@vis.gl/react-maplibre";
+import { Layer, Marker, Source, useMap } from "@vis.gl/react-maplibre";
 import { memo, useEffect, useMemo, useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import StopMarker from "@/map/StopMarker";
@@ -9,6 +9,7 @@ import {
     EStopDeparture,
     EStopDepartures,
     EStopDepartureStatus,
+    EStopExit,
     EStopTime,
     ETrip,
     EVehicle,
@@ -73,6 +74,25 @@ export default memo(() => {
         return uniqueTrips;
     }, [data]);
 
+    const stopExits: GeoJSON.GeoJSON | null = useMemo(() => {
+        const exits = stopData?.[EStop.exits];
+        if (!exits?.length) return null;
+
+        return {
+            type: "FeatureCollection",
+            features: exits.map((exit) => ({
+                type: "Feature",
+                geometry: {
+                    type: "Point",
+                    coordinates: exit[EStopExit.location],
+                },
+                properties: {
+                    name: exit[EStopExit.name],
+                },
+            })),
+        };
+    }, [stopData]);
+
     if (!stopData) return null;
 
     return (
@@ -92,6 +112,40 @@ export default memo(() => {
                     useStopCodeAsIcon={localStorage.getItem("useStopCodeAsIcon") === "true"}
                 />
             </Marker>
+
+            {stopExits && (
+                <Source type="geojson" data={stopExits}>
+                    <Layer
+                        id="stop-exits"
+                        type="symbol"
+                        layout={{
+                            "icon-image": "entrance",
+                            "icon-size": 1,
+                            "icon-allow-overlap": true,
+                        }}
+                        filter={[">=", ["zoom"], 16]}
+                    />
+                    <Layer
+                        id="stop-exit-labels"
+                        type="symbol"
+                        layout={{
+                            "text-field": ["get", "name"],
+                            "text-size": 14,
+                            "text-font": ["Noto Sans Bold"],
+                            "text-anchor": "top",
+                            "text-justify": "center",
+                            "text-offset": [0, 0.8],
+                            "text-allow-overlap": false,
+                        }}
+                        paint={{
+                            "text-color": "#fff",
+                            "text-halo-color": "#5373d4",
+                            "text-halo-width": 1.5,
+                        }}
+                        filter={[">=", ["zoom"], 16]}
+                    />
+                </Source>
+            )}
 
             {liveDepartures.map((departure) => (
                 <VehicleMarker

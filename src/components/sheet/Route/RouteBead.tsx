@@ -44,7 +44,6 @@ export default ({ bead, route }: Props) => {
                     height: 24,
                     borderRadius: 12,
                     backgroundColor: route[ERoute.color],
-                    filter: "invert(1) hue-rotate(180deg) contrast(90%) brightness(90%)",
                 }}
             >
                 {bead.count === undefined && (

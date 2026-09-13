@@ -39,6 +39,12 @@
         "terminus": "Przystanek krańcowy",
         "operatedBy": "Kurs obsługiwany przez {{value}}",
         "alerts": "Utrudnienia",
+        "alertsFrom": "od {{moment}}",
+        "alertsUntil": "do {{moment}}",
+        "alertsPublished": "opublikowano {{moment}}",
+        "alertsDetails": "Więcej informacji",
+        "alertsEmpty": "Bez utrudnień",
+        "alertsEmptyDescription": "Nie ma w tej chwili żadnych zgłoszonych utrudnień.",
         "sunPosition": "Gdzie usiąść?",
         "sec": "sek",
         "min": "min",
@@ -94,7 +100,10 @@
         "howToRoutes": "Wyszukiwanie linii",
         "routesDescription": "Wyszukaj używając numeru linii, np. 105.",
         "howToHistory": "Historia wyszukiwania",
-        "historyDescription": "Zapisujemy ostatnie wyszukiwania, abyś mógł szybko do nich wrócić."
+        "historyDescription": "Zapisujemy ostatnie wyszukiwania, abyś mógł szybko do nich wrócić.",
+        "relations": "Relacje",
+        "howToRelations": "Wyszukiwanie relacji pociągów",
+        "relationsDescription": "Wyszukaj używając numeru relacji, np. 99267."
     },
     "Filter": {
         "filter": "Filtrowanie",

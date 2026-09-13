@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import type { LineRun } from "@/util/routeLayout";
-import { darkFilterColor, fadeColor } from "@/util/tools";
+import { fadeColor } from "@/util/tools";
 
 type Props = {
     color: string;
@@ -38,10 +38,8 @@ export default ({
     runs = NO_RUNS,
     children,
 }: Props) => {
-    const mainStroke = darkFilterColor(color);
-    const variantStroke = fadeColor(mainStroke, 0.5, SHEET_BACKGROUND); // variants fade towards the sheet
-    const stroke = main ? mainStroke : variantStroke;
-    const fill = darkFilterColor("#ffffff");
+    const variantStroke = fadeColor(color, 0.5, SHEET_BACKGROUND); // variants fade towards the sheet
+    const stroke = main ? color : variantStroke;
     const outermost = Math.max(lane, ...runs.flatMap((run) => [run.from, run.to]));
     const width = 48 + 20 * outermost;
     const x = laneX(lane);
@@ -56,7 +54,7 @@ export default ({
         const x2 = laneX(run.to);
         const y1 = run.half === "lower" ? middle : 0;
         const y2 = run.half === "upper" ? middle : bottom;
-        const runStroke = run.main ? mainStroke : variantStroke;
+        const runStroke = run.main ? color : variantStroke;
 
         if (x1 === x2) {
             return <line key={index} x1={x1} y1={y1} x2={x2} y2={y2} stroke={runStroke} strokeWidth={6} />;
@@ -94,7 +92,7 @@ export default ({
 
                 {main && ownLine}
 
-                {!gap && <circle cx={x} cy={middle} r={6.5} fill={fill} stroke={stroke} strokeWidth={3} />}
+                {!gap && <circle cx={x} cy={middle} r={6.5} fill="#ffffff" stroke={stroke} strokeWidth={3} />}
             </svg>
 
             {children}

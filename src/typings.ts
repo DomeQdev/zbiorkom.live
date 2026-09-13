@@ -104,6 +104,7 @@ export type Stop = [
     bearing: number,
     direction: string,
     routes: Route[],
+    exits?: StopExit[],
 ];
 
 export enum EStop {
@@ -116,6 +117,7 @@ export enum EStop {
     bearing = 6,
     direction = 7,
     routes = 8,
+    exits = 9,
 }
 
 export type StopExit = [name: string, location: Location];
@@ -366,16 +368,26 @@ export type VehicleSearchTuple = [
 
 export type StopSearchTuple = [id: string, city: string, name: string, group: Stop[]];
 
+export type RelationSearchTuple = [
+    id: string,
+    route: Route,
+    shortName: string,
+    start: number,
+    end: number,
+    headsign: string,
+];
+
 export type SearchItem = {
     vehicle?: VehicleSearchTuple;
     stop?: StopSearchTuple;
     station?: StopSearchTuple;
     route?: Route;
+    relation?: RelationSearchTuple;
     borderTop?: boolean;
     borderBottom?: boolean;
 };
 
-export type SearchGroupName = "vehicles" | "stops" | "stations" | "routes";
+export type SearchGroupName = "vehicles" | "stops" | "stations" | "routes" | "relations";
 
 export type SearchResponse = {
     results: SearchItem[];
@@ -388,6 +400,7 @@ export type SearchRawResponse = {
     stops: StopSearchTuple[];
     stations: StopSearchTuple[];
     routes: Route[];
+    relations: RelationSearchTuple[];
 };
 
 export type SearchErrorResponse = { error: "MISSING_QUERY" | "CITY_NOT_FOUND" };
@@ -398,6 +411,37 @@ export enum ESearchVehicle {
     brigade = 2,
     headsign = 3,
     model = 4,
+}
+
+export enum ESearchRelation {
+    id = 0,
+    route = 1,
+    shortName = 2,
+    start = 3,
+    end = 4,
+    headsign = 5,
+}
+
+export type Alert = [
+    title: string,
+    description: string, // markdown
+    url: string,
+    publishedAt: number | undefined, // epoch ms
+    activeFrom: number | undefined, // epoch ms
+    activeUntil: number | undefined, // epoch ms
+    language: string,
+    detected: boolean,
+];
+
+export enum EAlert {
+    title = 0,
+    description = 1,
+    url = 2,
+    publishedAt = 3,
+    activeFrom = 4,
+    activeUntil = 5,
+    language = 6,
+    detected = 7,
 }
 
 export type StopDirection = [
