@@ -138,7 +138,7 @@ export default memo(() => {
             {tripData && itinerary && (
                 <>
                     <TripRoute
-                        shape={itinerary[EItinerary.shape] as any}
+                        lines={[itinerary[EItinerary.shape] as any]}
                         stops={itinerary[EItinerary.stops].map((iStop) => {
                             const s = iStop[EItineraryStop.stop];
                             const code = s[EStop.code];

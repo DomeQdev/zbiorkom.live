@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { DotVehicle, EVehicle, Vehicle } from "typings";
+import { DotVehicle, EVehicle, Vehicle, VehiclePlacement } from "typings";
 import { useEventQuery } from "./useEventQuery";
 
 type Props = {
@@ -14,11 +14,13 @@ type Options = {
     filterModels?: string[];
     filterRoutes?: string[];
     filterDirection?: number;
+    graph?: boolean; // place the vehicles on the route diagram as well
 };
 
 export type MarkersData = {
     positions: Vehicle[];
     dots: DotVehicle[];
+    placements: VehiclePlacement[];
     useDots: boolean;
     bbox?: [number, number, number, number];
 };
@@ -34,22 +36,24 @@ export default ({ city, options, disabled }: Props) => {
         if (options.filterDirection !== undefined) {
             params.set("filterDirection", options.filterDirection.toString());
         }
+        if (options.graph) params.set("graph", "1");
 
         const query = params.toString();
         return `mapFeatures/0/0,0,0,0/stream${query ? `?${query}` : ""}`;
-    }, [options.filterRoutes, options.filterModels, options.filterDirection]);
+    }, [options.filterRoutes, options.filterModels, options.filterDirection, options.graph]);
 
-    const { data: stream, loadingState } = useEventQuery<{ positions: Vehicle[]; dots: DotVehicle[] }>(
-        city,
-        endpoint,
-        { enabled: !disabled, resetKey: endpoint },
-    );
+    const { data: stream, loadingState } = useEventQuery<{
+        positions: Vehicle[];
+        dots: DotVehicle[];
+        placements?: VehiclePlacement[];
+    }>(city, endpoint, { enabled: !disabled, resetKey: endpoint });
 
     const data = useMemo<MarkersData | undefined>(() => {
         if (!stream) return undefined;
 
         const positions = stream.positions || [];
         const dots = stream.dots || [];
+        const placements = stream.placements || [];
         const useDots = dots.length > 0;
 
         let bbox: [number, number, number, number] | undefined;
@@ -68,7 +72,7 @@ export default ({ city, options, disabled }: Props) => {
             bbox = [minLng, minLat, maxLng, maxLat];
         }
 
-        return { positions, dots, useDots, bbox };
+        return { positions, dots, placements, useDots, bbox };
     }, [stream]);
 
     return {

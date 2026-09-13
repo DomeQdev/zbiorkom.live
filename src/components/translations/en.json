@@ -42,7 +42,10 @@
         "sunPosition": "Where to sit?",
         "sec": "sec",
         "min": "min",
-        "vehicleNotFound": "Vehicle not found."
+        "vehicleNotFound": "Vehicle not found.",
+        "routeEmpty": "This line has no stops",
+        "showStops_one": "Show {{count}} stop",
+        "showStops_other": "Show {{count}} stops"
     },
     "Brigades": {
         "selectBrigade": "Choose the brigade of route <0></0>",

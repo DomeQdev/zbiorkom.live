@@ -1,78 +1,94 @@
-import { Box, ListItemButton, ListItemText } from "@mui/material";
-import { EStop } from "typings";
+import { ButtonBase } from "@mui/material";
+import { UnfoldMore } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 import { useMap } from "@vis.gl/react-maplibre";
-import { RouteRow, rowGraphWidth, routeRowPaths } from "./routeRows";
+import { ERoute, EStop, Route } from "typings";
+import type { RouteRow } from "@/util/routeLayout";
+import RouteTimeline from "./RouteTimeline";
+import RouteBead, { Bead } from "./RouteBead";
 
-const NODE_RADIUS = 7.5;
-const NODE_BORDER = 3;
+export const ROW_HEIGHT = 56;
 
 type Props = {
     row: RouteRow;
-    color: string;
+    route: Route;
+    beads?: Bead[];
+    onExpand: (branch: number) => void;
 };
 
-export default ({ row, color }: Props) => {
+export default ({ row, route, beads, onExpand }: Props) => {
     const { current: map } = useMap();
-
-    const width = rowGraphWidth(row);
-    const graph = (
-        <svg
-            width={width}
-            height={row.height}
-            viewBox={`0 0 ${width} ${row.height}`}
-            style={{ flexShrink: 0, display: "block" }}
-        >
-            {routeRowPaths(row, color).map((path, i) => (
-                <path
-                    key={i}
-                    d={path.d}
-                    stroke={path.color}
-                    strokeWidth={path.width}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    fill="none"
-                />
-            ))}
-            {row.kind === "stop" && (
-                <circle
-                    cx={row.x}
-                    cy={row.height / 2}
-                    r={NODE_RADIUS}
-                    fill="#fff"
-                    stroke={row.color}
-                    strokeWidth={NODE_BORDER}
-                />
-            )}
-        </svg>
-    );
-
-    if (row.kind !== "stop") {
-        return <Box sx={{ display: "flex", alignItems: "center", height: row.height }}>{graph}</Box>;
-    }
-
-    const stop = row.stop;
+    const { t } = useTranslation("Vehicle");
 
     return (
-        <ListItemButton
-            onClick={() =>
-                map?.flyTo({
-                    center: stop[EStop.location],
-                    zoom: map.getZoom() > 15 ? map.getZoom() : 15,
-                })
-            }
-            sx={{ padding: 0, height: row.height }}
-        >
-            {graph}
-            <ListItemText
-                primary={`${stop[EStop.name]} ${stop[EStop.code] || ""}`}
-                sx={{
-                    "& .MuiListItemText-primary": {
-                        display: "flex",
-                        alignItems: "center",
-                        fontSize: "15px",
-                    },
-                }}
-            />
-        </ListItemButton>
+        <div style={{ display: "flex", height: ROW_HEIGHT, paddingRight: 12 }}>
+            <RouteTimeline
+                color={route[ERoute.color]}
+                height={ROW_HEIGHT}
+                lane={row.lane}
+                main={row.main}
+                gap={row.kind === "hidden"}
+                above={row.above}
+                below={row.below}
+                runs={row.runs}
+            >
+                {beads?.map((bead) => (
+                    <RouteBead key={bead.key} bead={bead} route={route} />
+                ))}
+            </RouteTimeline>
+
+            {row.kind === "stop" && (
+                <ButtonBase
+                    onClick={() =>
+                        map?.flyTo({
+                            center: row.stop[EStop.location],
+                            zoom: map.getZoom() > 15 ? map.getZoom() : 15,
+                        })
+                    }
+                    sx={{
+                        flex: 1,
+                        minWidth: 0,
+                        justifyContent: "flex-start",
+                        marginY: "2px",
+                        paddingX: "12px",
+                        borderRadius: "4px",
+                    }}
+                >
+                    <span
+                        style={{
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                            textOverflow: "ellipsis",
+                            fontSize: 14,
+                            fontWeight: 500,
+                        }}
+                    >
+                        {row.stop[EStop.code]
+                            ? `${row.stop[EStop.name]} ${row.stop[EStop.code]}`
+                            : row.stop[EStop.name]}
+                    </span>
+                </ButtonBase>
+            )}
+
+            {row.kind === "hidden" && (
+                <ButtonBase
+                    onClick={() => onExpand(row.branch)}
+                    sx={{
+                        flex: 1,
+                        justifyContent: "flex-start",
+                        gap: 1,
+                        marginY: "2px",
+                        paddingX: "12px",
+                        borderRadius: "4px",
+                        color: "text.secondary",
+                        fontSize: 14,
+                        fontWeight: 500,
+                    }}
+                >
+                    <UnfoldMore sx={{ fontSize: 20 }} />
+                    {t("showStops", { count: row.stops.length })}
+                </ButtonBase>
+            )}
+        </div>
     );
 };

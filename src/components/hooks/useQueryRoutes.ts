@@ -4,8 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Route, RouteGraph, RouteGraphRawResponse } from "typings";
 import { polylineToGeoJson } from "@/util/tools";
 
-export const ROUTE_GRAPH_ROW_HEIGHT = 48;
-
 export const useQueryRoutes = ({ city }: { city: string }) => {
     return useQuery({
         queryKey: ["routes", city],

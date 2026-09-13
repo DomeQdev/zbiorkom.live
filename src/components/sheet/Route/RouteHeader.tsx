@@ -5,6 +5,7 @@ import { AllInclusive, Close, ImportExport } from "@mui/icons-material";
 import useDirectionStore from "@/hooks/useDirectionStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryRouteGraph } from "@/hooks/useQueryRoutes";
+import { getCityFromUrl } from "@/util/tools";
 
 export default () => {
     const [direction, setDirection] = useDirectionStore(
@@ -13,13 +14,13 @@ export default () => {
 
     const { city, route } = useParams();
     const { data } = useQueryRouteGraph({
-        city: city!,
+        city: getCityFromUrl(city),
         route: route!,
     });
 
     const currentDirection = data?.graph[direction];
 
-    if (!data || !currentDirection) return null;
+    if (!data) return null;
 
     return (
         <Box
@@ -30,7 +31,7 @@ export default () => {
                 marginTop: -1,
             }}
         >
-            <VehicleHeadsign route={data.route} headsign={currentDirection.headsign} />
+            <VehicleHeadsign route={data.route} headsign={currentDirection?.headsign} />
 
             <Box
                 sx={{
@@ -58,9 +59,9 @@ export default () => {
                         transition: "transform 0.3s",
                     }}
                     onClick={() => setDirection((direction + 1) % data.graph.length)}
-                    disabled={data.graph.length === 1}
+                    disabled={data.graph.length < 2}
                 >
-                    {data.graph.length === 1 ? <AllInclusive /> : <ImportExport />}
+                    {data.graph.length < 2 ? <AllInclusive /> : <ImportExport />}
                 </IconButton>
 
                 <IconButton size="small" onClick={() => window.history.back()}>

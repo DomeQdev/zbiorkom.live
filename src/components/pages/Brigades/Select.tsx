@@ -18,7 +18,7 @@ import Sticky from "@/ui/Sticky";
 import Helm from "@/util/Helm";
 import { EBrigade, ERoute } from "typings";
 import { getBrigadeDays, useQueryBrigadeList } from "@/hooks/useQueryBrigades";
-import { getCityTimezone } from "@/util/tools";
+import { getCityFromUrl, getCityTimezone } from "@/util/tools";
 import { useQueryRouteGraph } from "@/hooks/useQueryRoutes";
 import useSearchState from "@/hooks/useSearchState";
 import DayPicker from "@/ui/DayPicker";
@@ -37,8 +37,9 @@ export default memo(() => {
         [i18n.language, city],
     );
 
-    const { data: brigades } = useQueryBrigadeList({ city: city!, route, date });
-    const { data: routeData } = useQueryRouteGraph({ city: city!, route: route! });
+    const routeCity = getCityFromUrl(city);
+    const { data: brigades } = useQueryBrigadeList({ city: routeCity, route, date });
+    const { data: routeData } = useQueryRouteGraph({ city: routeCity, route: route! });
 
     const displayBrigades = !!(brigades && routeData);
 
@@ -164,7 +165,14 @@ export default memo(() => {
                 >
                     {displayBrigades &&
                         brigades?.map((brigade) => (
-                            <ListItemButton key={brigade} component={Link} to={brigade + `?date=${date}`}>
+                            <ListItemButton
+                                key={brigade}
+                                component={Link}
+                                to={
+                                    `${brigade}?date=${date}` +
+                                    (routeCity === city ? "" : `&city=${encodeURIComponent(routeCity)}`)
+                                }
+                            >
                                 <ListItemText
                                     primary={
                                         <>

@@ -117,9 +117,34 @@ export const fadeColor = (hex: string, ratio: number, background = "#ffffff") =>
     return `rgb(${mix(16)}, ${mix(8)}, ${mix(0)})`;
 };
 
-// Route variants on the map and in the sheet: one neutral grey that reads on both map styles and
-// against any route colour, so a variant's stops, its line and its polyline always match.
-export const VARIANT_COLOR = "#9e9e9e";
+// the colour a css invert(1) hue-rotate(180deg) contrast(90%) brightness(90%) filter turns a hex into
+export const darkFilterColor = (color: string): string => {
+    let r = parseInt(color.slice(1, 3), 16) / 255;
+    let g = parseInt(color.slice(3, 5), 16) / 255;
+    let b = parseInt(color.slice(5, 7), 16) / 255;
+
+    r = 1 - r;
+    g = 1 - g;
+    b = 1 - b;
+
+    const hr = r;
+    const hg = g;
+    const hb = b;
+    r = -0.574 * hr + 1.43 * hg + 0.144 * hb;
+    g = 0.426 * hr + 0.43 * hg + 0.144 * hb;
+    b = 0.426 * hr + 1.43 * hg - 0.856 * hb;
+
+    r = ((r - 0.5) * 0.9 + 0.5) * 0.9;
+    g = ((g - 0.5) * 0.9 + 0.5) * 0.9;
+    b = ((b - 0.5) * 0.9 + 0.5) * 0.9;
+
+    const channel = (value: number) =>
+        Math.round(Math.min(1, Math.max(0, value)) * 255)
+            .toString(16)
+            .padStart(2, "0");
+
+    return `#${channel(r)}${channel(g)}${channel(b)}`;
+};
 
 export const parseVehicleId = (id: string) => {
     const colonIdx = id.indexOf(":");

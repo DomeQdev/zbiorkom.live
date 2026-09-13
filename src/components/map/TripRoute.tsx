@@ -1,21 +1,42 @@
 import { Layer, Source } from "@vis.gl/react-maplibre";
+import { ExpressionSpecification } from "maplibre-gl";
 import { useMemo } from "react";
 import { Shape, TripStop, ETripStop } from "typings";
-
-export type TripRouteVariant = { shape: Shape; stops: TripStop[]; color: string };
+import { fadeColor } from "@/util/tools";
 
 type Props = {
-    shape: Shape;
+    lines: Shape[];
     stops: TripStop[];
+    variantLines?: Shape[]; // drawn under the lines, in the faded variant tone
+    variantStops?: TripStop[];
     color: string;
-    variants?: TripRouteVariant[];
 };
 
-export default ({ shape, stops, color, variants }: Props) => {
-    // every stop carries the colour of the line it sits on — the route colour on the trunk, the variant's
-    // own colour on a variant — which is exactly what the sheet paints, so the two views read alike
-    const stopsGeoJSON: GeoJSON.GeoJSON = useMemo(() => {
-        const feature = (stop: TripStop, stopColor: string, variant: boolean): GeoJSON.Feature => ({
+const NO_LINES: Shape[] = [];
+const NO_STOPS: TripStop[] = [];
+
+export default ({ lines, stops, variantLines = NO_LINES, variantStops = NO_STOPS, color }: Props) => {
+    // the dark map is the light one run through a css filter, so variants fade towards white on both
+    const colorByVariant: ExpressionSpecification = [
+        "case",
+        ["get", "variant"],
+        fadeColor(color, 0.5),
+        color,
+    ];
+
+    const shapeGeoJSON = useMemo<GeoJSON.GeoJSON>(
+        () => ({
+            type: "FeatureCollection",
+            features: [
+                ...variantLines.map((line) => ({ ...line, properties: { variant: true } })),
+                ...lines.map((line) => ({ ...line, properties: { variant: false } })),
+            ],
+        }),
+        [lines, variantLines],
+    );
+
+    const stopsGeoJSON = useMemo<GeoJSON.GeoJSON>(() => {
+        const feature = (stop: TripStop, variant: boolean): GeoJSON.Feature => ({
             type: "Feature",
             geometry: {
                 type: "Point",
@@ -23,39 +44,23 @@ export default ({ shape, stops, color, variants }: Props) => {
             },
             properties: {
                 id: stop[ETripStop.id],
-                branch: variant,
-                color: stopColor,
-                title: stop[ETripStop.name],
+                name: stop[ETripStop.name],
+                variant,
             },
         });
 
         return {
             type: "FeatureCollection",
             features: [
-                ...(variants ?? []).flatMap((variant) =>
-                    variant.stops.map((stop) => feature(stop, variant.color, true)),
-                ),
-                ...stops.map((stop) => feature(stop, color, false)),
+                ...variantStops.map((stop) => feature(stop, true)),
+                ...stops.map((stop) => feature(stop, false)),
             ],
         };
-    }, [stops, variants, color]);
-
-    // always mounted (empty collection when there are no variants) — a conditional
-    // mount would re-add the layer on top of the stop circles when switching directions
-    const variantsGeoJSON: GeoJSON.GeoJSON = useMemo(
-        () => ({
-            type: "FeatureCollection",
-            features: (variants ?? []).map((variant) => ({
-                ...variant.shape,
-                properties: { ...variant.shape.properties, color: variant.color },
-            })),
-        }),
-        [variants],
-    );
+    }, [stops, variantStops]);
 
     return (
         <>
-            <Source type="geojson" data={shape}>
+            <Source type="geojson" data={shapeGeoJSON}>
                 <Layer
                     id="route"
                     type="line"
@@ -64,25 +69,8 @@ export default ({ shape, stops, color, variants }: Props) => {
                         "line-cap": "round",
                     }}
                     paint={{
-                        "line-color": color,
+                        "line-color": colorByVariant,
                         "line-width": 4,
-                    }}
-                />
-            </Source>
-
-            <Source type="geojson" data={variantsGeoJSON}>
-                {/* beforeId keeps variants below the main line even when sources reload on direction change */}
-                <Layer
-                    id="route-branches"
-                    type="line"
-                    beforeId="route"
-                    layout={{
-                        "line-join": "round",
-                        "line-cap": "round",
-                    }}
-                    paint={{
-                        "line-color": ["get", "color"],
-                        "line-width": 3,
                     }}
                 />
             </Source>
@@ -95,30 +83,25 @@ export default ({ shape, stops, color, variants }: Props) => {
                         "circle-radius": 4.5,
                         "circle-color": "#fff",
                         "circle-stroke-width": 2.5,
-                        "circle-stroke-color": ["get", "color"],
-                    }}
-                    layout={{
-                        // active-line stops on top, so junctions read as the active line
-                        "circle-sort-key": ["case", ["get", "branch"], 0, 1],
+                        "circle-stroke-color": colorByVariant,
                     }}
                 />
                 <Layer
                     id="stop-labels"
                     type="symbol"
+                    minzoom={13.5}
                     layout={{
-                        "text-field": ["get", "title"],
+                        "text-field": ["get", "name"],
                         "text-size": 12,
                         "text-font": ["Noto Sans Bold"],
-                        "text-offset": [0, 1.5],
+                        "text-offset": [0, 1.2],
                         "text-anchor": "top",
-                        "text-allow-overlap": false,
                     }}
                     paint={{
-                        "text-color": ["get", "color"],
+                        "text-color": colorByVariant,
                         "text-halo-color": "#fff",
                         "text-halo-width": 1,
                     }}
-                    filter={[">=", ["zoom"], 13.5]}
                 />
             </Source>
         </>

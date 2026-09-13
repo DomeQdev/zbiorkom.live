@@ -42,7 +42,12 @@
         "sunPosition": "Gdzie usiąść?",
         "sec": "sek",
         "min": "min",
-        "vehicleNotFound": "Nie znaleziono pojazdu."
+        "vehicleNotFound": "Nie znaleziono pojazdu.",
+        "routeEmpty": "Ta linia nie ma przystanków",
+        "showStops_one": "Pokaż {{count}} przystanek",
+        "showStops_few": "Pokaż {{count}} przystanki",
+        "showStops_many": "Pokaż {{count}} przystanków",
+        "showStops_other": "Pokaż {{count}} przystanków"
     },
     "Brigades": {
         "selectBrigade": "Wybierz brygadę dla linii <0></0>",

@@ -2,7 +2,7 @@ import { ColorRole, generateDarkScheme } from "material-color-lite";
 import { ListItemButton } from "@mui/material";
 import { ETrip, ERoute, Trip } from "typings";
 import { Link, useParams } from "react-router-dom";
-import { getTime, msToTime, parseVehicleId } from "@/util/tools";
+import { buildCitySuffix, getTime, msToTime, parseVehicleId } from "@/util/tools";
 import { useTranslation } from "react-i18next";
 import RouteTag from "@/map/RouteTag";
 import { useMemo } from "react";
@@ -30,9 +30,9 @@ export default ({ trip, isActive, showRoute }: Props) => {
         <ListItemButton
             component={Link}
             to={
-                (trip as any).vehicle
+                ((trip as any).vehicle
                     ? `/${city}/vehicle/${encodeURIComponent((trip as any).vehicle)}`
-                    : `/${city}/trip/${trip[ETrip.id]}`
+                    : `/${city}/trip/${trip[ETrip.id]}`) + buildCitySuffix(trip[ETrip.city], city)
             }
             state={-3}
             sx={{

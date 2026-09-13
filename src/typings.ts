@@ -305,6 +305,7 @@ export type RouteGraphBranch = {
     from: number; // trunk position the variant leaves after, -1 = starts off the trunk
     to: number; // trunk position the variant rejoins at, -1 = ends off the trunk
     stops: RouteGraphStop[];
+    collapse: [first: number, last: number] | null; // inclusive positions in stops hidden by default
 };
 
 export type RouteGraphDirection = { headsign: string; trunk: RouteGraphStop[]; branches: RouteGraphBranch[] };
@@ -320,6 +321,30 @@ export type RouteGraph = {
     graph: RouteGraphDirection[];
     shapes: Shape[][];
 };
+
+export type GraphPlacement = [
+    fromBranch: number, // index into the direction's branches, -1 for the trunk
+    fromPosition: number, // index into that branch's stops, or into the trunk
+    toBranch: number,
+    toPosition: number,
+    percent: number, // 0-100 from the first stop towards the second, along the trip's shape
+];
+
+export enum EGraphPlacement {
+    fromBranch = 0,
+    fromPosition = 1,
+    toBranch = 2,
+    toPosition = 3,
+    percent = 4,
+}
+
+export type VehiclePlacement = [vehicleId: string, city: string, placement: GraphPlacement];
+
+export enum EVehiclePlacement {
+    vehicleId = 0,
+    city = 1,
+    placement = 2,
+}
 
 export type VehicleInfo = [id: string, model: string, prodYear: number, carrier: string, imageHash: string];
 

@@ -29,7 +29,7 @@ export default () => {
             }}
         >
             <ButtonBase
-                onClick={() => navigate(window.location.pathname + "/brigades")}
+                onClick={() => navigate(window.location.pathname + "/brigades" + window.location.search)}
                 sx={{
                     borderRadius: 0.4,
                     borderTopLeftRadius: 16,

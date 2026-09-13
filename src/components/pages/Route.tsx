@@ -1,4 +1,15 @@
-import { ERoute, EStop, ETripStopType, EVehicle, Location, RouteGraphStop, TripStop, Vehicle } from "typings";
+import {
+    ERoute,
+    EStop,
+    ETripStopType,
+    EVehicle,
+    Location,
+    RouteGraphStop,
+    Shape,
+    TripStop,
+    Vehicle,
+    VehiclePlacement,
+} from "typings";
 import { useEffect, useMemo } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useMap } from "@vis.gl/react-maplibre";
@@ -6,12 +17,16 @@ import { LngLatBounds } from "maplibre-gl";
 import useGoBack from "@/hooks/useGoBack";
 import VehicleMarker from "@/map/VehicleMarker";
 import Helm from "@/util/Helm";
-import TripRoute, { TripRouteVariant } from "@/map/TripRoute";
+import TripRoute from "@/map/TripRoute";
 import useQueryMarkers from "@/hooks/useQueryMarkers";
 import useDirectionStore from "@/hooks/useDirectionStore";
+import useRoutePlacementsStore from "@/hooks/useRoutePlacementsStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryRouteGraph } from "@/hooks/useQueryRoutes";
-import { getSheetHeight, VARIANT_COLOR } from "@/util/tools";
+import { buildCitySuffix, getCityFromUrl, getSheetHeight } from "@/util/tools";
+
+const NO_SHAPES: Shape[] = [];
+const NO_PLACEMENTS: VehiclePlacement[] = [];
 
 const toTripStop = (stop: RouteGraphStop): TripStop => {
     const code = stop[EStop.code];
@@ -23,6 +38,7 @@ export default () => {
     const [direction, setDirection] = useDirectionStore(
         useShallow((state) => [state.direction, state.setDirection]),
     );
+    const setPlacements = useRoutePlacementsStore((state) => state.setPlacements);
     const { city, route } = useParams();
     const { current: map } = useMap();
     const navigate = useNavigate();
@@ -31,45 +47,46 @@ export default () => {
     const showBrigade = localStorage.getItem("brigade") === "true";
     const showFleet = localStorage.getItem("fleet") === "true";
 
+    // the routes list folds in lines of neighbouring cities, which only their own city can serve the graph of
+    const routeCity = getCityFromUrl(city);
+
     const { data, error } = useQueryRouteGraph({
-        city: city!,
+        city: routeCity,
         route: route!,
     });
 
-    const { data: positions, refetch } = useQueryMarkers({
-        city: city!,
+    // no viewport, so every vehicle of the direction comes in wherever it is, placed on the diagram
+    const { data: markers } = useQueryMarkers({
+        city: routeCity,
         options: {
             filterRoutes: [route!],
             filterDirection: direction,
+            graph: true,
         },
     });
 
     const graph = data?.graph[direction];
-    const shapes = data?.shapes[direction];
+    const shapes = data?.shapes[direction] ?? NO_SHAPES; // the trunk's polyline, then one per branch
     const color = data?.route[ERoute.color];
 
-    const stops = useMemo<TripStop[] | undefined>(() => graph?.trunk.map(toTripStop), [graph]);
-
-    // shapes[0] is the trunk and shapes[b + 1] the polyline of branch b; variants on the map and in the
-    // sheet share VARIANT_COLOR
-    const variants = useMemo<TripRouteVariant[] | undefined>(
-        () =>
-            graph && shapes && color
-                ? graph.branches.flatMap((branch, b) => {
-                      const shape = shapes[b + 1];
-                      if (!shape) return [];
-                      return [{ shape, stops: branch.stops.map(toTripStop), color: VARIANT_COLOR }];
-                  })
-                : undefined,
-        [graph, shapes, color],
+    const lines = useMemo(() => shapes.slice(0, 1), [shapes]);
+    const variantLines = useMemo(() => shapes.slice(1), [shapes]);
+    const stops = useMemo(() => graph?.trunk.map(toTripStop), [graph]);
+    const variantStops = useMemo(
+        () => graph?.branches.flatMap((branch) => branch.stops.map(toTripStop)),
+        [graph],
     );
 
     useEffect(() => {
-        if (error || (data && !data.graph.length)) goBack();
-    }, [data, error]);
+        if (error) goBack();
+    }, [error]);
 
     useEffect(() => {
-        if (!shapes?.length) return;
+        setPlacements(markers?.placements ?? NO_PLACEMENTS);
+    }, [markers]);
+
+    useEffect(() => {
+        if (!shapes.length) return;
 
         map?.fitBounds(
             shapes.reduce(
@@ -90,20 +107,9 @@ export default () => {
     }, [shapes]);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            if (document.visibilityState !== "visible") return;
-
-            refetch();
-        }, 15000);
-
-        return () => {
-            clearInterval(interval);
-        };
-    }, [refetch]);
-
-    useEffect(() => {
         return () => {
             setDirection(0);
+            setPlacements(NO_PLACEMENTS);
         };
     }, []);
 
@@ -111,20 +117,28 @@ export default () => {
         <>
             {data && <Helm variable="route" dictionary={{ route: data.route[ERoute.name] }} />}
 
-            {!!shapes?.length && stops && color && (
-                <TripRoute shape={shapes[0]} stops={stops} color={color} variants={variants} />
+            {lines.length > 0 && stops && variantStops && color && (
+                <TripRoute
+                    lines={lines}
+                    stops={stops}
+                    variantLines={variantLines}
+                    variantStops={variantStops}
+                    color={color}
+                />
             )}
 
-            {positions?.positions.map((vehicle) => (
+            {markers?.positions.map((vehicle) => (
                 <VehicleMarker
-                    key={vehicle[EVehicle.id]}
+                    key={`${vehicle[EVehicle.city]}:${vehicle[EVehicle.id]}`}
                     vehicle={vehicle as Vehicle}
                     showBrigade={showBrigade}
                     showFleet={showFleet}
                     onClick={() =>
-                        navigate(`/${city}/vehicle/${encodeURIComponent(vehicle[EVehicle.id])}`, {
-                            state: -3,
-                        })
+                        navigate(
+                            `/${city}/vehicle/${encodeURIComponent(vehicle[EVehicle.id])}` +
+                                buildCitySuffix(vehicle[EVehicle.city], city),
+                            { state: -3 },
+                        )
                     }
                 />
             ))}
