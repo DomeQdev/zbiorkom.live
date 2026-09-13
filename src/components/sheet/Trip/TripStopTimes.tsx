@@ -1,7 +1,7 @@
 import { getTime } from "@/util/tools";
 import { Box, Typography } from "@mui/material";
 import { useMemo } from "react";
-import { EStopUpdate, EStopTime, StopUpdate } from "typings";
+import { EStopUpdate, EStopTime, StopUpdate, EStopDepartureStatus } from "typings";
 
 type Props = {
     isTrain: boolean;
@@ -10,22 +10,33 @@ type Props = {
 };
 
 export default ({ isTrain, update, hasDeparted }: Props) => {
-    const [departureTime, isSingleTimeButDelayed, delayType, times] = useMemo(() => {
-        const arrivalTime = getTime(update[EStopUpdate.arrival][EStopTime.estimated]);
-        const departureTime = getTime(update[EStopUpdate.departure][EStopTime.estimated]);
-        const isSingleTime = arrivalTime === departureTime;
+    const [departureTime, isSingleTimeButDelayed, delayType, times, isLiveStatus] = useMemo(() => {
+        const arrScheduled = update[EStopUpdate.arrival][EStopTime.scheduled];
+        const arrDelay = update[EStopUpdate.arrival][EStopTime.delay];
+        const depScheduled = update[EStopUpdate.departure][EStopTime.scheduled];
+        const depDelay = update[EStopUpdate.departure][EStopTime.delay];
+        const depStatus = update[EStopUpdate.departure][EStopTime.status];
+
+        const arrEstimated = arrScheduled + arrDelay;
+        const depEstimated = depScheduled + depDelay;
+
+        const arrivalTimeStr = getTime(arrEstimated);
+        const departureTimeStr = getTime(depEstimated);
+        const isSingleTime = arrivalTimeStr === departureTimeStr;
+
+        const liveStatus =
+            depStatus !== EStopDepartureStatus.Cancelled && depStatus !== EStopDepartureStatus.Scheduled;
 
         return [
-            departureTime,
-            !isTrain &&
-                isSingleTime &&
-                Math.abs(update[EStopUpdate.departure][EStopTime.delay] as number) >= 60000,
-            (update[EStopUpdate.departure][EStopTime.delay] as number) > 0 ? "delayed" : "early",
+            departureTimeStr,
+            !isTrain && isSingleTime && Math.abs(depDelay) >= 60000,
+            depDelay > 0 ? "delayed" : "early",
             isSingleTime
                 ? [update[EStopUpdate.departure]]
                 : [update[EStopUpdate.arrival], update[EStopUpdate.departure]],
+            liveStatus,
         ];
-    }, [update]);
+    }, [update, isTrain]);
 
     return (
         <Box
@@ -53,24 +64,28 @@ export default ({ isTrain, update, hasDeparted }: Props) => {
                         {getTime(update[EStopUpdate.departure][EStopTime.scheduled])}
                     </Typography>
 
-                    <Typography className={`delay delay-${delayType}`}>{departureTime}</Typography>
+                    <Typography className={`delay delay-${isLiveStatus ? delayType : "unknown"}`}>
+                        {departureTime}
+                    </Typography>
                 </>
             ) : (
                 times.map((time, i) => {
-                    const estimated = getTime(time[EStopTime.estimated] as number);
+                    const scheduled = time[EStopTime.scheduled];
                     const delay = time[EStopTime.delay];
+                    const estimated = scheduled + delay;
 
                     const isNumber = typeof delay === "number";
                     const delayMinutes = isNumber && Math.floor(Math.abs(delay) / 60000);
                     const delayClass =
-                        isNumber && delayMinutes ? (delay > 0 ? "delayed" : "early") : "unknown";
+                        isLiveStatus && isNumber && delayMinutes
+                            ? delay > 0
+                                ? "delayed"
+                                : "early"
+                            : "unknown";
 
                     return (
-                        <Typography
-                            key={`${time[EStopTime.estimated]}${i}`}
-                            className={`delay delay-${delayClass}`}
-                        >
-                            {estimated}
+                        <Typography key={`${estimated}${i}`} className={`delay delay-${delayClass}`}>
+                            {getTime(estimated)}
                         </Typography>
                     );
                 })

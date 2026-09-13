@@ -15,7 +15,7 @@ export default ({ route, style, onClick }: Props) => {
             onClick={onClick}
         >
             <svg viewBox="0 0 24 24" width="1.1em" fill="currentColor">
-                <Icon type={route[ERoute.type]} agency={route[ERoute.agency]} />
+                <Icon type={route[ERoute.type]} city={route[ERoute.city]} agency={route[ERoute.agency]} />
             </svg>
 
             {route[ERoute.name]}

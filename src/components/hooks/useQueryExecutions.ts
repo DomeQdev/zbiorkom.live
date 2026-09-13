@@ -1,8 +1,8 @@
 import { getFromAPI } from "@/util/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
-import { Execution, ExecutionDates, ExecutionVehicles } from "typings";
+import { Execution, ExecutionAutocomplete, ExecutionDates, ExecutionTrip } from "typings";
 
-type Props = {
+type FilterProps = {
     city: string;
     date?: string;
     route?: string;
@@ -11,73 +11,90 @@ type Props = {
     enabled?: boolean;
 };
 
-const timeout = 500;
+const autocompleteStaleTime = 10 * 60 * 1000;
 
-export const useQueryExecutionDates = (props: Props) => {
+// Lines + vehicle numbers present in ClickHouse for the city. Text filtering is done
+// client-side, so this is fetched once and cached.
+export const useQueryExecutionAutocomplete = (city: string) => {
+    return useQuery({
+        queryKey: ["executionAutocomplete", city],
+        queryFn: ({ signal }) =>
+            getFromAPI<ExecutionAutocomplete>(city, "dispatches/autocomplete", {}, signal),
+        staleTime: autocompleteStaleTime,
+    });
+};
+
+// Brigades of a selected line.
+export const useQueryExecutionBrigades = (city: string, route: string) => {
+    return useQuery({
+        queryKey: ["executionBrigades", city, route],
+        queryFn: ({ signal }) =>
+            getFromAPI<{ brigades: string[] }>(city, "dispatches/autocomplete", { route }, signal),
+        enabled: !!route,
+        staleTime: autocompleteStaleTime,
+    });
+};
+
+// Days with data for the current filter (route and/or vehicle required).
+export const useQueryExecutionDates = (props: FilterProps) => {
     return useQuery({
         queryKey: ["executionDates", props],
-        queryFn: async ({ signal }) => {
-            await new Promise((resolve) => setTimeout(resolve, timeout));
-            if (signal.aborted) return;
-
-            return getFromAPI<ExecutionDates>(
+        queryFn: ({ signal }) =>
+            getFromAPI<ExecutionDates>(
                 props.city,
-                "tripExecutions/getDates",
+                "dispatches/dates",
                 {
-                    date: props.date,
                     route: props.route,
                     brigade: props.brigade,
                     vehicle: props.vehicle,
                 },
                 signal,
-            );
-        },
+            ),
         enabled: props.enabled,
     });
 };
 
-export const useQueryExecutions = (props: Props) => {
+// Unique dispatches of a day for the current filter.
+export const useQueryExecutions = (props: FilterProps) => {
     return useQuery({
         queryKey: ["executions", props],
-        queryFn: async ({ signal }) => {
-            await new Promise((resolve) => setTimeout(resolve, timeout));
-            if (signal.aborted) return;
-
-            return getFromAPI<Execution[]>(
+        queryFn: ({ signal }) =>
+            getFromAPI<Execution[]>(
                 props.city,
-                "tripExecutions/getExecutions",
+                "dispatches",
                 {
-                    date: props.date,
                     route: props.route,
                     brigade: props.brigade,
                     vehicle: props.vehicle,
+                    date: props.date,
                 },
                 signal,
-            );
-        },
+            ),
         enabled: props.enabled,
     });
 };
 
-export const useQueryExectionVehicles = (props: Props) => {
+// Per-stop times of a single dispatch.
+export const useQueryExecutionTrip = (props: {
+    city: string;
+    trip?: string;
+    date?: string;
+    vehicle?: string;
+    enabled?: boolean;
+}) => {
     return useQuery({
-        queryKey: ["executionVehicles", props],
-        queryFn: async ({ signal }) => {
-            await new Promise((resolve) => setTimeout(resolve, timeout));
-            if (signal.aborted) return;
-
-            return getFromAPI<ExecutionVehicles[]>(
+        queryKey: ["executionTrip", props],
+        queryFn: ({ signal }) =>
+            getFromAPI<ExecutionTrip>(
                 props.city,
-                "tripExecutions/getExecutionVehicles",
+                "dispatches/trip",
                 {
+                    trip: props.trip,
                     date: props.date,
-                    route: props.route,
-                    brigade: props.brigade,
                     vehicle: props.vehicle,
                 },
                 signal,
-            );
-        },
+            ),
         enabled: props.enabled,
     });
 };

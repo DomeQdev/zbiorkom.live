@@ -1,7 +1,8 @@
 import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
 import { ListItemButton, ListItemText } from "@mui/material";
 import { ERoute, SearchItem } from "typings";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { buildCitySuffix } from "@/util/tools";
 
 type Props = {
     route: NonNullable<SearchItem["route"]>;
@@ -10,10 +11,12 @@ type Props = {
 };
 
 export default ({ route, borderTop, borderBottom }: Props) => {
+    const { city: routeCity } = useParams();
+
     return (
         <ListItemButton
             component={Link}
-            to={`../route/${route[ERoute.id]}`}
+            to={`../route/${route[ERoute.id]}` + buildCitySuffix(route[ERoute.city], routeCity)}
             state={-2}
             sx={{
                 mx: 1,

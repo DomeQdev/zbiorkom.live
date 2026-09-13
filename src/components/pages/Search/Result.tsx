@@ -2,8 +2,8 @@ import { EStop, SearchItem } from "typings";
 import RouteResult from "./RouteResult";
 import StopResult from "./StopResult";
 import VehicleResult from "./VehicleResult";
-import RelationResult from "./RelationResult";
 import StationResult from "./StationResult";
+import RelationResult from "./RelationResult";
 
 type Props = {
     item: SearchItem;

@@ -1,5 +1,5 @@
-import { ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { BusinessOutlined, CalendarMonth, Close, Commute, Dangerous, Garage } from "@mui/icons-material";
+import { ReactElement, useRef } from "react";
+import { BusinessOutlined, CalendarMonth, Close, Commute, Dangerous } from "@mui/icons-material";
 import {
     Box,
     Dialog,
@@ -9,7 +9,6 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
-    Skeleton,
     Typography,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
@@ -20,49 +19,59 @@ import useVehicleStore from "@/hooks/useVehicleStore";
 import Alert from "@/ui/Alert";
 import Loading from "@/ui/Loading";
 import Sticky from "@/ui/Sticky";
+import { useShallow } from "zustand/react/shallow";
+import { parseVehicleId } from "@/util/tools";
 
 export default () => {
-    const vehicle = useVehicleStore((state) => state.vehicle);
+    const vehicle = useVehicleStore(useShallow((state) => state.vehicle));
     const scrollContainer = useRef<HTMLDivElement>(null);
     const elementRef = useRef<HTMLDivElement>(null);
     const { t } = useTranslation("VehicleInfo");
     const goBack = useGoBack();
 
-    const { data, isLoading } = useQueryVehicleInfo({
+    const { data, isLoading, error } = useQueryVehicleInfo({
         city: vehicle?.[EVehicle.city],
         vehicle: vehicle?.[EVehicle.id],
     });
 
-    const imageHeight = useMemo(() => {
-        if (!scrollContainer.current) return 0;
-        return scrollContainer.current.clientWidth * 0.5225;
-    }, [scrollContainer.current]);
+    // Image display is not yet supported by the new backend
+    // const imageHeight = useMemo(() => {
+    //     if (!scrollContainer.current) return 0;
+    //     return scrollContainer.current.clientWidth * 0.5225;
+    // }, [scrollContainer.current]);
+    //
+    // const [image, setImage] = useState<{ url: string; author?: string; loading?: boolean }>();
+    //
+    // useEffect(() => {
+    //     if (!data?.[EVehicleInfo.imageHash]) return;
+    //
+    //     fetch(`${Gay.cloudBase}/getImageByHash?hash=${data[EVehicleInfo.imageHash]}`)
+    //         .then(async (response) => {
+    //             if (response.status === 200) {
+    //                 const blob = await response.blob();
+    //
+    //                 setImage({
+    //                     url: URL.createObjectURL(blob),
+    //                     author: decodeURIComponent(atob(response.headers.get("x-author")!)),
+    //                     loading: true,
+    //                 });
+    //             } else {
+    //                 setImage({ url: "" });
+    //             }
+    //         })
+    //         .catch(() => {
+    //             setImage({ url: "" });
+    //         });
+    // }, [data]);
 
-    const [image, setImage] = useState<{ url: string; author?: string; loading?: boolean }>();
-
-    useEffect(() => {
-        if (!data?.[EVehicleInfo.imageHash]) return;
-
-        fetch(`${Gay.cloudBase}/getImageByHash?hash=${data[EVehicleInfo.imageHash]}`)
-            .then(async (response) => {
-                if (response.status === 200) {
-                    const blob = await response.blob();
-
-                    setImage({
-                        url: URL.createObjectURL(blob),
-                        author: decodeURIComponent(atob(response.headers.get("x-author")!)),
-                        loading: true,
-                    });
-                } else {
-                    setImage({ url: "" });
-                }
-            })
-            .catch(() => {
-                setImage({ url: "" });
-            });
-    }, [data]);
-
-    const name = vehicle ? `#${vehicle[EVehicle.id].split("/")[1]} ${data?.[EVehicleInfo.model] || ""}` : "";
+    const name = vehicle
+        ? (() => {
+              const { vehicleNumber } = parseVehicleId(vehicle[EVehicle.id]);
+              const numberPart = vehicleNumber.startsWith("_") ? "" : `#${vehicleNumber}`;
+              const modelPart = data?.[EVehicleInfo.model] || "";
+              return [numberPart, modelPart].filter(Boolean).join(" ");
+          })()
+        : "";
 
     return (
         <Dialog
@@ -147,9 +156,6 @@ export default () => {
                             }}
                         >
                             <Label title={t("model")} icon={<Commute />} text={data[EVehicleInfo.model]} />
-                            {data[EVehicleInfo.depot] && (
-                                <Label title={t("depot")} icon={<Garage />} text={data[EVehicleInfo.depot]} />
-                            )}
                             {data[EVehicleInfo.carrier] && (
                                 <Label
                                     title={t("carrier")}
@@ -161,12 +167,13 @@ export default () => {
                                 <Label
                                     title={t("prodYear")}
                                     icon={<CalendarMonth />}
-                                    text={data[EVehicleInfo.prodYear]}
+                                    text={String(data[EVehicleInfo.prodYear])}
                                 />
                             )}
                         </Box>
 
-                        {image ? (
+                        {/* Image display is not yet supported by the new backend */}
+                        {/* {image ? (
                             image.url && (
                                 <>
                                     <img
@@ -207,11 +214,20 @@ export default () => {
                                     margin: 2,
                                 }}
                             />
-                        )}
+                        )} */}
                     </>
                 )}
 
-                {!data?.[EVehicle.id] && !isLoading && (
+                {error && !isLoading && (
+                    <Alert
+                        Icon={Dangerous}
+                        title={t("loadError", { ns: "Shared" })}
+                        description={String((error as Error).message ?? error)}
+                        color="error"
+                        sx={{ paddingBottom: 6 }}
+                    />
+                )}
+                {!error && !data?.[EVehicleInfo.id] && !isLoading && (
                     <Alert Icon={Dangerous} title={t("noData")} sx={{ paddingBottom: 6 }} />
                 )}
                 {isLoading && <Loading />}

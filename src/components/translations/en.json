@@ -19,14 +19,11 @@
         "departure": "Waiting for departure",
         "departed": "Departed",
         "cancelled": "Cancelled",
-        "live": "Live",
         "scheduled": "Scheduled",
         "tripNotFound": "We couldn't find this route...",
         "vehicleSchedule": "Vehicle schedule",
         "brigadeSchedule": "Brigade schedule",
         "vehicleInfo": "Vehicle info",
-        "showTrip": "Show trip",
-        "showVehicle": "Show vehicle",
         "platform": "Platform",
         "track": "Track",
         "breakTime": "{{time}} break",
@@ -42,10 +39,19 @@
         "terminus": "Terminus",
         "operatedBy": "Trip operated by {{value}}",
         "alerts": "Impediments",
+        "alertsFrom": "from {{moment}}",
+        "alertsUntil": "until {{moment}}",
+        "alertsPublished": "published {{moment}}",
+        "alertsDetails": "More information",
+        "alertsEmpty": "No impediments",
+        "alertsEmptyDescription": "There are no reported disruptions right now.",
         "sunPosition": "Where to sit?",
         "sec": "sec",
         "min": "min",
-        "vehicleNotFound": "Vehicle not found."
+        "vehicleNotFound": "Vehicle not found.",
+        "routeEmpty": "This line has no stops",
+        "showStops_one": "Show {{count}} stop",
+        "showStops_other": "Show {{count}} stops"
     },
     "Brigades": {
         "selectBrigade": "Choose the brigade of route <0></0>",
@@ -67,7 +73,10 @@
     },
     "Shared": {
         "share": "Share",
-        "ago": "ago"
+        "ago": "ago",
+        "loadError": "Failed to load",
+        "networkError": "No connection to the server",
+        "retry": "Try again"
     },
     "Favorites": {
         "selectDirection": "Select direction",
@@ -80,7 +89,6 @@
         "stops": "Stops",
         "vehicles": "Vehicles",
         "routes": "Routes",
-        "relations": "Relations",
         "stations": "Stations",
         "howToUse": "How to use the search?",
         "howToVehicles": "Searching for vehicles",
@@ -89,10 +97,11 @@
         "stopsDescription": "Search using the name, e.g., Main Station.",
         "howToRoutes": "Searching for routes",
         "routesDescription": "Search using the route number, e.g., 105.",
-        "howToRelations": "Searching for train relations",
-        "relationsDescription": "Search using the relation number, e.g., 99267.",
         "howToHistory": "Search history",
-        "historyDescription": "We save recent searches so you can quickly return to them."
+        "historyDescription": "We save recent searches so you can quickly return to them.",
+        "relations": "Relations",
+        "howToRelations": "Searching for train relations",
+        "relationsDescription": "Search using the relation number, e.g., 99267."
     },
     "Filter": {
         "filter": "Filter",
@@ -207,6 +216,8 @@
         "trip": "Trip",
         "route": "Route",
         "brigade": "Brigade",
+        "expandStops": "Show stops",
+        "hideStops": "Hide stops",
         "noResults": "No results...",
         "noResultsDescription": "Try searching for something else.",
         "noFilter": "Search for something..."

@@ -8,7 +8,12 @@ export default ({ city, vehicle }: { city?: string; vehicle?: string }) => {
         queryFn: async ({ signal }) => {
             if (!city || !vehicle) return;
 
-            return getFromAPI<VehicleInfo>(city, "vehicles/getVehicle", { id: vehicle }, signal);
+            return getFromAPI<VehicleInfo>(
+                city,
+                `vehicles/vehicle/${encodeURIComponent(vehicle)}`,
+                {},
+                signal,
+            );
         },
         enabled: !!city && !!vehicle,
     });

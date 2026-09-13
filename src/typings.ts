@@ -1,5 +1,14 @@
-export type VehicleType = 0 | 1 | 2 | 3 | 4 | 11 | 20;
-export type DelayType = number | "departure" | "departed" | "cancelled" | "live" | "scheduled";
+export enum VehicleType {
+    Tram = 0,
+    Subway = 1,
+    Train = 2,
+    Bus = 3,
+    Ferry = 4,
+    AerialLift = 6,
+    Funicular = 7,
+    Trolleybus = 11,
+    Monorail = 12,
+}
 export type Location = [number, number];
 export type SheetContentTypes =
     | "Cities"
@@ -13,34 +22,45 @@ export type SheetContentTypes =
     | "MapStyle"
     | null;
 
+export interface CityAgency {
+    id: string;
+    name: string;
+    icon?: string;
+    faresUrl?: string;
+    dataSources?: { text: string; url: string }[];
+}
+
 export interface City {
     id: string;
     name: string;
     location: Location;
+    timezone: string;
     zoom?: number;
     description?: string;
     showNewTag?: boolean;
     disableBrigades?: boolean;
+    virtual?: boolean;
+    agencies?: Record<string, CityAgency>;
 }
 
 export type Route = [
     id: string,
     city: string,
     name: string,
+    longName: string,
     agency: string,
     type: VehicleType,
     color: string,
-    longName?: string,
 ];
 
 export enum ERoute {
     id = 0,
     city = 1,
     name = 2,
-    agency = 3,
-    type = 4,
-    color = 5,
-    longName = 6,
+    longName = 3,
+    agency = 4,
+    type = 5,
+    color = 6,
 }
 
 export type Vehicle = [
@@ -78,13 +98,12 @@ export type Stop = [
     id: string,
     city: string,
     name: string,
+    code: string,
     location: Location,
-    type: VehicleType,
-    station: boolean,
+    types: VehicleType[],
     bearing: number,
+    direction: string,
     routes: Route[],
-    direction?: string,
-    code?: string,
     exits?: StopExit[],
 ];
 
@@ -92,14 +111,13 @@ export enum EStop {
     id = 0,
     city = 1,
     name = 2,
-    location = 3,
-    type = 4,
-    station = 5,
+    code = 3,
+    location = 4,
+    types = 5,
     bearing = 6,
-    routes = 7,
-    direction = 8,
-    code = 9,
-    exits = 10,
+    direction = 7,
+    routes = 8,
+    exits = 9,
 }
 
 export type StopExit = [name: string, location: Location];
@@ -119,6 +137,22 @@ export type MapData = {
     }[];
 } & ({ useDots: false; positions: Vehicle[] } | { useDots: true; positions: DotVehicle[] });
 
+export type ItineraryStop = [stop: Stop, alight: number, distance: number, platform?: string];
+
+export enum EItineraryStop {
+    stop = 0,
+    alight = 1,
+    distance = 2,
+    platform = 3,
+}
+
+export type Itinerary = [stops: ItineraryStop[], shape: string];
+
+export enum EItinerary {
+    stops = 0,
+    shape = 1,
+}
+
 export type APIVehicle = {
     sequence?: number;
     vehicle?: Vehicle;
@@ -130,25 +164,27 @@ export type APIVehicle = {
 export type Trip = [
     id: string,
     city: string,
-    headsign: string,
     route: Route,
+    headsign: string,
+    brigade: string,
     shortName: string,
-    description: string,
-    stops: TripStop[],
-    shape: Shape,
-    platforms: Platforms,
+    description: [key: string, value: string][],
+    firstStop?: [stopName: string, arrival: number],
+    lastStop?: [stopName: string, departure: number],
+    distance?: number,
 ];
 
 export enum ETrip {
     id = 0,
     city = 1,
-    headsign = 2,
-    route = 3,
-    shortName = 4,
-    description = 5,
-    stops = 6,
-    shape = 7,
-    platforms = 8,
+    route = 2,
+    headsign = 3,
+    brigade = 4,
+    shortName = 5,
+    description = 6,
+    firstStop = 7,
+    lastStop = 8,
+    distance = 9,
 }
 
 export type TripStop = [id: string, name: string, location: Location, type: ETripStopType];
@@ -179,41 +215,26 @@ export enum EStopDepartures {
 }
 
 export type StopDeparture = [
-    id: string,
-    headsign: string,
-    route: Route,
-    shortName: string,
-    brigade: string,
-    vehicleId: string,
+    trip: Trip,
     vehicle: Vehicle | null,
     departure: StopTime,
-    destination: StopTime | null,
-    platform?: string,
-    track?: string,
-    alert?: { type: any; text: string },
+    destination?: StopTime,
 ];
 
 export enum EStopDeparture {
-    id = 0,
-    headsign = 1,
-    route = 2,
-    shortName = 3,
-    brigade = 4,
-    vehicleId = 5,
-    vehicle = 6,
-    departure = 7,
-    destination = 8,
-    platform = 9,
-    track = 10,
-    alert = 11,
+    trip = 0,
+    vehicle = 1,
+    departure = 2,
+    destination = 3,
 }
 
-export type StopTime = [scheduled: number, estimated: number, delay: DelayType];
+export type StopTime = [scheduled: number, delay: number, status: EStopDepartureStatus, platform?: string];
 
 export enum EStopTime {
     scheduled = 0,
-    estimated = 1,
-    delay = 2,
+    delay = 1,
+    status = 2,
+    platform = 3,
 }
 
 export type StopUpdate = [
@@ -272,56 +293,125 @@ export enum EBrigadeTrip {
     percentTraveled = 8,
 }
 
-export type RouteInfo = [route: Route, directions: RouteDirection[]];
-
-export enum ERouteInfo {
-    route = 0,
-    directions = 1,
-}
-
-export type RouteDirection = [direction: 0 | 1, headsign: string, stops: TripStop[], shape: Shape];
-
-export enum ERouteDirection {
-    direction = 0,
-    headsign = 1,
-    stops = 2,
-    shape = 3,
-}
-
-export type VehicleInfo = [
+export type RouteGraphStop = [
     id: string,
-    model: string,
-    prodYear: string,
-    depot: string,
-    carrier: string,
-    imageHash: string,
+    city: string,
+    name: string,
+    code: string,
+    location: Location,
+    types: VehicleType[],
+    bearing?: number,
 ];
+
+export type RouteGraphBranch = {
+    from: number; // trunk position the variant leaves after, -1 = starts off the trunk
+    to: number; // trunk position the variant rejoins at, -1 = ends off the trunk
+    stops: RouteGraphStop[];
+    collapse: [first: number, last: number] | null; // inclusive positions in stops hidden by default
+};
+
+export type RouteGraphDirection = { headsign: string; trunk: RouteGraphStop[]; branches: RouteGraphBranch[] };
+
+export type RouteGraphRawResponse = {
+    route: Route;
+    graph: RouteGraphDirection[];
+    shapes: string[][]; // per direction: [0] the trunk, then one polyline per branch
+};
+
+export type RouteGraph = {
+    route: Route;
+    graph: RouteGraphDirection[];
+    shapes: Shape[][];
+};
+
+export type GraphPlacement = [
+    fromBranch: number, // index into the direction's branches, -1 for the trunk
+    fromPosition: number, // index into that branch's stops, or into the trunk
+    toBranch: number,
+    toPosition: number,
+    percent: number, // 0-100 from the first stop towards the second, along the trip's shape
+];
+
+export enum EGraphPlacement {
+    fromBranch = 0,
+    fromPosition = 1,
+    toBranch = 2,
+    toPosition = 3,
+    percent = 4,
+}
+
+export type VehiclePlacement = [vehicleId: string, city: string, placement: GraphPlacement];
+
+export enum EVehiclePlacement {
+    vehicleId = 0,
+    city = 1,
+    placement = 2,
+}
+
+export type VehicleInfo = [id: string, model: string, prodYear: number, carrier: string, imageHash: string];
 
 export enum EVehicleInfo {
     id = 0,
     model = 1,
     prodYear = 2,
-    depot = 3,
-    carrier = 4,
-    imageHash = 5,
+    carrier = 3,
+    imageHash = 4,
 }
 
-export type APISearch = {
-    groupNames: string[];
-    groups: number[];
-    results: SearchItem[];
-};
+export type VehicleSearchTuple = [
+    id: string,
+    route: Route,
+    brigade: string,
+    headsign: string | undefined,
+    model: string | undefined,
+];
+
+export type StopSearchTuple = [id: string, city: string, name: string, group: Stop[]];
+
+export type RelationSearchTuple = [
+    id: string,
+    route: Route,
+    shortName: string,
+    start: number,
+    end: number,
+    headsign: string,
+];
 
 export type SearchItem = {
+    vehicle?: VehicleSearchTuple;
+    stop?: StopSearchTuple;
+    station?: StopSearchTuple;
+    route?: Route;
+    relation?: RelationSearchTuple;
     borderTop?: boolean;
     borderBottom?: boolean;
-
-    route?: Route;
-    stop?: [id: string, city: string, name: string];
-    station?: [id: string, city: string, name: string];
-    relation?: [id: string, route: Route, shortName: string, start: number, end: number, headsign: string];
-    vehicle?: [id: string, route: Route, brigade: string, headsign?: string, model?: string];
 };
+
+export type SearchGroupName = "vehicles" | "stops" | "stations" | "routes" | "relations";
+
+export type SearchResponse = {
+    results: SearchItem[];
+    groups: number[];
+    groupNames: SearchGroupName[];
+};
+
+export type SearchRawResponse = {
+    positions: VehicleSearchTuple[];
+    stops: StopSearchTuple[];
+    stations: StopSearchTuple[];
+    routes: Route[];
+    relations: RelationSearchTuple[];
+};
+
+export type SearchErrorResponse = { error: "MISSING_QUERY" | "CITY_NOT_FOUND" };
+
+export enum ESearchVehicle {
+    id = 0,
+    route = 1,
+    brigade = 2,
+    headsign = 3,
+    model = 4,
+}
 
 export enum ESearchRelation {
     id = 0,
@@ -332,12 +422,26 @@ export enum ESearchRelation {
     headsign = 5,
 }
 
-export enum ESearchVehicle {
-    id = 0,
-    route = 1,
-    brigade = 2,
-    headsign = 3,
-    model = 4,
+export type Alert = [
+    title: string,
+    description: string, // markdown
+    url: string,
+    publishedAt: number | undefined, // epoch ms
+    activeFrom: number | undefined, // epoch ms
+    activeUntil: number | undefined, // epoch ms
+    language: string,
+    detected: boolean,
+];
+
+export enum EAlert {
+    title = 0,
+    description = 1,
+    url = 2,
+    publishedAt = 3,
+    activeFrom = 4,
+    activeUntil = 5,
+    language = 6,
+    detected = 7,
 }
 
 export type StopDirection = [
@@ -372,54 +476,71 @@ export interface FavoriteStop {
     isStation?: boolean;
 }
 
-export type ExecutionDates = string[];
+// "Co wyjechało?" — retrospective view of dispatches that actually ran, reconstructed
+// from observed segments (v6 API `dispatches/*`). Times are epoch ms (UTC), delays are
+// in SECONDS (positive = late, negative = early). Route badges reuse the shared `Route`
+// tuple (called RouteTuple in the API docs). Data has a 30-day retention window.
 
-export type ExecutionVehicles = [
-    date: string,
-    route: string,
-    brigade: string | null,
-    vehicles: ExecutionVehicle[],
-];
+export type ExecutionAutocomplete = {
+    routes: Route[]; // present in ClickHouse for the city, pre-sorted
+    vehicles: string[]; // unique vehicle numbers, numeric sort
+};
 
-export enum EExecutionVehicles {
-    date = 0,
-    route = 1,
-    brigade = 2,
-    vehicles = 3,
-}
-
-export type ExecutionVehicle = [vehicleId: string, trips: number];
-
-export enum EExecutionVehicle {
-    vehicleId = 0,
-    trips = 1,
-}
+export type ExecutionDates = string[]; // ["2026-07-21", ...] local Warsaw days, descending
 
 export type Execution = [
-    gtfsTripId: string,
-    vehicleId: string,
-    route: string,
-    brigade: string | null,
-    scheduledStartTime: number,
-    startDelay: number,
-    scheduledEndTime: number,
-    endDelay: number | null,
-    startStopName: string,
-    endStopName: string,
+    trip: string,
+    route: string, // routeId — matches Route[ERoute.id] from autocomplete
+    brigade: string,
+    vehicle: string,
+    originStopId: string,
+    originName: string,
+    destStopId: string,
+    destName: string,
+    scheduledStart: number,
+    actualStart: number,
+    startDelay: number, // seconds
+    scheduledEnd: number,
+    actualEnd: number,
+    endDelay: number, // seconds
+    segments: number, // observed segments — completeness indicator
 ];
 
 export enum EExecution {
-    gtfsTripId = 0,
-    vehicleId = 1,
-    route = 2,
-    brigade = 3,
-    scheduledStartTime = 4,
-    startDelay = 5,
-    scheduledEndTime = 6,
-    endDelay = 7,
-    startStopName = 8,
-    endStopName = 9,
+    trip = 0,
+    route = 1,
+    brigade = 2,
+    vehicle = 3,
+    originStopId = 4,
+    originName = 5,
+    destStopId = 6,
+    destName = 7,
+    scheduledStart = 8,
+    actualStart = 9,
+    startDelay = 10,
+    scheduledEnd = 11,
+    actualEnd = 12,
+    endDelay = 13,
+    segments = 14,
 }
+
+export type ExecutionStop = [
+    stopId: string,
+    stopName: string,
+    scheduledArrival: number,
+    actualArrival: number,
+    delay: number, // seconds
+];
+
+export enum EExecutionStop {
+    stopId = 0,
+    stopName = 1,
+    scheduledArrival = 2,
+    actualArrival = 3,
+    delay = 4,
+}
+
+export type ExecutionTrip = { stops: ExecutionStop[] };
 
 export type SearchPlace = [type: "google" | "stop", id: string, name: string, address?: string];
 
@@ -486,4 +607,11 @@ declare global {
     }
 
     var Gay: Gay;
+}
+
+export enum EStopDepartureStatus {
+    Scheduled,
+    OnTrip,
+    OnPreviousTrip,
+    Cancelled,
 }

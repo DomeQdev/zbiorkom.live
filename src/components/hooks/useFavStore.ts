@@ -11,6 +11,7 @@ interface FavState {
     ) => void;
     removeFavoriteDirection: (id: string, directionIndex: number) => void;
     removeFavoriteStop: (id: string) => void;
+    toggleFavoriteStop: (id: string, location: Location, isStation: boolean) => void;
     reset: () => void;
 }
 
@@ -58,6 +59,19 @@ export default create<FavState>()((set) => ({
     removeFavoriteStop: (id) => {
         set((state) => {
             const favorites = state.favorites.filter((fav) => fav.id !== id);
+            localStorage.setItem(key, JSON.stringify(favorites));
+
+            return { favorites };
+        });
+    },
+    toggleFavoriteStop: (id, location, isStation) => {
+        set((state) => {
+            const exists = state.favorites.some((fav) => fav.id === id);
+
+            const favorites = exists
+                ? state.favorites.filter((fav) => fav.id !== id)
+                : [...state.favorites, { id, location, directions: [], isStation }];
+
             localStorage.setItem(key, JSON.stringify(favorites));
 
             return { favorites };

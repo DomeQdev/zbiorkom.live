@@ -1,21 +1,17 @@
-import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
+import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
 import { Build, EventNote, MoreVert, Report, Share } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import useVehicleStore from "@/hooks/useVehicleStore";
-import { EStopUpdate, EVehicle } from "typings";
+import { EVehicle } from "typings";
 import { useState } from "react";
 import TripLastPing from "./TripLastPing";
 import { useShallow } from "zustand/react/shallow";
-import { share } from "@/util/tools";
+import { parseVehicleId, share } from "@/util/tools";
 
 export default () => {
-    const [vehicle, lastPing, hasAlerts] = useVehicleStore(
-        useShallow((state) => [
-            state.vehicle,
-            state.lastPing,
-            state.stops?.some((stop) => stop[EStopUpdate.alerts]?.length > 0),
-        ]),
+    const [vehicle, lastPing, alertCount] = useVehicleStore(
+        useShallow((state) => [state.vehicle, state.lastPing, state.alerts.length]),
     );
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -55,16 +51,19 @@ export default () => {
                     <ListItemText primary={t("share", { ns: "Shared" })} />
                 </MenuItem>
 
-                {hasAlerts && (
+                {alertCount > 0 && (
                     <MenuItem
                         onClick={() =>
                             navigate(window.location.pathname + "/alerts" + window.location.search)
                         }
                     >
                         <ListItemIcon>
-                            <Report fontSize="small" sx={{ color: "error.contrastText" }} />
+                            <Report fontSize="small" sx={{ color: "warning.main" }} />
                         </ListItemIcon>
                         <ListItemText primary={t("alerts")} />
+                        <Typography variant="body2" sx={{ color: "text.secondary", marginLeft: 2 }}>
+                            {alertCount}
+                        </Typography>
                     </MenuItem>
                 )}
 
@@ -81,7 +80,7 @@ export default () => {
                     </MenuItem>
                 )}
 
-                {vehicle && !vehicle[EVehicle.id].split("/")[1].startsWith("_") && (
+                {vehicle && !parseVehicleId(vehicle[EVehicle.id]).vehicleNumber.startsWith("_") && (
                     <MenuItem
                         onClick={() => navigate(window.location.pathname + "/info" + window.location.search)}
                     >

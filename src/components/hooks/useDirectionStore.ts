@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
 interface DirectionState {
-    direction: 0 | 1;
-    setDirection: (direction: 0 | 1) => void;
+    direction: number;
+    setDirection: (direction: number) => void;
 }
 
 export default create<DirectionState>()((set) => ({
