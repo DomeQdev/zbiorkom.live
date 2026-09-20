@@ -22,14 +22,20 @@ const agencyNames = (city: City) => Object.entries(city.agencies || {});
 export const filterCities = (cities: City[], needle: string): City[] => {
     const selectable = [...cities].sort((a, b) => a.name.localeCompare(b.name));
 
-    if (!needle) return selectable;
-    return selectable.filter(
-        (city) =>
+    // virtual cities are layers rather than places, so they stay out of the list
+    // until someone types their id exactly
+    if (!needle) return selectable.filter((city) => !city.virtual);
+
+    return selectable.filter((city) => {
+        if (city.virtual) return needle === normalizeSearch(city.id);
+
+        return (
             normalizeSearch(city.name).includes(needle) ||
             agencyNames(city).some(
                 ([, agency]) => agency.name && normalizeSearch(agency.name).includes(needle),
-            ),
-    );
+            )
+        );
+    });
 };
 
 type Props = {
