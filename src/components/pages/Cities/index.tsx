@@ -6,6 +6,7 @@ import { forwardRef, useState } from "react";
 import { TransitionProps } from "@mui/material/transitions";
 import { useTranslation } from "react-i18next";
 import CitySelect from "./CitySelect";
+import useBackendStore from "@/hooks/useBackendStore";
 import { useMap } from "@vis.gl/react-maplibre";
 import { useNavigate } from "react-router-dom";
 
@@ -13,13 +14,14 @@ const color = "#cdeda3";
 
 export default () => {
     const { t } = useTranslation("Settings");
+    const ready = useBackendStore((state) => state.status === "ready");
     const [open, setOpen] = useState(true);
     const { current: map } = useMap();
     const navigate = useNavigate();
 
     return (
         <Dialog
-            open={open}
+            open={open && ready}
             fullWidth
             slots={{
                 transition: forwardRef(

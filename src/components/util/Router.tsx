@@ -2,6 +2,7 @@ import { createBrowserRouter, Outlet, redirect, RouterProvider } from "react-rou
 import CityRedirect from "./CityRedirect";
 import { lazy, Suspense } from "react";
 
+import BackendError from "@/pages/BackendError";
 import LocationMarker from "@/map/LocationMarker";
 import Sheet from "@/sheet/Sheet";
 import Root from "@/pages/Root";
@@ -47,6 +48,7 @@ export default () => {
                     <Sheet />
                     <LocationMarker />
                     <Outlet />
+                    <BackendError />
                 </Map>
             ),
             errorElement: <Error />,

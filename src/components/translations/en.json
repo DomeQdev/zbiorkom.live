@@ -143,6 +143,7 @@
         "welcomeTo": "Welcome to",
         "welcomeText": "Select a city to see live public transport on map.",
         "searchCities": "Search cities",
+        "containsAgencies": "Contains",
         "useStopCodeAsIcon": "Use stop code as icon",
         "disableLiquidGlass": "Disable liquid glass effect"
     },
@@ -232,5 +233,22 @@
     "Layers": {
         "layers": "Layers",
         "darkMode": "Dark mode"
+    },
+    "Backend": {
+        "error": {
+            "retry": "Try again",
+            "network": {
+                "title": "No internet connection",
+                "message": "Check your Wi-Fi or mobile data and try again."
+            },
+            "server": {
+                "title": "Something went wrong on our end",
+                "message": "zbiorkom.live servers aren't responding right now. Please try again in a moment."
+            },
+            "unknown": {
+                "title": "Something went wrong",
+                "message": "We couldn't load the map. Please try again."
+            }
+        }
     }
 }

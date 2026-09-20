@@ -3,7 +3,7 @@ import ErrorBoundary from "@/pages/ErrorBoundary";
 import { CssBaseline } from "@mui/material";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { loadCities } from "./cities";
+import useBackendStore from "@/hooks/useBackendStore";
 
 import "./components/util/register";
 import "./components/sheet/sheet.css";
@@ -22,13 +22,16 @@ const queryClient = new QueryClient({
 
 window.historyLength = window.history.length;
 
-loadCities().finally(() => {
-    ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-        <QueryClientProvider client={queryClient}>
-            <ErrorBoundary>
-                <CssBaseline />
-                <App />
-            </ErrorBoundary>
-        </QueryClientProvider>,
-    );
-});
+useBackendStore
+    .getState()
+    .load()
+    .finally(() => {
+        ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+            <QueryClientProvider client={queryClient}>
+                <ErrorBoundary>
+                    <CssBaseline />
+                    <App />
+                </ErrorBoundary>
+            </QueryClientProvider>,
+        );
+    });

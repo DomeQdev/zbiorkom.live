@@ -163,3 +163,18 @@ export const share = (url: string) => {
         navigator.clipboard.writeText(url);
     }
 };
+
+const POLISH_FOLD: Record<string, string> = {
+    ą: "a",
+    ć: "c",
+    ę: "e",
+    ł: "l",
+    ń: "n",
+    ó: "o",
+    ś: "s",
+    ź: "z",
+    ż: "z",
+};
+
+export const normalizeSearch = (value: string) =>
+    value.toLowerCase().replace(/[ąćęłńóśźż]/g, (char) => POLISH_FOLD[char] ?? char);
