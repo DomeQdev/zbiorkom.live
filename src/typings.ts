@@ -253,20 +253,12 @@ export enum EStopUpdate {
     alerts = 4,
 }
 
-export type Brigade = [
-    brigade: string,
-    numberOfTrips: string,
-    runningHours: string,
-    combined: string[],
-    vehicleId: string,
-];
+export type Brigade = [brigade: string, numberOfTrips: number, runningHours: [start: number, end: number][]];
 
 export enum EBrigade {
     brigade = 0,
     numberOfTrips = 1,
     runningHours = 2,
-    combined = 3,
-    vehicleId = 4,
 }
 
 export type BrigadeTrip = [

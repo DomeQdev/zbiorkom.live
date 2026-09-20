@@ -18,7 +18,7 @@ import Sticky from "@/ui/Sticky";
 import Helm from "@/util/Helm";
 import { EBrigade, ERoute } from "typings";
 import { getBrigadeDays, useQueryBrigadeList } from "@/hooks/useQueryBrigades";
-import { getCityFromUrl, getCityTimezone } from "@/util/tools";
+import { getCityFromUrl, getCityTimezone, getTime } from "@/util/tools";
 import { useQueryRouteGraph } from "@/hooks/useQueryRoutes";
 import useSearchState from "@/hooks/useSearchState";
 import DayPicker from "@/ui/DayPicker";
@@ -166,17 +166,35 @@ export default memo(() => {
                     {displayBrigades &&
                         brigades?.map((brigade) => (
                             <ListItemButton
-                                key={brigade}
+                                key={brigade[EBrigade.brigade]}
                                 component={Link}
                                 to={
-                                    `${brigade}?date=${date}` +
+                                    `${brigade[EBrigade.brigade]}?date=${date}` +
                                     (routeCity === city ? "" : `&city=${encodeURIComponent(routeCity)}`)
                                 }
                             >
                                 <ListItemText
                                     primary={
                                         <>
-                                            <span>{brigade}</span>
+                                            <span>{brigade[EBrigade.brigade]}</span>
+
+                                            <Typography>
+                                                {[
+                                                    t("trips", {
+                                                        tripsLength: brigade[EBrigade.numberOfTrips],
+                                                    }),
+                                                    // Split shifts come back as several periods, so each
+                                                    // one gets its own range instead of a single span.
+                                                    brigade[EBrigade.runningHours]
+                                                        ?.map(
+                                                            ([start, end]) =>
+                                                                `${getTime(start)} – ${getTime(end)}`,
+                                                        )
+                                                        .join(", "),
+                                                ]
+                                                    .filter(Boolean)
+                                                    .join(" · ")}
+                                            </Typography>
                                         </>
                                     }
                                 />

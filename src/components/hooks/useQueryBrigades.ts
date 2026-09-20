@@ -1,6 +1,6 @@
 import { getFromAPI } from "@/util/fetchFunctions";
 import { useQuery } from "@tanstack/react-query";
-import { Trip } from "typings";
+import { Brigade, Trip } from "typings";
 import { getDaysSince2020 } from "@/util/tools";
 
 type BrigadeQueryProps = {
@@ -22,7 +22,7 @@ export const useQueryBrigade = ({ city, route, brigade, date }: BrigadeQueryProp
 export const useQueryBrigadeList = ({ city, route, date }: BrigadeQueryProps) => {
     return useQuery({
         queryKey: ["brigade", city, route, date],
-        queryFn: ({ signal }) => getFromAPI<string[]>(city, `brigades/${route}/${date}`, {}, signal),
+        queryFn: ({ signal }) => getFromAPI<Brigade[]>(city, `brigades/${route}/${date}`, {}, signal),
         refetchOnMount: false,
     });
 };
