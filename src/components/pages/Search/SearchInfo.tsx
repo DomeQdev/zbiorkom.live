@@ -23,11 +23,6 @@ const items = [
         title: "howToRelations",
         description: "relationsDescription",
     },
-    // {
-    //     icon: <History style={{ color: "#3e2459", backgroundColor: "#dabaf9" }} />,
-    //     title: "howToHistory",
-    //     description: "historyDescription",
-    // },
 ];
 
 export default () => {

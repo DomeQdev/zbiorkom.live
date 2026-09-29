@@ -18,7 +18,7 @@ export default ({ route, shortName, brigade, fontSize }: Props) => {
                     marginRight: "2px",
                 }}
             >
-                <Icon type={route[ERoute.type]} agency={route[ERoute.agency]} />
+                <Icon type={route[ERoute.type]} city={route[ERoute.city]} agency={route[ERoute.agency]} />
             </SvgIcon>
             <b>
                 {route[ERoute.name]} {shortName}

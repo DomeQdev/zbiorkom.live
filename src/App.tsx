@@ -2,11 +2,13 @@ import { generateDarkScheme, ColorRole } from "material-color-lite";
 import { createTheme, ThemeProvider } from "@mui/material";
 import CheckUpdate from "./components/pages/CheckUpdate";
 import Router from "./components/util/Router";
+import useBackendStore from "@/hooks/useBackendStore";
 import useThemeStore from "@/hooks/useThemeStore";
 import { useMemo } from "react";
 
 export default () => {
     const color = useThemeStore((state) => state.color);
+    const version = useBackendStore((state) => state.version);
     const md3Theme = useMemo(
         () =>
             generateDarkScheme(color, [
@@ -251,7 +253,7 @@ export default () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Router />
+            <Router key={version} />
             <CheckUpdate />
         </ThemeProvider>
     );

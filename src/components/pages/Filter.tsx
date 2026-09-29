@@ -32,7 +32,6 @@ export default () => {
         options: {
             filterRoutes: tempRoutes.map((route) => route[ERoute.id]),
             filterModels: tempModels,
-            zoom: 1,
         },
         disabled: !(tempRoutes.length || tempModels.length),
     });
@@ -64,7 +63,7 @@ export default () => {
             <Helm variable="city" />
 
             {data?.useDots ? (
-                <DotMarkers vehicles={data.positions} />
+                <DotMarkers vehicles={data.dots} />
             ) : (
                 data?.positions.map((vehicle) => (
                     <VehicleMarker

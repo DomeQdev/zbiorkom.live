@@ -1,6 +1,7 @@
 import { ListItemButton, ListItemText } from "@mui/material";
 import { EStop, SearchItem } from "typings";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { buildCitySuffix } from "@/util/tools";
 
 type Props = {
     station: NonNullable<SearchItem["station"]>;
@@ -9,10 +10,12 @@ type Props = {
 };
 
 export default ({ station, borderTop, borderBottom }: Props) => {
+    const { city: routeCity } = useParams();
+
     return (
         <ListItemButton
             component={Link}
-            to={`../station/${station[EStop.id]}`}
+            to={`../station/${station[EStop.id]}` + buildCitySuffix(station[EStop.city], routeCity)}
             state={-2}
             sx={{
                 mx: 1,

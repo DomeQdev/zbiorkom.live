@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { memo, useState } from "react";
+import { memo, useState, useMemo } from "react";
 import { Virtuoso } from "react-virtuoso";
 import Departure from "./StopDeparture";
 import useStopStore from "@/hooks/useStopStore";
@@ -8,21 +8,44 @@ import { EStopDepartures } from "typings";
 import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 import { useTranslation } from "react-i18next";
 import Alert from "@/ui/Alert";
-import { Bedtime } from "@mui/icons-material";
+import { Bedtime, Report } from "@mui/icons-material";
+import { getCityFromUrl } from "@/util/tools";
+
+const VirtuosoComponents = {
+    Footer: ({ context: { hasMore } }: any) => {
+        if (!hasMore) return null;
+        return <Loading height={60} />;
+    },
+};
 
 export default memo(() => {
     const { city, stop } = useParams();
     const { t } = useTranslation("Schedules");
     const [firstContact] = useState(Date.now());
-    const isStation = window.location.pathname.includes("/station");
 
     const expandLimit = useStopStore((state) => state.expandLimit);
-    const { data } = useQueryStopDepartures({
-        city: isStation ? "pkp" : city!,
+    const { data, isLoading, error } = useQueryStopDepartures({
+        city: getCityFromUrl(city),
         stop: stop!,
+        expectStream: true,
     });
 
-    if (!data) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
+    const virtuosoContext = useMemo(
+        () => ({ hasMore: data?.[EStopDepartures.hasMore] }),
+        [data?.[EStopDepartures.hasMore]],
+    );
+
+    if (!data && error)
+        return (
+            <Alert
+                title={t("loadError", { ns: "Shared" })}
+                description={String(error)}
+                Icon={Report}
+                color="error"
+            />
+        );
+    if (!data && isLoading) return <Loading height="calc(var(--rsbs-overlay-h) - 60px)" />;
+    if (!data) return <Alert title={t("loadError", { ns: "Shared" })} Icon={Report} color="error" />;
 
     const departures = data?.[EStopDepartures.departures];
     if (!departures?.length) return <Alert title={t("noDepartures")} Icon={Bedtime} color="error" />;
@@ -31,19 +54,16 @@ export default memo(() => {
         <Virtuoso
             totalCount={departures.length}
             style={{ height: "calc(var(--rsbs-overlay-h) - 55px)" }}
-            itemContent={(index) => <Departure departure={departures[index]} isStation={isStation} />}
+            itemContent={(index) => <Departure departure={departures[index]} />}
             endReached={() => {
                 if (!data[EStopDepartures.hasMore] || Date.now() - firstContact < 150) return;
 
-                expandLimit(20);
+                setTimeout(() => {
+                    expandLimit(20);
+                }, 0);
             }}
-            components={{
-                Footer: () => {
-                    if (!data[EStopDepartures.hasMore]) return null;
-
-                    return <Loading height={60} />;
-                },
-            }}
+            components={VirtuosoComponents}
+            context={virtuosoContext}
         />
     );
 });

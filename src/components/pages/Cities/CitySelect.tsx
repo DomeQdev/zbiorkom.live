@@ -1,4 +1,5 @@
 import {
+    Box,
     IconButton,
     InputAdornment,
     List,
@@ -10,8 +11,32 @@ import {
 } from "@mui/material";
 import { NavigateNext, Search, Star, StarOutline } from "@mui/icons-material";
 import { City } from "typings";
+import { normalizeSearch } from "@/util/tools";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+
+const DISPLAY_AGENCY_LIMIT = 3;
+
+const agencyNames = (city: City) => Object.entries(city.agencies || {});
+
+export const filterCities = (cities: City[], needle: string): City[] => {
+    const selectable = [...cities].sort((a, b) => a.name.localeCompare(b.name));
+
+    // virtual cities are layers rather than places, so they stay out of the list
+    // until someone types their id exactly
+    if (!needle) return selectable.filter((city) => !city.virtual);
+
+    return selectable.filter((city) => {
+        if (city.virtual) return needle === normalizeSearch(city.id);
+
+        return (
+            normalizeSearch(city.name).includes(needle) ||
+            agencyNames(city).some(
+                ([, agency]) => agency.name && normalizeSearch(agency.name).includes(needle),
+            )
+        );
+    });
+};
 
 type Props = {
     cities: City[];
@@ -24,8 +49,10 @@ export default ({ cities, onCityClick }: Props) => {
     const [starredCities, setStarredCities] = useState<string[]>(
         JSON.parse(localStorage.getItem("starredCities") || "[]"),
     );
-    const [filteredCities, setCities] = useState<City[]>(cities);
     const [search, setSearch] = useState("");
+
+    const needle = normalizeSearch(search.trim());
+    const filteredCities = useMemo(() => filterCities(cities, needle), [cities, needle]);
 
     return (
         <>
@@ -34,22 +61,7 @@ export default ({ cities, onCityClick }: Props) => {
                 placeholder={t("searchCities")}
                 fullWidth
                 value={search}
-                onChange={(e) => {
-                    const value = e.target.value;
-                    setSearch(value);
-
-                    const query = value.toLowerCase().trim();
-                    if (!query) return setCities(cities);
-
-                    const newFilteredCities = cities.filter(
-                        (city) =>
-                            city.name.toLowerCase().includes(query) ||
-                            city.description?.toLowerCase().includes(query) ||
-                            city.id.includes(query),
-                    );
-
-                    setCities(newFilteredCities);
-                }}
+                onChange={(e) => setSearch(e.target.value)}
                 sx={{
                     px: 1,
                     "& .MuiInputBase-root": {
@@ -70,7 +82,8 @@ export default ({ cities, onCityClick }: Props) => {
 
             {starredCities.length > 0 && !search && (
                 <CityList
-                    cities={cities.filter((city) => starredCities.includes(city.id))}
+                    cities={filteredCities.filter((city) => starredCities.includes(city.id))}
+                    needle={needle}
                     onCityClick={onCityClick}
                     starredCities={starredCities}
                     setStarredCities={setStarredCities}
@@ -79,6 +92,7 @@ export default ({ cities, onCityClick }: Props) => {
 
             <CityList
                 cities={filteredCities}
+                needle={needle}
                 onCityClick={onCityClick}
                 starredCities={starredCities}
                 setStarredCities={setStarredCities}
@@ -89,12 +103,13 @@ export default ({ cities, onCityClick }: Props) => {
 
 type CityListProps = {
     cities: Props["cities"];
+    needle: string;
     onCityClick: Props["onCityClick"];
     starredCities: string[];
     setStarredCities: (cities: string[]) => void;
 };
 
-const CityList = ({ cities, onCityClick, starredCities, setStarredCities }: CityListProps) => {
+const CityList = ({ cities, needle, onCityClick, starredCities, setStarredCities }: CityListProps) => {
     return (
         <List
             sx={{
@@ -188,7 +203,10 @@ const CityList = ({ cities, onCityClick, starredCities, setStarredCities }: City
                                     )}
                                 </>
                             }
-                            secondary={city.description}
+                            secondary={
+                                agencyNames(city).length ? <Agencies city={city} needle={needle} /> : null
+                            }
+                            slotProps={{ secondary: { component: "div" } }}
                         />
 
                         <ListItemIcon>
@@ -198,5 +216,81 @@ const CityList = ({ cities, onCityClick, starredCities, setStarredCities }: City
                 );
             })}
         </List>
+    );
+};
+
+const Agencies = ({ city, needle }: { city: City; needle: string }) => {
+    const { t } = useTranslation("Settings");
+
+    const entries = agencyNames(city);
+    const matchedSide = needle
+        ? entries.filter(
+              ([key, agency]) =>
+                  key !== "default" && agency.name && normalizeSearch(agency.name).includes(needle),
+          )
+        : [];
+
+    let prefix: string | null = null;
+    let nameChips: string[];
+    let extra: number;
+
+    if (matchedSide.length > 0) {
+        prefix = t("containsAgencies");
+        nameChips = [matchedSide[0][1].name];
+        extra = matchedSide.length - 1;
+    } else {
+        const carriers = entries.map(([, agency]) => agency.name).filter(Boolean);
+        nameChips = carriers.slice(0, DISPLAY_AGENCY_LIMIT);
+        extra = carriers.length - nameChips.length;
+    }
+
+    if (!prefix && !nameChips.length) return null;
+
+    return (
+        <Box
+            sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                gap: 0.75,
+                marginTop: 0.75,
+                "& .MuiTypography-root": {
+                    fontSize: 12,
+                    lineHeight: 1.4,
+                    color: "#c4c7c5",
+                },
+            }}
+        >
+            {prefix && <Typography variant="caption">{prefix}</Typography>}
+
+            {nameChips.map((name) => (
+                <Typography
+                    key={name}
+                    variant="caption"
+                    sx={{
+                        backgroundColor: "#292a2d",
+                        borderRadius: 1,
+                        paddingX: 1,
+                        paddingY: 0.25,
+                    }}
+                >
+                    {name}
+                </Typography>
+            ))}
+
+            {extra > 0 && (
+                <Typography
+                    variant="caption"
+                    sx={{
+                        backgroundColor: "#444",
+                        borderRadius: 1,
+                        paddingX: 1,
+                        paddingY: 0.25,
+                    }}
+                >
+                    +{extra}
+                </Typography>
+            )}
+        </Box>
     );
 };

@@ -2,7 +2,7 @@ import { mapStyles } from "./mapStyle";
 import { memo, ReactElement, useEffect, useMemo } from "react";
 import { Map } from "@vis.gl/react-maplibre";
 import { useLocation } from "react-router-dom";
-import cities from "cities";
+import cities, { DEFAULT_LOCATION } from "cities";
 import { useMapStyleStore } from "@/hooks/useMapStyleStore";
 import { useShallow } from "zustand/react/shallow";
 
@@ -47,7 +47,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
             };
         } else {
             const cityId = pathname.split("/")[1];
-            const location = cities[cityId]?.location || cities["warsaw"].location;
+            const location = cities[cityId]?.location || cities["warsaw"]?.location || DEFAULT_LOCATION;
             const zoom = cities[cityId]?.zoom || 16;
 
             return {

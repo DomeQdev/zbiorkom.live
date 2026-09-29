@@ -11,6 +11,7 @@ import { useShallow } from "zustand/react/shallow";
 import { useMemo } from "react";
 import AddedDirections from "./AddedDirections";
 import { EStop } from "typings";
+import { getCityFromUrl } from "@/util/tools";
 
 export default () => {
     const { city, stop } = useParams();
@@ -26,7 +27,7 @@ export default () => {
         [favorites],
     );
 
-    const data = useData(isStation ? "pkp" : city!, stop!);
+    const data = useData(getCityFromUrl(city), stop!);
     if (!data?.info) return null;
 
     return (

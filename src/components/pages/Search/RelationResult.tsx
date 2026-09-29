@@ -1,8 +1,8 @@
 import VehicleHeadsign from "@/sheet/Trip/TripHeadsign";
 import { ListItemButton, ListItemText } from "@mui/material";
-import { ESearchRelation, SearchItem } from "typings";
-import { Link } from "react-router-dom";
-import { getTime } from "@/util/tools";
+import { ERoute, ESearchRelation, SearchItem } from "typings";
+import { Link, useParams } from "react-router-dom";
+import { buildCitySuffix, getTime } from "@/util/tools";
 
 type Props = {
     relation: NonNullable<SearchItem["relation"]>;
@@ -11,10 +11,16 @@ type Props = {
 };
 
 export default ({ relation, borderTop, borderBottom }: Props) => {
+    const { city: routeCity } = useParams();
+    const route = relation[ESearchRelation.route];
+
     return (
         <ListItemButton
             component={Link}
-            to={`../trip/${encodeURIComponent(relation[ESearchRelation.id])}?pkp`}
+            to={
+                `../trip/${encodeURIComponent(relation[ESearchRelation.id])}` +
+                buildCitySuffix(route[ERoute.city], routeCity)
+            }
             state={-2}
             sx={{
                 mx: 1,
@@ -32,7 +38,7 @@ export default ({ relation, borderTop, borderBottom }: Props) => {
             <ListItemText
                 primary={
                     <VehicleHeadsign
-                        route={relation[ESearchRelation.route]}
+                        route={route}
                         shortName={relation[ESearchRelation.shortName]}
                         headsign={relation[ESearchRelation.headsign]}
                         fontSize="0.92em"

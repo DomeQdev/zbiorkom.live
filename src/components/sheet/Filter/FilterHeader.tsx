@@ -24,7 +24,7 @@ export default () => {
     const { current: map } = useMap();
     const { city } = useParams();
 
-    const { isFetching } = useQuerySearchRoutesOrModels({ city: city! });
+    const { isLoading: isFetching } = useQuerySearchRoutesOrModels({ city: city! });
 
     return (
         <Box

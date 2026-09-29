@@ -1,38 +1,29 @@
-import { Box, Dialog, DialogContent, DialogTitle, Divider, IconButton, Typography } from "@mui/material";
-import { ArrowBack } from "@mui/icons-material";
-import { ReactNode, useMemo, useRef } from "react";
+import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@mui/material";
+import { ArrowBack, CheckCircleOutline, OpenInNew, Warning } from "@mui/icons-material";
+import { useRef } from "react";
+import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { EStopUpdate, ETrip, ETripStop } from "typings";
+import { Alert as AlertTuple, EAlert } from "typings";
 import useGoBack from "@/hooks/useGoBack";
 import Sticky from "@/ui/Sticky";
+import Alert from "@/ui/Alert";
+import Markdown from "@/ui/Markdown";
 import useVehicleStore from "@/hooks/useVehicleStore";
-import { useShallow } from "zustand/react/shallow";
+import { getCityFromUrl, getCityTimezone } from "@/util/tools";
+
+const ALERT_BACKGROUND = "#463a00";
+const ALERT_TEXT = "#ffe082";
 
 export default () => {
-    const [tripData, stops] = useVehicleStore(useShallow((state) => [state.trip, state.stops]));
+    const alerts = useVehicleStore((state) => state.alerts);
     const { t } = useTranslation("Vehicle");
+    const { city } = useParams();
     const goBack = useGoBack();
 
     const scrollContainer = useRef<HTMLDivElement | null>(null);
     const elementRef = useRef<HTMLDivElement | null>(null);
 
-    const alerts = useMemo(() => {
-        if (!tripData || !stops) return [];
-
-        const alerts: [string, string[]][] = [];
-
-        for (let i = 0; i < stops.length; i++) {
-            const stop = stops[i];
-            const stopAlerts = stop[EStopUpdate.alerts];
-
-            if (!stopAlerts?.length) continue;
-
-            const stopName = tripData[ETrip.stops][i][ETripStop.name];
-            alerts.push([stopName, stopAlerts]);
-        }
-
-        return alerts;
-    }, [tripData, stops]);
+    const timezone = getCityTimezone(getCityFromUrl(city));
 
     return (
         <Dialog open onClose={goBack} fullWidth>
@@ -89,37 +80,87 @@ export default () => {
                     {t("alerts")}
                 </Typography>
 
-                {alerts.map((alert) => (
-                    <Box
-                        key={alert[0]}
-                        sx={{
-                            backgroundColor: "background.paper",
-                            borderRadius: 1,
-                            px: 2,
-                            py: 1,
-                            "& .MuiTypography-body2": {
-                                py: 1,
-                            },
-                        }}
-                    >
-                        <Typography variant="h6" textAlign="center">
-                            {alert[0]}
-                        </Typography>
+                {!alerts.length && (
+                    <Alert
+                        Icon={CheckCircleOutline}
+                        title={t("alertsEmpty")}
+                        description={t("alertsEmptyDescription")}
+                        color="success"
+                        sx={{ height: "auto", paddingBottom: 4 }}
+                    />
+                )}
 
-                        {alert[1]
-                            .map<ReactNode>((alertText, i) => (
-                                <Typography key={`${alert[0]}${i}`} variant="body2">
-                                    {alertText}
-                                </Typography>
-                            ))
-                            .reduce((prev, curr, i) => [
-                                prev,
-                                <Divider key={`${alert[0]}divider${i}`} />,
-                                curr,
-                            ])}
-                    </Box>
+                {alerts.map((alert, index) => (
+                    <AlertCard key={`${alert[EAlert.title]}-${index}`} alert={alert} timezone={timezone} />
                 ))}
             </DialogContent>
         </Dialog>
+    );
+};
+
+const AlertCard = ({ alert, timezone }: { alert: AlertTuple; timezone: string }) => {
+    const { t, i18n } = useTranslation("Vehicle");
+
+    const formatMoment = (timestamp: number) =>
+        new Intl.DateTimeFormat(i18n.language, {
+            day: "numeric",
+            month: "long",
+            hour: "2-digit",
+            minute: "2-digit",
+            timeZone: timezone,
+        }).format(timestamp);
+
+    const activeFrom = alert[EAlert.activeFrom];
+    const activeUntil = alert[EAlert.activeUntil];
+    const publishedAt = alert[EAlert.publishedAt];
+    const description = alert[EAlert.description];
+    const url = alert[EAlert.url];
+
+    let validity: string | undefined;
+    if (activeFrom && activeUntil) validity = `${formatMoment(activeFrom)} – ${formatMoment(activeUntil)}`;
+    else if (activeFrom) validity = t("alertsFrom", { moment: formatMoment(activeFrom) });
+    else if (activeUntil) validity = t("alertsUntil", { moment: formatMoment(activeUntil) });
+    else if (publishedAt) validity = t("alertsPublished", { moment: formatMoment(publishedAt) });
+
+    return (
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 0.75,
+                padding: 2,
+                borderRadius: "20px",
+                backgroundColor: ALERT_BACKGROUND,
+                color: ALERT_TEXT,
+            }}
+        >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Warning fontSize="small" />
+
+                <Typography variant="subtitle1" fontWeight="500" sx={{ flex: 1, lineHeight: 1.3 }}>
+                    {alert[EAlert.title]}
+                </Typography>
+            </Box>
+
+            {validity && (
+                <Typography variant="body2" sx={{ opacity: 0.8 }}>
+                    {validity}
+                </Typography>
+            )}
+
+            {!!description && <Markdown content={description} />}
+
+            {!!url && (
+                <Button
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    startIcon={<OpenInNew />}
+                    sx={{ alignSelf: "flex-start", marginLeft: -1, color: "inherit" }}
+                >
+                    {t("alertsDetails")}
+                </Button>
+            )}
+        </Box>
     );
 };

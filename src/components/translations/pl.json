@@ -19,14 +19,11 @@
         "departure": "Oczekiwanie na odjazd",
         "departed": "Odjechał",
         "cancelled": "Odwołany",
-        "live": "Na bieżąco",
         "scheduled": "Brak danych o opóźnieniu",
         "tripNotFound": "Nie znaleźliśmy tej trasy...",
         "vehicleSchedule": "Rozkład jazdy pojazdu",
         "brigadeSchedule": "Rozkład brygady",
         "vehicleInfo": "Informacje o pojeździe",
-        "showTrip": "Pokaż kurs",
-        "showVehicle": "Pokaż pojazd",
         "platform": "Peron",
         "track": "Tor",
         "breakTime": "{{time}} przerwy",
@@ -42,10 +39,21 @@
         "terminus": "Przystanek krańcowy",
         "operatedBy": "Kurs obsługiwany przez {{value}}",
         "alerts": "Utrudnienia",
+        "alertsFrom": "od {{moment}}",
+        "alertsUntil": "do {{moment}}",
+        "alertsPublished": "opublikowano {{moment}}",
+        "alertsDetails": "Więcej informacji",
+        "alertsEmpty": "Bez utrudnień",
+        "alertsEmptyDescription": "Nie ma w tej chwili żadnych zgłoszonych utrudnień.",
         "sunPosition": "Gdzie usiąść?",
         "sec": "sek",
         "min": "min",
-        "vehicleNotFound": "Nie znaleziono pojazdu."
+        "vehicleNotFound": "Nie znaleziono pojazdu.",
+        "routeEmpty": "Ta linia nie ma przystanków",
+        "showStops_one": "Pokaż {{count}} przystanek",
+        "showStops_few": "Pokaż {{count}} przystanki",
+        "showStops_many": "Pokaż {{count}} przystanków",
+        "showStops_other": "Pokaż {{count}} przystanków"
     },
     "Brigades": {
         "selectBrigade": "Wybierz brygadę dla linii <0></0>",
@@ -67,7 +75,10 @@
     },
     "Shared": {
         "share": "Udostępnij",
-        "ago": "temu"
+        "ago": "temu",
+        "loadError": "Wystąpił błąd ładowania",
+        "networkError": "Brak połączenia z serwerem",
+        "retry": "Spróbuj ponownie"
     },
     "Favorites": {
         "selectDirection": "Wybierz kierunek",
@@ -80,7 +91,6 @@
         "stops": "Przystanki",
         "vehicles": "Pojazdy",
         "routes": "Linie",
-        "relations": "Relacje",
         "stations": "Stacje",
         "howToUse": "Jak używać wyszukiwarki?",
         "howToVehicles": "Wyszukiwanie pojazdów",
@@ -89,10 +99,11 @@
         "stopsDescription": "Wyszukaj używając nazwy, np. Dworzec Główny.",
         "howToRoutes": "Wyszukiwanie linii",
         "routesDescription": "Wyszukaj używając numeru linii, np. 105.",
-        "howToRelations": "Wyszukiwanie relacji pociągów",
-        "relationsDescription": "Wyszukaj używając numeru relacji, np. 99267.",
         "howToHistory": "Historia wyszukiwania",
-        "historyDescription": "Zapisujemy ostatnie wyszukiwania, abyś mógł szybko do nich wrócić."
+        "historyDescription": "Zapisujemy ostatnie wyszukiwania, abyś mógł szybko do nich wrócić.",
+        "relations": "Relacje",
+        "howToRelations": "Wyszukiwanie relacji pociągów",
+        "relationsDescription": "Wyszukaj używając numeru relacji, np. 99267."
     },
     "Filter": {
         "filter": "Filtrowanie",
@@ -136,6 +147,7 @@
         "welcomeTo": "Witaj na",
         "welcomeText": "Wybierz miasto, aby zobaczyć komunikację miejską na żywo.",
         "searchCities": "Wyszukaj miasto",
+        "containsAgencies": "Zawiera",
         "useStopCodeAsIcon": "Użyj numeru przystanku jako ikony",
         "disableLiquidGlass": "Wyłącz efekt rozmytego szkła"
     },
@@ -209,6 +221,8 @@
         "trip": "Kurs",
         "route": "Linia",
         "brigade": "Brygada",
+        "expandStops": "Pokaż przystanki",
+        "hideStops": "Ukryj przystanki",
         "noResults": "Brak wyników...",
         "noResultsDescription": "Spróbuj wyszukać coś innego.",
         "noFilter": "Wyszukaj coś..."
@@ -223,5 +237,22 @@
     "Layers": {
         "layers": "Warstwy",
         "darkMode": "Ciemny motyw"
+    },
+    "Backend": {
+        "error": {
+            "retry": "Spróbuj ponownie",
+            "network": {
+                "title": "Brak połączenia z internetem",
+                "message": "Sprawdź Wi-Fi lub dane komórkowe i spróbuj ponownie."
+            },
+            "server": {
+                "title": "Coś poszło nie tak po naszej stronie",
+                "message": "Serwery zbiorkom.live w tej chwili nie odpowiadają. Spróbuj ponownie za chwilę."
+            },
+            "unknown": {
+                "title": "Coś poszło nie tak",
+                "message": "Nie udało się załadować mapy. Spróbuj ponownie."
+            }
+        }
     }
 }

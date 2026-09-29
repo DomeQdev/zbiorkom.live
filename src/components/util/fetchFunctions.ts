@@ -6,7 +6,7 @@ export const getFromAPI = async <T>(
     query: Record<string, any>,
     signal?: AbortSignal,
 ): Promise<T> => {
-    const url = new URL(`${Gay.base}/${version}/${city}/${endpoint}`);
+    const url = new URL(`${Gay.base}/api6/${city}/${endpoint}`);
     Object.entries(query).forEach(([key, value]) => {
         if (value) url.searchParams.append(key, String(value));
     });

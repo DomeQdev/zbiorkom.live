@@ -1,34 +1,39 @@
 import { useTranslation } from "react-i18next";
-import { DelayType } from "typings";
+import { EStopDepartureStatus } from "typings";
 import { GpsFixed, GpsOff } from "@mui/icons-material";
 import { getDelay } from "@/util/tools";
 
-export default ({ delay, showGPS }: { delay: DelayType; showGPS?: boolean }) => {
+export default ({
+    delay,
+    status,
+    showGPS,
+}: {
+    delay: number;
+    status: EStopDepartureStatus;
+    showGPS?: boolean;
+}) => {
     const [delayClass, delayTime] = getDelay(delay);
     const { t } = useTranslation("Vehicle");
 
-    const showFixedGPS =
-        (showGPS !== false && delay === "live") || (showGPS === true && delay !== "scheduled");
-    const showOffGPS = delay === "scheduled" || showGPS === false;
+    const showFixedGPS = showGPS === true && status !== EStopDepartureStatus.Scheduled;
+    const showOffGPS = status === EStopDepartureStatus.Scheduled;
+
+    const isLiveStatus =
+        status !== EStopDepartureStatus.Cancelled && status !== EStopDepartureStatus.Scheduled;
+    const visualClass = isLiveStatus ? delayClass : "unknown";
 
     return (
-        <span className={`delay delay-${delayClass}`}>
+        <span className={`delay delay-${visualClass}`}>
             {showFixedGPS && <GpsFixed fontSize="small" />}
             {showOffGPS && <GpsOff fontSize="small" />}
 
-            {delay === "departed"
-                ? t("departed")
-                : delay === "departure"
-                  ? t("departure")
-                  : delay === "cancelled"
-                    ? t("cancelled")
-                    : delay === "live"
-                      ? t("live")
-                      : delay === "scheduled"
-                        ? t("scheduled")
-                        : delayTime
-                          ? t(delay > 0 ? "delayed" : "early", { time: delayTime })
-                          : t("onTime")}
+            {status === EStopDepartureStatus.Cancelled
+                ? t("cancelled")
+                : status === EStopDepartureStatus.Scheduled
+                  ? t("scheduled")
+                  : delayTime
+                    ? t(delay > 0 ? "delayed" : "early", { time: delayTime })
+                    : t("onTime")}
         </span>
     );
 };

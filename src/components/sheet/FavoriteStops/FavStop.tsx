@@ -1,25 +1,26 @@
 import StopTag from "@/ui/StopTag";
 import { ButtonBase, IconButton } from "@mui/material";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { EStopDeparture, EStopDepartures, FavoriteStop } from "typings";
+import { Link, useParams } from "react-router-dom";
+import { EStopDeparture, EStopDepartures, ETrip, FavoriteStop } from "typings";
 import Loading from "@/ui/Loading";
-import { Edit } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import FavDeparture from "./FavDeparture";
 import { useTranslation } from "react-i18next";
 import FavNotFound from "./FavNotFound";
 import { useQueryStopDepartures } from "@/hooks/useQueryStops";
+import useFavStore from "@/hooks/useFavStore";
 
 export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
     const { t } = useTranslation("Schedules");
-    const navigate = useNavigate();
     const { city } = useParams();
+    const removeFavoriteStop = useFavStore((state) => state.removeFavoriteStop);
 
     const { data, isLoading } = useQueryStopDepartures({
         city: stop.isStation ? "pkp" : city!,
         stop: stop.id,
         limit: 3,
         wait: 250,
-        destinations: stop.directions.map((direction) => direction[0]),
+        isMainComponent: true,
     });
 
     if (!data?.[EStopDepartures.stop]) {
@@ -27,7 +28,9 @@ export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
         else return <FavNotFound index={index} stop={stop} />;
     }
 
-    const url = `/${city}/${stop.isStation ? "station" : "stop"}/${stop.id}`;
+    const url =
+        `/${city}/${stop.isStation ? "station" : "stop"}/${stop.id}` +
+        (stop.isStation && city !== "pkp" ? "?city=pkp" : "");
 
     return (
         <ButtonBase
@@ -66,10 +69,10 @@ export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
                         e.preventDefault();
                         e.stopPropagation();
 
-                        navigate(`${url}/addToFav`);
+                        removeFavoriteStop(stop.id);
                     }}
                 >
-                    <Edit />
+                    <Delete />
                 </IconButton>
             </div>
 
@@ -91,15 +94,14 @@ export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
                 }}
                 onMouseDown={(e) => e.stopPropagation()}
                 onTouchStart={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                    e.preventDefault();
-                    navigate(`${url}#favOnly`, { state: -2 });
-                }}
             >
                 {!data?.[EStopDepartures.departures]?.length && t("noDepartures")}
 
                 {data?.[EStopDepartures.departures]?.map((departure) => (
-                    <FavDeparture key={`${stop.id}${departure[EStopDeparture.id]}`} departure={departure} />
+                    <FavDeparture
+                        key={`${stop.id}${departure[EStopDeparture.trip][ETrip.id]}`}
+                        departure={departure}
+                    />
                 ))}
             </ButtonBase>
         </ButtonBase>

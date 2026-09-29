@@ -9,9 +9,9 @@ type Props = {
 };
 
 export default ({ stop, disablePadding, useStopCodeAsIcon }: Props) => {
-    const color = defaultColors[stop[EStop.type]];
+    const color = defaultColors[stop[EStop.types][0]];
 
-    if (stop[EStop.station]) {
+    if ([1, 2].some((type) => stop[EStop.types].includes(type as any))) {
         return (
             <SvgIcon
                 sx={{
@@ -24,7 +24,7 @@ export default ({ stop, disablePadding, useStopCodeAsIcon }: Props) => {
                     height: 26,
                 }}
             >
-                <Icon type={stop[EStop.type]} />
+                <Icon type={stop[EStop.types][0]} />
             </SvgIcon>
         );
     }
@@ -59,7 +59,7 @@ export default ({ stop, disablePadding, useStopCodeAsIcon }: Props) => {
                         {stop[EStop.code]}
                     </text>
                 ) : (
-                    <Icon type={stop[EStop.type]} />
+                    <Icon type={stop[EStop.types][0]} />
                 )}
             </g>
 

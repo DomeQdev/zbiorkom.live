@@ -2,6 +2,7 @@ import { createBrowserRouter, Outlet, redirect, RouterProvider } from "react-rou
 import CityRedirect from "./CityRedirect";
 import { lazy, Suspense } from "react";
 
+import BackendError from "@/pages/BackendError";
 import LocationMarker from "@/map/LocationMarker";
 import Sheet from "@/sheet/Sheet";
 import Root from "@/pages/Root";
@@ -17,8 +18,6 @@ const Brigades = lazy(() => import("@/pages/Brigades"));
 const Brigade = lazy(() => import("@/pages/Brigades/Brigade"));
 const BrigadesSelect = lazy(() => import("@/pages/Brigades/Select"));
 const BrigadeFromVehicle = lazy(() => import("@/pages/Brigades/BrigadeFromVehicle"));
-
-const Directions = lazy(() => import("@/pages/Directions"));
 
 const Settings = lazy(() => import("@/pages/Settings/"));
 const SettingsTheme = lazy(() => import("@/pages/Settings/ThemeDialog"));
@@ -49,6 +48,7 @@ export default () => {
                     <Sheet />
                     <LocationMarker />
                     <Outlet />
+                    <BackendError />
                 </Map>
             ),
             errorElement: <Error />,
@@ -77,14 +77,6 @@ export default () => {
                                 </Suspense>
                             ),
                             children: [
-                                {
-                                    path: "directions",
-                                    element: (
-                                        <Suspense>
-                                            <Directions />
-                                        </Suspense>
-                                    ),
-                                },
                                 {
                                     path: "search",
                                     element: (

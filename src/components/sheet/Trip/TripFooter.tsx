@@ -5,8 +5,10 @@ import { ETrip, Trip } from "typings";
 export default ({ trip }: { trip: Trip }) => {
     const { t } = useTranslation("Vehicle");
 
+    const description = trip[ETrip.description];
+
     return (
-        !!trip[ETrip.description] && (
+        !!description?.length && (
             <Typography
                 sx={{
                     fontSize: "0.75rem",
@@ -15,15 +17,12 @@ export default ({ trip }: { trip: Trip }) => {
                     paddingBottom: 1,
                 }}
             >
-                {trip[ETrip.description].split(";").map((pair, index, array) => {
-                    const [key, value] = pair.split(":");
-                    return (
-                        <span key={index}>
-                            {t(key, { value, interpolation: { escapeValue: false } })}
-                            {index < array.length - 1 && <>&nbsp;·&nbsp;</>}
-                        </span>
-                    );
-                })}
+                {description.map(([key, value], index, array) => (
+                    <span key={index}>
+                        {t(key, { value, interpolation: { escapeValue: false } })}
+                        {index < array.length - 1 && <>&nbsp;·&nbsp;</>}
+                    </span>
+                ))}
             </Typography>
         )
     );

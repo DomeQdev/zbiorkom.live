@@ -16,6 +16,29 @@ import RouteChip from "@/ui/RouteChip";
 import Helm from "@/util/Helm";
 import { ERoute } from "typings";
 import { useQueryRoutes } from "@/hooks/useQueryRoutes";
+import { buildCitySuffix } from "@/util/tools";
+
+const GridList = forwardRef(({ style, children, ...props }: any, ref: any) => (
+    <div
+        {...props}
+        ref={ref}
+        style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            marginLeft: 8,
+            marginRight: 8,
+            gap: 8,
+            ...style,
+        }}
+    >
+        {children}
+    </div>
+));
+
+const VirtuosoComponents = {
+    List: GridList,
+};
 
 export default () => {
     const { t } = useTranslation("Schedules");
@@ -74,35 +97,21 @@ export default () => {
 
                             <VirtuosoGrid
                                 data={routes || []}
-                                itemContent={(i, route) => (
+                                computeItemKey={(_, route) => `${route[ERoute.city]}:${route[ERoute.id]}`}
+                                itemContent={(_, route) => (
                                     <RouteChip
                                         route={route}
                                         onClick={() =>
-                                            navigate(`/${city}/route/${route[ERoute.id]}`, { state: -3 })
+                                            navigate(
+                                                `/${city}/route/${route[ERoute.id]}` +
+                                                    buildCitySuffix(route[ERoute.city], city),
+                                                { state: -3 },
+                                            )
                                         }
                                     />
                                 )}
                                 style={{ height: "calc(100% - 48px)" }}
-                                components={{
-                                    //@ts-ignore
-                                    List: forwardRef(({ style, children, ...props }, ref) => (
-                                        <div
-                                            {...props}
-                                            ref={ref}
-                                            style={{
-                                                display: "flex",
-                                                flexWrap: "wrap",
-                                                justifyContent: "center",
-                                                marginLeft: 8,
-                                                marginRight: 8,
-                                                gap: 8,
-                                                ...style,
-                                            }}
-                                        >
-                                            {children}
-                                        </div>
-                                    )),
-                                }}
+                                components={VirtuosoComponents}
                             />
                         </>
                     ) : (
