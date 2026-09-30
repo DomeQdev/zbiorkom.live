@@ -118,10 +118,12 @@ export function useEventQuery<T = any, I = T>(
                 setIsLoading(false);
             }
             es.close();
+            if (esRef.current === es) esRef.current = null;
 
             if (!document.hidden && enabled && retryCount.current < 5) {
                 setTimeout(() => {
-                    if (!document.hidden && enabled && esRef.current !== es) {
+                    // Only retry if nothing else (e.g. visibility handler) reconnected meanwhile
+                    if (!document.hidden && enabled && !esRef.current) {
                         connect();
                     }
                 }, 2000);
@@ -146,10 +148,15 @@ export function useEventQuery<T = any, I = T>(
 
     useEffect(() => {
         let hideTimeout: ReturnType<typeof setTimeout> | null = null;
+        let hiddenAt = 0;
         const HIDE_GRACE_MS = 45_000;
+        // Mobile browsers freeze backgrounded tabs and may silently kill the socket
+        // while readyState still says OPEN, so force a fresh connection after this long.
+        const STALE_AFTER_MS = 10_000;
 
         const handleVisibilityChange = () => {
             if (document.hidden) {
+                hiddenAt = Date.now();
                 if (hideTimeout) clearTimeout(hideTimeout);
                 hideTimeout = setTimeout(() => {
                     if (document.hidden && esRef.current) {
@@ -162,7 +169,11 @@ export function useEventQuery<T = any, I = T>(
                     clearTimeout(hideTimeout);
                     hideTimeout = null;
                 }
-                if (!esRef.current) connect();
+                const es = esRef.current;
+                if (!es || es.readyState !== EventSource.OPEN || Date.now() - hiddenAt > STALE_AFTER_MS) {
+                    retryCount.current = 0;
+                    connect();
+                }
             }
         };
 
