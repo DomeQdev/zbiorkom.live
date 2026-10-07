@@ -44,15 +44,15 @@ export default () => {
             <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 1, padding: 2 }}>
                 {addedDirections.length < 5 && (
                     <StopSelector
-                        directions={data.directions?.filter(
-                            (direction) => !addedDirections.some((fav) => fav[0] === direction[0]),
+                        destinations={data.destinations?.filter(
+                            (destination) => !addedDirections.some((fav) => fav[0] === destination[EStop.id]),
                         )}
-                        onAdd={(direction) => {
-                            if (addedDirections.some((fav) => fav[0] === direction[0])) return;
+                        onAdd={(destination) => {
+                            if (addedDirections.some((fav) => fav[0] === destination[EStop.id])) return;
 
                             add(stop!, data.info[EStop.location], isStation, [
-                                direction[0],
-                                `${direction[1]} ${direction[2] || ""}`.trim(),
+                                destination[EStop.id],
+                                `${destination[EStop.name]} ${destination[EStop.code] || ""}`.trim(),
                             ]);
                         }}
                     />
@@ -60,11 +60,9 @@ export default () => {
 
                 <AddedDirections directions={addedDirections} onRemove={(index) => remove(stop!, index)} />
 
-                {!addedDirections.length && (
-                    <Typography variant="body2" sx={{ color: "text.secondary", textAlign: "center" }}>
-                        {t("thanksToDirection")}
-                    </Typography>
-                )}
+                <Typography variant="body2" sx={{ color: "text.secondary", textAlign: "center" }}>
+                    {t(addedDirections.length ? "thanksToDirection" : "allDirections")}
+                </Typography>
             </DialogContent>
         </Dialog>
     );

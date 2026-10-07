@@ -44,12 +44,9 @@ export default create<FavState>()((set) => ({
             const favorite = state.favorites.find((fav) => fav.id === id);
             if (!favorite) return { favorites: state.favorites };
 
+            // no directions left means the stop shows all of its departures again
             const directions = favorite.directions.filter((_, index) => index !== directionIndex);
-            const removeStop = directions.length === 0;
-
-            const favorites = removeStop
-                ? state.favorites.filter((fav) => fav.id !== id)
-                : state.favorites.map((fav) => (fav.id === id ? { ...fav, directions } : fav));
+            const favorites = state.favorites.map((fav) => (fav.id === id ? { ...fav, directions } : fav));
 
             localStorage.setItem(key, JSON.stringify(favorites));
 

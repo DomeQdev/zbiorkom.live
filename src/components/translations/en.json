@@ -82,7 +82,9 @@
         "selectDirection": "Select direction",
         "addStopsHere": "Your favorite stops",
         "howToAddStopsHere": "To add a stop, click the star ⭐ on the stop.",
-        "thanksToDirection": "By selecting a direction, we'll show only departures in the chosen place."
+        "thanksToDirection": "We show only departures to the chosen places. Remove all directions to see every departure again.",
+        "allDirections": "We show all departures. By selecting a direction, we'll show only departures to the chosen place.",
+        "editDirections": "Filter directions"
     },
     "Search": {
         "bestResults": "✨ Best result",

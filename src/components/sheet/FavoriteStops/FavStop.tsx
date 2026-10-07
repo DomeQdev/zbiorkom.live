@@ -1,9 +1,9 @@
 import StopTag from "@/ui/StopTag";
-import { ButtonBase, IconButton } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Box, ButtonBase, IconButton } from "@mui/material";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { EStopDeparture, EStopDepartures, ETrip, FavoriteStop } from "typings";
 import Loading from "@/ui/Loading";
-import { Delete } from "@mui/icons-material";
+import { Delete, FilterAlt, FilterAltOutlined, SubdirectoryArrowRight } from "@mui/icons-material";
 import FavDeparture from "./FavDeparture";
 import { useTranslation } from "react-i18next";
 import FavNotFound from "./FavNotFound";
@@ -12,6 +12,8 @@ import useFavStore from "@/hooks/useFavStore";
 
 export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
     const { t } = useTranslation("Schedules");
+    const { t: tFav } = useTranslation("Favorites");
+    const navigate = useNavigate();
     const { city } = useParams();
     const removeFavoriteStop = useFavStore((state) => state.removeFavoriteStop);
 
@@ -20,6 +22,7 @@ export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
         stop: stop.id,
         limit: 3,
         wait: 250,
+        destinations: stop.directions.map((direction) => direction[0]),
         isMainComponent: true,
     });
 
@@ -28,9 +31,10 @@ export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
         else return <FavNotFound index={index} stop={stop} />;
     }
 
-    const url =
-        `/${city}/${stop.isStation ? "station" : "stop"}/${stop.id}` +
-        (stop.isStation && city !== "pkp" ? "?city=pkp" : "");
+    const path = `/${city}/${stop.isStation ? "station" : "stop"}/${stop.id}`;
+    const search = stop.isStation && city !== "pkp" ? "?city=pkp" : "";
+    const url = path + search;
+    const isFiltered = stop.directions.length > 0;
 
     return (
         <ButtonBase
@@ -64,17 +68,51 @@ export default ({ index, stop }: { index: number; stop: FavoriteStop }) => {
             <div className="favHeader">
                 <StopTag stop={data[EStopDepartures.stop]} />
 
-                <IconButton
-                    onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
+                <Box sx={{ display: "flex", gap: 1 }}>
+                    <IconButton
+                        aria-label={tFav("editDirections")}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
 
-                        removeFavoriteStop(stop.id);
+                            navigate(`${path}/addToFav${search}`, { state: -2 });
+                        }}
+                    >
+                        {isFiltered ? <FilterAlt /> : <FilterAltOutlined />}
+                    </IconButton>
+
+                    <IconButton
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            removeFavoriteStop(stop.id);
+                        }}
+                    >
+                        <Delete />
+                    </IconButton>
+                </Box>
+            </div>
+
+            {isFiltered && (
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 0.5,
+                        marginTop: 0.5,
+                        fontSize: 13,
+                        color: "text.secondary",
+                        width: "100%",
+                        minWidth: 0,
+                        "& svg": { width: 16, height: 16 },
+                        "& span": { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
                     }}
                 >
-                    <Delete />
-                </IconButton>
-            </div>
+                    <SubdirectoryArrowRight />
+                    <span>{stop.directions.map((direction) => direction[1]).join(", ")}</span>
+                </Box>
+            )}
 
             <ButtonBase
                 sx={{

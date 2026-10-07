@@ -6,7 +6,7 @@ import useTime from "@/hooks/useTime";
 import { getTime } from "@/util/tools";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { buildCitySuffix, getCityFromUrl } from "@/util/tools";
+import { buildCitySuffix } from "@/util/tools";
 
 export default ({ departure }: { departure: StopDeparture }) => {
     const { t } = useTranslation("Vehicle");
@@ -36,8 +36,7 @@ export default ({ departure }: { departure: StopDeparture }) => {
 
     const onClick = () =>
         navigate(
-            `/${city}/trip/${encodeURIComponent(trip[ETrip.id])}` +
-                buildCitySuffix(getCityFromUrl(city), city),
+            `/${city}/trip/${encodeURIComponent(trip[ETrip.id])}` + buildCitySuffix(trip[ETrip.city], city),
             {
                 state: -2,
             },

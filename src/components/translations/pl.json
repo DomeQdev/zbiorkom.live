@@ -84,7 +84,9 @@
         "selectDirection": "Wybierz kierunek",
         "addStopsHere": "Twoje ulubione przystanki",
         "howToAddStopsHere": "Aby dodać przystanek, kliknij gwiazdkę ⭐ na przystanku.",
-        "thanksToDirection": "Wybierając kierunek, pokażemy tylko odjazdy do wybranego miejsca."
+        "thanksToDirection": "Pokazujemy tylko odjazdy do wybranych miejsc. Usuń wszystkie kierunki, aby wrócić do wszystkich odjazdów.",
+        "allDirections": "Pokazujemy wszystkie odjazdy. Wybierając kierunek, pokażemy tylko odjazdy do wybranego miejsca.",
+        "editDirections": "Filtruj kierunki"
     },
     "Search": {
         "bestResults": "✨ Najlepszy wynik",

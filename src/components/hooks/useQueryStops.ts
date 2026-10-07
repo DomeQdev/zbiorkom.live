@@ -1,7 +1,7 @@
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import useStopStore from "./useStopStore";
 import { getFromAPI } from "@/util/fetchFunctions";
-import { Stop, StopDepartures, StopDirection } from "typings";
+import { Stop, StopDepartures } from "typings";
 import { useEffect, useMemo, useRef } from "react";
 import { useEventQuery } from "./useEventQuery";
 import { useShallow } from "zustand/react/shallow";
@@ -37,7 +37,7 @@ export const useQueryStopDepartures = (props: StopDeparturesQueryProps) => {
         const query = new URLSearchParams();
         if (time) query.set("time", time.toString());
         query.set("limit", fetchLimit.toString());
-        if (destinations) query.set("destination", destinations);
+        if (destinations) query.set("destinations", destinations);
 
         return `stops/${encodeURIComponent(props.stop)}/stream?${query.toString()}`;
     }, [props.stop, fetchLimit, time, destinations]);
@@ -110,11 +110,17 @@ export const useQueryStopDepartures = (props: StopDeparturesQueryProps) => {
     };
 };
 
-export const useQueryStopDirections = ({ city, stop }: { city: string; stop: string }) => {
+export const useQueryStopDestinations = ({ city, stop }: { city: string; stop: string }) => {
     return useQuery({
-        queryKey: ["stopDirections", city, stop],
+        queryKey: ["stopDestinations", city, stop],
         queryFn: async ({ signal }) => {
-            return getFromAPI<StopDirection[]>(city, "stops/getStopDirections", { stop }, signal);
+            const stops = await getFromAPI<Stop[]>(
+                city,
+                `stops/${encodeURIComponent(stop)}/destinations`,
+                {},
+                signal,
+            );
+            return Array.isArray(stops) ? stops : [];
         },
     });
 };

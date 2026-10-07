@@ -436,22 +436,6 @@ export enum EAlert {
     detected = 7,
 }
 
-export type StopDirection = [
-    id: string,
-    name: string,
-    code: string | null,
-    direction: string | null,
-    routes: string | null,
-];
-
-export enum EStopDirection {
-    id = 0,
-    name = 1,
-    code = 2,
-    direction = 3,
-    routes = 4,
-}
-
 export interface BlogPost {
     id: string;
     title: string;
